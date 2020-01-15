@@ -1,0 +1,37 @@
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+
+<h3>Home</h3>
+
+ <!-- Top row with form-->
+<div class="row">
+	 <div class="col-2">
+	 	<a th:href="@{/ui/admin/data}" title="Data"> <i class="fas fa-users"></i> </a>
+	 </div>
+	 <div class="col-2">
+	 	<a th:href="@{/ui/admin/reports}" title="Reports"> <i class="fas fa-cog"></i> </a>
+	 </div>	
+	 <div class="col-2">
+	 	<a th:href="@{/ui/admin/user}" title="Users"> <i class="fas fa-cog"></i> </a>
+	 </div>	
+</div> 
+
+
+
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+
+
+</body>	
+
+</html>
