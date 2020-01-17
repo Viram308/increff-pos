@@ -8,7 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.employee.dao.BrandDao;
-import com.increff.employee.pojo.BrandCategoryPojo;
+import com.increff.employee.pojo.BrandMasterPojo;
 import com.increff.employee.util.StringUtil;
 
 @Service
@@ -18,25 +18,17 @@ public class BrandService {
 	private BrandDao dao;
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void add(BrandCategoryPojo b) throws ApiException {
+	public void add(BrandMasterPojo b) throws ApiException {
 
 		normalize(b);
-		
-		if (StringUtil.isEmpty(b.getBrand())) {
-			throw new ApiException("Brand cannot be empty");
+
+		BrandMasterPojo p = dao.selectByPair(b.getBrand(), b.getCategory());
+		if (p == null) {
+			dao.insert(b);
+		} else {
+			throw new ApiException("Given Brand and Category pair already exist");
 		}
-		if (StringUtil.isEmpty(b.getCategory())) {
-			throw new ApiException("Category cannot be empty");
-		}
-		
-		BrandCategoryPojo p = dao.selectByPair(b.getBrand(), b.getCategory());
-		if(p==null) {
-			dao.insert(b);	
-		}
-		else {
-			throw new ApiException("Given Brand and Category pair already exist");	
-		}
-		
+
 	}
 
 	@Transactional
@@ -45,35 +37,44 @@ public class BrandService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public BrandCategoryPojo get(int id) throws ApiException {
+	public int getId(String brand, String category) throws ApiException {
+		int id = dao.selectId(brand, category);
+		if (id > 0) {
+			return id;
+		} else {
+			throw new ApiException("Given Brand and Category pair dosen't exist");
+		}
+	}
+
+	@Transactional(rollbackOn = ApiException.class)
+	public BrandMasterPojo get(int id) throws ApiException {
 		return getCheck(id);
 	}
 
 	@Transactional
-	public List<BrandCategoryPojo> getAll() {
+	public List<BrandMasterPojo> getAll() {
 		return dao.selectAll();
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void update(int id, BrandCategoryPojo p) throws ApiException {
+	public void update(int id, BrandMasterPojo p) throws ApiException {
 		normalize(p);
-		BrandCategoryPojo ex = getCheck(id);
+		BrandMasterPojo ex = getCheck(id);
 		ex.setCategory(p.getCategory());
 		ex.setBrand(p.getBrand());
 		dao.update(ex);
 	}
 
 	@Transactional
-	public BrandCategoryPojo getCheck(int id) throws ApiException {
-		BrandCategoryPojo p = dao.select(id);
+	public BrandMasterPojo getCheck(int id) throws ApiException {
+		BrandMasterPojo p = dao.select(id);
 		if (p == null) {
-			throw new ApiException(
-					"Brand and Category not exist for id : " + id);
+			throw new ApiException("Brand and Category not exist for id : " + id);
 		}
 		return p;
 	}
 
-	protected static void normalize(BrandCategoryPojo p) {
+	protected static void normalize(BrandMasterPojo p) {
 		p.setBrand(StringUtil.toLowerCase(p.getBrand()));
 		p.setCategory(StringUtil.toLowerCase(p.getCategory()));
 	}

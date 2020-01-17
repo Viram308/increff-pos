@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.employee.model.BrandData;
 import com.increff.employee.model.BrandForm;
-import com.increff.employee.pojo.BrandCategoryPojo;
+import com.increff.employee.pojo.BrandMasterPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandService;
 
@@ -29,7 +29,7 @@ public class BrandApiController {
 	@ApiOperation(value = "Adds a Brand")
 	@RequestMapping(path = "/api/brand", method = RequestMethod.POST)
 	public void add(@RequestBody BrandForm form) throws ApiException {
-		BrandCategoryPojo p = convert(form);
+		BrandMasterPojo p = convert(form);
 		service.add(p);
 	}
 
@@ -42,16 +42,16 @@ public class BrandApiController {
 	@ApiOperation(value = "Gets a Brand")
 	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException {
-		BrandCategoryPojo p = service.get(id);
+		BrandMasterPojo p = service.get(id);
 		return convert(p);
 	}
 
 	@ApiOperation(value = "Gets list of all Brands")
 	@RequestMapping(path = "/api/brand", method = RequestMethod.GET)
 	public List<BrandData> getAll() {
-		List<BrandCategoryPojo> list = service.getAll();
+		List<BrandMasterPojo> list = service.getAll();
 		List<BrandData> list2 = new ArrayList<BrandData>();
-		for (BrandCategoryPojo p : list) {
+		for (BrandMasterPojo p : list) {
 			list2.add(convert(p));
 		}
 		return list2;
@@ -61,11 +61,11 @@ public class BrandApiController {
 	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody BrandForm f)
 			throws ApiException {
-		BrandCategoryPojo p = convert(f);
+		BrandMasterPojo p = convert(f);
 		service.update(id, p);
 	}
 
-	private static BrandData convert(BrandCategoryPojo p) {
+	private static BrandData convert(BrandMasterPojo p) {
 		BrandData d = new BrandData();
 		d.setCategory(p.getCategory());
 		d.setBrand(p.getBrand());
@@ -73,8 +73,8 @@ public class BrandApiController {
 		return d;
 	}
 
-	private static BrandCategoryPojo convert(BrandForm f) {
-		BrandCategoryPojo b = new BrandCategoryPojo();
+	private static BrandMasterPojo convert(BrandForm f) {
+		BrandMasterPojo b = new BrandMasterPojo();
 		b.setCategory(f.getCategory());
 		b.setBrand(f.getBrand());
 		return b;

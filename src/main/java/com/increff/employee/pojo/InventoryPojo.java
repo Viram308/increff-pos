@@ -6,13 +6,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class BrandCategoryPojo {
+public class InventoryPojo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private String brand;
-	private String category;
+	private int productId;
+	private int quantity;
 
 	public int getId() {
 		return id;
@@ -22,20 +22,20 @@ public class BrandCategoryPojo {
 		this.id = id;
 	}
 
-	public String getBrand() {
-		return brand;
+	public int getProductId() {
+		return productId;
 	}
 
-	public void setBrand(String brand) {
-		this.brand = brand;
+	public void setProductId(int productId) {
+		this.productId = productId;
 	}
 
-	public String getCategory() {
-		return category;
+	public int getQuantity() {
+		return quantity;
 	}
 
-	public void setCategory(String category) {
-		this.category = category;
+	public void setQuantity(int quantity) {
+		this.quantity = quantity;
 	}
 
 }

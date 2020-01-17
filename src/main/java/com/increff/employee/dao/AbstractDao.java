@@ -13,8 +13,8 @@ public abstract class AbstractDao {
 		return query.getResultList().stream().findFirst().orElse(null);
 	}
 
-	protected <T> TypedQuery<T> getQuery(String jpql, Class<T> clazz) {
-		return em.createQuery(jpql, clazz);
+	protected <T> TypedQuery<T> getQuery(String jpql, Class<T> c) {
+		return em.createQuery(jpql, c);
 	}
 
 	protected EntityManager em() {

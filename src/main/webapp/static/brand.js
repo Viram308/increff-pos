@@ -84,21 +84,22 @@ var errorData = [];
 var processCount = 0;
 
 
-function processData(){
+function processDataBrand(){
 	var file = $('#brandFile')[0].files[0];
-	readFileData(file, readFileDataCallback);
+	readFileData(file, readFileDataCallbackBrand);
 }
 
-function readFileDataCallback(results){
+function readFileDataCallbackBrand(results){
 	fileData = results.data;
-	uploadRows();
+	uploadRowsBrand();
 }
 
-function uploadRows(){
+function uploadRowsBrand(){
 	//Update progress
-	updateUploadDialog();
+	updateUploadDialogBrand();
 	//If everything processed then return
 	if(processCount==fileData.length){
+		getBrandList();
 		return;
 	}
 	
@@ -118,18 +119,18 @@ function uploadRows(){
        	'Content-Type': 'application/json'
        },	   
 	   success: function(response) {
-	   		uploadRows();  
+	   		uploadRowsBrand();  
 	   },
 	   error: function(response){
 	   		row.error=response.responseText
 	   		errorData.push(row);
-	   		uploadRows();
+	   		uploadRowsBrand();
 	   }
 	});
 
 }
 
-function downloadErrors(){
+function downloadErrorsBrand(){
 	writeFileData(errorData);
 }
 
@@ -164,7 +165,7 @@ function displayEditBrand(id){
 	});	
 }
 
-function resetUploadDialog(){
+function resetUploadDialogBrand(){
 	//Reset file name
 	var $file = $('#brandFile');
 	$file.val('');
@@ -174,23 +175,23 @@ function resetUploadDialog(){
 	fileData = [];
 	errorData = [];
 	//Update counts	
-	updateUploadDialog();
+	updateUploadDialogBrand();
 }
 
-function updateUploadDialog(){
-	$('#rowCount').html("" + fileData.length);
-	$('#processCount').html("" + processCount);
-	$('#errorCount').html("" + errorData.length);
+function updateUploadDialogBrand(){
+	$('#rowCountBrand').html("" + fileData.length);
+	$('#processCountBrand').html("" + processCount);
+	$('#errorCountBrand').html("" + errorData.length);
 }
 
-function updateFileName(){
+function updateFileNameBrand(){
 	var $file = $('#brandFile');
 	var fileName = $file.val();
 	$('#brandFileName').html(fileName);
 }
 
-function displayUploadData(){
- 	resetUploadDialog(); 	
+function displayUploadDataBrand(){
+ 	resetUploadDialogBrand(); 	
 	$('#upload-brand-modal').modal('toggle');
 }
 
@@ -200,17 +201,29 @@ function displayBrand(data){
 	$("#brand-edit-form input[name=id]").val(data.id);	
 	$('#edit-brand-modal').modal('toggle');
 }
-
+function viewBrandList(){
+	if ($(this).val() == "Hide") {
+      $(this).html("View");
+      $(this).val("View");
+      $("#brand-table").hide();
+   }
+   else {
+      $(this).html("Hide");
+      $(this).val("Hide");
+      $("#brand-table").show();
+   }
+	
+}
 
 //INITIALIZATION CODE
 function init(){
 	$('#add-brand').click(addBrand);
 	$('#update-brand').click(updateBrand);
-	$('#refresh-brand-data').click(getBrandList);
-	$('#upload-brand-data').click(displayUploadData);
-	$('#process-data').click(processData);
-	$('#download-errors').click(downloadErrors);
-    $('#brandFile').on('change', updateFileName)
+	$('#view-brand-data').click(viewBrandList);
+	$('#upload-brand-data').click(displayUploadDataBrand);
+	$('#process-data-brand').click(processDataBrand);
+	$('#download-errors-brand').click(downloadErrorsBrand);
+    $('#brandFile').on('change', updateFileNameBrand)
 }
 
 $(document).ready(init);
