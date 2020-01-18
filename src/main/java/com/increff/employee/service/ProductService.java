@@ -46,12 +46,12 @@ public class ProductService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public int getId(String barcode) throws ApiException {
+	public ProductMasterPojo getId(String barcode) throws ApiException {
 		ProductMasterPojo p = dao.selectByBarcode(barcode);
 		if (p == null) {
 			throw new ApiException("Given Barcode dosen't exist");
 		} else {
-			return p.getId();
+			return p;
 		}
 	}
 

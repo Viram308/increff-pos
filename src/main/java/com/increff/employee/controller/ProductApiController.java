@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.employee.model.ProductData;
@@ -55,6 +56,14 @@ public class ProductApiController {
 		return convert(p, b.getBrand(), b.getCategory());
 	}
 
+	@ApiOperation(value = "Gets a Product")
+	@RequestMapping(path = "/api/product/", method = RequestMethod.GET)
+	public ProductData getByBarcode(@RequestParam(value="barcode") String barcode) throws ApiException {
+		ProductMasterPojo p = pService.getId(barcode);
+		BrandMasterPojo b = bService.get(p.getBrand_category());
+		return convert(p, b.getBrand(), b.getCategory());
+	}
+	
 	@ApiOperation(value = "Gets list of all Products")
 	@RequestMapping(path = "/api/product", method = RequestMethod.GET)
 	public List<ProductData> getAll() throws ApiException {
