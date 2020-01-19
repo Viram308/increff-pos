@@ -7,6 +7,7 @@ com\increff\employee\service\ProductService.class
 com\increff\employee\dao\UserDao.class
 com\increff\employee\controller\ProductApiController.class
 com\increff\employee\controller\InitApiController.class
+com\increff\employee\pojo\OrderPojo.class
 com\increff\employee\controller\SampleController.class
 com\increff\employee\controller\SiteUiController.class
 com\increff\employee\model\BrandData.class

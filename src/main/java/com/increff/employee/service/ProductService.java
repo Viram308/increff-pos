@@ -47,6 +47,7 @@ public class ProductService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public ProductMasterPojo getId(String barcode) throws ApiException {
+		barcode = StringUtil.toLowerCase(barcode);
 		ProductMasterPojo p = dao.selectByBarcode(barcode);
 		if (p == null) {
 			throw new ApiException("Given Barcode dosen't exist");
@@ -81,5 +82,6 @@ public class ProductService {
 
 	protected static void normalize(ProductMasterPojo p) {
 		p.setName(StringUtil.toLowerCase(p.getName()));
+		p.setBarcode(StringUtil.toLowerCase(p.getBarcode()));
 	}
 }

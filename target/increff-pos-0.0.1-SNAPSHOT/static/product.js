@@ -206,13 +206,24 @@ function displayProduct(data){
 	$("#product-edit-form input[name=id]").val(data.id);	
 	$('#edit-product-modal').modal('toggle');
 }
-
-
+function viewProductList(){
+	if ($(this).val() == "Hide") {
+      $(this).html("View");
+      $(this).val("View");
+      $("#product-table").hide();
+   }
+   else {
+      $(this).html("Hide");
+      $(this).val("Hide");
+      $("#product-table").show();
+   }
+	
+}
 //INITIALIZATION CODE
 function init(){
 	$('#add-product').click(addProduct);
 	$('#update-product').click(updateProduct);
-	$('#refresh-product-data').click(getProductList);
+	$('#view-product-data').click(viewProductList);
 	$('#upload-product-data').click(displayUploadDataProduct);
 	$('#process-data-product').click(processDataProduct);
 	$('#download-errors-product').click(downloadErrorsProduct);

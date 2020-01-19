@@ -1,9 +1,11 @@
 function getProductUrlForBarcode(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/product/";
+	return baseUrl + "/api/product";
 }
-
-
+function getOrderUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/order";
+}
 var $tbody = $('#customer-order-table').find('tbody');
 var $totalItems=$('#totalItems');
 
@@ -13,7 +15,7 @@ function addOrderItem(){
 	 var itemId=$totalItems.val();
 	 itemId++;
 	 addEmptyItemRow(itemId);
-	 $totalItems.val(itemId)
+	 $totalItems.val(itemId);
 }
 
 function updateMrpForItem(data,idForItem){
@@ -22,7 +24,7 @@ function updateMrpForItem(data,idForItem){
 	$('#inputQuantity'+idForItem).val(1);
 }
 function getProductMrp(barcode,idForItem){
-	var url = getProductUrlForBarcode()+"?barcode="+barcode;
+	var url = getProductUrlForBarcode()+"/"+"?barcode="+barcode;
 	$.ajax({
 	   url: url,
 	   type: 'GET',
@@ -38,11 +40,9 @@ function addEmptyItemRow(itemId){
 		var mrpHtml='<input type="number" step="0.01" class="form-control" name="mrp" id="inputMrp'+itemId+'" readonly style="margin: auto;width: auto;">';
 		var row = '<tr>'
 		+ '<td>' + itemId + '</td>'
-		+ '<form class="form-inline" id="orderItemForm'+itemId+'">'
 		+ '<td>' + barcodeHtml + '</td>'
 		+ '<td>'  + qualityHtml + '</td>'
 		+ '<td>' + mrpHtml + '</td>'
-		+ '</form>'
 		+ '</tr>';
 	$tbody.append(row);
 	$("#inputBarcode"+itemId).on('input',function(){
@@ -57,7 +57,37 @@ function addEmptyItemRow(itemId){
 	});
 	}
 function createOrder(){
-	alert('Creating Order')
+	var j=$totalItems.val();
+	var i=1;
+	var k;
+	var orderData=[];
+	console.log("I = "+i+" J = "+j);
+	for(i=0;i<j;i++){
+		k=i+1;
+		var json = {
+			"barcode":$("#inputBarcode"+k).val(),
+			"quantity":$("#inputQuantity"+k).val(),
+			"mrp":$("#inputMrp"+k).val()	
+		};
+		console.log("JSON for orderItemForm" +i+"is "+JSON.stringify(json));
+		orderData[i]=json;
+	}
+	console.log("OrderData"+orderData);
+	console.log("Json");
+	var url=getOrderUrl();
+	$.ajax({
+	   url: url,
+	   type: 'POST',
+	   data: JSON.stringify(orderData),
+	   headers: {
+       	'Content-Type': 'application/json; charset=utf-8'
+       },	   
+	   success: function(response) {
+	   		alert('hii' + orderData);  
+	   },
+	   error: handleAjaxError
+	});
+
 }
 function init(){
 	$tbody.empty();

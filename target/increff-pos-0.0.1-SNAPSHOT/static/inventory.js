@@ -202,12 +202,25 @@ function displayInventory(data){
 	$('#edit-inventory-modal').modal('toggle');
 }
 
+function viewInventoryList(){
+	if ($(this).val() == "Hide") {
+      $(this).html("View");
+      $(this).val("View");
+      $("#inventory-table").hide();
+   }
+   else {
+      $(this).html("Hide");
+      $(this).val("Hide");
+      $("#inventory-table").show();
+   }
+	
+}
 
 //INITIALIZATION CODE
 function init(){
 	$('#add-inventory').click(addInventory);
 	$('#update-inventory').click(updateInventory);
-	$('#refresh-inventory-data').click(getInventoryList);
+	$('#view-inventory-data').click(viewInventoryList);
 	$('#upload-inventory-data').click(displayUploadDataInventory);
 	$('#process-data-inventory').click(processDataInventory);
 	$('#download-errors-inventory').click(downloadErrorsInventory);

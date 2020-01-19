@@ -21,3 +21,17 @@ body {
 .fas{
     font-size: 4rem;
 }
+table,
+thead,
+tr,
+tbody,
+th,
+td {
+  text-align: center;
+  vertical-align: middle;
+}
+
+.table td{
+  text-align: center;
+  vertical-align: middle;	
+}

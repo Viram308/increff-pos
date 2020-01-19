@@ -24,12 +24,45 @@
 	 	<a th:href="@{/ui/admin/user}" title="Users"> <i class="fas fa-cog"></i> </a>
 	 </div>	
 </div> 
-
-
-
+<div class="row">
+	<input type="hidden" id="totalItems" name="totalItems" value="3">
+	</div>
+<h3>Customer Order</h3>
+ <!-- Top row with form-->
+ <div class="row">
+    <!-- Table -->
+ <div class="col-12">
+  <table class="table table-striped" id="customer-order-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>Barcode</th>
+        <th>Quantity</th>
+        <th>MRP</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+ </div> 
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+	<div class="row">
+		<center>
+		<div class="col-12 text-center">
+		<button type="button" class="btn btn-primary" id="add-order-item">Add Item</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" id="create-order-data">Create Order</button>
+    </div>
+</center>
+    </div>
 </div> <!-- Container end-->
 
 <footer th:replace="snippets.html :: name_footer"></footer>
+<script th:src="@{/static/customer_order.js}"/></script>
 
 
 </body>	
