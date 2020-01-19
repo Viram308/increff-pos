@@ -7,11 +7,13 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.employee.model.OrderData;
 import com.increff.employee.model.OrderItemForm;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
@@ -47,51 +49,37 @@ public class OrderApiController {
 		iService.add(list);
 	}
 
-//	@ApiOperation(value = "Deletes a Brand")
-//	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.DELETE)
-//	public void delete(@PathVariable int id) {
-//		oService.delete(id);
-//	}
-//
-//	@ApiOperation(value = "Gets a Brand")
-//	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.GET)
-//	public BrandData get(@PathVariable int id) throws ApiException {
-//		BrandMasterPojo p = oService.get(id);
-//		return convert(p);
-//	}
-//
-//	@ApiOperation(value = "Gets list of all Brands")
-//	@RequestMapping(path = "/api/brand", method = RequestMethod.GET)
-//	public List<BrandData> getAll() {
-//		List<BrandMasterPojo> list = oService.getAll();
-//		List<BrandData> list2 = new ArrayList<BrandData>();
-//		for (BrandMasterPojo p : list) {
-//			list2.add(convert(p));
-//		}
-//		return list2;
-//	}
-//
-//	@ApiOperation(value = "Updates a Brand")
-//	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
-//	public void update(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
-//		BrandMasterPojo p = convert(f);
-//		oService.update(id, p);
-//	}
-//
-//	private static BrandData convert(BrandMasterPojo p) {
-//		BrandData d = new BrandData();
-//		d.setCategory(p.getCategory());
-//		d.setBrand(p.getBrand());
-//		d.setId(p.getId());
-//		return d;
-//	}
-//
-//	private static BrandMasterPojo convert(BrandForm f) {
-//		BrandMasterPojo b = new BrandMasterPojo();
-//		b.setCategory(f.getCategory());
-//		b.setBrand(f.getBrand());
-//		return b;
-//	}
+	@ApiOperation(value = "Deletes Order")
+	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.DELETE)
+	public void delete(@PathVariable int id) {
+		oService.delete(id);
+	}
+
+	@ApiOperation(value = "Gets a Order")
+	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
+	public OrderData get(@PathVariable int id) throws ApiException {
+		OrderPojo p = oService.get(id);
+		return convert(p);
+	}
+
+	@ApiOperation(value = "Gets list of all Orders")
+	@RequestMapping(path = "/api/order", method = RequestMethod.GET)
+	public List<OrderData> getAll() {
+		List<OrderPojo> list = oService.getAll();
+		List<OrderData> list2 = new ArrayList<OrderData>();
+		for (OrderPojo p : list) {
+			list2.add(convert(p));
+		}
+		return list2;
+	}
+
+	private static OrderData convert(OrderPojo o) {
+		OrderData d = new OrderData();
+		d.setId(o.getId());
+		d.setDatetime(o.getDatetime());
+		return d;
+	}
+
 	private List<OrderItemPojo> getOrderItemObject(OrderItemForm[] orderItems) throws ApiException {
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
 		int orderId = oService.getMax();
