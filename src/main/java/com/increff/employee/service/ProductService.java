@@ -75,7 +75,7 @@ public class ProductService {
 	public ProductMasterPojo getCheck(int id) throws ApiException {
 		ProductMasterPojo p = dao.select(id);
 		if (p == null) {
-			throw new ApiException("Brand and Category not exist for id : " + id);
+			throw new ApiException("Product not exist for id : " + id);
 		}
 		return p;
 	}

@@ -19,7 +19,13 @@ public class OrderItemService {
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(List<OrderItemPojo> list) throws ApiException {
 		for (OrderItemPojo o : list) {
-			dao.insert(o);
+			OrderItemPojo i = dao.getExistingOrderItem(o.getOrderid(), o.getProductId());
+			if (i == null) {
+				dao.insert(o);
+			} else {
+				o.setQuantity(o.getQuantity() + i.getQuantity());
+				update(i.getId(), o);
+			}
 		}
 	}
 
@@ -53,5 +59,4 @@ public class OrderItemService {
 		}
 		return p;
 	}
-
 }

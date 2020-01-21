@@ -56,8 +56,8 @@ public class OrderItemApiController {
 		return list2;
 	}
 
-	@ApiOperation(value = "Updates a Brand")
-	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
+	@ApiOperation(value = "Updates a OrderItem")
+	@RequestMapping(path = "/api/orderitem/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
 		OrderItemPojo p = convert(f);
 		iService.update(id, p);

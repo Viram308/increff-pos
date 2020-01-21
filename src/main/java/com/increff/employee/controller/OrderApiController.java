@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.employee.model.BillData;
 import com.increff.employee.model.OrderData;
 import com.increff.employee.model.OrderItemForm;
 import com.increff.employee.pojo.OrderItemPojo;
@@ -22,6 +23,7 @@ import com.increff.employee.service.ApiException;
 import com.increff.employee.service.OrderItemService;
 import com.increff.employee.service.OrderService;
 import com.increff.employee.service.ProductService;
+import com.thoughtworks.xstream.XStream;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -41,12 +43,19 @@ public class OrderApiController {
 
 	@ApiOperation(value = "Adds Order")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
-	public void add(@RequestBody OrderItemForm[] orderItems) throws ApiException {
+	public String add(@RequestBody OrderItemForm[] orderItems) throws ApiException {
 		OrderPojo o = new OrderPojo();
 		o.setDatetime(getDateTime());
 		oService.add(o);
 		List<OrderItemPojo> list = getOrderItemObject(orderItems);
 		iService.add(list);
+		List<BillData> billItemList = getBillDataObject(list);
+		XStream xstream = new XStream();
+		xstream.alias("billitem", BillData.class);
+		//xstream.addImplicitCollection(BillData.class, "list");
+		String xml = xstream.toXML(billItemList);
+		return xml;
+
 	}
 
 	@ApiOperation(value = "Deletes Order")
@@ -93,6 +102,22 @@ public class OrderApiController {
 			list.add(item);
 		}
 		return list;
+	}
+
+	private List<BillData> getBillDataObject(List<OrderItemPojo> list) throws ApiException {
+		List<BillData> bill = new ArrayList<BillData>();
+		int i = 1;
+		for (OrderItemPojo o : list) {
+			ProductMasterPojo p = pService.get(o.getProductId());
+			BillData item = new BillData();
+			item.setId(i);
+			item.setName(p.getName());
+			item.setQuantity(o.getQuantity());
+			item.setMrp(o.getSellingPrice());
+			i++;
+			bill.add(item);
+		}
+		return bill;
 	}
 
 	private String getDateTime() {

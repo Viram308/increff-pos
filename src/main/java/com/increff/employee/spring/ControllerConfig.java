@@ -75,7 +75,7 @@ public class ControllerConfig extends WebMvcConfigurerAdapter {
 	public ITemplateResolver templateResolver() {
 		SpringResourceTemplateResolver resolver = new SpringResourceTemplateResolver();
 		resolver.setApplicationContext(applicationContext);
-		resolver.setPrefix("/html/");
+		resolver.setPrefix("html/");
 		resolver.setTemplateMode(TemplateMode.HTML);
 		return resolver;
 	}

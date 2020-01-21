@@ -60,17 +60,21 @@ function createOrder(){
 	var j=$totalItems.val();
 	var i=1;
 	var k;
+	var validData=0;
 	var orderData=[];
 	console.log("I = "+i+" J = "+j);
 	for(i=0;i<j;i++){
 		k=i+1;
+		if($("#inputBarcode"+k).val().length == 8){
 		var json = {
 			"barcode":$("#inputBarcode"+k).val(),
 			"quantity":$("#inputQuantity"+k).val(),
 			"mrp":$("#inputMrp"+k).val()	
 		};
 		console.log("JSON for orderItemForm" +i+"is "+JSON.stringify(json));
-		orderData[i]=json;
+		orderData[validData]=json;
+		validData++;
+	}
 	}
 	console.log("OrderData"+orderData);
 	console.log("Json");
@@ -83,7 +87,8 @@ function createOrder(){
        	'Content-Type': 'application/json; charset=utf-8'
        },	   
 	   success: function(response) {
-	   		alert('hii' + orderData);  
+	   		alert("Response is "+response);
+	   		init();  
 	   },
 	   error: handleAjaxError
 	});
