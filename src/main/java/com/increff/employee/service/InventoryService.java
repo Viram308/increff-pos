@@ -37,7 +37,11 @@ public class InventoryService {
 	public InventoryPojo get(int id) throws ApiException {
 		return getCheck(id);
 	}
-
+	@Transactional
+	public InventoryPojo getByProductId(int id) {
+		InventoryPojo i = dao.selectByProductId(id);
+		return i;
+	}
 	@Transactional
 	public List<InventoryPojo> getAll() {
 		return dao.selectAll();
@@ -59,5 +63,7 @@ public class InventoryService {
 		}
 		return p;
 	}
+
+	
 
 }

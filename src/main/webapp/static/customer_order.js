@@ -6,6 +6,16 @@ function getOrderUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/order";
 }
+
+function getBillUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/bill/resultPDF.pdf";
+}
+function getInventoryUrl(){
+	var baseUrl = $("meta[name=baseUrl]").attr("content")
+	return baseUrl + "/api/inventory";
+}
+
 var $tbody = $('#customer-order-table').find('tbody');
 var $totalItems=$('#totalItems');
 
@@ -31,7 +41,10 @@ function getProductMrp(barcode,idForItem){
 	   success: function(data) {
 	   		updateMrpForItem(data,idForItem);  
 	   },
-	   error: handleAjaxError
+	   error: function(response){ 		
+	   		handleAjaxError(response);
+	   		$('#inputBarcode'+idForItem).val('');  
+		}
 	});
 }
 function addEmptyItemRow(itemId){
@@ -56,16 +69,25 @@ function addEmptyItemRow(itemId){
       }
 	});
 	}
+
+
+function downloadBillPdf(){
+	window.open(getBillUrl());
+}	
 function createOrder(){
 	var j=$totalItems.val();
 	var i=1;
 	var k;
+	var f=0;
 	var validData=0;
 	var orderData=[];
-	console.log("I = "+i+" J = "+j);
+	var checkData;
 	for(i=0;i<j;i++){
 		k=i+1;
 		if($("#inputBarcode"+k).val().length == 8){
+			//checkData=checkQuantity($("#inputBarcode"+k).val(),$("#inputQuantity"+k).val());
+
+
 		var json = {
 			"barcode":$("#inputBarcode"+k).val(),
 			"quantity":$("#inputQuantity"+k).val(),
@@ -74,10 +96,8 @@ function createOrder(){
 		console.log("JSON for orderItemForm" +i+"is "+JSON.stringify(json));
 		orderData[validData]=json;
 		validData++;
-	}
-	}
-	console.log("OrderData"+orderData);
-	console.log("Json");
+}
+}
 	var url=getOrderUrl();
 	$.ajax({
 	   url: url,
@@ -86,22 +106,55 @@ function createOrder(){
 	   headers: {
        	'Content-Type': 'application/json; charset=utf-8'
        },	   
-	   success: function(response) {
-	   		alert("Response is "+response);
-	   		init();  
+	   success: function(data) {
+	   		// console.log("Response is "+response);
+	   		//downloadBillPdf();
+	   		let binaryString = window.atob(data);
+
+let binaryLen = binaryString.length;
+
+let bytes = new Uint8Array(binaryLen);
+
+for (let i = 0; i < binaryLen; i++) {
+    let ascii = binaryString.charCodeAt(i);
+    bytes[i] = ascii;
+}
+
+let blob = new Blob([bytes], {type: "application/pdf"});
+
+let link = document.createElement('a');
+
+link.href = window.URL.createObjectURL(blob);
+//window.open(window.URL.createObjectURL(blob),"bill.pdf");
+var currentdate = new Date();
+link.download = "bill_"+ currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + "@"  
+                + currentdate.getHours() + "h_"  
+                + currentdate.getMinutes() + "m_" 
+                + currentdate.getSeconds()+"s.pdf";
+
+link.click();
+	   		initView();  
+
 	   },
 	   error: handleAjaxError
 	});
 
 }
-function init(){
+
+function initView(){
 	$tbody.empty();
+	$totalItems.val(3);
 	var i=0;
 	for(i=1;i<4;i++){
 		addEmptyItemRow(i);
 	}
+}
+function init(){
 	$('#add-order-item').click(addOrderItem);
 	$('#create-order-data').click(createOrder);
+	initView();
 }
 
 $(document).ready(init);

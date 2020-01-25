@@ -33,6 +33,7 @@ com\increff\employee\spring\SecurityConfig.class
 com\increff\employee\controller\AppRestControllerAdvice.class
 com\increff\employee\spring\WebInitializer.class
 com\increff\employee\util\UserPrincipal.class
+com\increff\employee\util\GenerateXML.class
 com\increff\employee\model\OrderForm.class
 com\increff\employee\model\AboutAppData.class
 com\increff\employee\controller\AdminApiController.class
@@ -44,7 +45,9 @@ com\increff\employee\pojo\ProductMasterPojo.class
 com\increff\employee\service\InventoryService.class
 com\increff\employee\service\AboutAppService.class
 com\increff\employee\service\OrderService.class
+com\increff\employee\controller\BillController.class
 com\increff\employee\dao\OrderItemDao.class
+com\increff\employee\util\GeneratePDF.class
 com\increff\employee\model\UserData.class
 com\increff\employee\model\UserForm.class
 com\increff\employee\util\IOUtil.class

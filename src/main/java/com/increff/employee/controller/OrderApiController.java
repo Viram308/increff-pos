@@ -1,11 +1,15 @@
 package com.increff.employee.controller;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
+import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import javax.xml.parsers.ParserConfigurationException;
+import javax.xml.transform.TransformerException;
+
+import org.apache.fop.apps.FOPException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,17 +17,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.increff.employee.model.BillData;
 import com.increff.employee.model.OrderData;
 import com.increff.employee.model.OrderItemForm;
-import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
-import com.increff.employee.pojo.ProductMasterPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.OrderItemService;
 import com.increff.employee.service.OrderService;
-import com.increff.employee.service.ProductService;
-import com.thoughtworks.xstream.XStream;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -38,23 +37,56 @@ public class OrderApiController {
 	@Autowired
 	private OrderItemService iService;
 
-	@Autowired
-	private ProductService pService;
-
 	@ApiOperation(value = "Adds Order")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
-	public String add(@RequestBody OrderItemForm[] orderItems) throws ApiException {
+	public void add(@RequestBody OrderItemForm[] orderItems, HttpServletResponse response)
+			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
 		OrderPojo o = new OrderPojo();
-		o.setDatetime(getDateTime());
-		oService.add(o);
-		List<OrderItemPojo> list = getOrderItemObject(orderItems);
-		iService.add(list);
-		List<BillData> billItemList = getBillDataObject(list);
-		XStream xstream = new XStream();
-		xstream.alias("billitem", BillData.class);
-		//xstream.addImplicitCollection(BillData.class, "list");
-		String xml = xstream.toXML(billItemList);
-		return xml;
+		oService.add(o, orderItems);
+		byte[] encodedBytes = iService.add(orderItems);
+//		HttpHeaders headers = new HttpHeaders();
+//	    headers.setContentType(MediaType.APPLICATION_PDF);
+//	    // Here you have to set the actual filename of your pdf
+//	    String filename = "output.pdf";
+//	    headers.setContentDispositionFormData(filename, filename);
+//	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
+//		ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
+//	    return response;
+		// InputStreamResource resource = new InputStreamResource(new
+		// FileInputStream("F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee\\resultPDF.pdf"));
+		// return resource;
+
+//		response.setContentType("application/pdf");
+//		response.setHeader("Content-Disposition", "attachment; filename=\"out.pdf\"");
+//
+//		InputStream inputStream = new FileInputStream(
+//				"F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee\\resultPDF.pdf");
+//
+//		return outputStream -> {
+//			int nRead;
+//			byte[] data = new byte[1024];
+//			while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
+//				System.out.println("Writing some bytes..");
+//				outputStream.write(data, 0, nRead);
+//			}
+//		};
+		String pdfFileName = "output.pdf";
+
+		response.reset();
+		response.addHeader("Pragma", "public");
+		response.addHeader("Cache-Control", "max-age=0");
+		response.setHeader("Content-disposition", "attachment;filename=" + pdfFileName);
+		response.setContentType("application/pdf");
+
+		// avoid "byte shaving" by specifying precise length of transferred data
+		response.setContentLength(encodedBytes.length);
+
+		// send to output stream
+		ServletOutputStream servletOutputStream = response.getOutputStream();
+
+		servletOutputStream.write(encodedBytes);
+		servletOutputStream.flush();
+		servletOutputStream.close();
 
 	}
 
@@ -89,42 +121,4 @@ public class OrderApiController {
 		return d;
 	}
 
-	private List<OrderItemPojo> getOrderItemObject(OrderItemForm[] orderItems) throws ApiException {
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		int orderId = oService.getMax();
-		for (OrderItemForm o : orderItems) {
-			ProductMasterPojo p = pService.getId(o.getBarcode());
-			OrderItemPojo item = new OrderItemPojo();
-			item.setOrderid(orderId);
-			item.setProductId(p.getId());
-			item.setQuantity(o.getQuantity());
-			item.setSellingPrice(o.getMrp());
-			list.add(item);
-		}
-		return list;
-	}
-
-	private List<BillData> getBillDataObject(List<OrderItemPojo> list) throws ApiException {
-		List<BillData> bill = new ArrayList<BillData>();
-		int i = 1;
-		for (OrderItemPojo o : list) {
-			ProductMasterPojo p = pService.get(o.getProductId());
-			BillData item = new BillData();
-			item.setId(i);
-			item.setName(p.getName());
-			item.setQuantity(o.getQuantity());
-			item.setMrp(o.getSellingPrice());
-			i++;
-			bill.add(item);
-		}
-		return bill;
-	}
-
-	private String getDateTime() {
-
-		DateFormat df = new SimpleDateFormat("dd-MM-yy HH:mm");
-		Date dateobj = new Date();
-		String datetime = df.format(dateobj);
-		return datetime;
-	}
 }
