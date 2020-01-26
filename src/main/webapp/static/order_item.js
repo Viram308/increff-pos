@@ -117,6 +117,8 @@ function viewOrderItemList(){
 function init(){
    $('#update-orderitem').click(updateOrderItem);
    $('#view-orderitem-data').click(viewOrderItemList);
+   $('#refresh-orderitem-data').click(getOrderItemList);
+
 }
 
 $(document).ready(init);

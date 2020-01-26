@@ -97,6 +97,8 @@
         </div>
         <button type="button" class="btn btn-primary" id="add-brand">Add</button>
         &nbsp;
+        <button type="button" class="btn btn-primary" id="refresh-brand-data">Refresh</button>
+        &nbsp;
         <button type="button" class="btn btn-primary" id="view-brand-data" value="Hide">Hide</button>
         &nbsp;
         <button type="button" class="btn btn-primary" id="upload-brand-data">Upload</button>
@@ -238,6 +240,8 @@
           </div>
         </div>
         <button type="button" class="btn btn-primary" id="add-product">Add</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" id="refresh-product-data">Refresh</button>
         &nbsp;
         <button type="button" class="btn btn-primary" id="view-product-data" value="Hide">Hide</button>
         &nbsp;
@@ -385,6 +389,8 @@
         </div>
         <button type="button" class="btn btn-primary" id="add-inventory">Add</button>
         &nbsp;
+        <button type="button" class="btn btn-primary" id="refresh-inventory-data">Refresh</button>
+        &nbsp;
         <button type="button" class="btn btn-primary" id="view-inventory-data" value="Hide">Hide</button>
         &nbsp;
         <button type="button" class="btn btn-primary" id="upload-inventory-data">Upload</button>
@@ -500,6 +506,7 @@
  <!-- Top row with form-->
  <div class="row">
    
+      <button type="button" class="btn btn-primary" id="refresh-order-data">Refresh</button>
         &nbsp;
         <button type="button" class="btn btn-primary" id="view-order-data" value="Hide">Hide</button>
         
@@ -544,7 +551,7 @@
 
  <!-- Top row with form-->
  <div class="row">
-   
+   <button type="button" class="btn btn-primary" id="refresh-orderitem-data">Refresh</button>
         &nbsp;
         <button type="button" class="btn btn-primary" id="view-orderitem-data" value="Hide">Hide</button>
         
@@ -626,6 +633,175 @@
   </div>
 </div>
 </div>
+
+
+<div th:fragment="name_salesreport">
+  <h3>Sales Report</h3>
+
+ <!-- Top row with form-->
+ <div class="row">
+   <div class="col-12">
+      <form class="form-inline" id="salesreport-form">
+        <div class="form-group">
+            <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
+            <div class='input-group date' id='inputStartDate'>
+                <input type='text' class="form-control" name="startdate"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-date"></span>
+                </span>
+            </div>
+        </div>
+        <div class="form-group">
+            <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
+            <div class='input-group date' id='inputEndDate'>
+                <input type='text' class="form-control" name="enddate"/>
+                <span class="input-group-addon">
+                    <span class="glyphicon glyphicon-date"></span>
+                </span>
+            </div>
+        </div>
+        <button type="button" class="btn btn-primary" id="refresh-salesreport-data">Refresh</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" id="view-salesreport-data" value="Hide">Hide</button>
+        </form>
+   </div> 
+</div> 
+
+
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+ <!-- Table -->
+ <div class="col-12">
+  <table class="table table-striped" id="salesreport-table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Category</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Revenue</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+</div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+</div>
+
+
+<div th:fragment="name_brandreport">
+  <h3>Brand Report</h3>
+
+ <!-- Top row with form-->
+ <div class="row">
+      <button type="button" class="btn btn-primary" id="refresh-brandreport-data">Refresh</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" id="view-brandreport-data" value="Hide">Hide</button>  
+    
+</div> 
+
+
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+ <!-- Table -->
+ <div class="col-12">
+  <table class="table table-striped" id="brandreport-table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Category</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+</div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+</div>
+
+
+<div th:fragment="name_inventoryreport">
+  <h3>Inventory Report</h3>
+
+ <!-- Top row with form-->
+ <div class="row">
+      <button type="button" class="btn btn-primary" id="refresh-inventoryreport-data">Refresh</button>
+        &nbsp;
+        <button type="button" class="btn btn-primary" id="view-inventoryreport-data" value="Hide">Hide</button>  
+    
+</div> 
+
+
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+ <!-- Table -->
+ <div class="col-12">
+  <table class="table table-striped" id="inventoryreport-table">
+    <thead>
+      <tr>
+        <th scope="col">ID</th>
+        <th scope="col">Brand</th>
+        <th scope="col">Category</th>
+        <th scope="col">Quantity</th>
+      </tr>
+    </thead>
+    <tbody>
+      
+    </tbody>
+  </table>
+
+</div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+</div>
+
+
+
+
+
 <footer class="footer  mt-1" th:fragment="name_footer">
   Copyright Increff 2019
   &nbsp;

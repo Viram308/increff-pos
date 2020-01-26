@@ -224,7 +224,9 @@ function init(){
 	$('#upload-inventory-data').click(displayUploadDataInventory);
 	$('#process-data-inventory').click(processDataInventory);
 	$('#download-errors-inventory').click(downloadErrorsInventory);
-    $('#inventoryFile').on('change', updateFileNameInventory)
+    $('#inventoryFile').on('change', updateFileNameInventory);
+    $('#refresh-inventory-data').click(getInventoryList);
+
 }
 
 $(document).ready(init);

@@ -223,7 +223,8 @@ function init(){
 	$('#upload-brand-data').click(displayUploadDataBrand);
 	$('#process-data-brand').click(processDataBrand);
 	$('#download-errors-brand').click(downloadErrorsBrand);
-    $('#brandFile').on('change', updateFileNameBrand)
+    $('#brandFile').on('change', updateFileNameBrand);
+    $('#refresh-brand-data').click(getBrandList);
 }
 
 $(document).ready(init);

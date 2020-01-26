@@ -1,1 +1,23 @@
-Reports
+<!doctype html>
+
+<html lang="en">
+
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+
+<nav th:replace="snippets.html :: name_app_navbar"></nav>
+
+<div class="container">
+<div th:replace="snippets.html :: name_salesreport"></div>
+<div th:replace="snippets.html :: name_brandreport"></div>
+<div th:replace="snippets.html :: name_inventoryreport"></div>
+</div> <!-- Container end-->
+
+<footer th:replace="snippets.html :: name_footer"></footer>
+<script th:src="@{/static/salesreport.js}"/></script>
+<script th:src="@{/static/brandreport.js}"/></script>
+<script th:src="@{/static/inventoryreport.js}"/></script>
+
+</body>	
+</html>

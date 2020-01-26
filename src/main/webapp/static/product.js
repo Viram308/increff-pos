@@ -227,7 +227,9 @@ function init(){
 	$('#upload-product-data').click(displayUploadDataProduct);
 	$('#process-data-product').click(processDataProduct);
 	$('#download-errors-product').click(downloadErrorsProduct);
-    $('#productFile').on('change', updateFileNameProduct)
+    $('#productFile').on('change', updateFileNameProduct);
+    $('#refresh-product-data').click(getProductList);
+
 }
 
 $(document).ready(init);

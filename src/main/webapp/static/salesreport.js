@@ -65,6 +65,19 @@ function init(){
 	$('#view-order-data').click(viewOrderList);
     $('#refresh-order-data').click(getOrderList);
 
+
+
+    $('#inputStartDate').datetimepicker();
+        $('#inputEndDate').datetimepicker({
+            useCurrent: false //Important! See issue #1075
+        });
+        $("#inputStartDate").on("dp.change", function (e) {
+            $('#inputEndDate').data("DateTimePicker").minDate(e.date);
+        });
+        $("#inputEndDate").on("dp.change", function (e) {
+            $('#inputStartDate').data("DateTimePicker").maxDate(e.date);
+        });
+
 }
 
 $(document).ready(init);
