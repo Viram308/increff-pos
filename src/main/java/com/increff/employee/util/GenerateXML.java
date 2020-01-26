@@ -1,6 +1,9 @@
 package com.increff.employee.util;
 
 import java.io.File;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -32,6 +35,15 @@ public class GenerateXML {
 		// root element
 		Element root = document.createElement("bill");
 		document.appendChild(root);
+		double finalBill = 0;
+
+		Element date = document.createElement("date");
+		date.appendChild(document.createTextNode(getDate()));
+		root.appendChild(date);
+
+		Element time = document.createElement("time");
+		time.appendChild(document.createTextNode(getTime()));
+		root.appendChild(time);
 
 		for (i = 0; i < billDataItems.size(); i++) {
 			Element item = document.createElement("item");
@@ -44,6 +56,7 @@ public class GenerateXML {
 			name.appendChild(document.createTextNode(billDataItems.get(i).getName()));
 			item.appendChild(name);
 
+			finalBill = finalBill + billDataItems.get(i).getQuantity() * billDataItems.get(i).getMrp();
 			Element quantity = document.createElement("quantity");
 			quantity.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).getQuantity())));
 			item.appendChild(quantity);
@@ -53,6 +66,11 @@ public class GenerateXML {
 			item.appendChild(mrp);
 
 		}
+
+		Element total = document.createElement("total");
+		total.appendChild(document.createTextNode(String.valueOf(finalBill) + " Rs."));
+		root.appendChild(total);
+
 		TransformerFactory transformerFactory = TransformerFactory.newInstance();
 		Transformer transformer = transformerFactory.newTransformer();
 		DOMSource domSource = new DOMSource(document);
@@ -61,4 +79,21 @@ public class GenerateXML {
 
 		transformer.transform(domSource, streamResult);
 	}
+
+	private static String getDate() {
+
+		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
+		Date dateobj = new Date();
+		String date = df.format(dateobj);
+		return date;
+	}
+
+	private static String getTime() {
+
+		DateFormat df = new SimpleDateFormat("HH:mm:ss");
+		Date dateobj = new Date();
+		String time = df.format(dateobj);
+		return time;
+	}
+
 }

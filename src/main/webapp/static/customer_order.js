@@ -63,16 +63,28 @@ function addEmptyItemRow(itemId){
 		var len=valOfItem.length;
       if(len==8)
       {
-      	var str = $(this).attr('id');
- 		var res = str.charAt(str.length-1);
-      	getProductMrp($(this).val(),res);	
+      	getProductMrp($(this).val(),itemId);	
       }
 	});
 	}
 
+function openBillPdf(blob){
+	window.open(window.URL.createObjectURL(blob),"bill.pdf");
+}
 
-function downloadBillPdf(){
-	window.open(getBillUrl());
+function downloadBillPdf(blob){
+	 let link = document.createElement('a');
+
+link.href = window.URL.createObjectURL(blob);
+var currentdate = new Date();
+link.download = "bill_"+ currentdate.getDate() + "/"
+                + (currentdate.getMonth()+1)  + "/" 
+                + currentdate.getFullYear() + "@"  
+                + currentdate.getHours() + "h_"  
+                + currentdate.getMinutes() + "m_" 
+                + currentdate.getSeconds()+"s.pdf";
+
+link.click();
 }	
 function createOrder(){
 	var j=$totalItems.val();
@@ -107,8 +119,6 @@ function createOrder(){
        	'Content-Type': 'application/json; charset=utf-8'
        },	   
 	   success: function(data) {
-	   		// console.log("Response is "+response);
-	   		//downloadBillPdf();
 	   		let binaryString = window.atob(data);
 
 let binaryLen = binaryString.length;
@@ -121,20 +131,8 @@ for (let i = 0; i < binaryLen; i++) {
 }
 
 let blob = new Blob([bytes], {type: "application/pdf"});
-
-let link = document.createElement('a');
-
-link.href = window.URL.createObjectURL(blob);
-//window.open(window.URL.createObjectURL(blob),"bill.pdf");
-var currentdate = new Date();
-link.download = "bill_"+ currentdate.getDate() + "/"
-                + (currentdate.getMonth()+1)  + "/" 
-                + currentdate.getFullYear() + "@"  
-                + currentdate.getHours() + "h_"  
-                + currentdate.getMinutes() + "m_" 
-                + currentdate.getSeconds()+"s.pdf";
-
-link.click();
+//openBillPdf(blob);
+downloadBillPdf(blob);
 	   		initView();  
 
 	   },

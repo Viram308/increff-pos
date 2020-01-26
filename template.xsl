@@ -16,10 +16,13 @@
 			<fo:page-sequence master-reference="simple"
 				initial-page-number="1">
 				<fo:static-content flow-name="xsl-region-before">
-					<fo:block font-size="13.0pt" font-family="serif"
-						padding-after="2.0pt" space-before="4.0pt" text-align="center"
+					<fo:block font-size="20.0pt" font-family="serif"
+						padding-after="3.0pt" space-before="5.0pt" text-align="center"
 						border-bottom-style="solid" border-bottom-width="1.0pt">
 						<xsl:text>Increff-POS</xsl:text>
+					</fo:block>
+					<fo:block>
+
 					</fo:block>
 				</fo:static-content>
 				<fo:static-content flow-name="xsl-region-after">
@@ -31,43 +34,69 @@
 					</fo:block>
 				</fo:static-content>
 				<fo:flow flow-name="xsl-region-body">
-					<xsl:apply-templates select="bill/item" />
+					<xsl:apply-templates select="bill" />
 				</fo:flow>
 			</fo:page-sequence>
 		</fo:root>
 	</xsl:template>
-	<xsl:template match="bill/item">
+	<xsl:attribute-set name="tableAttributes">
+		<xsl:attribute name="border">solid 0.1mm black</xsl:attribute>
+
+	</xsl:attribute-set>
+	<xsl:template match="bill">
 		<fo:block text-align="center">
+			<fo:table table-layout="fixed" width="100%">
+				<fo:table-column column-width="50%" />
+				<fo:table-column column-width="50%" />
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell>
+							<fo:block font-size="12pt" font-family="sans-serif"
+								color="black" text-align="left" padding-top="3pt">
+								Date :
+								<xsl:value-of select="date" />
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell>
+							<fo:block font-size="12pt" font-family="sans-serif"
+								color="black" text-align="right" padding-top="3pt">
+								Time :
+								<xsl:value-of select="time" />
+							</fo:block>
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
 			<fo:table table-layout="fixed" width="100%">
 				<fo:table-column column-width="25%" />
 				<fo:table-column column-width="25%" />
 				<fo:table-column column-width="25%" />
 				<fo:table-column column-width="25%" />
 				<fo:table-body>
-					<fo:table-row keep-together.within-page="always">
-						<fo:table-cell>
-							<fo:block font-size="11pt" font-family="sans-serif"
+					<fo:table-row>
+						<fo:table-cell padding-top="30pt">
+							<fo:block font-size="15pt" font-family="sans-serif"
 								background-color="blue" color="white" text-align="center"
 								padding-top="3pt">
 								Item-No.
 							</fo:block>
 						</fo:table-cell>
-						<fo:table-cell>
-							<fo:block font-size="10pt" font-family="sans-serif"
+						<fo:table-cell padding-top="30pt">
+							<fo:block font-size="15pt" font-family="sans-serif"
 								background-color="blue" color="white" text-align="center"
 								padding-top="3pt">
 								Name
 							</fo:block>
 						</fo:table-cell>
-						<fo:table-cell>
-							<fo:block font-size="11pt" font-family="sans-serif"
+						<fo:table-cell padding-top="30pt">
+							<fo:block font-size="15pt" font-family="sans-serif"
 								background-color="blue" color="white" text-align="center"
 								padding-top="3pt">
 								Quantity
 							</fo:block>
 						</fo:table-cell>
-						<fo:table-cell>
-							<fo:block font-size="11pt" font-family="sans-serif"
+						<fo:table-cell padding-top="30pt">
+							<fo:block font-size="15pt" font-family="sans-serif"
 								background-color="blue" color="white" text-align="center"
 								padding-top="3pt">
 								MRP
@@ -82,18 +111,47 @@
 				<fo:table-column column-width="25%" />
 				<fo:table-column column-width="25%" />
 				<fo:table-body>
-					<fo:table-row keep-together.within-page="always">
-						<fo:table-cell>
-							<xsl:apply-templates select="id" />
+					<fo:table-row>
+						<xsl:if test="position() mod 2">
+							<xsl:attribute name="background-color">
+                    			<xsl:text>#EEF0F2</xsl:text>
+                			</xsl:attribute>
+						</xsl:if>
+						<fo:table-cell border-style="solid"
+							border-width="1.0pt">
+							<xsl:apply-templates select="item/id" />
 						</fo:table-cell>
-						<fo:table-cell>
-							<xsl:apply-templates select="name" />
+						<fo:table-cell border-style="solid"
+							border-width="1.0pt">
+							<xsl:apply-templates select="item/name" />
 						</fo:table-cell>
-						<fo:table-cell>
-							<xsl:apply-templates select="quantity" />
+						<fo:table-cell border-style="solid"
+							border-width="1.0pt">
+							<xsl:apply-templates select="item/quantity" />
 						</fo:table-cell>
-						<fo:table-cell>
-							<xsl:apply-templates select="mrp" />
+						<fo:table-cell border-style="solid"
+							border-width="1.0pt">
+							<xsl:apply-templates select="item/mrp" />
+						</fo:table-cell>
+					</fo:table-row>
+				</fo:table-body>
+			</fo:table>
+			<fo:table table-layout="fixed" width="100%">
+				<fo:table-column column-width="50%" />
+				<fo:table-column column-width="50%" />
+				<fo:table-body>
+					<fo:table-row>
+						<fo:table-cell padding-top="50pt">
+							<fo:block font-size="20pt" font-family="sans-serif"
+								color="black" text-align="center" >
+								Total
+							</fo:block>
+						</fo:table-cell>
+						<fo:table-cell padding-top="50pt">
+							<fo:block font-size="20pt" font-family="sans-serif"
+								color="red" text-align="center">
+								<xsl:value-of select="total" />
+							</fo:block>
 						</fo:table-cell>
 					</fo:table-row>
 				</fo:table-body>
@@ -101,26 +159,26 @@
 		</fo:block>
 	</xsl:template>
 	<xsl:template match="id">
-		<fo:block font-size="9pt" font-family="sans-serif"
-			space-after.optimum="3pt" text-align="center">
+		<fo:block font-size="12pt" font-family="sans-serif"
+			space-after.optimum="3pt" text-align="center" padding="3pt">
 			<xsl:value-of select="." />
 		</fo:block>
 	</xsl:template>
 	<xsl:template match="name">
-		<fo:block font-size="9pt" font-family="sans-serif"
-			space-after.optimum="3pt" text-align="center">
+		<fo:block font-size="12pt" font-family="sans-serif"
+			space-after.optimum="3pt" text-align="center" padding="3pt">
 			<xsl:value-of select="." />
 		</fo:block>
 	</xsl:template>
 	<xsl:template match="quantity">
-		<fo:block font-size="9pt" font-family="sans-serif"
-			space-after.optimum="3pt" text-align="center">
+		<fo:block font-size="12pt" font-family="sans-serif"
+			space-after.optimum="3pt" text-align="center" padding="3pt">
 			<xsl:value-of select="." />
 		</fo:block>
 	</xsl:template>
 	<xsl:template match="mrp">
-		<fo:block font-size="9pt" font-family="sans-serif"
-			space-after.optimum="3pt" text-align="center">
+		<fo:block font-size="12pt" font-family="sans-serif"
+			space-after.optimum="3pt" text-align="center" padding="3pt">
 			<xsl:value-of select="." />
 		</fo:block>
 	</xsl:template>

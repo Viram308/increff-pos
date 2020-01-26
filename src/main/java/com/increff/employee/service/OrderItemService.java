@@ -2,6 +2,8 @@ package com.increff.employee.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -39,48 +41,15 @@ public class OrderItemService {
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
 		List<OrderItemPojo> list = getOrderItemObject(orderItems);
 		for (OrderItemPojo o : list) {
-			OrderItemPojo i = dao.getExistingOrderItem(o.getOrderid(), o.getProductId());
 			InventoryPojo ip = iService.getByProductId(o.getProductId());
 			int quantity = ip.getQuantity() - o.getQuantity();
 			ip.setQuantity(quantity);
 			iService.update(ip.getId(), ip);
-			if (i == null) {
-				dao.insert(o);
-			} else {
-				o.setQuantity(o.getQuantity() + i.getQuantity());
-				update(i.getId(), o);
-			}
+			dao.insert(o);
 		}
 		List<BillData> billItemList = getBillDataObject(list);
 		GenerateXML.createXml(billItemList, oService.getMax());
-		// File pdffile = new
-		// File("F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee","resultPDF.pdf");
-//		if(pdffile.exists()) {
-//			if(pdffile.delete())
-//			{
-//				System.out.println("File deleted successfully");
-//			}
-//			else {
-//				System.out.println("Failureeeeeeeeeeeee");
-//			}
-//			
-//		}
-//		if(pdffile.exists())
-//		{
-//			System.out.println("File Still Exist");
-//		}
-//		else {
-//			System.out.println("Yayyyyyyyyyyyyyy");
-//		}
-
 		return GeneratePDF.createPDF();
-//		if(pdffile.exists())
-//		{
-//			System.out.println("File Now Exist");
-//		}
-//		else {
-//			System.out.println("Noooooooooooooooooooooo");
-//		}
 	}
 
 	@Transactional
@@ -116,8 +85,24 @@ public class OrderItemService {
 
 	private List<OrderItemPojo> getOrderItemObject(OrderItemForm[] orderItems) throws ApiException {
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		int orderId = oService.getMax();
-		for (OrderItemForm o : orderItems) {
+		List<OrderItemForm> orderItemList = new LinkedList<OrderItemForm>(Arrays.asList(orderItems));
+		int i, j, orderId = oService.getMax();
+		for (i = 0; i < orderItemList.size(); i++) {
+			for (j = i + 1; j < orderItemList.size(); j++) {
+				if (orderItemList.get(j).getBarcode().equals(orderItemList.get(i).getBarcode())) {
+					orderItemList.get(i)
+							.setQuantity(orderItemList.get(i).getQuantity() + orderItemList.get(j).getQuantity());
+					try {
+						orderItemList.remove(j);
+						j--;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
+				}
+			}
+		}
+		for (OrderItemForm o : orderItemList) {
 			ProductMasterPojo p = pService.getId(o.getBarcode());
 			OrderItemPojo item = new OrderItemPojo();
 			item.setOrderid(orderId);

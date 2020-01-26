@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
+import javax.transaction.Transactional;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -37,6 +38,7 @@ public class OrderApiController {
 	@Autowired
 	private OrderItemService iService;
 
+	@Transactional
 	@ApiOperation(value = "Adds Order")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
 	public void add(@RequestBody OrderItemForm[] orderItems, HttpServletResponse response)
@@ -44,32 +46,6 @@ public class OrderApiController {
 		OrderPojo o = new OrderPojo();
 		oService.add(o, orderItems);
 		byte[] encodedBytes = iService.add(orderItems);
-//		HttpHeaders headers = new HttpHeaders();
-//	    headers.setContentType(MediaType.APPLICATION_PDF);
-//	    // Here you have to set the actual filename of your pdf
-//	    String filename = "output.pdf";
-//	    headers.setContentDispositionFormData(filename, filename);
-//	    headers.setCacheControl("must-revalidate, post-check=0, pre-check=0");
-//		ResponseEntity<byte[]> response = new ResponseEntity<>(contents, headers, HttpStatus.OK);
-//	    return response;
-		// InputStreamResource resource = new InputStreamResource(new
-		// FileInputStream("F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee\\resultPDF.pdf"));
-		// return resource;
-
-//		response.setContentType("application/pdf");
-//		response.setHeader("Content-Disposition", "attachment; filename=\"out.pdf\"");
-//
-//		InputStream inputStream = new FileInputStream(
-//				"F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee\\resultPDF.pdf");
-//
-//		return outputStream -> {
-//			int nRead;
-//			byte[] data = new byte[1024];
-//			while ((nRead = inputStream.read(data, 0, data.length)) != -1) {
-//				System.out.println("Writing some bytes..");
-//				outputStream.write(data, 0, nRead);
-//			}
-//		};
 		String pdfFileName = "output.pdf";
 
 		response.reset();

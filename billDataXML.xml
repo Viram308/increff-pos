@@ -1,1 +1,1 @@
-<?xml version="1.0" encoding="UTF-8" standalone="no"?><bill><item><id>1</id><name>n1</name><quantity>16</quantity><mrp>12.0</mrp></item></bill>
+<?xml version="1.0" encoding="UTF-8" standalone="no"?><bill><date>26-01-2020</date><time>15:52:45</time><item><id>1</id><name>munch</name><quantity>1</quantity><mrp>15.0</mrp></item><total>15.0 Rs.</total></bill>
