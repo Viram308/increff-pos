@@ -17,7 +17,6 @@ public class ProductDao extends AbstractDao {
 
 	private static String delete_id = "delete from ProductMasterPojo p where id=:id";
 	private static String select_barcode = "select p from ProductMasterPojo p where barcode=:barcode";
-	private static String select_brand_category_id = "select id from ProductMasterPojo p where brand=:brand and category=:category";
 	private static String select_id = "select p from ProductMasterPojo p where id=:id";
 	private static String select_all = "select p from ProductMasterPojo p";
 
@@ -38,20 +37,6 @@ public class ProductDao extends AbstractDao {
 	public ProductMasterPojo selectByBarcode(String barcode) {
 		TypedQuery<ProductMasterPojo> query = getQuery(select_barcode, ProductMasterPojo.class);
 		query.setParameter("barcode", barcode);
-		return getSingle(query);
-	}
-
-	public int selectId(String brand, String category) {
-		TypedQuery<Integer> query = getQuery(select_brand_category_id, Integer.class);
-		query.setParameter("brand", brand);
-		query.setParameter("category", category);
-		return query.getSingleResult();
-	}
-
-	public ProductMasterPojo selectByPair(String brand, String category) {
-		TypedQuery<ProductMasterPojo> query = getQuery(select_barcode, ProductMasterPojo.class);
-		query.setParameter("brand", brand);
-		query.setParameter("category", category);
 		return getSingle(query);
 	}
 

@@ -59,7 +59,7 @@ public class ProductApiController {
 	@ApiOperation(value = "Gets a Product")
 	@RequestMapping(path = "/api/product/", method = RequestMethod.GET)
 	public ProductData getByBarcode(@RequestParam(value="barcode") String barcode) throws ApiException {
-		ProductMasterPojo p = pService.getId(barcode);
+		ProductMasterPojo p = pService.getByBarcode(barcode);
 		BrandMasterPojo b = bService.get(p.getBrand_category());
 		return convert(p, b.getBrand(), b.getCategory());
 	}

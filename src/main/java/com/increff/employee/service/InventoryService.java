@@ -21,9 +21,8 @@ public class InventoryService {
 		InventoryPojo p = dao.selectByProductId(i.getProductId());
 		if (p == null) {
 			dao.insert(i);
-		}
-		else {
-			i.setQuantity(i.getQuantity()+p.getQuantity());
+		} else {
+			i.setQuantity(i.getQuantity() + p.getQuantity());
 			update(p.getId(), i);
 		}
 	}
@@ -37,11 +36,17 @@ public class InventoryService {
 	public InventoryPojo get(int id) throws ApiException {
 		return getCheck(id);
 	}
-	@Transactional
-	public InventoryPojo getByProductId(int id) {
+
+	@Transactional(rollbackOn = ApiException.class)
+	public InventoryPojo getByProductId(int id) throws ApiException {
 		InventoryPojo i = dao.selectByProductId(id);
-		return i;
+		if (i == null) {
+			throw new ApiException("Given Product Id dosen't exist");
+		} else {
+			return i;
+		}
 	}
+
 	@Transactional
 	public List<InventoryPojo> getAll() {
 		return dao.selectAll();
@@ -63,7 +68,5 @@ public class InventoryService {
 		}
 		return p;
 	}
-
-	
 
 }

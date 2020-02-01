@@ -45,9 +45,6 @@ public class OrderDao extends AbstractDao {
 		return query.getResultList();
 	}
 
-	public void update(OrderPojo p) {
-	}
-
 	public int selectMax() {
 		TypedQuery<Integer> query = getQuery(select_max, Integer.class);
 		return query.getResultList().stream().findFirst().orElse(-1);

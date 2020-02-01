@@ -1,8 +1,5 @@
 package com.increff.employee.service;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -11,40 +8,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.employee.dao.OrderDao;
-import com.increff.employee.model.OrderItemForm;
-import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderPojo;
-import com.increff.employee.pojo.ProductMasterPojo;
 
 @Service
 public class OrderService {
-	@Autowired
-	private ProductService pService;
-
-	@Autowired
-	private InventoryService iService;
 
 	@Autowired
 	private OrderDao dao;
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void add(OrderPojo o, OrderItemForm[] orderItems) throws ApiException {
-
-		int enteredQuantity, pId;
-		for (OrderItemForm i : orderItems) {
-
-			// OrderItemPojo i = dao.getExistingOrderItem(o.getOrderid(), o.getProductId());
-			enteredQuantity = i.getQuantity();
-
-			ProductMasterPojo p = pService.getId(i.getBarcode());
-			pId = p.getId();
-			InventoryPojo ip = iService.getByProductId(pId);
-			if (enteredQuantity > ip.getQuantity()) {
-				throw new ApiException(
-						"Available Inventory for Barcode " + i.getBarcode() + " is : " + ip.getQuantity());
-			}
-		}
-		o.setDatetime(getDateTime());
+	public void add(OrderPojo o) throws ApiException {
 		dao.insert(o);
 	}
 
@@ -74,14 +47,6 @@ public class OrderService {
 
 	public int getMax() {
 		return dao.selectMax();
-	}
-
-	private String getDateTime() {
-
-		DateFormat df = new SimpleDateFormat("dd-MM-yy HH:mm");
-		Date dateobj = new Date();
-		String datetime = df.format(dateobj);
-		return datetime;
 	}
 
 }

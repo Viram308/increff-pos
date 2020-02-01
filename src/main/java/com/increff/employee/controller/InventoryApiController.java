@@ -34,7 +34,7 @@ public class InventoryApiController {
 	@ApiOperation(value = "Adds Inventory")
 	@RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
 	public void add(@RequestBody InventoryForm form) throws ApiException {
-		int product_id = pService.getId(form.getBarcode()).getId();
+		int product_id = pService.getByBarcode(form.getBarcode()).getId();
 		InventoryPojo i = convert(form, product_id);
 		iService.add(i);
 
@@ -69,7 +69,7 @@ public class InventoryApiController {
 	@ApiOperation(value = "Updates an Inventory")
 	@RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody InventoryForm f) throws ApiException {
-		int product_id = pService.getId(f.getBarcode()).getId();
+		int product_id = pService.getByBarcode(f.getBarcode()).getId();
 		InventoryPojo p = convert(f, product_id);
 		iService.update(id, p);
 	}

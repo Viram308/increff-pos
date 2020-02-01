@@ -27,11 +27,12 @@ public class ProductService {
 			dao.insert(b);
 		} else {
 			String barcode = StringUtil.getAlphaNumericString();
-			p.setBrand_category(b.getBrand_category());
-			p.setName(b.getName());
-			p.setBarcode(barcode);
-			p.setMrp(b.getMrp());
-			add(p);
+			ProductMasterPojo pr = new ProductMasterPojo();
+			pr.setBrand_category(b.getBrand_category());
+			pr.setName(b.getName());
+			pr.setBarcode(barcode);
+			pr.setMrp(b.getMrp());
+			add(pr);
 		}
 	}
 
@@ -46,7 +47,7 @@ public class ProductService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public ProductMasterPojo getId(String barcode) throws ApiException {
+	public ProductMasterPojo getByBarcode(String barcode) throws ApiException {
 		barcode = StringUtil.toLowerCase(barcode);
 		ProductMasterPojo p = dao.selectByBarcode(barcode);
 		if (p == null) {

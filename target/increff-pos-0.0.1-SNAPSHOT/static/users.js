@@ -51,6 +51,51 @@ function deleteUser(id){
 	   error: handleAjaxError
 	});
 }
+function updateUser(event){
+   $('#edit-user-modal').modal('toggle');
+   //Get the ID
+   var id = $("#user-edit-form input[name=id]").val(); 
+   var url = getUserUrl() + "/" + id;
+
+   //Set the values to update
+   var $form = $("#user-edit-form");
+   var json = toJson($form);
+
+   $.ajax({
+      url: url,
+      type: 'PUT',
+      data: json,
+      headers: {
+         'Content-Type': 'application/json'
+       },      
+      success: function(response) {
+            getUserList();   
+      },
+      error: handleAjaxError
+   });
+
+   return false;
+}
+
+function displayEditUser(id){
+   var url = getUserUrl() + "/" + id;
+   $.ajax({
+      url: url,
+      type: 'GET',
+      success: function(data) {
+            displayUser(data);   
+      },
+      error: handleAjaxError
+   });   
+}
+
+function displayUser(data){
+   $("#user-edit-form input[name=email]").val(data.email);
+   $("#user-edit-form input[name=role]").val(data.role);       
+   $("#user-edit-form input[name=id]").val(data.id);   
+   $('#edit-user-modal').modal('toggle');
+}
+
 
 //UI DISPLAY METHODS
 
@@ -77,6 +122,8 @@ function displayUserList(data){
 function init(){
 	$('#add-user').click(addUser);
 	$('#refresh-data').click(getUserList);
+	$('#update-user').click(updateUser);
+
 }
 
 $(document).ready(init);

@@ -32,6 +32,11 @@ public class UserService {
 	}
 
 	@Transactional
+	public UserPojo get(int id) {
+		return dao.select(id);
+	}
+
+	@Transactional
 	public List<UserPojo> getAll() {
 		return dao.selectAll();
 	}
@@ -41,8 +46,17 @@ public class UserService {
 		dao.delete(id);
 	}
 
+	@Transactional
+	public void update(int id, UserPojo p) {
+		normalize(p);
+		UserPojo u = get(id);
+		u.setRole(p.getRole());
+		dao.update(u);
+	}
+
 	protected static void normalize(UserPojo p) {
 		p.setEmail(p.getEmail().toLowerCase().trim());
 		p.setRole(p.getRole().toLowerCase().trim());
 	}
+
 }

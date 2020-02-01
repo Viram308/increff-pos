@@ -39,6 +39,20 @@ public class AdminApiController {
 		service.delete(id);
 	}
 
+	@ApiOperation(value = "Gets a User")
+	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.GET)
+	public UserData get(@PathVariable int id) {
+		UserPojo p = service.get(id);
+		return convert(p);
+	}
+
+	@ApiOperation(value = "Updates a user")
+	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.PUT)
+	public void updateUser(@PathVariable int id, @RequestBody UserForm form) {
+		UserPojo p = convert(form);
+		service.update(id, p);
+	}
+
 	@ApiOperation(value = "Gets list of all users")
 	@RequestMapping(path = "/api/admin/user", method = RequestMethod.GET)
 	public List<UserData> getAllUser() {
@@ -55,6 +69,7 @@ public class AdminApiController {
 		d.setEmail(p.getEmail());
 		d.setRole(p.getRole());
 		d.setId(p.getId());
+		d.setPassword(p.getPassword());
 		return d;
 	}
 
