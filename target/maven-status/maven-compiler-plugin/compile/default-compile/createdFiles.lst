@@ -19,7 +19,6 @@ com\increff\employee\model\InventoryData.class
 com\increff\employee\model\InventoryForm.class
 com\increff\employee\service\BrandService.class
 com\increff\employee\controller\AboutApiController.class
-com\increff\employee\util\CookieUtil.class
 com\increff\employee\pojo\InventoryPojo.class
 com\increff\employee\service\UserService.class
 com\increff\employee\controller\AbstractUiController.class

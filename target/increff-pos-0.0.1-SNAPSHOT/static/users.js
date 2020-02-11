@@ -91,6 +91,7 @@ function displayEditUser(id){
 
 function displayUser(data){
    $("#user-edit-form input[name=email]").val(data.email);
+   $("#user-edit-form input[name=password]").val(data.password);       
    $("#user-edit-form input[name=role]").val(data.role);       
    $("#user-edit-form input[name=id]").val(data.id);   
    $('#edit-user-modal').modal('toggle');
@@ -106,7 +107,7 @@ function displayUserList(data){
 	for(var i in data){
 		var e = data[i];
 		var buttonHtml = '<button onclick="deleteUser(' + e.id + ')">delete</button>'
-		buttonHtml += ' <button onclick="displayEditUser(' + e.id + ')">edit</button>'
+		buttonHtml += '<button onclick="displayEditUser(' + e.id + ')">edit</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.email + '</td>'
@@ -121,7 +122,7 @@ function displayUserList(data){
 //INITIALIZATION CODE
 function init(){
 	$('#add-user').click(addUser);
-	$('#refresh-data').click(getUserList);
+	$('#refresh-user-data').click(getUserList);
 	$('#update-user').click(updateUser);
 
 }

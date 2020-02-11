@@ -21,10 +21,11 @@ import org.w3c.dom.Element;
 import com.increff.employee.model.BillData;
 
 public class GenerateXML {
-	static String xmlFilePath = "billDataXML.xml";
-
+	
 	public static void createXml(List<BillData> billDataItems, int orderId)
 			throws ParserConfigurationException, TransformerException {
+		String xmlFilePath = "billDataXML.xml";
+
 		DocumentBuilderFactory documentFactory = DocumentBuilderFactory.newInstance();
 
 		DocumentBuilder documentBuilder = documentFactory.newDocumentBuilder();
