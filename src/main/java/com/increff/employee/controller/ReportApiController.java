@@ -11,14 +11,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.employee.model.BrandData;
+import com.increff.employee.model.InventoryReportData;
 import com.increff.employee.model.SalesReportData;
 import com.increff.employee.model.SalesReportForm;
 import com.increff.employee.pojo.BrandMasterPojo;
+import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductMasterPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandService;
+import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.OrderItemService;
 import com.increff.employee.service.OrderService;
 import com.increff.employee.service.ProductService;
@@ -36,6 +40,8 @@ public class ReportApiController {
 
 	@Autowired
 	private OrderItemService iService;
+	@Autowired
+	private InventoryService inService;
 
 	@Autowired
 	private ProductService pService;
@@ -44,9 +50,61 @@ public class ReportApiController {
 
 	@ApiOperation(value = "Gets Sales Report")
 	@RequestMapping(path = "/api/salesreport", method = RequestMethod.POST)
-	public List<SalesReportData> get(@RequestBody SalesReportForm salesReportForm) throws ParseException, ApiException {
+	public List<SalesReportData> getSalesReport(@RequestBody SalesReportForm salesReportForm)
+			throws ParseException, ApiException {
 		return getSalesReportData(salesReportForm.getStartdate(), salesReportForm.getEnddate(),
-				StringUtil.toLowerCase(salesReportForm.getBrand()), StringUtil.toLowerCase(salesReportForm.getCategory()));
+				StringUtil.toLowerCase(salesReportForm.getBrand()),
+				StringUtil.toLowerCase(salesReportForm.getCategory()));
+	}
+
+	@ApiOperation(value = "Gets Brand Report")
+	@RequestMapping(path = "/api/brandreport", method = RequestMethod.GET)
+	public List<BrandData> getBrandReport() {
+		List<BrandMasterPojo> list = bService.getAll();
+		List<BrandData> list2 = new ArrayList<BrandData>();
+		int i = 0;
+		for (i = 0; i < list.size(); i++) {
+			BrandData b = new BrandData();
+			b.setId(i + 1);
+			b.setBrand(list.get(i).getBrand());
+			b.setCategory(list.get(i).getCategory());
+			list2.add(b);
+		}
+		return list2;
+	}
+
+	@ApiOperation(value = "Gets Inventory Report")
+	@RequestMapping(path = "/api/inventoryreport", method = RequestMethod.GET)
+	public List<InventoryReportData> getInventoryReport() throws ApiException {
+		List<InventoryPojo> ip = inService.getAll();
+		List<InventoryReportData> list2 = new ArrayList<InventoryReportData>();
+		int i, j;
+		for (i = 0; i < ip.size(); i++) {
+			ProductMasterPojo p = pService.get(ip.get(i).getProductId());
+			BrandMasterPojo b = bService.get(p.getBrand_category());
+			InventoryReportData ir = new InventoryReportData();
+			ir.setId(i + 1);
+			ir.setBrand(b.getBrand());
+			ir.setCategory(b.getCategory());
+			ir.setQuantity(ip.get(i).getQuantity());
+			list2.add(ir);
+		}
+
+		for (i = 0; i < list2.size(); i++) {
+			for (j = i + 1; j < list2.size(); j++) {
+				if (list2.get(j).getBrand().equals(list2.get(i).getBrand())
+						&& list2.get(j).getCategory().equals(list2.get(i).getCategory())) {
+					list2.get(i).setQuantity(list2.get(i).getQuantity() + list2.get(j).getQuantity());
+					try {
+						list2.remove(j);
+						j--;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return list2;
 	}
 
 	private List<SalesReportData> getSalesReportData(String startdate, String enddate, String brand, String category)

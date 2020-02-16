@@ -58,6 +58,7 @@ com\increff\employee\pojo\UserPojo.class
 com\increff\employee\service\ApiException.class
 com\increff\employee\controller\BrandApiController.class
 com\increff\employee\spring\ControllerConfig.class
+com\increff\employee\model\InventoryReportData.class
 com\increff\employee\model\OrderItemForm.class
 com\increff\employee\spring\SpringConfig.class
 com\increff\employee\pojo\OrderItemPojo.class
