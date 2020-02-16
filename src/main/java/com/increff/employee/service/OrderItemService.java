@@ -30,6 +30,11 @@ public class OrderItemService {
 	public OrderItemPojo get(int id) throws ApiException {
 		return getCheck(id);
 	}
+	
+	@Transactional
+	public List<OrderItemPojo> getList(List<Integer> orderIds){
+		return dao.selectList(orderIds);
+	}
 
 	@Transactional
 	public List<OrderItemPojo> getAll() {

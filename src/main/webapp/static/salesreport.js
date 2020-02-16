@@ -20,13 +20,14 @@ function getSalesReportData(){
 
 	$.ajax({
 	   url: url,
-	   type: 'GET',
+	   type: 'POST',
 	   data: json,
 	   headers: {
        	'Content-Type': 'application/json'
        },	   
 	   success: function(response) {
-	   		  displaySalesReport(response);
+	   		console.log(response);
+	   		displaySalesReport(response);
 	   },
 	   error: handleAjaxError
 	});
@@ -68,7 +69,7 @@ function init(){
 $('#inputStartDate').datepicker({
 	uiLibrary: 'bootstrap4',
 	iconsLibrary: 'fontawesome',
-	format: 'dd/mm/yyyy',
+	format: 'dd-mm-yyyy',
     maxDate: function () {
    	   return $('#inputEndDate').val();
    }
@@ -76,7 +77,7 @@ $('#inputStartDate').datepicker({
 $('#inputEndDate').datepicker({
       uiLibrary: 'bootstrap4',
             iconsLibrary: 'fontawesome',
-            format: 'dd/mm/yyyy',
+            format: 'dd-mm-yyyy',
             minDate: function () {
                 return $('#inputStartDate').val();
             }

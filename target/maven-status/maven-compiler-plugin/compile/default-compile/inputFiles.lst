@@ -1,6 +1,7 @@
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\dao\UserDao.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\spring\DbConfig.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\service\ProductService.java
+F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\model\SalesReportForm.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\model\BillData.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\service\OrderService.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\model\OrderForm.java
@@ -17,6 +18,7 @@ F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\controll
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\controller\ProductApiController.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\pojo\OrderItemPojo.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\controller\AdminApiController.java
+F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\model\SalesReportData.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\pojo\UserPojo.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\spring\ControllerConfig.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\model\OrderItemData.java
@@ -31,6 +33,7 @@ F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\service\
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\model\InventoryData.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\controller\BillController.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\dao\OrderDao.java
+F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\controller\ReportApiController.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\controller\AppRestControllerAdvice.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\dao\ProductDao.java
 F:\Repos\Home-assignment\increff-pos\src\main\java\com\increff\employee\pojo\BrandMasterPojo.java

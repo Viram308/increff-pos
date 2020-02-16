@@ -24,6 +24,8 @@ com\increff\employee\service\UserService.class
 com\increff\employee\controller\AbstractUiController.class
 com\increff\employee\model\BillData.class
 com\increff\employee\model\BillForm.class
+com\increff\employee\model\SalesReportData.class
+com\increff\employee\model\SalesReportForm.class
 com\increff\employee\dao\InventoryDao.class
 com\increff\employee\service\OrderItemService.class
 com\increff\employee\dao\AbstractDao.class
@@ -50,6 +52,7 @@ com\increff\employee\util\GeneratePDF.class
 com\increff\employee\model\UserData.class
 com\increff\employee\model\UserForm.class
 com\increff\employee\util\IOUtil.class
+com\increff\employee\controller\ReportApiController.class
 com\increff\employee\model\BrandForm.class
 com\increff\employee\pojo\UserPojo.class
 com\increff\employee\service\ApiException.class
