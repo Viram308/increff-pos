@@ -16,7 +16,7 @@ public class GenerateXMLTest {
 		List<BillData> billItemList = new ArrayList<BillData>();
 		BillData b = new BillData();
 		int id = 1;
-//		int orderId = 2;
+		int orderId = 2;
 		String name = "increff";
 		int quantity = 40;
 		double mrp = 10.50;
@@ -26,6 +26,6 @@ public class GenerateXMLTest {
 		b.setMrp(mrp);
 		billItemList.add(b);
 
-		// GenerateXML.createXml(billItemList, orderId);
+		GenerateXML.createXml(billItemList, orderId);
 	}
 }
