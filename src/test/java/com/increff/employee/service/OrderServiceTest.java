@@ -18,29 +18,23 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testAdd() throws ApiException {
-		OrderPojo op = new OrderPojo();
-		String datetime = getDateTime();
-		op.setDatetime(datetime);
+		OrderPojo op = getOrderPojoTest();
 		service.add(op);
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
-		OrderPojo op = new OrderPojo();
-		String datetime = getDateTime();
-		op.setDatetime(datetime);
+		OrderPojo op = getOrderPojoTest();
 		service.add(op);
 		service.delete(service.getMax());
 	}
 
 	@Test
 	public void testGet() throws ApiException {
-		OrderPojo op = new OrderPojo();
-		String datetime = getDateTime();
-		op.setDatetime(datetime);
+		OrderPojo op = getOrderPojoTest();
 		service.add(op);
 		OrderPojo o = service.get(op.getId());
-		assertEquals(datetime, o.getDatetime());
+		assertEquals(op.getDatetime(), o.getDatetime());
 	}
 
 	@Test
@@ -51,9 +45,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
 
-		OrderPojo op = new OrderPojo();
-		String datetime = getDateTime();
-		op.setDatetime(datetime);
+		OrderPojo op = getOrderPojoTest();
 		service.add(op);
 		OrderPojo o = service.getCheck(op.getId());
 		service.delete(o.getId());
@@ -66,5 +58,12 @@ public class OrderServiceTest extends AbstractUnitTest {
 		Date dateobj = new Date();
 		String datetime = df.format(dateobj);
 		return datetime;
+	}
+
+	private OrderPojo getOrderPojoTest() throws ApiException {
+		OrderPojo op = new OrderPojo();
+		String datetime = getDateTime();
+		op.setDatetime(datetime);
+		return op;
 	}
 }

@@ -25,7 +25,6 @@ import com.increff.employee.service.BrandService;
 import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.OrderItemService;
 import com.increff.employee.service.OrderService;
-import com.increff.employee.service.ProductService;
 import com.increff.employee.util.StringUtil;
 
 import io.swagger.annotations.Api;
@@ -42,9 +41,6 @@ public class ReportApiController {
 	private OrderItemService iService;
 	@Autowired
 	private InventoryService inService;
-
-	@Autowired
-	private ProductService pService;
 	@Autowired
 	private BrandService bService;
 
@@ -80,10 +76,9 @@ public class ReportApiController {
 		List<InventoryReportData> list2 = new ArrayList<InventoryReportData>();
 		int i, j;
 		for (i = 0; i < ip.size(); i++) {
-			ProductMasterPojo p = pService.get(ip.get(i).getProductId());
-			BrandMasterPojo b = bService.get(p.getBrand_category());
+			ProductMasterPojo p = ip.get(i).getProductMasterPojo();
+			BrandMasterPojo b = p.getBrand_category();
 			InventoryReportData ir = new InventoryReportData();
-			ir.setId(i + 1);
 			ir.setBrand(b.getBrand());
 			ir.setCategory(b.getCategory());
 			ir.setQuantity(ip.get(i).getQuantity());
@@ -103,6 +98,9 @@ public class ReportApiController {
 					}
 				}
 			}
+		}
+		for (i = 0; i < list2.size(); i++) {
+			list2.get(i).setId(i + 1);
 		}
 		return list2;
 	}
@@ -129,7 +127,8 @@ public class ReportApiController {
 			int i, j;
 			for (i = 0; i < listOfOrderItemPojo.size(); i++) {
 				for (j = i + 1; j < listOfOrderItemPojo.size(); j++) {
-					if (listOfOrderItemPojo.get(j).getProductId() == listOfOrderItemPojo.get(i).getProductId()) {
+					if (listOfOrderItemPojo.get(j).getProductMasterPojo().getId() == listOfOrderItemPojo.get(i)
+							.getProductMasterPojo().getId()) {
 						listOfOrderItemPojo.get(i).setQuantity(
 								listOfOrderItemPojo.get(i).getQuantity() + listOfOrderItemPojo.get(j).getQuantity());
 						try {
@@ -143,8 +142,8 @@ public class ReportApiController {
 			}
 			for (i = 0; i < listOfOrderItemPojo.size(); i++) {
 				SalesReportData salesProductData = new SalesReportData();
-				ProductMasterPojo p = pService.get(listOfOrderItemPojo.get(i).getId());
-				BrandMasterPojo b = bService.get(p.getBrand_category());
+				ProductMasterPojo p = listOfOrderItemPojo.get(i).getProductMasterPojo();
+				BrandMasterPojo b = p.getBrand_category();
 				salesProductData.setBrand(b.getBrand());
 				salesProductData.setCategory(b.getCategory());
 				salesProductData.setQuantity(listOfOrderItemPojo.get(i).getQuantity());

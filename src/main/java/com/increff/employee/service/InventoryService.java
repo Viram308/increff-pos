@@ -18,7 +18,7 @@ public class InventoryService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(InventoryPojo i) throws ApiException {
-		InventoryPojo p = dao.selectByProductId(i.getProductId());
+		InventoryPojo p = dao.selectByProductId(i.getProductMasterPojo().getId());
 		if (p == null) {
 			dao.insert(i);
 		} else {
@@ -55,7 +55,7 @@ public class InventoryService {
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(int id, InventoryPojo p) throws ApiException {
 		InventoryPojo b = getCheck(id);
-		b.setProductId(p.getProductId());
+		b.setProductMasterPojo(p.getProductMasterPojo());
 		b.setQuantity(p.getQuantity());
 		dao.update(b);
 	}

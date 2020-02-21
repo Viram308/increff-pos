@@ -161,8 +161,8 @@ public class OrderApiController {
 		for (OrderItemForm o : orderItemList) {
 			ProductMasterPojo p = pService.getByBarcode(o.getBarcode());
 			OrderItemPojo item = new OrderItemPojo();
-			item.setOrderid(orderId);
-			item.setProductId(p.getId());
+			item.setOrderPojo(oService.get(orderId));
+			item.setProductMasterPojo(p);
 			item.setQuantity(o.getQuantity());
 			item.setSellingPrice(o.getMrp());
 			list.add(item);
@@ -172,7 +172,7 @@ public class OrderApiController {
 
 	private void updateInventory(List<OrderItemPojo> list) throws ApiException {
 		for (OrderItemPojo o : list) {
-			InventoryPojo ip = inService.getByProductId(o.getProductId());
+			InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo().getId());
 			int quantity = ip.getQuantity() - o.getQuantity();
 			ip.setQuantity(quantity);
 			inService.update(ip.getId(), ip);
@@ -183,7 +183,7 @@ public class OrderApiController {
 		List<BillData> bill = new ArrayList<BillData>();
 		int i = 1;
 		for (OrderItemPojo o : list) {
-			ProductMasterPojo p = pService.get(o.getProductId());
+			ProductMasterPojo p = o.getProductMasterPojo();
 			BillData item = new BillData();
 			item.setId(i);
 			item.setName(p.getName());

@@ -15,7 +15,6 @@ import com.increff.employee.model.OrderItemForm;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.OrderItemService;
-import com.increff.employee.service.ProductService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -27,9 +26,6 @@ public class OrderItemApiController {
 	@Autowired
 	private OrderItemService iService;
 
-	@Autowired
-	private ProductService pService;
-
 	@ApiOperation(value = "Deletes a OrderItem")
 	@RequestMapping(path = "/api/orderitem/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
@@ -40,7 +36,7 @@ public class OrderItemApiController {
 	@RequestMapping(path = "/api/orderitem/{id}", method = RequestMethod.GET)
 	public OrderItemData get(@PathVariable int id) throws ApiException {
 		OrderItemPojo p = iService.get(id);
-		String barcode = pService.get(p.getProductId()).getBarcode();
+		String barcode = p.getProductMasterPojo().getBarcode();
 		return convert(p, barcode);
 	}
 
@@ -50,7 +46,7 @@ public class OrderItemApiController {
 		List<OrderItemPojo> list = iService.getAll();
 		List<OrderItemData> list2 = new ArrayList<OrderItemData>();
 		for (OrderItemPojo p : list) {
-			String barcode = pService.get(p.getProductId()).getBarcode();
+			String barcode = p.getProductMasterPojo().getBarcode();
 			list2.add(convert(p, barcode));
 		}
 		return list2;
@@ -63,10 +59,10 @@ public class OrderItemApiController {
 		iService.update(id, p);
 	}
 
-	private static OrderItemData convert(OrderItemPojo p, String barcode) {
+	private OrderItemData convert(OrderItemPojo p, String barcode) {
 		OrderItemData d = new OrderItemData();
 		d.setId(p.getId());
-		d.setOrderId(p.getOrderid());
+		d.setOrderId(p.getOrderPojo().getId());
 		d.setBarcode(barcode);
 		d.setQuantity(p.getQuantity());
 		d.setMrp(p.getSellingPrice());

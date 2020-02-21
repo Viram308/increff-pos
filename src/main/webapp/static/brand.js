@@ -91,6 +91,11 @@ function processDataBrand(){
 
 function readFileDataCallbackBrand(results){
 	fileData = results.data;
+	if(fileData.length > 5000)
+	{
+		alert('File Contains more than 5000 rows !!');
+		return;
+	}
 	uploadRowsBrand();
 }
 

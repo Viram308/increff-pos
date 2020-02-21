@@ -1,5 +1,6 @@
 package com.increff.employee.controller;
 
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -19,11 +20,19 @@ public class AppRestControllerAdvice {
 		return data;
 	}
 
-	@ExceptionHandler(Throwable.class)
+	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public MessageData handle(Throwable e) {
+	public MessageData handle(ConstraintViolationException e) {
 		MessageData data = new MessageData();
-		data.setMessage("An unknown error has occurred - " + e.getMessage());
+		data.setMessage("Can not perform delete because given key is present in another table");
 		return data;
 	}
+	
+//	@ExceptionHandler(Throwable.class)
+//	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+//	public MessageData handle(Throwable e) {
+//		MessageData data = new MessageData();
+//		data.setMessage("An unknown error has occurred - " + e.getMessage());
+//		return data;
+//	}
 }

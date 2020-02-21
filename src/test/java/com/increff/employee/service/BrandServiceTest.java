@@ -14,18 +14,14 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testAdd() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		service.add(b);
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		int id = service.getId(b.getBrand(), b.getCategory());
 		service.delete(id);
@@ -33,9 +29,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testGetId() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		int id = service.getId(b.getBrand(), b.getCategory());
 		assertEquals(id, b.getId());
@@ -45,9 +39,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGet() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		BrandMasterPojo p = service.get(b.getId());
 		assertEquals("viram", p.getBrand());
@@ -61,9 +53,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdate() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		BrandMasterPojo p = service.get(b.getId());
 		p.setBrand("increff");
@@ -73,27 +63,30 @@ public class BrandServiceTest extends AbstractUnitTest {
 		assertEquals("increff", m.getBrand());
 		assertEquals("pos", m.getCategory());
 	}
-	
+
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		BrandMasterPojo p = service.getCheck(b.getId());
 		service.delete(p.getId());
 		service.getCheck(p.getId());
-		
+
 	}
 
 	@Test
-	public void testNormalize() {
-		BrandMasterPojo b = new BrandMasterPojo();
-		b.setBrand(" Viram ");
-		b.setCategory("sHaH");
+	public void testNormalize() throws ApiException {
+		BrandMasterPojo b = getBrandMasterPojoTest();
 		BrandService.normalize(b);
 		assertEquals("viram", b.getBrand());
 		assertEquals("shah", b.getCategory());
 
+	}
+
+	private BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
+		BrandMasterPojo b = new BrandMasterPojo();
+		b.setBrand(" viram ");
+		b.setCategory("ShaH");
+		return b;
 	}
 }

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.employee.model.ProductData;
 import com.increff.employee.model.ProductForm;
-import com.increff.employee.pojo.BrandMasterPojo;
 import com.increff.employee.pojo.ProductMasterPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.BrandService;
@@ -52,26 +51,23 @@ public class ProductApiController {
 	@RequestMapping(path = "/api/product/{id}", method = RequestMethod.GET)
 	public ProductData get(@PathVariable int id) throws ApiException {
 		ProductMasterPojo p = pService.get(id);
-		BrandMasterPojo b = bService.get(p.getBrand_category());
-		return convert(p, b.getBrand(), b.getCategory());
+		return convert(p, p.getBrand_category().getBrand(), p.getBrand_category().getCategory());
 	}
 
 	@ApiOperation(value = "Gets a Product")
 	@RequestMapping(path = "/api/product/", method = RequestMethod.GET)
-	public ProductData getByBarcode(@RequestParam(value="barcode") String barcode) throws ApiException {
+	public ProductData getByBarcode(@RequestParam(value = "barcode") String barcode) throws ApiException {
 		ProductMasterPojo p = pService.getByBarcode(barcode);
-		BrandMasterPojo b = bService.get(p.getBrand_category());
-		return convert(p, b.getBrand(), b.getCategory());
+		return convert(p, p.getBrand_category().getBrand(), p.getBrand_category().getCategory());
 	}
-	
+
 	@ApiOperation(value = "Gets list of all Products")
 	@RequestMapping(path = "/api/product", method = RequestMethod.GET)
 	public List<ProductData> getAll() throws ApiException {
 		List<ProductMasterPojo> list = pService.getAll();
 		List<ProductData> list2 = new ArrayList<ProductData>();
 		for (ProductMasterPojo p : list) {
-			BrandMasterPojo b = bService.get(p.getBrand_category());
-			list2.add(convert(p, b.getBrand(), b.getCategory()));
+			list2.add(convert(p, p.getBrand_category().getBrand(), p.getBrand_category().getCategory()));
 		}
 		return list2;
 	}
@@ -85,15 +81,15 @@ public class ProductApiController {
 
 	}
 
-	private ProductMasterPojo convertUpdate(ProductForm f, int brand_category_id) {
+	private ProductMasterPojo convertUpdate(ProductForm f, int brand_category_id) throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
-		p.setBrand_category(brand_category_id);
+		p.setBrand_category(bService.get(brand_category_id));
 		p.setName(f.getName());
 		p.setMrp(f.getMrp());
 		return p;
 	}
 
-	private static ProductData convert(ProductMasterPojo p, String brand, String category) {
+	private ProductData convert(ProductMasterPojo p, String brand, String category) {
 		ProductData d = new ProductData();
 		d.setBrand(brand);
 		d.setCategory(category);
@@ -104,11 +100,11 @@ public class ProductApiController {
 		return d;
 	}
 
-	private static ProductMasterPojo convert(ProductForm f, int brand_category_id) {
+	private ProductMasterPojo convert(ProductForm f, int brand_category_id) throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		String barcode = StringUtil.getAlphaNumericString();
 		p.setBarcode(barcode);
-		p.setBrand_category(brand_category_id);
+		p.setBrand_category(bService.get(brand_category_id));
 		p.setName(f.getName());
 		p.setMrp(f.getMrp());
 		return p;

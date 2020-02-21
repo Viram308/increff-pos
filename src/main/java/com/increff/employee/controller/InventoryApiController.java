@@ -34,8 +34,8 @@ public class InventoryApiController {
 	@ApiOperation(value = "Adds Inventory")
 	@RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
 	public void add(@RequestBody InventoryForm form) throws ApiException {
-		int product_id = pService.getByBarcode(form.getBarcode()).getId();
-		InventoryPojo i = convert(form, product_id);
+		ProductMasterPojo pm = pService.getByBarcode(form.getBarcode());
+		InventoryPojo i = convert(form, pm);
 		iService.add(i);
 
 	}
@@ -50,8 +50,7 @@ public class InventoryApiController {
 	@RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.GET)
 	public InventoryData get(@PathVariable int id) throws ApiException {
 		InventoryPojo i = iService.get(id);
-		ProductMasterPojo p = pService.get(i.getProductId());
-		return convert(i, p.getBarcode());
+		return convert(i, i.getProductMasterPojo().getBarcode());
 	}
 
 	@ApiOperation(value = "Gets list of all Inventory")
@@ -60,8 +59,7 @@ public class InventoryApiController {
 		List<InventoryPojo> list = iService.getAll();
 		List<InventoryData> list2 = new ArrayList<InventoryData>();
 		for (InventoryPojo i : list) {
-			ProductMasterPojo p = pService.get(i.getProductId());
-			list2.add(convert(i, p.getBarcode()));
+			list2.add(convert(i, i.getProductMasterPojo().getBarcode()));
 		}
 		return list2;
 	}
@@ -69,12 +67,12 @@ public class InventoryApiController {
 	@ApiOperation(value = "Updates an Inventory")
 	@RequestMapping(path = "/api/inventory/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody InventoryForm f) throws ApiException {
-		int product_id = pService.getByBarcode(f.getBarcode()).getId();
-		InventoryPojo p = convert(f, product_id);
+		ProductMasterPojo pm = pService.getByBarcode(f.getBarcode());
+		InventoryPojo p = convert(f, pm);
 		iService.update(id, p);
 	}
 
-	private static InventoryData convert(InventoryPojo i, String barcode) {
+	private InventoryData convert(InventoryPojo i, String barcode) {
 		InventoryData d = new InventoryData();
 		d.setId(i.getId());
 		d.setBarcode(barcode);
@@ -82,11 +80,11 @@ public class InventoryApiController {
 		return d;
 	}
 
-	private static InventoryPojo convert(InventoryForm f, int product_id) {
-		InventoryPojo p = new InventoryPojo();
-		p.setProductId(product_id);
-		p.setQuantity(f.getQuantity());
-		return p;
+	private InventoryPojo convert(InventoryForm f, ProductMasterPojo p) throws ApiException {
+		InventoryPojo i = new InventoryPojo();
+		i.setProductMasterPojo(p);
+		i.setQuantity(f.getQuantity());
+		return i;
 	}
 
 }
