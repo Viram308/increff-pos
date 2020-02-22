@@ -28,6 +28,7 @@ public class AppRestControllerAdvice {
 		return data;
 	}
 	
+	
 //	@ExceptionHandler(Throwable.class)
 //	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 //	public MessageData handle(Throwable e) {

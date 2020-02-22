@@ -28,7 +28,7 @@ public class BrandApiController {
 
 	@ApiOperation(value = "Adds a Brand")
 	@RequestMapping(path = "/api/brand", method = RequestMethod.POST)
-	public void add(@RequestBody BrandForm form) throws ApiException {
+	public void add(@RequestBody BrandForm form) throws ApiException { 
 		BrandMasterPojo p = convert(form);
 		service.add(p);
 	}

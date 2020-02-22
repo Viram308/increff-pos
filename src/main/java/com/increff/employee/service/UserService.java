@@ -18,6 +18,7 @@ public class UserService {
 
 	@Transactional
 	public void add(UserPojo p) throws ApiException {
+		checkData(p);
 		normalize(p);
 		UserPojo existing = dao.select(p.getEmail());
 		if (existing != null) {
@@ -47,11 +48,24 @@ public class UserService {
 	}
 
 	@Transactional
-	public void update(int id, UserPojo p) {
+	public void update(int id, UserPojo p) throws ApiException {
+		checkData(p);
 		normalize(p);
 		UserPojo u = get(id);
 		u.setRole(p.getRole());
 		dao.update(u);
+	}
+
+	private void checkData(UserPojo u) throws ApiException {
+		if (u.getEmail().isBlank()) {
+			throw new ApiException("Please enter email !!");
+		}
+		if (u.getPassword().isBlank()) {
+			throw new ApiException("Please enter password !!");
+		}
+		if (u.getRole().isBlank()) {
+			throw new ApiException("Please enter password !!");
+		}
 	}
 
 	protected static void normalize(UserPojo p) {

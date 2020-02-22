@@ -166,3 +166,24 @@ Caused by: org.hibernate.MappingException: Repeated column in mapping for entity
 2020-02-21 17:05:04 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`orderitempojo`, CONSTRAINT `FK7eu19snfgqte3ajhn32usfci8` FOREIGN KEY (`productId`) REFERENCES `productmasterpojo` (`id`))
 2020-02-21 17:09:33 INFO  SecurityConfig:33 - Configuration complete
 2020-02-21 17:14:18 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 13:39:07 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 13:48:05 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 14:14:07 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 14:17:05 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 14:21:33 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 14:28:45 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 14:55:48 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 15:01:43 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 15:06:01 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 15:08:28 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 15:11:40 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 15:14:01 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 15:15:23 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 16:31:00 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 16:49:12 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 17:00:08 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 17:04:02 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 17:07:25 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 17:11:23 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 17:21:45 INFO  SecurityConfig:33 - Configuration complete
+2020-02-22 17:25:43 INFO  SecurityConfig:33 - Configuration complete

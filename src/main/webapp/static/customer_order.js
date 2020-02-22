@@ -49,7 +49,7 @@ function getProductMrp(barcode,idForItem){
 }
 function addEmptyItemRow(itemId){
 		var barcodeHtml='<input type="text" class="form-control" name="barcode" id="inputBarcode'+itemId+'" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8 style="margin: auto;width: auto;">';
-		var qualityHtml='<input type="number" class="form-control" name="quantity" id="inputQuantity'+itemId+'" readonly style="margin: auto;width: auto;">';
+		var qualityHtml='<input type="number" class="form-control" name="quantity" id="inputQuantity'+itemId+'" placeholder="Enter Quantity" readonly style="margin: auto;width: auto;" required>';
 		var mrpHtml='<input type="number" step="0.01" class="form-control" name="mrp" id="inputMrp'+itemId+'" readonly style="margin: auto;width: auto;">';
 		var row = '<tr>'
 		+ '<td>' + itemId + '</td>'
@@ -61,6 +61,10 @@ function addEmptyItemRow(itemId){
 	$("#inputBarcode"+itemId).on('input',function(){
 		var valOfItem=$(this).val();
 		var len=valOfItem.length;
+		if(len < 8){
+			$('#inputQuantity'+itemId).val('');
+			$('#inputQuantity'+itemId).prop('readonly', true);
+		}
       if(len==8)
       {
       	getProductMrp($(this).val(),itemId);	
@@ -97,9 +101,10 @@ function createOrder(){
 	for(i=0;i<j;i++){
 		k=i+1;
 		if($("#inputBarcode"+k).val().length == 8){
-			//checkData=checkQuantity($("#inputBarcode"+k).val(),$("#inputQuantity"+k).val());
-
-
+			if($('#inputQuantity'+k).val() <= 0){
+				alert('Quantity for id : '+k+' can not be negative or zero !!');
+				return false;
+			}
 		var json = {
 			"barcode":$("#inputBarcode"+k).val(),
 			"quantity":$("#inputQuantity"+k).val(),

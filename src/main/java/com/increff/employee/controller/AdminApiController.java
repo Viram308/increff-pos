@@ -48,7 +48,7 @@ public class AdminApiController {
 
 	@ApiOperation(value = "Updates a user")
 	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.PUT)
-	public void updateUser(@PathVariable int id, @RequestBody UserForm form) {
+	public void updateUser(@PathVariable int id, @RequestBody UserForm form) throws ApiException {
 		UserPojo p = convert(form);
 		service.update(id, p);
 	}
