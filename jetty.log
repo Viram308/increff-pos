@@ -226,3 +226,5 @@ Caused by: org.hibernate.MappingException: Repeated column in mapping for entity
 2020-03-14 18:35:09 INFO  SecurityConfig:33 - Configuration complete
 2020-03-14 18:40:30 INFO  SecurityConfig:33 - Configuration complete
 2020-03-14 18:41:34 INFO  SecurityConfig:33 - Configuration complete
+2020-03-14 20:25:40 INFO  SecurityConfig:33 - Configuration complete
+2020-03-14 20:25:59 INFO  SecurityConfig:33 - Configuration complete
