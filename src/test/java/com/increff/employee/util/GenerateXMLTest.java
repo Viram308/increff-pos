@@ -11,6 +11,7 @@ import org.junit.Test;
 import com.increff.employee.model.BillData;
 
 public class GenerateXMLTest {
+	// test XML Generation
 	@Test
 	public void testGenerateXML() throws ParserConfigurationException, TransformerException {
 		List<BillData> billItemList = new ArrayList<BillData>();
@@ -25,7 +26,7 @@ public class GenerateXMLTest {
 		b.setQuantity(quantity);
 		b.setMrp(mrp);
 		billItemList.add(b);
-
+		// test is successful if it does not throw exception
 		GenerateXML.createXml(billItemList, orderId);
 	}
 }

@@ -46,9 +46,6 @@ public class GeneratePDF {
 		transformer.transform(src, res);
 		out.close();
 		out.flush();
-		// File file = new
-		// File("F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee","resultPDF.pdf");
-		// byte[] fileContent = Files.readAllBytes(file.toPath());
 		byte[] byteArray = ((java.io.ByteArrayOutputStream) out).toByteArray();
 
 		// serialize PDF to Base64

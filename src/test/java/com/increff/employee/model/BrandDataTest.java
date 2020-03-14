@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.increff.employee.spring.AbstractUnitTest;
 
 public class BrandDataTest extends AbstractUnitTest {
-
+	// test getters and setters for brand data
 	@Test
 	public void testBrandData() {
 		BrandData b = new BrandData();

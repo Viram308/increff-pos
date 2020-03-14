@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.increff.employee.spring.AbstractUnitTest;
 
 public class SalesReportFormTest extends AbstractUnitTest {
-
+	// test getters and setters for sales report form
 	@Test
 	public void testSalesReportForm() {
 		SalesReportForm s = new SalesReportForm();

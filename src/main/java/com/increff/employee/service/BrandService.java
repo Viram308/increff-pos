@@ -17,11 +17,15 @@ public class BrandService {
 	@Autowired
 	private BrandDao dao;
 
+	// CRUD operations for brand
+
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(BrandMasterPojo b) throws ApiException {
+		// check input data
 		checkData(b);
+		// normalize
 		normalize(b);
-
+		// check for existing pair
 		BrandMasterPojo p = dao.selectByPair(b.getBrand(), b.getCategory());
 		if (p == null) {
 			dao.insert(b);
@@ -38,12 +42,13 @@ public class BrandService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public int getId(String brand, String category) throws ApiException {
-		if(brand.isBlank()) {
+		if (brand.isBlank()) {
 			throw new ApiException("Please enter brand !!");
 		}
-		if(category.isBlank()) {
+		if (category.isBlank()) {
 			throw new ApiException("Please enter category !!");
 		}
+		// Get id
 		int id = dao.selectId(StringUtil.toLowerCase(brand), StringUtil.toLowerCase(category));
 		if (id > 0) {
 			return id;
@@ -82,13 +87,14 @@ public class BrandService {
 	}
 
 	private void checkData(BrandMasterPojo b) throws ApiException {
-		if(b.getBrand().isBlank()) {
+		if (b.getBrand().isBlank()) {
 			throw new ApiException("Please enter brand !!");
 		}
-		if(b.getCategory().isBlank()) {
+		if (b.getCategory().isBlank()) {
 			throw new ApiException("Please enter category !!");
 		}
 	}
+
 	protected static void normalize(BrandMasterPojo p) {
 		p.setBrand(StringUtil.toLowerCase(p.getBrand()));
 		p.setCategory(StringUtil.toLowerCase(p.getCategory()));

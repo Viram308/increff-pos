@@ -11,7 +11,7 @@ import org.junit.Test;
 import com.increff.employee.spring.AbstractUnitTest;
 
 public class OrderDataTest extends AbstractUnitTest {
-
+	// test getters and setters for order data
 	@Test
 	public void testOrderData() {
 		OrderData o = new OrderData();

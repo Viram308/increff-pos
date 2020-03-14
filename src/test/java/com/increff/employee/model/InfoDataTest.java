@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.increff.employee.spring.AbstractUnitTest;
 
 public class InfoDataTest extends AbstractUnitTest {
-
+	// test getters and setters for info data
 	@Test
 	public void testInfoData() {
 		InfoData i = new InfoData();

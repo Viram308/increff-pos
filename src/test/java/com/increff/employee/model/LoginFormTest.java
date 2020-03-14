@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.increff.employee.spring.AbstractUnitTest;
 
 public class LoginFormTest extends AbstractUnitTest {
-
+	// test getters and setters for login form
 	@Test
 	public void testLoginForm() {
 		LoginForm l = new LoginForm();

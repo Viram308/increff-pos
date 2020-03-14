@@ -21,7 +21,7 @@ import org.w3c.dom.Element;
 import com.increff.employee.model.BillData;
 
 public class GenerateXML {
-	
+
 	public static void createXml(List<BillData> billDataItems, int orderId)
 			throws ParserConfigurationException, TransformerException {
 		String xmlFilePath = "billDataXML.xml";
@@ -45,7 +45,7 @@ public class GenerateXML {
 		Element time = document.createElement("time");
 		time.appendChild(document.createTextNode(getTime()));
 		root.appendChild(time);
-
+		// Create elements from BillData list
 		for (i = 0; i < billDataItems.size(); i++) {
 			Element item = document.createElement("item");
 			root.appendChild(item);
@@ -56,7 +56,7 @@ public class GenerateXML {
 			Element name = document.createElement("name");
 			name.appendChild(document.createTextNode(billDataItems.get(i).getName()));
 			item.appendChild(name);
-
+			// Calculate total bill amount
 			finalBill = finalBill + billDataItems.get(i).getQuantity() * billDataItems.get(i).getMrp();
 			Element quantity = document.createElement("quantity");
 			quantity.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).getQuantity())));
@@ -81,16 +81,16 @@ public class GenerateXML {
 		transformer.transform(domSource, streamResult);
 	}
 
+	// Get date in required format
 	private static String getDate() {
-
 		DateFormat df = new SimpleDateFormat("dd-MM-yyyy");
 		Date dateobj = new Date();
 		String date = df.format(dateobj);
 		return date;
 	}
 
+	// Get time in required format
 	private static String getTime() {
-
 		DateFormat df = new SimpleDateFormat("HH:mm:ss");
 		Date dateobj = new Date();
 		String time = df.format(dateobj);

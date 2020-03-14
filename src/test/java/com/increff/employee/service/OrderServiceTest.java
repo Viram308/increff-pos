@@ -16,9 +16,11 @@ public class OrderServiceTest extends AbstractUnitTest {
 	@Autowired
 	private OrderService service;
 
+	// test order service
 	@Test
 	public void testAdd() throws ApiException {
 		OrderPojo op = getOrderPojoTest();
+		// test add
 		service.add(op);
 	}
 
@@ -26,7 +28,8 @@ public class OrderServiceTest extends AbstractUnitTest {
 	public void testDelete() throws ApiException {
 		OrderPojo op = getOrderPojoTest();
 		service.add(op);
-		service.delete(service.getMax());
+		// test delete
+		service.delete(op.getId());
 	}
 
 	@Test
@@ -34,6 +37,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		OrderPojo op = getOrderPojoTest();
 		service.add(op);
 		OrderPojo o = service.get(op.getId());
+		// test added data
 		assertEquals(op.getDatetime(), o.getDatetime());
 	}
 
@@ -49,6 +53,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		service.add(op);
 		OrderPojo o = service.getCheck(op.getId());
 		service.delete(o.getId());
+		// After delete throw exception while getting data
 		service.getCheck(o.getId());
 	}
 
@@ -63,6 +68,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	private OrderPojo getOrderPojoTest() throws ApiException {
 		OrderPojo op = new OrderPojo();
 		String datetime = getDateTime();
+		// create data
 		op.setDatetime(datetime);
 		return op;
 	}

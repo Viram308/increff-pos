@@ -44,6 +44,7 @@ public class ReportApiController {
 	@Autowired
 	private BrandService bService;
 
+	// Sales Report
 	@ApiOperation(value = "Gets Sales Report")
 	@RequestMapping(path = "/api/salesreport", method = RequestMethod.POST)
 	public List<SalesReportData> getSalesReport(@RequestBody SalesReportForm salesReportForm)
@@ -53,12 +54,14 @@ public class ReportApiController {
 				StringUtil.toLowerCase(salesReportForm.getCategory()));
 	}
 
+	// Brand Report
 	@ApiOperation(value = "Gets Brand Report")
 	@RequestMapping(path = "/api/brandreport", method = RequestMethod.GET)
 	public List<BrandData> getBrandReport() {
 		List<BrandMasterPojo> list = bService.getAll();
 		List<BrandData> list2 = new ArrayList<BrandData>();
 		int i = 0;
+		// Converts BrandMasterPojo to BrandData
 		for (i = 0; i < list.size(); i++) {
 			BrandData b = new BrandData();
 			b.setId(i + 1);
@@ -69,12 +72,14 @@ public class ReportApiController {
 		return list2;
 	}
 
+	// Inventory Report
 	@ApiOperation(value = "Gets Inventory Report")
 	@RequestMapping(path = "/api/inventoryreport", method = RequestMethod.GET)
 	public List<InventoryReportData> getInventoryReport() throws ApiException {
 		List<InventoryPojo> ip = inService.getAll();
 		List<InventoryReportData> list2 = new ArrayList<InventoryReportData>();
 		int i, j;
+		// Converts InventoryPojo to InventoryReportData
 		for (i = 0; i < ip.size(); i++) {
 			ProductMasterPojo p = ip.get(i).getProductMasterPojo();
 			BrandMasterPojo b = p.getBrand_category();
@@ -84,7 +89,7 @@ public class ReportApiController {
 			ir.setQuantity(ip.get(i).getQuantity());
 			list2.add(ir);
 		}
-
+		// Group list of InventoryReportData category wise
 		for (i = 0; i < list2.size(); i++) {
 			for (j = i + 1; j < list2.size(); j++) {
 				if (list2.get(j).getBrand().equals(list2.get(i).getBrand())
@@ -99,6 +104,7 @@ public class ReportApiController {
 				}
 			}
 		}
+		// Set ids to list items
 		for (i = 0; i < list2.size(); i++) {
 			list2.get(i).setId(i + 1);
 		}
@@ -112,27 +118,36 @@ public class ReportApiController {
 		List<Integer> orderIds = new ArrayList<Integer>();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		for (OrderPojo p : o) {
+			// Split datetime with space and get first element of array as date
 			String receivedDate = p.getDatetime().split(" ")[0];
+			// Compares date with startdate and enddate
 			if ((sdf.parse(startdate).before(sdf.parse(receivedDate))
 					|| sdf.parse(startdate).equals(sdf.parse(receivedDate)))
 					&& (sdf.parse(receivedDate).before(sdf.parse(enddate))
 							|| sdf.parse(receivedDate).equals(sdf.parse(enddate)))) {
+				// Add id to array
 				orderIds.add(p.getId());
 			}
 		}
+		// Empty array
 		if (orderIds.size() == 0) {
 			throw new ApiException("There are no orders for given dates");
 		} else {
+			// Get list of order items for given array of order ids
 			List<OrderItemPojo> listOfOrderItemPojo = iService.getList(orderIds);
 			int i, j;
 			for (i = 0; i < listOfOrderItemPojo.size(); i++) {
 				for (j = i + 1; j < listOfOrderItemPojo.size(); j++) {
+					// Check for duplicate product ids
 					if (listOfOrderItemPojo.get(j).getProductMasterPojo().getId() == listOfOrderItemPojo.get(i)
 							.getProductMasterPojo().getId()) {
+						// Add quantities for same product ids
 						listOfOrderItemPojo.get(i).setQuantity(
 								listOfOrderItemPojo.get(i).getQuantity() + listOfOrderItemPojo.get(j).getQuantity());
 						try {
+							// Remove duplicate
 							listOfOrderItemPojo.remove(j);
+							// Reduce index
 							j--;
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -140,6 +155,7 @@ public class ReportApiController {
 					}
 				}
 			}
+			// Converts OrderItemPojo to SalesReportData
 			for (i = 0; i < listOfOrderItemPojo.size(); i++) {
 				SalesReportData salesProductData = new SalesReportData();
 				ProductMasterPojo p = listOfOrderItemPojo.get(i).getProductMasterPojo();
@@ -155,6 +171,7 @@ public class ReportApiController {
 			if (brand.isEmpty() && category.isEmpty()) {
 				// do nothing
 			} else if ((!brand.isEmpty()) && category.isEmpty()) {
+				// Select SalesReportData brand wise
 				for (i = 0; i < salesReportData.size(); i++) {
 					if (!salesReportData.get(i).getBrand().equals(brand)) {
 						salesReportData.remove(i);
@@ -162,6 +179,7 @@ public class ReportApiController {
 					}
 				}
 			} else if (brand.isEmpty() && (!category.isEmpty())) {
+				// Select SalesReportData category wise
 				for (i = 0; i < salesReportData.size(); i++) {
 					if (!salesReportData.get(i).getCategory().equals(category)) {
 						salesReportData.remove(i);
@@ -169,6 +187,7 @@ public class ReportApiController {
 					}
 				}
 			} else if ((!(brand.isEmpty())) && (!(category.isEmpty()))) {
+				// Select SalesReportData brand and category wise
 				for (i = 0; i < salesReportData.size(); i++) {
 					if (!salesReportData.get(i).getBrand().equals(brand)
 							|| !salesReportData.get(i).getCategory().equals(category)) {
@@ -177,15 +196,19 @@ public class ReportApiController {
 					}
 				}
 			}
+			// Group selected sales report data category wise
 			for (i = 0; i < salesReportData.size(); i++) {
 				for (j = i + 1; j < salesReportData.size(); j++) {
 					if (salesReportData.get(j).getCategory().equals(salesReportData.get(i).getCategory())) {
+						// Add quantity and revenue
 						salesReportData.get(i).setQuantity(
 								salesReportData.get(i).getQuantity() + salesReportData.get(j).getQuantity());
 						salesReportData.get(i)
 								.setRevenue(salesReportData.get(i).getRevenue() + salesReportData.get(j).getRevenue());
 						try {
+							// Remove duplicate
 							salesReportData.remove(j);
+							// Reduce index
 							j--;
 						} catch (Exception e) {
 							e.printStackTrace();
@@ -194,6 +217,7 @@ public class ReportApiController {
 					}
 				}
 			}
+			// Set ids to list items
 			for (i = 0; i < salesReportData.size(); i++) {
 				salesReportData.get(i).setId(i + 1);
 			}

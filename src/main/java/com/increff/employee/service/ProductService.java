@@ -16,23 +16,31 @@ public class ProductService {
 
 	@Autowired
 	private ProductDao dao;
+	@Autowired
+	private ProductService service;
+
+	// CRUD operations for product
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(ProductMasterPojo b) throws ApiException {
+		// check input data
 		checkData(b);
+		// normalize
 		normalize(b);
-
+		// check for existing product data with given barcode
 		ProductMasterPojo p = dao.selectByBarcode(b.getBarcode());
 		if (p == null) {
+			// if not exists then insert
 			dao.insert(b);
 		} else {
+			// if exists then change barcode
 			String barcode = StringUtil.getAlphaNumericString();
 			ProductMasterPojo pr = new ProductMasterPojo();
 			pr.setBrand_category(b.getBrand_category());
 			pr.setName(b.getName());
 			pr.setBarcode(barcode);
 			pr.setMrp(b.getMrp());
-			add(pr);
+			service.add(pr);
 		}
 	}
 
@@ -48,10 +56,11 @@ public class ProductService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public ProductMasterPojo getByBarcode(String barcode) throws ApiException {
-		if(barcode.isBlank()) {
+		if (barcode.isBlank()) {
 			throw new ApiException("Please enter barcode !!");
 		}
 		barcode = StringUtil.toLowerCase(barcode);
+		// check for existing product data with given barcode
 		ProductMasterPojo p = dao.selectByBarcode(barcode);
 		if (p == null) {
 			throw new ApiException("Given Barcode dosen't exist");

@@ -28,9 +28,11 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	@Autowired
 	private OrderService oService;
 
+	// test order item service
 	@Test
 	public void testAdd() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
+		// test add data
 		service.add(o);
 	}
 
@@ -38,6 +40,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	public void testDelete() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
 		service.add(o);
+		// Delete should be successful and should not throw exception as data exists
 		service.delete(o.getId());
 	}
 
@@ -46,6 +49,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		OrderItemPojo o = getOrderItemPojoTest();
 		service.add(o);
 		OrderItemPojo p = service.get(o.getId());
+		// test entered data
 		assertEquals(o.getOrderPojo().getId(), p.getOrderPojo().getId());
 		assertEquals(o.getProductMasterPojo().getId(), p.getProductMasterPojo().getId());
 		assertEquals(o.getQuantity(), p.getQuantity());
@@ -63,9 +67,11 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(o);
 		OrderItemPojo p = service.get(o.getId());
 		int newQuantity = 20;
+		// update data
 		p.setQuantity(newQuantity);
 		service.update(p.getId(), p);
 		OrderItemPojo pi = service.get(p.getId());
+		// test updated data
 		assertEquals(newQuantity, pi.getQuantity());
 	}
 
@@ -75,8 +81,8 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(o);
 		OrderItemPojo p = service.getCheck(o.getId());
 		service.delete(p.getId());
+		// After delete throw exception while getting data
 		service.getCheck(p.getId());
-
 	}
 
 	@Test
@@ -85,9 +91,11 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(o);
 		List<Integer> orderIds = new ArrayList<Integer>();
 		orderIds.add(o.getOrderPojo().getId());
-		List<OrderItemPojo> list=service.getList(orderIds);
+		List<OrderItemPojo> list = service.getList(orderIds);
+		// test list size that should be 1
 		assertEquals(1, list.size());
 	}
+
 	private String getDateTime() {
 
 		DateFormat df = new SimpleDateFormat("dd-MM-yy HH:mm");
@@ -100,6 +108,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		OrderItemPojo o = new OrderItemPojo();
 		int quantity = 10;
 		double sellingPrice = 10.25;
+		// create data
 		OrderPojo op = new OrderPojo();
 		String datetime = getDateTime();
 		op.setDatetime(datetime);

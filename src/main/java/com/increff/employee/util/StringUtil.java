@@ -7,7 +7,7 @@ public class StringUtil {
 		return s == null ? null : s.trim().toLowerCase();
 	}
 
-	// function to generate a random string of length n
+	// function to generate a random string of length 8
 	public static String getAlphaNumericString() {
 
 		// chose a Character random from this String

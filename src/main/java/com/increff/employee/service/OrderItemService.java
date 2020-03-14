@@ -16,6 +16,8 @@ public class OrderItemService {
 	@Autowired
 	private OrderItemDao dao;
 
+	// CRUD operations for order item
+
 	@Transactional
 	public void add(OrderItemPojo o) {
 			dao.insert(o);

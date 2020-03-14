@@ -12,18 +12,24 @@ public class BrandServiceTest extends AbstractUnitTest {
 	@Autowired
 	private BrandService service;
 
+	// test brand service
 	@Test(expected = ApiException.class)
 	public void testAdd() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
+		// Add one time
 		service.add(b);
+		// Throw exception while entering second time
 		service.add(b);
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
+		// Add data
 		service.add(b);
 		int id = service.getId(b.getBrand(), b.getCategory());
+		assertEquals(id, b.getId());
+		// Delete should be successful and should not throw exception as data exists
 		service.delete(id);
 	}
 
@@ -31,9 +37,11 @@ public class BrandServiceTest extends AbstractUnitTest {
 	public void testGetId() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
+		// select data for given brand and category
 		int id = service.getId(b.getBrand(), b.getCategory());
 		assertEquals(id, b.getId());
 		service.delete(id);
+		// After delete throw exception while getting data
 		service.getId(b.getBrand(), b.getCategory());
 	}
 
@@ -42,12 +50,14 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		BrandMasterPojo p = service.get(b.getId());
+		// check for inserted data
 		assertEquals("viram", p.getBrand());
 		assertEquals("shah", p.getCategory());
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
+		// test select all
 		service.getAll();
 	}
 
@@ -60,6 +70,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		p.setCategory("pos");
 		service.update(p.getId(), p);
 		BrandMasterPojo m = service.get(p.getId());
+		// test updated data
 		assertEquals("increff", m.getBrand());
 		assertEquals("pos", m.getCategory());
 	}
@@ -68,8 +79,10 @@ public class BrandServiceTest extends AbstractUnitTest {
 	public void testGetCheck() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
+		// test getCheck function
 		BrandMasterPojo p = service.getCheck(b.getId());
 		service.delete(p.getId());
+		// After delete throw exception while getting data
 		service.getCheck(p.getId());
 
 	}
@@ -78,6 +91,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 	public void testNormalize() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		BrandService.normalize(b);
+		// test for normalized data
 		assertEquals("viram", b.getBrand());
 		assertEquals("shah", b.getCategory());
 
@@ -85,6 +99,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	private BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
 		BrandMasterPojo b = new BrandMasterPojo();
+		// create data
 		b.setBrand(" viram ");
 		b.setCategory("ShaH");
 		return b;

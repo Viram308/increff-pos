@@ -7,7 +7,7 @@ import org.junit.Test;
 import com.increff.employee.spring.AbstractUnitTest;
 
 public class AboutAppDataTest extends AbstractUnitTest {
-
+	// test getters and setters for about app data
 	@Test
 	public void testAboutAppData() {
 		AboutAppData a = new AboutAppData();

@@ -8,7 +8,7 @@ import com.increff.employee.spring.AbstractUnitTest;
 import com.increff.employee.util.StringUtil;
 
 public class OrderItemDataTest extends AbstractUnitTest {
-
+	// test getters and setters for order item data
 	@Test
 	public void testOrderItemData() {
 		OrderItemData o = new OrderItemData();

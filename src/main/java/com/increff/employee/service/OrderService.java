@@ -16,6 +16,8 @@ public class OrderService {
 	@Autowired
 	private OrderDao dao;
 
+	// CRUD operations for order
+
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(OrderPojo o) throws ApiException {
 		dao.insert(o);
@@ -43,10 +45,6 @@ public class OrderService {
 			throw new ApiException("Order not exist for id : " + id);
 		}
 		return p;
-	}
-
-	public int getMax() {
-		return dao.selectMax();
 	}
 
 }

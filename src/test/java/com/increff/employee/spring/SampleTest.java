@@ -7,9 +7,10 @@ import java.io.InputStream;
 import org.junit.Test;
 
 public class SampleTest {
-
+	// test Sample files
 	@Test
 	public void testFiles() {
+		// test different files exists or not
 		InputStream is = null;
 		is = SampleTest.class.getResourceAsStream("/com/increff/employee/brand.tsv");
 		assertNotNull(is);

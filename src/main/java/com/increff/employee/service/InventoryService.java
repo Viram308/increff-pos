@@ -16,13 +16,19 @@ public class InventoryService {
 	@Autowired
 	private InventoryDao dao;
 
+	// CRUD operations for inventory
+
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(InventoryPojo i) throws ApiException {
+		// check input data
 		checkData(i);
+		// check for existing inventory data
 		InventoryPojo p = dao.selectByProductId(i.getProductMasterPojo().getId());
 		if (p == null) {
+			// if not exists then insert
 			dao.insert(i);
 		} else {
+			// if exists then update
 			i.setQuantity(i.getQuantity() + p.getQuantity());
 			update(p.getId(), i);
 		}
@@ -40,6 +46,7 @@ public class InventoryService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public InventoryPojo getByProductId(int id) throws ApiException {
+		// Get inventory data by id
 		InventoryPojo i = dao.selectByProductId(id);
 		if (i == null) {
 			throw new ApiException("Given Product Id dosen't exist");

@@ -8,7 +8,7 @@ import com.increff.employee.spring.AbstractUnitTest;
 import com.increff.employee.util.StringUtil;
 
 public class InventoryDataTest extends AbstractUnitTest {
-
+	// test getters and setters for inventory data
 	@Test
 	public void testInventoryData() {
 		InventoryData i = new InventoryData();

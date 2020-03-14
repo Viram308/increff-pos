@@ -20,17 +20,22 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	@Autowired
 	private ProductService pService;
 
+	// test Inventory Service
 	@Test
 	public void testAdd() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
+		// Add one time
 		service.add(i);
+		// test for double quantity
 		service.add(i);
+		assertEquals(20, i.getQuantity());
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
 		service.add(i);
+		// Delete should be successful and should not throw exception as data exists
 		service.delete(i.getId());
 	}
 
@@ -38,8 +43,11 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	public void testGetByProductId() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
 		service.add(i);
+		// select data for given productid
 		InventoryPojo ip = service.getByProductId(i.getProductMasterPojo().getId());
+		assertEquals(i.getId(), ip.getId());
 		service.delete(ip.getId());
+		// Throw exception after deletion
 		service.getByProductId(ip.getProductMasterPojo().getId());
 	}
 
@@ -48,6 +56,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		InventoryPojo i = getInventoryPojoTest();
 		service.add(i);
 		InventoryPojo ip = service.get(i.getId());
+		// test for same quantity
 		assertEquals(i.getQuantity(), ip.getQuantity());
 	}
 
@@ -63,8 +72,10 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		InventoryPojo ip = service.get(i.getId());
 		int newQuantity = 20;
 		ip.setQuantity(newQuantity);
+		// update data
 		service.update(ip.getId(), ip);
 		InventoryPojo pi = service.get(ip.getId());
+		// test for updated data
 		assertEquals(newQuantity, pi.getQuantity());
 	}
 
@@ -72,14 +83,17 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	public void testGetCheck() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
 		service.add(i);
+		// select data for given id
 		InventoryPojo ip = service.getCheck(i.getId());
+		assertEquals(i.getId(), ip.getId());
 		service.delete(ip.getId());
+		// Throw exception after deletion
 		service.getCheck(ip.getId());
 	}
 
 	private InventoryPojo getInventoryPojoTest() throws ApiException {
 		InventoryPojo i = new InventoryPojo();
-
+		// create data
 		String barcode = StringUtil.getAlphaNumericString();
 		BrandMasterPojo b = new BrandMasterPojo();
 		ProductMasterPojo p = new ProductMasterPojo();

@@ -14,6 +14,7 @@ public class ProductMasterPojo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String barcode;
+	// Foreign key for brand_category id
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "brand_category", nullable = false)
 	private BrandMasterPojo brand_category;

@@ -25,6 +25,7 @@ public class OrderItemApiController {
 
 	@Autowired
 	private OrderItemService iService;
+	// CRUD operation for order item
 
 	@ApiOperation(value = "Deletes a OrderItem")
 	@RequestMapping(path = "/api/orderitem/{id}", method = RequestMethod.DELETE)
@@ -59,6 +60,7 @@ public class OrderItemApiController {
 		iService.update(id, p);
 	}
 
+	// Converts OrderItemPojo to OrderItemData
 	private OrderItemData convert(OrderItemPojo p, String barcode) {
 		OrderItemData d = new OrderItemData();
 		d.setId(p.getId());
@@ -69,7 +71,8 @@ public class OrderItemApiController {
 		return d;
 	}
 
-	private static OrderItemPojo convert(OrderItemForm f) {
+	// Converts OrderItemForm to OrderItemPojo
+	private OrderItemPojo convert(OrderItemForm f) {
 		OrderItemPojo i = new OrderItemPojo();
 		i.setQuantity(f.getQuantity());
 		return i;

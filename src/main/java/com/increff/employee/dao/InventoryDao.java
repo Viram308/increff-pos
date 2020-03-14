@@ -15,9 +15,13 @@ import com.increff.employee.pojo.InventoryPojo;
 @Repository
 public class InventoryDao extends AbstractDao {
 
+	// delete according to id
 	private static String delete_id = "delete from InventoryPojo i where id=:id";
+	// select according to product id
 	private static String select_productId = "select i from InventoryPojo i where productId=:productId";
+	// select according to id
 	private static String select_id = "select i from InventoryPojo i where id=:id";
+	// select all
 	private static String select_all = "select i from InventoryPojo i";
 
 	@PersistenceContext
@@ -28,24 +32,28 @@ public class InventoryDao extends AbstractDao {
 		em.persist(p);
 	}
 
+	// delete according to id
 	public int delete(int id) {
 		Query query = em.createQuery(delete_id);
 		query.setParameter("id", id);
 		return query.executeUpdate();
 	}
 
+	// select according to product id
 	public InventoryPojo selectByProductId(int pid) {
 		TypedQuery<InventoryPojo> query = getQuery(select_productId, InventoryPojo.class);
 		query.setParameter("productId", pid);
 		return getSingle(query);
 	}
 
+	// select according to id
 	public InventoryPojo select(int id) {
 		TypedQuery<InventoryPojo> query = getQuery(select_id, InventoryPojo.class);
 		query.setParameter("id", id);
 		return getSingle(query);
 	}
 
+	// select all
 	public List<InventoryPojo> selectAll() {
 		TypedQuery<InventoryPojo> query = getQuery(select_all, InventoryPojo.class);
 		return query.getResultList();

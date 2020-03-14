@@ -18,8 +18,11 @@ public class UserService {
 
 	@Transactional
 	public void add(UserPojo p) throws ApiException {
+		// check input data
 		checkData(p);
+		// normalize
 		normalize(p);
+		// check existing user with given email
 		UserPojo existing = dao.select(p.getEmail());
 		if (existing != null) {
 			throw new ApiException("User with given email already exists");

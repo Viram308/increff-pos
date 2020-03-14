@@ -13,6 +13,7 @@ public class InventoryPojo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	// Foreign key for product id
 	@ManyToOne(optional = false)
 	@JoinColumn(name = "productId", nullable = false)
 	private ProductMasterPojo productMasterPojo;

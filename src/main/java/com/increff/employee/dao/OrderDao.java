@@ -15,10 +15,12 @@ import com.increff.employee.pojo.OrderPojo;
 @Repository
 public class OrderDao extends AbstractDao {
 
+	// delete according to id
 	private static String delete_id = "delete from OrderPojo o where id=:id";
+	// select according to id
 	private static String select_id = "select o from OrderPojo o where id=:id";
+	// select all
 	private static String select_all = "select o from OrderPojo o";
-	private static String select_max = "select max(id) from OrderPojo o";
 
 	@PersistenceContext
 	private EntityManager em;
@@ -28,26 +30,24 @@ public class OrderDao extends AbstractDao {
 		em.persist(b);
 	}
 
+	// delete according to id
 	public int delete(int id) {
 		Query query = em.createQuery(delete_id);
 		query.setParameter("id", id);
 		return query.executeUpdate();
 	}
 
+	// select according to id
 	public OrderPojo select(int id) {
 		TypedQuery<OrderPojo> query = getQuery(select_id, OrderPojo.class);
 		query.setParameter("id", id);
 		return getSingle(query);
 	}
 
+	// select all
 	public List<OrderPojo> selectAll() {
 		TypedQuery<OrderPojo> query = getQuery(select_all, OrderPojo.class);
 		return query.getResultList();
-	}
-
-	public int selectMax() {
-		TypedQuery<Integer> query = getQuery(select_max, Integer.class);
-		return query.getResultList().stream().findFirst().orElse(-1);
 	}
 
 }
