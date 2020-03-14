@@ -32,6 +32,8 @@ public class ProductApiController {
 	@Autowired
 	private BrandService bService;
 
+	// CRUD operations for product
+
 	@ApiOperation(value = "Adds a Product")
 	@RequestMapping(path = "/api/product", method = RequestMethod.POST)
 	public void add(@RequestBody ProductForm form) throws ApiException {
@@ -81,6 +83,7 @@ public class ProductApiController {
 
 	}
 
+	// Converts ProductForm to ProductMasterPojo during update operation
 	private ProductMasterPojo convertUpdate(ProductForm f, int brand_category_id) throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		p.setBrand_category(bService.get(brand_category_id));
@@ -89,6 +92,7 @@ public class ProductApiController {
 		return p;
 	}
 
+	// Converts ProductMasterPojo to ProductData
 	private ProductData convert(ProductMasterPojo p, String brand, String category) {
 		ProductData d = new ProductData();
 		d.setBrand(brand);
@@ -100,6 +104,7 @@ public class ProductApiController {
 		return d;
 	}
 
+	// Converts ProductForm to ProductMasterPojo during insert operation
 	private ProductMasterPojo convert(ProductForm f, int brand_category_id) throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		String barcode = StringUtil.getAlphaNumericString();

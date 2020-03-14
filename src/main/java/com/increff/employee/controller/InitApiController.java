@@ -47,7 +47,8 @@ public class InitApiController extends AbstractUiController {
 
 	}
 
-	private static UserPojo convert(UserForm f) {
+	// Converts UserForm to UserPojo
+	private UserPojo convert(UserForm f) {
 		UserPojo p = new UserPojo();
 		p.setEmail(f.getEmail());
 		p.setRole(f.getRole());

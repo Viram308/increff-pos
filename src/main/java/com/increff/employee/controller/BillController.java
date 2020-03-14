@@ -16,10 +16,10 @@ import com.increff.employee.util.IOUtil;
 @Controller
 public class BillController {
 
-	//Spring ignores . (dot) in the path. So we need fileName:.+
-	//See https://stackoverflow.com/questions/16332092/spring-mvc-pathvariable-with-dot-is-getting-truncated
+	// Spring ignores . (dot) in the path. So we need fileName:.+
 	@RequestMapping(value = "/api/bill/{fileName:.+}", method = RequestMethod.GET)
-	public void getBillFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
+	public void getBillFile(@PathVariable("fileName") String fileName, HttpServletResponse response)
+			throws IOException {
 		// get your file as InputStream
 		response.setContentType("application/pdf");
 		response.addHeader("Content-disposition:", "attachment; filename=" + fileName);

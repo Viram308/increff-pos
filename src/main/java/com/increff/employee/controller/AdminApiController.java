@@ -26,6 +26,8 @@ public class AdminApiController {
 	@Autowired
 	private UserService service;
 
+	// CRUD operations for user
+
 	@ApiOperation(value = "Adds a user")
 	@RequestMapping(path = "/api/admin/user", method = RequestMethod.POST)
 	public void addUser(@RequestBody UserForm form) throws ApiException {
@@ -64,7 +66,8 @@ public class AdminApiController {
 		return list2;
 	}
 
-	private static UserData convert(UserPojo p) {
+	// Converts UserPojo to UserData
+	private UserData convert(UserPojo p) {
 		UserData d = new UserData();
 		d.setEmail(p.getEmail());
 		d.setRole(p.getRole());
@@ -73,7 +76,8 @@ public class AdminApiController {
 		return d;
 	}
 
-	private static UserPojo convert(UserForm f) {
+	// Converts UserForm to UserPojo
+	private UserPojo convert(UserForm f) {
 		UserPojo p = new UserPojo();
 		p.setEmail(f.getEmail());
 		p.setRole(f.getRole());

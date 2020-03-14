@@ -64,7 +64,7 @@ public class LoginController {
 		return new ModelAndView("redirect:/site/logout");
 	}
 
-	private static Authentication convert(UserPojo p) {
+	private Authentication convert(UserPojo p) {
 		// Create principal
 		UserPrincipal principal = new UserPrincipal();
 		principal.setEmail(p.getEmail());

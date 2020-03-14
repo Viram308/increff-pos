@@ -15,6 +15,7 @@ public abstract class AbstractUiController {
 	@Autowired
 	private InfoData info;
 
+	// Gets value of base Url from properties file
 	@Value("${app.baseUrl}")
 	private String baseUrl;
 

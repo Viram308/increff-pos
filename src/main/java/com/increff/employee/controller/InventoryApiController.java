@@ -31,6 +31,8 @@ public class InventoryApiController {
 	@Autowired
 	private ProductService pService;
 
+	// CRUD operations for inventory
+
 	@ApiOperation(value = "Adds Inventory")
 	@RequestMapping(path = "/api/inventory", method = RequestMethod.POST)
 	public void add(@RequestBody InventoryForm form) throws ApiException {
@@ -72,6 +74,7 @@ public class InventoryApiController {
 		iService.update(id, p);
 	}
 
+	// Converts InventoryPojo to InventoryData
 	private InventoryData convert(InventoryPojo i, String barcode) {
 		InventoryData d = new InventoryData();
 		d.setId(i.getId());
@@ -80,6 +83,7 @@ public class InventoryApiController {
 		return d;
 	}
 
+	// Converts InventoryForm to InventoryPojo
 	private InventoryPojo convert(InventoryForm f, ProductMasterPojo p) throws ApiException {
 		InventoryPojo i = new InventoryPojo();
 		i.setProductMasterPojo(p);

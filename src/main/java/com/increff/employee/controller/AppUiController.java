@@ -7,6 +7,8 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 public class AppUiController extends AbstractUiController {
 
+	// Controller which returns model and view of given name of html file
+
 	@RequestMapping(value = "/ui/home")
 	public ModelAndView home() {
 		return mav("home.html");
@@ -16,7 +18,6 @@ public class AppUiController extends AbstractUiController {
 	public ModelAndView data() {
 		return mav("data.html");
 	}
-
 
 	@RequestMapping(value = "/ui/admin/reports")
 	public ModelAndView report() {

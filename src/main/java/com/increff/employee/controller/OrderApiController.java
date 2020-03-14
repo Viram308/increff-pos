@@ -64,7 +64,7 @@ public class OrderApiController {
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(getDateTime());
 		oService.add(op);
-		List<OrderItemPojo> list = getOrderItemObject(orderItems);
+		List<OrderItemPojo> list = getOrderItemObject(orderItems,op);
 		updateInventory(list);
 		for (OrderItemPojo o : list) {
 			iService.add(o);
@@ -139,10 +139,10 @@ public class OrderApiController {
 		return d;
 	}
 
-	private List<OrderItemPojo> getOrderItemObject(OrderItemForm[] orderItems) throws ApiException {
+	private List<OrderItemPojo> getOrderItemObject(OrderItemForm[] orderItems, OrderPojo op) throws ApiException {
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
 		List<OrderItemForm> orderItemList = new LinkedList<OrderItemForm>(Arrays.asList(orderItems));
-		int i, j, orderId = oService.getMax();
+		int i, j, orderId = op.getId();
 		for (i = 0; i < orderItemList.size(); i++) {
 			for (j = i + 1; j < orderItemList.size(); j++) {
 				if (orderItemList.get(j).getBarcode().equals(orderItemList.get(i).getBarcode())) {

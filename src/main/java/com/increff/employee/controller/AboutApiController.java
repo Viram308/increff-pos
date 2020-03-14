@@ -18,6 +18,7 @@ public class AboutApiController {
 	@Autowired
 	private AboutAppService service;
 
+	// Gives application name and version
 	@ApiOperation(value = "Gives application name and version")
 	@RequestMapping(path = "/api/about", method = RequestMethod.GET)
 	public AboutAppData getDetails() {
@@ -26,7 +27,5 @@ public class AboutApiController {
 		d.setVersion(service.getVersion());
 		return d;
 	}
-
-
 
 }

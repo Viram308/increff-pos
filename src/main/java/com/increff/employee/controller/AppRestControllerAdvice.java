@@ -12,6 +12,7 @@ import com.increff.employee.service.ApiException;
 @RestControllerAdvice
 public class AppRestControllerAdvice {
 
+	// Handles ApiException class
 	@ExceptionHandler(ApiException.class)
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageData handle(ApiException e) {
@@ -20,6 +21,7 @@ public class AppRestControllerAdvice {
 		return data;
 	}
 
+	// Handles exception for foreign key constraints
 	@ExceptionHandler(ConstraintViolationException.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
 	public MessageData handle(ConstraintViolationException e) {
@@ -27,13 +29,5 @@ public class AppRestControllerAdvice {
 		data.setMessage("Can not perform delete because given key is present in another table");
 		return data;
 	}
-	
-	
-//	@ExceptionHandler(Throwable.class)
-//	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-//	public MessageData handle(Throwable e) {
-//		MessageData data = new MessageData();
-//		data.setMessage("An unknown error has occurred - " + e.getMessage());
-//		return data;
-//	}
+
 }

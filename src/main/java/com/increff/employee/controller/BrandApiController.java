@@ -26,9 +26,11 @@ public class BrandApiController {
 	@Autowired
 	private BrandService service;
 
+	// CRUD operations for brand
+
 	@ApiOperation(value = "Adds a Brand")
 	@RequestMapping(path = "/api/brand", method = RequestMethod.POST)
-	public void add(@RequestBody BrandForm form) throws ApiException { 
+	public void add(@RequestBody BrandForm form) throws ApiException {
 		BrandMasterPojo p = convert(form);
 		service.add(p);
 	}
@@ -59,13 +61,13 @@ public class BrandApiController {
 
 	@ApiOperation(value = "Updates a Brand")
 	@RequestMapping(path = "/api/brand/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody BrandForm f)
-			throws ApiException {
+	public void update(@PathVariable int id, @RequestBody BrandForm f) throws ApiException {
 		BrandMasterPojo p = convert(f);
 		service.update(id, p);
 	}
 
-	private static BrandData convert(BrandMasterPojo p) {
+	// Converts BrandMasterPojo to BrandData
+	private BrandData convert(BrandMasterPojo p) {
 		BrandData d = new BrandData();
 		d.setCategory(p.getCategory());
 		d.setBrand(p.getBrand());
@@ -73,7 +75,8 @@ public class BrandApiController {
 		return d;
 	}
 
-	private static BrandMasterPojo convert(BrandForm f) {
+	// Converts BrandForm to BrandMasterPojo
+	private BrandMasterPojo convert(BrandForm f) {
 		BrandMasterPojo b = new BrandMasterPojo();
 		b.setCategory(f.getCategory());
 		b.setBrand(f.getBrand());

@@ -16,8 +16,7 @@ import com.increff.employee.util.IOUtil;
 @Controller
 public class SampleController {
 
-	//Spring ignores . (dot) in the path. So we need fileName:.+
-	//See https://stackoverflow.com/questions/16332092/spring-mvc-pathvariable-with-dot-is-getting-truncated
+	// Spring ignores . (dot) in the path. So we need fileName:.+
 	@RequestMapping(value = "/sample/{fileName:.+}", method = RequestMethod.GET)
 	public void getFile(@PathVariable("fileName") String fileName, HttpServletResponse response) throws IOException {
 		// get your file as InputStream
