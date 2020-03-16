@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.employee.model.OrderItemData;
 import com.increff.employee.model.OrderItemForm;
+import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.service.ApiException;
+import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.OrderItemService;
 
 import io.swagger.annotations.Api;
@@ -25,6 +27,8 @@ public class OrderItemApiController {
 
 	@Autowired
 	private OrderItemService iService;
+	@Autowired
+	private InventoryService inService;
 	// CRUD operation for order item
 
 	@ApiOperation(value = "Deletes a OrderItem")
@@ -56,8 +60,39 @@ public class OrderItemApiController {
 	@ApiOperation(value = "Updates a OrderItem")
 	@RequestMapping(path = "/api/orderitem/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm f) throws ApiException {
+		if (f.getQuantity() <= 0) {
+			throw new ApiException("Quantity can not be negative or zero !!");
+		}
 		OrderItemPojo p = convert(f);
+		checkInventory(id, f);
 		iService.update(id, p);
+
+	}
+
+	private void checkInventory(int id, OrderItemForm orderItem) throws ApiException {
+		int enteredQuantity, availableQuantity;
+		OrderItemPojo o = iService.getCheck(id);
+		// Entered quantity
+		enteredQuantity = orderItem.getQuantity();
+		// InventoryPojo for available quantity
+		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo().getId());
+		availableQuantity = ip.getQuantity() + o.getQuantity();
+		// Check quantity
+		if (enteredQuantity > availableQuantity) {
+			throw new ApiException(
+					"Available Inventory for Barcode " + orderItem.getBarcode() + " is : " + ip.getQuantity());
+		} else {
+			updateInventory(o, ip, enteredQuantity);
+		}
+
+	}
+
+	private void updateInventory(OrderItemPojo o, InventoryPojo ip2, int enteredQuantity) throws ApiException {
+		InventoryPojo ip = new InventoryPojo();
+		int quantity = ip2.getQuantity() + o.getQuantity() - enteredQuantity;
+		ip.setQuantity(quantity);
+		inService.update(ip2.getId(), ip);
+
 	}
 
 	// Converts OrderItemPojo to OrderItemData

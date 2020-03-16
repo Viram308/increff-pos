@@ -36,7 +36,7 @@ function displayOrderList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button onclick="deleteOrder(' + e.id + ')">delete</button>'
+		var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteOrder(' + e.id + ')">Delete</button>'
 		var row = '<tr>'
 		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.datetime + '</td>'

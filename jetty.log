@@ -228,3 +228,36 @@ Caused by: org.hibernate.MappingException: Repeated column in mapping for entity
 2020-03-14 18:41:34 INFO  SecurityConfig:33 - Configuration complete
 2020-03-14 20:25:40 INFO  SecurityConfig:33 - Configuration complete
 2020-03-14 20:25:59 INFO  SecurityConfig:33 - Configuration complete
+2020-03-14 20:27:12 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 11:58:02 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 12:18:26 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-03-16 12:18:26 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`productmasterpojo`, CONSTRAINT `FK7l7o7a0vo24d716x2jkp7cisl` FOREIGN KEY (`brand_category`) REFERENCES `brandmasterpojo` (`id`))
+2020-03-16 12:25:12 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-03-16 12:25:12 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`productmasterpojo`, CONSTRAINT `FK7l7o7a0vo24d716x2jkp7cisl` FOREIGN KEY (`brand_category`) REFERENCES `brandmasterpojo` (`id`))
+2020-03-16 12:25:22 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-03-16 12:25:22 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`inventorypojo`, CONSTRAINT `FKppovj410hifv9gb5h4wwpc1i8` FOREIGN KEY (`productId`) REFERENCES `productmasterpojo` (`id`))
+2020-03-16 13:26:13 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 13:27:13 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-03-16 13:27:13 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`orderitempojo`, CONSTRAINT `FK7eu19snfgqte3ajhn32usfci8` FOREIGN KEY (`productId`) REFERENCES `productmasterpojo` (`id`))
+2020-03-16 13:28:53 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 14:16:10 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 14:16:32 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 14:35:44 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 14:58:50 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 14:59:05 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 15:01:00 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 15:05:22 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 16:51:18 WARN  SqlExceptionHelper:137 - SQL Error: 1451, SQLState: 23000
+2020-03-16 16:51:18 ERROR SqlExceptionHelper:142 - Cannot delete or update a parent row: a foreign key constraint fails (`pos`.`productmasterpojo`, CONSTRAINT `FK7l7o7a0vo24d716x2jkp7cisl` FOREIGN KEY (`brand_category`) REFERENCES `brandmasterpojo` (`id`))
+2020-03-16 16:54:52 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 16:59:41 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 17:37:38 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 17:46:22 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:01:55 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:06:31 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:09:07 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:36:41 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:46:34 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:52:50 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 18:55:29 INFO  SecurityConfig:33 - Configuration complete
+2020-03-16 19:00:59 INFO  SecurityConfig:33 - Configuration complete

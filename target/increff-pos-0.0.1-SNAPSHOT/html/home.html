@@ -10,20 +10,10 @@
 
 <div class="container">
 
-<h3>Home</h3>
-
- <!-- Top row with form-->
+<!-- Blank Row -->
 <div class="row">
-	 <div class="col-2">
-	 	<a th:href="@{/ui/admin/data}" title="Data"> <i class="fas fa-users"></i> </a>
-	 </div>
-	 <div class="col-2">
-	 	<a th:href="@{/ui/admin/reports}" title="Reports"> <i class="fas fa-cog"></i> </a>
-	 </div>	
-	 <div class="col-2">
-	 	<a th:href="@{/ui/admin/user}" title="Users"> <i class="fas fa-cog"></i> </a>
-	 </div>	
-</div> 
+  &nbsp;
+</div>
 <div class="row">
 	<input type="hidden" id="totalItems" name="totalItems" value="3">
 	</div>
@@ -53,9 +43,9 @@
 	<div class="row">
 		<center>
 		<div class="col-12 text-center">
-		<button type="button" class="btn btn-primary" id="add-order-item">Add Item</button>
+		<button type="button" class="btn btn-outline-primary" id="add-order-item">Add Item</button>
         &nbsp;
-        <button type="button" class="btn btn-primary" id="create-order-data">Create Order</button>
+        <button type="button" class="btn btn-outline-success" id="create-order-data">Create Order</button>
     </div>
 </center>
     </div>
