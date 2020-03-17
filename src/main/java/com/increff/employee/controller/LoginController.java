@@ -34,7 +34,7 @@ public class LoginController {
 	private UserService service;
 	@Autowired
 	private InfoData info;
-	
+
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(path = "/session/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
@@ -69,7 +69,7 @@ public class LoginController {
 		UserPrincipal principal = new UserPrincipal();
 		principal.setEmail(p.getEmail());
 		principal.setId(p.getId());
-
+		principal.setRole(p.getRole());
 		// Create Authorities
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority(p.getRole()));

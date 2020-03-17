@@ -75,7 +75,7 @@ public class OrderItemApiController {
 		// Entered quantity
 		enteredQuantity = orderItem.getQuantity();
 		// InventoryPojo for available quantity
-		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo().getId());
+		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
 		availableQuantity = ip.getQuantity() + o.getQuantity();
 		// Check quantity
 		if (enteredQuantity > availableQuantity) {

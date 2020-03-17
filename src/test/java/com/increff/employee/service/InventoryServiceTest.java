@@ -44,11 +44,11 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		InventoryPojo i = getInventoryPojoTest();
 		service.add(i);
 		// select data for given productid
-		InventoryPojo ip = service.getByProductId(i.getProductMasterPojo().getId());
+		InventoryPojo ip = service.getByProductId(i.getProductMasterPojo());
 		assertEquals(i.getId(), ip.getId());
 		service.delete(ip.getId());
 		// Throw exception after deletion
-		service.getByProductId(ip.getProductMasterPojo().getId());
+		service.getByProductId(ip.getProductMasterPojo());
 	}
 
 	@Test

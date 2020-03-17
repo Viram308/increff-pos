@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.increff.employee.dao.InventoryDao;
 import com.increff.employee.pojo.InventoryPojo;
+import com.increff.employee.pojo.ProductMasterPojo;
 
 @Service
 public class InventoryService {
@@ -45,11 +46,11 @@ public class InventoryService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public InventoryPojo getByProductId(int id) throws ApiException {
+	public InventoryPojo getByProductId(ProductMasterPojo p) throws ApiException {
 		// Get inventory data by id
-		InventoryPojo i = dao.selectByProductId(id);
+		InventoryPojo i = dao.selectByProductId(p.getId());
 		if (i == null) {
-			throw new ApiException("Given Product Id dosen't exist");
+			throw new ApiException("Inventory for given product : " + p.getBarcode() + " dosen't exist");
 		} else {
 			return i;
 		}
@@ -82,7 +83,8 @@ public class InventoryService {
 			throw new ApiException("Please enter quantity !!");
 		}
 		if (i.getQuantity() <= 0) {
-			throw new ApiException("Quantity can not be negative or zero !!");
+			throw new ApiException("Quantity can not be negative or zero for product : "
+					+ i.getProductMasterPojo().getBarcode() + " !!");
 		}
 	}
 }

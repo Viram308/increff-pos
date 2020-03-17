@@ -115,6 +115,10 @@ function createOrder(){
 		validData++;
 }
 }
+if(validData==0){
+	alert('Please enter valid data !!!');
+	return false;
+}
 	var url=getOrderUrl();
 	$.ajax({
 	   url: url,

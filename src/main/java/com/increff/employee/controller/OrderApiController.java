@@ -56,12 +56,13 @@ public class OrderApiController {
 
 	// CRUD operations for customer order
 
-	@Transactional
+	@Transactional(rollbackOn = ApiException.class)
 	@ApiOperation(value = "Adds Order")
 	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
-	public void add(@RequestBody OrderItemForm[] orderItems, HttpServletResponse response)
+	public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
 		// Check entered inventory with available inventory
+		List<OrderItemForm> orderItems = groupItemsByBarcode(orderItemForms);
 		checkInventory(orderItems);
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(getDateTime());
@@ -101,16 +102,39 @@ public class OrderApiController {
 
 	}
 
-	private void checkInventory(OrderItemForm[] orderItems) throws ApiException {
-		int enteredQuantity, pId;
+	private List<OrderItemForm> groupItemsByBarcode(OrderItemForm[] orderItemForms) {
+		List<OrderItemForm> orderItemList = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
+		int i, j;
+		for (i = 0; i < orderItemList.size(); i++) {
+			for (j = i + 1; j < orderItemList.size(); j++) {
+				// Check if same barcode exists in given list
+				if (orderItemList.get(j).getBarcode().equals(orderItemList.get(i).getBarcode())) {
+					// Add both quantities
+					orderItemList.get(i)
+							.setQuantity(orderItemList.get(i).getQuantity() + orderItemList.get(j).getQuantity());
+					try {
+						// Remove duplicate entry
+						orderItemList.remove(j);
+						// Reduce index
+						j--;
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		}
+		return orderItemList;
+	}
+
+	private void checkInventory(List<OrderItemForm> orderItems) throws ApiException {
+		int enteredQuantity;
 		for (OrderItemForm i : orderItems) {
 			// Entered quantity
 			enteredQuantity = i.getQuantity();
-
+			System.out.println(enteredQuantity);
 			ProductMasterPojo p = pService.getByBarcode(i.getBarcode());
-			pId = p.getId();
 			// InventoryPojo for available quantity
-			InventoryPojo ip = inService.getByProductId(pId);
+			InventoryPojo ip = inService.getByProductId(p);
 			// Check quantity
 			if (enteredQuantity > ip.getQuantity()) {
 				throw new ApiException(
@@ -150,29 +174,10 @@ public class OrderApiController {
 		return d;
 	}
 
-	private List<OrderItemPojo> getOrderItemObject(OrderItemForm[] orderItems, OrderPojo op) throws ApiException {
+	private List<OrderItemPojo> getOrderItemObject(List<OrderItemForm> orderItemList, OrderPojo op)
+			throws ApiException {
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		List<OrderItemForm> orderItemList = new LinkedList<OrderItemForm>(Arrays.asList(orderItems));
-		int i, j, orderId = op.getId();
-		for (i = 0; i < orderItemList.size(); i++) {
-			for (j = i + 1; j < orderItemList.size(); j++) {
-				// Check if same barcode exists in given list
-				if (orderItemList.get(j).getBarcode().equals(orderItemList.get(i).getBarcode())) {
-					// Add both quantities
-					orderItemList.get(i)
-							.setQuantity(orderItemList.get(i).getQuantity() + orderItemList.get(j).getQuantity());
-					try {
-						// Remove duplicate entry
-						orderItemList.remove(j);
-						// Reduce index
-						j--;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
-			}
-		}
+		int orderId = op.getId();
 		// Convert OrderItemForm to OrderItemPojo
 		for (OrderItemForm o : orderItemList) {
 			ProductMasterPojo p = pService.getByBarcode(o.getBarcode());
@@ -188,7 +193,7 @@ public class OrderApiController {
 
 	private void updateInventory(List<OrderItemPojo> list) throws ApiException {
 		for (OrderItemPojo o : list) {
-			InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo().getId());
+			InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
 			// Decrease quantity
 			int quantity = ip.getQuantity() - o.getQuantity();
 			ip.setQuantity(quantity);

@@ -11,10 +11,14 @@ public class UserPrincipalTest {
 		UserPrincipal u = new UserPrincipal();
 		int id = 1;
 		String email = "shahviram308@gmail.com";
+		String role = "admin";
+
 		u.setId(id);
 		u.setEmail(email);
-		// id and email should be same as object's id and email
+		u.setRole(role);
+		// id,email and role should be same as object's id and email
 		assertEquals(id, u.getId());
 		assertEquals(email, u.getEmail());
+		assertEquals(role, u.getRole());
 	}
 }

@@ -40,7 +40,6 @@ public class ProductApiController {
 		int brand_category_id = bService.getId(form.getBrand(), form.getCategory());
 		ProductMasterPojo p = convert(form, brand_category_id);
 		pService.add(p);
-
 	}
 
 	@ApiOperation(value = "Deletes a Product")
