@@ -29,7 +29,11 @@ function getSalesReportData(){
 	   		console.log(response);
 	   		displaySalesReport(response);
 	   },
-	   error: handleAjaxError
+	   error: function(response){ 		
+	   		handleAjaxError(response);
+	   		var $tbody = $('#salesreport-table').find('tbody');
+	   		$tbody.empty();
+		}
 	});
 
 	return false;

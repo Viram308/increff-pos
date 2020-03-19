@@ -103,7 +103,14 @@ public class ProductServiceTest extends AbstractUnitTest {
 		// test normalized data
 		assertEquals("product", p.getName());
 	}
-
+	@Test(expected = ApiException.class)
+	public void testCheckData() throws ApiException {
+		ProductMasterPojo p = getProductMasterPojoTest();
+		service.checkData(p);
+		// throw exception
+		p.setName("");
+		service.checkData(p);
+	}
 	private ProductMasterPojo getProductMasterPojoTest() throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();

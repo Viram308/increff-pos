@@ -10,6 +10,7 @@ com\increff\employee\model\OrderData.class
 com\increff\employee\dao\UserDao.class
 com\increff\employee\controller\ProductApiController.class
 com\increff\employee\controller\InitApiController.class
+com\increff\employee\service\ReportService.class
 com\increff\employee\pojo\OrderPojo.class
 com\increff\employee\controller\SampleController.class
 com\increff\employee\controller\SiteUiController.class

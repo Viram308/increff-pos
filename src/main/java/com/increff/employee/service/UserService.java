@@ -59,15 +59,9 @@ public class UserService {
 		dao.update(u);
 	}
 
-	private void checkData(UserPojo u) throws ApiException {
-		if (u.getEmail().isBlank()) {
-			throw new ApiException("Please enter email !!");
-		}
-		if (u.getPassword().isBlank()) {
-			throw new ApiException("Please enter password !!");
-		}
-		if (u.getRole().isBlank()) {
-			throw new ApiException("Please enter password !!");
+	public void checkData(UserPojo u) throws ApiException {
+		if (u.getEmail().isBlank() || u.getPassword().isBlank() || u.getRole().isBlank()) {
+			throw new ApiException("Please enter email, password and role !!");
 		}
 	}
 

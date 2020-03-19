@@ -90,7 +90,14 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		// Throw exception after deletion
 		service.getCheck(ip.getId());
 	}
-
+	@Test(expected = ApiException.class)
+	public void testCheckData() throws ApiException {
+		InventoryPojo i = getInventoryPojoTest();
+		service.checkData(i);
+		// throw exception
+		i.setQuantity(0);
+		service.checkData(i);
+	}
 	private InventoryPojo getInventoryPojoTest() throws ApiException {
 		InventoryPojo i = new InventoryPojo();
 		// create data

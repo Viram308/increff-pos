@@ -94,15 +94,9 @@ public class ProductService {
 		return p;
 	}
 
-	private void checkData(ProductMasterPojo b) throws ApiException {
-		if (b.getName().isBlank()) {
-			throw new ApiException("Please enter name !!");
-		}
-		if (String.valueOf(b.getMrp()).isBlank()) {
-			throw new ApiException("Please enter mrp !!");
-		}
-		if (b.getMrp() <= 0) {
-			throw new ApiException("Mrp can not be negative or zero !!");
+	public void checkData(ProductMasterPojo b) throws ApiException {
+		if (b.getName().isBlank() || b.getMrp() <= 0) {
+			throw new ApiException("Please enter name, mrp(positive) !!");
 		}
 	}
 

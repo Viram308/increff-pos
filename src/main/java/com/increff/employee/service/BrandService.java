@@ -42,11 +42,8 @@ public class BrandService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public int getId(String brand, String category) throws ApiException {
-		if (brand.isBlank()) {
-			throw new ApiException("Please enter brand !!");
-		}
-		if (category.isBlank()) {
-			throw new ApiException("Please enter category !!");
+		if (brand.isBlank() || category.isBlank()) {
+			throw new ApiException("Please enter brand and category !!");
 		}
 		// Get id
 		int id = dao.selectId(StringUtil.toLowerCase(brand), StringUtil.toLowerCase(category));
@@ -86,12 +83,9 @@ public class BrandService {
 		return p;
 	}
 
-	private void checkData(BrandMasterPojo b) throws ApiException {
-		if (b.getBrand().isBlank()) {
-			throw new ApiException("Please enter brand !!");
-		}
-		if (b.getCategory().isBlank()) {
-			throw new ApiException("Please enter category !!");
+	public void checkData(BrandMasterPojo b) throws ApiException {
+		if (b.getBrand().isBlank() || b.getCategory().isBlank()) {
+			throw new ApiException("Please enter brand and category !!");
 		}
 	}
 

@@ -78,10 +78,7 @@ public class InventoryService {
 		return p;
 	}
 
-	private void checkData(InventoryPojo i) throws ApiException {
-		if (String.valueOf(i.getQuantity()).isBlank()) {
-			throw new ApiException("Please enter quantity !!");
-		}
+	public void checkData(InventoryPojo i) throws ApiException {
 		if (i.getQuantity() <= 0) {
 			throw new ApiException("Quantity can not be negative or zero for product : "
 					+ i.getProductMasterPojo().getBarcode() + " !!");

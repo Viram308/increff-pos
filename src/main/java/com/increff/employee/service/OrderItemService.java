@@ -19,8 +19,10 @@ public class OrderItemService {
 	// CRUD operations for order item
 
 	@Transactional
-	public void add(OrderItemPojo o) {
+	public void add(List<OrderItemPojo> list) {
+		for (OrderItemPojo o : list) {
 			dao.insert(o);
+		}
 	}
 
 	@Transactional
@@ -32,9 +34,9 @@ public class OrderItemService {
 	public OrderItemPojo get(int id) throws ApiException {
 		return getCheck(id);
 	}
-	
+
 	@Transactional
-	public List<OrderItemPojo> getList(List<Integer> orderIds){
+	public List<OrderItemPojo> getList(List<Integer> orderIds) {
 		return dao.selectList(orderIds);
 	}
 

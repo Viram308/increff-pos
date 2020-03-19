@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.increff.employee.pojo.BrandMasterPojo;
+import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductMasterPojo;
@@ -27,19 +28,26 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	private ProductService pService;
 	@Autowired
 	private OrderService oService;
+	@Autowired
+	private InventoryService inService;
 
 	// test order item service
 	@Test
 	public void testAdd() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
 		// test add data
-		service.add(o);
+		service.add(list);
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
-		service.add(o);
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
 		// Delete should be successful and should not throw exception as data exists
 		service.delete(o.getId());
 	}
@@ -47,7 +55,10 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	@Test
 	public void testGet() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
-		service.add(o);
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
 		OrderItemPojo p = service.get(o.getId());
 		// test entered data
 		assertEquals(o.getOrderPojo().getId(), p.getOrderPojo().getId());
@@ -64,7 +75,10 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	@Test
 	public void testUpdate() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
-		service.add(o);
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
 		OrderItemPojo p = service.get(o.getId());
 		int newQuantity = 20;
 		// update data
@@ -78,7 +92,10 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
-		service.add(o);
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
 		OrderItemPojo p = service.getCheck(o.getId());
 		service.delete(p.getId());
 		// After delete throw exception while getting data
@@ -88,12 +105,15 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	@Test
 	public void testGetList() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
-		service.add(o);
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
 		List<Integer> orderIds = new ArrayList<Integer>();
 		orderIds.add(o.getOrderPojo().getId());
-		List<OrderItemPojo> list = service.getList(orderIds);
+		List<OrderItemPojo> list1 = service.getList(orderIds);
 		// test list size that should be 1
-		assertEquals(1, list.size());
+		assertEquals(1, list1.size());
 	}
 
 	private String getDateTime() {
@@ -115,7 +135,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		oService.add(op);
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();
-
+		InventoryPojo i = new InventoryPojo();
 		String barcode = StringUtil.getAlphaNumericString();
 		b.setBrand(" viram ");
 		b.setCategory("ShaH");
@@ -126,6 +146,9 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
 		pService.add(p);
+		i.setProductMasterPojo(p);
+		i.setQuantity(quantity + 10);
+		inService.add(i);
 		o.setOrderPojo(op);
 		o.setProductMasterPojo(p);
 		o.setQuantity(quantity);

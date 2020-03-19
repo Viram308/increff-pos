@@ -4,9 +4,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Date;
-import java.util.LinkedList;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -26,15 +24,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.increff.employee.model.BillData;
 import com.increff.employee.model.OrderData;
 import com.increff.employee.model.OrderItemForm;
-import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
-import com.increff.employee.pojo.ProductMasterPojo;
 import com.increff.employee.service.ApiException;
-import com.increff.employee.service.InventoryService;
 import com.increff.employee.service.OrderItemService;
 import com.increff.employee.service.OrderService;
-import com.increff.employee.service.ProductService;
 import com.increff.employee.util.GeneratePDF;
 import com.increff.employee.util.GenerateXML;
 
@@ -48,11 +42,7 @@ public class OrderApiController {
 	@Autowired
 	private OrderService oService;
 	@Autowired
-	private ProductService pService;
-	@Autowired
 	private OrderItemService iService;
-	@Autowired
-	private InventoryService inService;
 
 	// CRUD operations for customer order
 
@@ -62,28 +52,36 @@ public class OrderApiController {
 	public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
 		// Check entered inventory with available inventory
-		List<OrderItemForm> orderItems = groupItemsByBarcode(orderItemForms);
-		checkInventory(orderItems);
+		List<OrderItemForm> orderItems = oService.groupItemsByBarcode(orderItemForms);
+		oService.checkInventory(orderItems);
 		OrderPojo op = new OrderPojo();
 		op.setDatetime(getDateTime());
 		// Add order if inventory is available
 		oService.add(op);
 		// Convert input to required format
-		List<OrderItemPojo> list = getOrderItemObject(orderItems, op);
+		List<OrderItemPojo> list = oService.getOrderItemObject(orderItems, op);
 		// Decrease inventory according to the entered quantity
-		updateInventory(list);
+		oService.updateInventory(list);
 		// Add each order item
-		for (OrderItemPojo o : list) {
-			iService.add(o);
-		}
+		iService.add(list);
+
 		// Convert OrderItemPojo to BillData
-		List<BillData> billItemList = getBillDataObject(list);
+		List<BillData> billItemList = oService.getBillDataObject(list);
 		// Generate XML file using BillData list
 		GenerateXML.createXml(billItemList, op.getId());
 		// Create PDF from generated XML
 		byte[] encodedBytes = GeneratePDF.createPDF();
-		String pdfFileName = "output.pdf";
 		// Create response
+		response = createResponse(response, encodedBytes);
+		// send to output stream
+		ServletOutputStream servletOutputStream = response.getOutputStream();
+		servletOutputStream.write(encodedBytes);
+		servletOutputStream.flush();
+		servletOutputStream.close();
+	}
+
+	private HttpServletResponse createResponse(HttpServletResponse response, byte[] encodedBytes) {
+		String pdfFileName = "output.pdf";
 		response.reset();
 		response.addHeader("Pragma", "public");
 		response.addHeader("Cache-Control", "max-age=0");
@@ -92,55 +90,7 @@ public class OrderApiController {
 
 		// avoid "byte shaving" by specifying precise length of transferred data
 		response.setContentLength(encodedBytes.length);
-
-		// send to output stream
-		ServletOutputStream servletOutputStream = response.getOutputStream();
-
-		servletOutputStream.write(encodedBytes);
-		servletOutputStream.flush();
-		servletOutputStream.close();
-
-	}
-
-	private List<OrderItemForm> groupItemsByBarcode(OrderItemForm[] orderItemForms) {
-		List<OrderItemForm> orderItemList = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
-		int i, j;
-		for (i = 0; i < orderItemList.size(); i++) {
-			for (j = i + 1; j < orderItemList.size(); j++) {
-				// Check if same barcode exists in given list
-				if (orderItemList.get(j).getBarcode().equals(orderItemList.get(i).getBarcode())) {
-					// Add both quantities
-					orderItemList.get(i)
-							.setQuantity(orderItemList.get(i).getQuantity() + orderItemList.get(j).getQuantity());
-					try {
-						// Remove duplicate entry
-						orderItemList.remove(j);
-						// Reduce index
-						j--;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-				}
-			}
-		}
-		return orderItemList;
-	}
-
-	private void checkInventory(List<OrderItemForm> orderItems) throws ApiException {
-		int enteredQuantity;
-		for (OrderItemForm i : orderItems) {
-			// Entered quantity
-			enteredQuantity = i.getQuantity();
-			System.out.println(enteredQuantity);
-			ProductMasterPojo p = pService.getByBarcode(i.getBarcode());
-			// InventoryPojo for available quantity
-			InventoryPojo ip = inService.getByProductId(p);
-			// Check quantity
-			if (enteredQuantity > ip.getQuantity()) {
-				throw new ApiException(
-						"Available Inventory for Barcode " + i.getBarcode() + " is : " + ip.getQuantity());
-			}
-		}
+		return response;
 	}
 
 	@ApiOperation(value = "Deletes Order")
@@ -172,50 +122,6 @@ public class OrderApiController {
 		d.setId(o.getId());
 		d.setDatetime(o.getDatetime());
 		return d;
-	}
-
-	private List<OrderItemPojo> getOrderItemObject(List<OrderItemForm> orderItemList, OrderPojo op)
-			throws ApiException {
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		int orderId = op.getId();
-		// Convert OrderItemForm to OrderItemPojo
-		for (OrderItemForm o : orderItemList) {
-			ProductMasterPojo p = pService.getByBarcode(o.getBarcode());
-			OrderItemPojo item = new OrderItemPojo();
-			item.setOrderPojo(oService.get(orderId));
-			item.setProductMasterPojo(p);
-			item.setQuantity(o.getQuantity());
-			item.setSellingPrice(o.getMrp());
-			list.add(item);
-		}
-		return list;
-	}
-
-	private void updateInventory(List<OrderItemPojo> list) throws ApiException {
-		for (OrderItemPojo o : list) {
-			InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
-			// Decrease quantity
-			int quantity = ip.getQuantity() - o.getQuantity();
-			ip.setQuantity(quantity);
-			inService.update(ip.getId(), ip);
-		}
-	}
-
-	private List<BillData> getBillDataObject(List<OrderItemPojo> list) throws ApiException {
-		List<BillData> bill = new ArrayList<BillData>();
-		int i = 1;
-		// Convert OrderItemPojo to BillData
-		for (OrderItemPojo o : list) {
-			ProductMasterPojo p = o.getProductMasterPojo();
-			BillData item = new BillData();
-			item.setId(i);
-			item.setName(p.getName());
-			item.setQuantity(o.getQuantity());
-			item.setMrp(o.getSellingPrice());
-			i++;
-			bill.add(item);
-		}
-		return bill;
 	}
 
 	// Returns date time in required format

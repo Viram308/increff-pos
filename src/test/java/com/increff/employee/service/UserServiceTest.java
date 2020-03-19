@@ -15,10 +15,7 @@ public class UserServiceTest extends AbstractUnitTest {
 	// test user service
 	@Test(expected = ApiException.class)
 	public void testAdd() throws ApiException {
-		UserPojo u = new UserPojo();
-		u.setEmail(" Shahviram308@gmail.coM ");
-		u.setPassword("admin");
-		u.setRole(" AdmiN ");
+		UserPojo u =  getUserPojo();
 		// Add one time
 		service.add(u);
 		// Throw exception while entering second time
@@ -27,10 +24,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testDelete() throws ApiException {
-		UserPojo u = new UserPojo();
-		u.setEmail(" Shahviram308@gmail.coM ");
-		u.setPassword("admin");
-		u.setRole(" AdmiN ");
+		UserPojo u =  getUserPojo();
 		service.add(u);
 		// Delete should be successful and should not throw exception as data exists
 		service.delete(u.getId());
@@ -38,10 +32,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGet() throws ApiException {
-		UserPojo u = new UserPojo();
-		u.setEmail(" Shahviram308@gmail.coM ");
-		u.setPassword("admin");
-		u.setRole(" AdmiN ");
+		UserPojo u =  getUserPojo();
 		service.add(u);
 		UserPojo p = service.get(u.getEmail());
 		// test added data
@@ -56,10 +47,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdate() throws ApiException {
-		UserPojo u = new UserPojo();
-		u.setEmail(" Shahviram308@gmail.coM ");
-		u.setPassword("admin");
-		u.setRole(" AdmiN ");
+		UserPojo u = getUserPojo();
 		service.add(u);
 		UserPojo p = service.get(u.getId());
 		// update data
@@ -74,14 +62,27 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalize() {
-		UserPojo u = new UserPojo();
-		u.setEmail(" Shahviram308@gmail.coM ");
-		u.setPassword("admin");
-		u.setRole(" AdmiN ");
+		UserPojo u = getUserPojo();
 		UserService.normalize(u);
 		// test normalization
 		assertEquals("admin", u.getRole());
 		assertEquals("admin", u.getPassword());
 	}
-
+	@Test(expected = ApiException.class)
+	public void testCheckData() throws ApiException {
+		UserPojo u = getUserPojo();
+		service.checkData(u);
+		// throw exception
+		u.setEmail("");
+		service.checkData(u);
+	}
+	
+	public UserPojo getUserPojo() {
+		UserPojo u = new UserPojo();
+		u.setEmail(" Shahviram308@gmail.coM ");
+		u.setPassword("admin");
+		u.setRole(" AdmiN ");
+		return u;
+	}
+	
 }
