@@ -54,11 +54,11 @@ public class ReportService {
 		return listOfOrderItemPojo;
 	}
 
-	public List<SalesReportData> getSalesReportDataByBrandAndCategory(List<SalesReportData> salesReportData, String brand,
-			String category) {
+	public List<SalesReportData> getSalesReportDataByBrandAndCategory(List<SalesReportData> salesReportData,
+			String brand, String category) {
 		int i;
-		brand=StringUtil.toLowerCase(brand);
-		category=StringUtil.toLowerCase(category);
+		brand = StringUtil.toLowerCase(brand);
+		category = StringUtil.toLowerCase(category);
 		if (brand.isBlank() && category.isBlank()) {
 			// do nothing
 		} else if ((!brand.isBlank()) && category.isBlank()) {
@@ -89,24 +89,21 @@ public class ReportService {
 		}
 		return salesReportData;
 	}
+
 	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportData) {
-		int i,j;
+		int i, j;
 		for (i = 0; i < salesReportData.size(); i++) {
 			for (j = i + 1; j < salesReportData.size(); j++) {
 				if (salesReportData.get(j).getCategory().equals(salesReportData.get(i).getCategory())) {
 					// Add quantity and revenue
-					salesReportData.get(i).setQuantity(
-							salesReportData.get(i).getQuantity() + salesReportData.get(j).getQuantity());
+					salesReportData.get(i)
+							.setQuantity(salesReportData.get(i).getQuantity() + salesReportData.get(j).getQuantity());
 					salesReportData.get(i)
 							.setRevenue(salesReportData.get(i).getRevenue() + salesReportData.get(j).getRevenue());
-					try {
-						// Remove duplicate
-						salesReportData.remove(j);
-						// Reduce index
-						j--;
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+					// Remove duplicate
+					salesReportData.remove(j);
+					// Reduce index
+					j--;
 
 				}
 			}
@@ -117,6 +114,7 @@ public class ReportService {
 		}
 		return salesReportData;
 	}
+
 	public List<InventoryReportData> groupDataForInventoryReport(List<InventoryReportData> list) {
 		int i, j;
 		for (i = 0; i < list.size(); i++) {
