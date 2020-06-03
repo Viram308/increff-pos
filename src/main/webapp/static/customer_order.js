@@ -64,6 +64,7 @@ function addEmptyItemRow(itemId){
 		if(len < 8){
 			$('#inputQuantity'+itemId).val('');
 			$('#inputQuantity'+itemId).prop('readonly', true);
+			$('#inputMrp'+itemId).val('');
 		}
       if(len==8)
       {

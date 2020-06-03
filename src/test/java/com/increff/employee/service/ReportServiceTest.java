@@ -36,6 +36,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 	@Autowired
 	private OrderItemService iService;
 
+	// test order id list with range(start date-end date)
 	@Test
 	public void testGetOrderIdList() throws ParseException, ApiException {
 		String startdate = "01-02-2020";
@@ -45,17 +46,21 @@ public class ReportServiceTest extends AbstractUnitTest {
 		assertEquals(1, orderIds.size());
 	}
 
+	// test order items with same product id
 	@Test
 	public void testGroupOrderItemPojoByProductId() throws ApiException {
 		getOrderItemPojoTest();
 		List<OrderItemPojo> list = iService.getAll();
 		list = service.groupOrderItemPojoByProductId(list);
+		// check results
 		assertEquals(2, list.size());
 		assertEquals(25, list.get(0).getQuantity());
 	}
 
+	// test all the conditions of brand-category pair
 	@Test
 	public void testGetSalesReportDataByBrandAndCategory() {
+
 		List<SalesReportData> list = getSalesData();
 		list = service.getSalesReportDataByBrandAndCategory(list, "", "");
 		assertEquals(5, list.size());
@@ -70,31 +75,39 @@ public class ReportServiceTest extends AbstractUnitTest {
 		assertEquals(2, list.size());
 	}
 
+	// test created sales data category wise
 	@Test
 	public void testGroupSalesReportDataCategoryWise() {
 		List<SalesReportData> list = getSalesData();
 		list = service.getSalesReportDataByBrandAndCategory(list, "", "shah");
+		// check list size after selecting category
 		assertEquals(3, list.size());
+		// calculate total quantity and revenue
 		int i, quantity = 0;
 		double revenue = 0;
 		for (i = 0; i < 3; i++) {
 			quantity += list.get(i).getQuantity();
 			revenue += list.get(i).getRevenue();
 		}
+		// group category wise
 		list = service.groupSalesReportDataCategoryWise(list);
+		// check results
 		assertEquals(1, list.size());
 		assertEquals(quantity, list.get(0).getQuantity());
 		assertEquals(revenue, list.get(0).getRevenue(), 0.01);
 	}
 
+	// test created inventory data
 	@Test
 	public void testGroupDataForInventoryReport() {
 		List<InventoryReportData> list = getInventoryData();
 		list = service.groupDataForInventoryReport(list);
+		// compare data with actual values
 		assertEquals(4, list.size());
 		assertEquals(40, list.get(0).getQuantity());
 	}
 
+	// create order data using dates
 	public List<OrderPojo> getOrderPojoList() throws ApiException {
 		List<OrderPojo> list = new ArrayList<OrderPojo>();
 		String[] dates = { "03-02-2020", "01-01-2020", "02-02-2019", "03-05-2020" };
@@ -117,6 +130,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 		return datetime;
 	}
 
+	// create sales report data using brand,category,quantity and revenue
 	private List<SalesReportData> getSalesData() {
 		List<SalesReportData> list = new ArrayList<SalesReportData>();
 		String[] brand = { "viram", "increff", "nextscm", "increff", "viram" };
@@ -135,6 +149,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 		return list;
 	}
 
+	// create inventory report data using brand,category and quantity
 	private List<InventoryReportData> getInventoryData() {
 		List<InventoryReportData> list = new ArrayList<InventoryReportData>();
 		String[] brand = { "viram", "increff", "nextscm", "increff", "viram" };

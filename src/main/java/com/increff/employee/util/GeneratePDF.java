@@ -24,8 +24,7 @@ public class GeneratePDF {
 		File xmlfile = new File("billDataXML.xml");
 		File xsltfile = new File("template.xsl");
 
-		File pdffile = new File("F:\\Repos\\Home-assignment\\increff-pos\\src\\main\\resources\\com\\increff\\employee",
-				"resultPDF.pdf");
+		File pdffile = new File("resultPDF.pdf");
 		FopFactory fopFactory = FopFactory.newInstance();
 		FOUserAgent foUserAgent = fopFactory.newFOUserAgent();
 		OutputStream out = new java.io.FileOutputStream(pdffile);
