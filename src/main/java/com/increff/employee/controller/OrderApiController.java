@@ -1,10 +1,6 @@
 package com.increff.employee.controller;
 
 import java.io.IOException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -29,6 +25,7 @@ import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.OrderItemService;
 import com.increff.employee.service.OrderService;
+import com.increff.employee.util.ConverterUtil;
 import com.increff.employee.util.GeneratePDF;
 import com.increff.employee.util.GenerateXML;
 
@@ -37,6 +34,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
+@RequestMapping(value = "/api/order")
 public class OrderApiController {
 
 	@Autowired
@@ -48,14 +46,14 @@ public class OrderApiController {
 
 	@Transactional(rollbackOn = ApiException.class)
 	@ApiOperation(value = "Adds Order")
-	@RequestMapping(path = "/api/order", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
 		// Check entered inventory with available inventory
 		List<OrderItemForm> orderItems = oService.groupItemsByBarcode(orderItemForms);
 		oService.checkInventory(orderItems);
 		OrderPojo op = new OrderPojo();
-		op.setDatetime(getDateTime());
+		op.setDatetime(ConverterUtil.getDateTime());
 		// Add order if inventory is available
 		oService.add(op);
 		// Convert input to required format
@@ -94,42 +92,23 @@ public class OrderApiController {
 	}
 
 	@ApiOperation(value = "Deletes Order")
-	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
 		oService.delete(id);
 	}
 
 	@ApiOperation(value = "Gets a Order")
-	@RequestMapping(path = "/api/order/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public OrderData get(@PathVariable int id) throws ApiException {
 		OrderPojo p = oService.get(id);
-		return convert(p);
+		return ConverterUtil.convertOrderPojotoOrderData(p);
 	}
 
 	@ApiOperation(value = "Gets list of all Orders")
-	@RequestMapping(path = "/api/order", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<OrderData> getAll() {
 		List<OrderPojo> list = oService.getAll();
-		List<OrderData> list2 = new ArrayList<OrderData>();
-		for (OrderPojo p : list) {
-			list2.add(convert(p));
-		}
-		return list2;
+		return ConverterUtil.getOrderDataList(list);
 	}
 
-	private static OrderData convert(OrderPojo o) {
-		OrderData d = new OrderData();
-		d.setId(o.getId());
-		d.setDatetime(o.getDatetime());
-		return d;
-	}
-
-	// Returns date time in required format
-	private String getDateTime() {
-
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		Date dateobj = new Date();
-		String datetime = df.format(dateobj);
-		return datetime;
-	}
 }

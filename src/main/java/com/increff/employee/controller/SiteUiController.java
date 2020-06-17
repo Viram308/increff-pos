@@ -5,30 +5,26 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
 @Controller
+@RequestMapping(value = "/site")
 public class SiteUiController extends AbstractUiController {
 
 	// WEBSITE PAGES
-	@RequestMapping(value = "")
-	public ModelAndView index() {
-		return mav("index.html");
-	}
-
-	@RequestMapping(value = "/site/login")
+	@RequestMapping(value = "/login")
 	public ModelAndView login() {
 		return mav("login.html");
 	}
 
-	@RequestMapping(value = "/site/logout")
+	@RequestMapping(value = "/logout")
 	public ModelAndView logout() {
 		return mav("logout.html");
 	}
 
-	@RequestMapping(value = "/site/pricing")
+	@RequestMapping(value = "/pricing")
 	public ModelAndView pricing() {
 		return mav("pricing.html");
 	}
 
-	@RequestMapping(value = "/site/features")
+	@RequestMapping(value = "/features")
 	public ModelAndView features() {
 		return mav("features.html");
 	}

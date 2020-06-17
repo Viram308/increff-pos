@@ -34,7 +34,7 @@ function updateMrpForItem(data,idForItem){
 	$('#inputQuantity'+idForItem).val(1);
 }
 function getProductMrp(barcode,idForItem){
-	var url = getProductUrlForBarcode()+"/"+"?barcode="+barcode;
+	var url = getProductUrlForBarcode()+"/b/"+barcode;
 	$.ajax({
 	   url: url,
 	   type: 'GET',

@@ -13,10 +13,12 @@ import com.increff.employee.model.UserForm;
 import com.increff.employee.pojo.UserPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.UserService;
+import com.increff.employee.util.ConverterUtil;
 
 import io.swagger.annotations.ApiOperation;
 
 @Controller
+@RequestMapping(value = "/site/init")
 public class InitApiController extends AbstractUiController {
 
 	@Autowired
@@ -25,35 +27,26 @@ public class InitApiController extends AbstractUiController {
 	private InfoData info;
 
 	@ApiOperation(value = "Initializes application")
-	@RequestMapping(path = "/site/init", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public ModelAndView showPage(UserForm form) throws ApiException {
 		info.setMessage("");
 		return mav("init.html");
 	}
 
 	@ApiOperation(value = "Initializes application")
-	@RequestMapping(path = "/site/init", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public ModelAndView initSite(UserForm form) throws ApiException {
 		List<UserPojo> list = service.getAll();
 		if (list.size() > 0) {
 			info.setMessage("Application already initialized. Please use existing credentials");
 		} else {
 			form.setRole("admin");
-			UserPojo p = convert(form);
+			UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
 			service.add(p);
 			info.setMessage("Application initialized");
 		}
-		return mav("init.html");
+		return mav("login.html");
 
-	}
-
-	// Converts UserForm to UserPojo
-	private UserPojo convert(UserForm f) {
-		UserPojo p = new UserPojo();
-		p.setEmail(f.getEmail());
-		p.setRole(f.getRole());
-		p.setPassword(f.getPassword());
-		return p;
 	}
 
 }

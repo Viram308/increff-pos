@@ -1,6 +1,5 @@
 package com.increff.employee.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,12 +14,14 @@ import com.increff.employee.model.UserForm;
 import com.increff.employee.pojo.UserPojo;
 import com.increff.employee.service.ApiException;
 import com.increff.employee.service.UserService;
+import com.increff.employee.util.ConverterUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
+@RequestMapping(value = "/api/admin/user")
 public class AdminApiController {
 
 	@Autowired
@@ -29,60 +30,36 @@ public class AdminApiController {
 	// CRUD operations for user
 
 	@ApiOperation(value = "Adds a user")
-	@RequestMapping(path = "/api/admin/user", method = RequestMethod.POST)
+	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void addUser(@RequestBody UserForm form) throws ApiException {
-		UserPojo p = convert(form);
+		UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
 		service.add(p);
 	}
 
 	@ApiOperation(value = "Deletes a user")
-	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.DELETE)
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void deleteUser(@PathVariable int id) {
 		service.delete(id);
 	}
 
 	@ApiOperation(value = "Gets a User")
-	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.GET)
+	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public UserData get(@PathVariable int id) {
 		UserPojo p = service.get(id);
-		return convert(p);
+		return ConverterUtil.convertUserPojotoUserData(p);
 	}
 
 	@ApiOperation(value = "Updates a user")
-	@RequestMapping(path = "/api/admin/user/{id}", method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public void updateUser(@PathVariable int id, @RequestBody UserForm form) throws ApiException {
-		UserPojo p = convert(form);
+		UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
 		service.update(id, p);
 	}
 
 	@ApiOperation(value = "Gets list of all users")
-	@RequestMapping(path = "/api/admin/user", method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<UserData> getAllUser() {
 		List<UserPojo> list = service.getAll();
-		List<UserData> list2 = new ArrayList<UserData>();
-		for (UserPojo p : list) {
-			list2.add(convert(p));
-		}
-		return list2;
+		return ConverterUtil.getUserDataList(list);
 	}
-
-	// Converts UserPojo to UserData
-	private UserData convert(UserPojo p) {
-		UserData d = new UserData();
-		d.setEmail(p.getEmail());
-		d.setRole(p.getRole());
-		d.setId(p.getId());
-		d.setPassword(p.getPassword());
-		return d;
-	}
-
-	// Converts UserForm to UserPojo
-	private UserPojo convert(UserForm f) {
-		UserPojo p = new UserPojo();
-		p.setEmail(f.getEmail());
-		p.setRole(f.getRole());
-		p.setPassword(f.getPassword());
-		return p;
-	}
-
 }

@@ -1,25 +1,29 @@
 <!doctype html>
 
 <html lang="en">
-
+<!-- head -->
 <head th:replace="snippets.html :: name_head"></head>
 
 <body>
-
+<!-- nav -->
 <nav th:replace="snippets.html :: name_app_navbar"></nav>
-
+<!-- Container Start -->
 <div class="container">
-
+<!-- Brand -->
 <div th:replace="snippets.html :: name_brand"></div>
+<!-- Product -->
 <div th:replace="snippets.html :: name_product"></div>
+<!-- Inventory -->
 <div th:replace="snippets.html :: name_inventory"></div>
+<!-- Order -->
 <div th:replace="snippets.html :: name_order"></div>
+<!-- OrderItem -->
 <div th:replace="snippets.html :: name_orderitem"></div>
 
 </div> <!-- Container end-->
-
+<!-- Footer -->
 <footer th:replace="snippets.html :: name_footer"></footer>
-
+<!-- Js Files -->
 <script th:src="@{/static/brand.js}"/></script>
 <script th:src="@{/static/product.js}"/></script>
 <script th:src="@{/static/inventory.js}"/></script>
