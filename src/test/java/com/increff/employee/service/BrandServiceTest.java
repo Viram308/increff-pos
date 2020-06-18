@@ -44,7 +44,13 @@ public class BrandServiceTest extends AbstractUnitTest {
 		// After delete throw exception while getting data
 		service.getId(b.getBrand(), b.getCategory());
 	}
-
+	@Test(expected = ApiException.class)
+	public void testGetIdBlank() throws ApiException {
+		BrandMasterPojo b = getBrandMasterPojoTest();
+		service.add(b);
+		// select data for given brand and category
+		int id = service.getId("", "");
+	}
 	@Test
 	public void testGet() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();

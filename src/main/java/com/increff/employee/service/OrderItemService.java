@@ -81,16 +81,11 @@ public class OrderItemService {
 			throw new ApiException(
 					"Available Inventory for Barcode " + orderItem.getBarcode() + " is : " + ip.getQuantity());
 		} else {
-			updateInventory(o, ip, enteredQuantity);
+			InventoryPojo ip2 = new InventoryPojo();
+			int quantity = ip.getQuantity() + o.getQuantity() - enteredQuantity;
+			ip2.setQuantity(quantity);
+			inService.update(ip.getId(), ip2);
 		}
-
-	}
-
-	public void updateInventory(OrderItemPojo o, InventoryPojo ip2, int enteredQuantity) throws ApiException {
-		InventoryPojo ip = new InventoryPojo();
-		int quantity = ip2.getQuantity() + o.getQuantity() - enteredQuantity;
-		ip.setQuantity(quantity);
-		inService.update(ip2.getId(), ip);
 
 	}
 

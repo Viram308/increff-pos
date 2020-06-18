@@ -3,6 +3,9 @@ package com.increff.employee.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import org.springframework.stereotype.Service;
@@ -35,23 +38,20 @@ public class ReportService {
 	}
 
 	public List<OrderItemPojo> groupOrderItemPojoByProductId(List<OrderItemPojo> listOfOrderItemPojo) {
-		int i, j;
+		int i;
+		LinkedHashMap<Integer, OrderItemPojo> m = new LinkedHashMap<Integer, OrderItemPojo>();
 		for (i = 0; i < listOfOrderItemPojo.size(); i++) {
-			for (j = i + 1; j < listOfOrderItemPojo.size(); j++) {
-				// Check for duplicate product ids
-				if (listOfOrderItemPojo.get(j).getProductMasterPojo().getId() == listOfOrderItemPojo.get(i)
-						.getProductMasterPojo().getId()) {
-					// Add quantities for same product ids
-					listOfOrderItemPojo.get(i).setQuantity(
-							listOfOrderItemPojo.get(i).getQuantity() + listOfOrderItemPojo.get(j).getQuantity());
-					// Remove duplicate
-					listOfOrderItemPojo.remove(j);
-					// Reduce index
-					j--;
-				}
+			if (m.containsKey(listOfOrderItemPojo.get(i).getProductMasterPojo().getId())) {
+				OrderItemPojo o = m.get(listOfOrderItemPojo.get(i).getProductMasterPojo().getId());
+				o.setQuantity(o.getQuantity() + listOfOrderItemPojo.get(i).getQuantity());
+				m.put(listOfOrderItemPojo.get(i).getProductMasterPojo().getId(), o);
+			} else {
+				m.put(listOfOrderItemPojo.get(i).getProductMasterPojo().getId(), listOfOrderItemPojo.get(i));
 			}
 		}
-		return listOfOrderItemPojo;
+		Collection<OrderItemPojo> values = m.values();
+		List<OrderItemPojo> orderItemPojoList = new ArrayList<OrderItemPojo>(values);
+		return orderItemPojoList;
 	}
 
 	public List<SalesReportData> getSalesReportDataByBrandAndCategory(List<SalesReportData> salesReportData,
@@ -91,46 +91,44 @@ public class ReportService {
 	}
 
 	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportData) {
-		int i, j;
+		int i;
+		LinkedHashMap<String, SalesReportData> m = new LinkedHashMap<String, SalesReportData>();
 		for (i = 0; i < salesReportData.size(); i++) {
-			for (j = i + 1; j < salesReportData.size(); j++) {
-				if (salesReportData.get(j).getCategory().equals(salesReportData.get(i).getCategory())) {
-					// Add quantity and revenue
-					salesReportData.get(i)
-							.setQuantity(salesReportData.get(i).getQuantity() + salesReportData.get(j).getQuantity());
-					salesReportData.get(i)
-							.setRevenue(salesReportData.get(i).getRevenue() + salesReportData.get(j).getRevenue());
-					// Remove duplicate
-					salesReportData.remove(j);
-					// Reduce index
-					j--;
-
-				}
+			if (m.containsKey(salesReportData.get(i).getCategory())) {
+				SalesReportData o = m.get(salesReportData.get(i).getCategory());
+				o.setQuantity(o.getQuantity() + salesReportData.get(i).getQuantity());
+				o.setRevenue(o.getRevenue() + salesReportData.get(i).getRevenue());
+				m.put(salesReportData.get(i).getCategory(), o);
+			} else {
+				m.put(salesReportData.get(i).getCategory(), salesReportData.get(i));
 			}
 		}
-		// Set ids to list items
-		for (i = 0; i < salesReportData.size(); i++) {
-			salesReportData.get(i).setId(i + 1);
+		Collection<SalesReportData> values = m.values();
+		List<SalesReportData> salesDataList = new ArrayList<SalesReportData>(values);
+		for (i = 0; i < salesDataList.size(); i++) {
+			salesDataList.get(i).setId(i + 1);
 		}
-		return salesReportData;
+		return salesDataList;
 	}
 
 	public List<InventoryReportData> groupDataForInventoryReport(List<InventoryReportData> list) {
-		int i, j;
+		int i;
+		LinkedHashMap<List<String>, InventoryReportData> map = new LinkedHashMap<List<String>, InventoryReportData>();
 		for (i = 0; i < list.size(); i++) {
-			for (j = i + 1; j < list.size(); j++) {
-				if (list.get(j).getBrand().equals(list.get(i).getBrand())
-						&& list.get(j).getCategory().equals(list.get(i).getCategory())) {
-					list.get(i).setQuantity(list.get(i).getQuantity() + list.get(j).getQuantity());
-					list.remove(j);
-					j--;
-				}
+			List<String> key = new ArrayList<String>(Arrays.asList(list.get(i).getBrand(), list.get(i).getCategory()));
+			if (map.containsKey(key)) {
+				InventoryReportData in = map.get(key);
+				in.setQuantity(in.getQuantity() + list.get(i).getQuantity());
+				map.replace(key, in);
+			} else {
+				map.put(key, list.get(i));
 			}
 		}
-		// Set ids to list items
-		for (i = 0; i < list.size(); i++) {
-			list.get(i).setId(i + 1);
+		Collection<InventoryReportData> values = map.values();
+		List<InventoryReportData> inventoryReportDataList = new ArrayList<InventoryReportData>(values);
+		for (i = 0; i < inventoryReportDataList.size(); i++) {
+			inventoryReportDataList.get(i).setId(i + 1);
 		}
-		return list;
+		return inventoryReportDataList;
 	}
 }

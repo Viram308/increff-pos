@@ -13,6 +13,7 @@
 /home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/model/ProductDataTest.java
 /home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/service/ApiExceptionTest.java
 /home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/spring/SampleTest.java
+/home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/util/ConverterUtilTest.java
 /home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/util/IOUtilTest.java
 /home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/service/BrandServiceTest.java
 /home/viram/eclipse-workspace/increff-pos/src/test/java/com/increff/employee/util/GeneratePDFTest.java

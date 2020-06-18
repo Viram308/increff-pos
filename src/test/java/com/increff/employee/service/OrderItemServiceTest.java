@@ -11,6 +11,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.increff.employee.model.OrderItemForm;
 import com.increff.employee.pojo.BrandMasterPojo;
 import com.increff.employee.pojo.InventoryPojo;
 import com.increff.employee.pojo.OrderItemPojo;
@@ -114,6 +115,74 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		List<OrderItemPojo> list1 = service.getList(orderIds);
 		// test list size that should be 1
 		assertEquals(1, list1.size());
+	}
+
+	@Test(expected = ApiException.class)
+	public void testCheckInventoryZeroQuantity() throws ApiException {
+		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
+		OrderItemForm f = getOrderItemForm();
+		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		f.setQuantity(o.getQuantity() + ip.getQuantity());
+		service.checkInventory(list.get(0).getId(), f);
+
+	}
+
+	@Test(expected = ApiException.class)
+	public void testCheckInventoryNegativeQuantity() throws ApiException {
+		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
+		OrderItemForm f = getOrderItemForm();
+		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		f.setQuantity(o.getQuantity() + ip.getQuantity() + 1);
+		service.checkInventory(list.get(0).getId(), f);
+
+	}
+
+	@Test
+	public void testCheckInventoryPerfectQuantity() throws ApiException {
+		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		// test add data
+		service.add(list);
+		OrderItemForm f = getOrderItemForm();
+		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		f.setQuantity(o.getQuantity() + ip.getQuantity() - 1);
+		service.checkInventory(list.get(0).getId(), f);
+		InventoryPojo ip2 = inService.getByProductId(o.getProductMasterPojo());
+		assertEquals(1, ip2.getQuantity());
+	}
+
+	@Test(expected = ApiException.class)
+	public void testCheckEnteredQuantityZero() throws ApiException {
+		OrderItemForm f = getOrderItemForm();
+		f.setQuantity(0);
+		service.checkEnteredQuantity(f);
+	}
+	
+	@Test
+	public void testCheckEnteredQuantityPerfect() throws ApiException {
+		OrderItemForm f = getOrderItemForm();
+		f.setQuantity(10);
+		service.checkEnteredQuantity(f);
+	}
+
+	private OrderItemForm getOrderItemForm() {
+		OrderItemForm f = new OrderItemForm();
+		double mrp = 10.06;
+		String barcode = StringUtil.getAlphaNumericString();
+		int quantity = 15;
+		f.setMrp(mrp);
+		f.setBarcode(barcode);
+		f.setQuantity(quantity);
+		return f;
 	}
 
 	private String getDateTime() {

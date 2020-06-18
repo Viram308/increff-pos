@@ -29,7 +29,6 @@ import com.increff.employee.pojo.OrderItemPojo;
 import com.increff.employee.pojo.OrderPojo;
 import com.increff.employee.pojo.ProductMasterPojo;
 import com.increff.employee.pojo.UserPojo;
-import com.increff.employee.service.ApiException;
 
 public class ConverterUtil {
 
@@ -97,8 +96,7 @@ public class ConverterUtil {
 	}
 
 	// Converts InventoryForm to InventoryPojo
-	public static InventoryPojo convertInventoryFormtoInventoryPojo(InventoryForm f, ProductMasterPojo p)
-			throws ApiException {
+	public static InventoryPojo convertInventoryFormtoInventoryPojo(InventoryForm f, ProductMasterPojo p) {
 		InventoryPojo i = new InventoryPojo();
 		i.setProductMasterPojo(p);
 		i.setQuantity(f.getQuantity());
@@ -187,7 +185,7 @@ public class ConverterUtil {
 
 	// Converts ProductForm to ProductMasterPojo during update operation
 	public static ProductMasterPojo convertProductFormtoProductMasterPojoUpdate(ProductForm f, int brand_category_id,
-			BrandMasterPojo brandMasterPojo) throws ApiException {
+			BrandMasterPojo brandMasterPojo) {
 		ProductMasterPojo p = new ProductMasterPojo();
 		p.setBrand_category(brandMasterPojo);
 		p.setName(f.getName());
@@ -210,7 +208,7 @@ public class ConverterUtil {
 
 	// Converts ProductForm to ProductMasterPojo during insert operation
 	public static ProductMasterPojo convertProductFormtoProductMasterPojo(ProductForm f, int brand_category_id,
-			BrandMasterPojo brandMasterPojo) throws ApiException {
+			BrandMasterPojo brandMasterPojo) {
 		ProductMasterPojo p = new ProductMasterPojo();
 		String barcode = StringUtil.getAlphaNumericString();
 		p.setBarcode(barcode);

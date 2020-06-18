@@ -33,8 +33,9 @@ public class ProductServiceTest extends AbstractUnitTest {
 		// get barcode for id of first object
 		String b1 = service.get(p.getId()).getBarcode();
 		// get barcode for very next object
-		// here other tests are affecting database so id is not 1 and 2 but p.getId() and p.getId()+1
-		String b2 = service.get(p.getId()+1).getBarcode();
+		// here other tests are affecting database so id is not 1 and 2 but p.getId()
+		// and p.getId()+1
+		String b2 = service.get(p.getId() + 1).getBarcode();
 		// test for different barcode
 		assertNotEquals(b1, b2);
 	}
@@ -55,6 +56,13 @@ public class ProductServiceTest extends AbstractUnitTest {
 		service.delete(pr.getId());
 		// After delete throw exception while getting data
 		service.getByBarcode(pr.getBarcode());
+	}
+
+	@Test(expected = ApiException.class)
+	public void testGetByBarcodeBlank() throws ApiException {
+		ProductMasterPojo p = getProductMasterPojoTest();
+		service.add(p);
+		service.getByBarcode("");
 	}
 
 	@Test
@@ -103,6 +111,7 @@ public class ProductServiceTest extends AbstractUnitTest {
 		// test normalized data
 		assertEquals("product", p.getName());
 	}
+
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
@@ -111,6 +120,7 @@ public class ProductServiceTest extends AbstractUnitTest {
 		p.setName("");
 		service.checkData(p);
 	}
+
 	private ProductMasterPojo getProductMasterPojoTest() throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();

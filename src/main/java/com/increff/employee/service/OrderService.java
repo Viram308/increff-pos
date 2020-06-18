@@ -1,8 +1,8 @@
 package com.increff.employee.service;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
+import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -62,22 +62,19 @@ public class OrderService {
 	}
 
 	public List<OrderItemForm> groupItemsByBarcode(OrderItemForm[] orderItemForms) {
-		List<OrderItemForm> orderItemList = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
-		int i, j;
-		for (i = 0; i < orderItemList.size(); i++) {
-			for (j = i + 1; j < orderItemList.size(); j++) {
-				// Check if same barcode exists in given list
-				if (orderItemList.get(j).getBarcode().equals(orderItemList.get(i).getBarcode())) {
-					// Add both quantities
-					orderItemList.get(i)
-							.setQuantity(orderItemList.get(i).getQuantity() + orderItemList.get(j).getQuantity());
-					// Remove duplicate entry
-					orderItemList.remove(j);
-					// Reduce index
-					j--;
-				}
+		LinkedHashMap<String, OrderItemForm> m = new LinkedHashMap<String, OrderItemForm>();
+		int i;
+		for (i = 0; i < orderItemForms.length; i++) {
+			if (m.containsKey(orderItemForms[i].getBarcode())) {
+				OrderItemForm o = m.get(orderItemForms[i].getBarcode());
+				o.setQuantity(o.getQuantity() + orderItemForms[i].getQuantity());
+				m.put(orderItemForms[i].getBarcode(), o);
+			} else {
+				m.put(orderItemForms[i].getBarcode(), orderItemForms[i]);
 			}
 		}
+		Collection<OrderItemForm> values = m.values();
+		List<OrderItemForm> orderItemList = new ArrayList<OrderItemForm>(values);
 		return orderItemList;
 	}
 
@@ -90,9 +87,9 @@ public class OrderService {
 			// InventoryPojo for available quantity
 			InventoryPojo ip = inService.getByProductId(p);
 			// Check quantity
-			if(enteredQuantity == ip.getQuantity()) {
-				throw new ApiException(
-						"Available Inventory for Barcode " + i.getBarcode() + " will be 0 !! Please enter lesser quantity !");
+			if (enteredQuantity == ip.getQuantity()) {
+				throw new ApiException("Available Inventory for Barcode " + i.getBarcode()
+						+ " will be 0 !! Please enter lesser quantity !");
 			}
 			if (enteredQuantity > ip.getQuantity()) {
 				throw new ApiException(
