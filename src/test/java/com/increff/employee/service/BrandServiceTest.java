@@ -44,13 +44,15 @@ public class BrandServiceTest extends AbstractUnitTest {
 		// After delete throw exception while getting data
 		service.getId(b.getBrand(), b.getCategory());
 	}
+
 	@Test(expected = ApiException.class)
 	public void testGetIdBlank() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		// select data for given brand and category
-		int id = service.getId("", "");
+		service.getId("", "");
 	}
+
 	@Test
 	public void testGet() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
@@ -102,6 +104,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		assertEquals("shah", b.getCategory());
 
 	}
+
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
@@ -110,6 +113,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		b.setBrand("");
 		service.checkData(b);
 	}
+
 	public BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
 		BrandMasterPojo b = new BrandMasterPojo();
 		// create data
