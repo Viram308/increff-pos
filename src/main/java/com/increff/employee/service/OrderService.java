@@ -65,15 +65,19 @@ public class OrderService {
 		LinkedHashMap<String, OrderItemForm> m = new LinkedHashMap<String, OrderItemForm>();
 		int i;
 		for (i = 0; i < orderItemForms.length; i++) {
+			// check key already exists
 			if (m.containsKey(orderItemForms[i].getBarcode())) {
+				// update existing one
 				OrderItemForm o = m.get(orderItemForms[i].getBarcode());
 				o.setQuantity(o.getQuantity() + orderItemForms[i].getQuantity());
 				m.put(orderItemForms[i].getBarcode(), o);
 			} else {
+				// create new one
 				m.put(orderItemForms[i].getBarcode(), orderItemForms[i]);
 			}
 		}
 		Collection<OrderItemForm> values = m.values();
+		// convert hashmap to list
 		List<OrderItemForm> orderItemList = new ArrayList<OrderItemForm>(values);
 		return orderItemList;
 	}

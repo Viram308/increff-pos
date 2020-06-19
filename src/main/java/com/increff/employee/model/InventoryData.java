@@ -11,6 +11,5 @@ public class InventoryData extends InventoryForm {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
 
 }

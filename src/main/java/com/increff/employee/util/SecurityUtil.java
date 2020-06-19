@@ -6,6 +6,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 
+import com.increff.employee.model.UserPrincipal;
+
 public class SecurityUtil {
 
 	public static void createContext(HttpSession session) {

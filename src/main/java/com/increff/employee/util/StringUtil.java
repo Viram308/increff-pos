@@ -2,7 +2,6 @@ package com.increff.employee.util;
 
 public class StringUtil {
 
-
 	public static String toLowerCase(String s) {
 		return s == null ? null : s.trim().toLowerCase();
 	}

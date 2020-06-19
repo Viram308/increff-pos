@@ -1,4 +1,5 @@
 //HELPER METHOD
+// form to json converter
 function toJson($form){
     var serialized = $form.serializeArray();
     console.log(serialized);
@@ -11,12 +12,14 @@ function toJson($form){
     return json;
 }
 
-
+// handle error for REST api failure
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
 	alert(response.message);
 }
 
+
+// Read tsv files
 function readFileData(file, callback){
 	var config = {
 		header: true,
@@ -24,12 +27,12 @@ function readFileData(file, callback){
 		skipEmptyLines: "greedy",
 		complete: function(results) {
 			callback(results);
-	  	}	
-	}
-	Papa.parse(file, config);
+        }	
+    }
+    Papa.parse(file, config);
 }
 
-
+// Write in tsv files
 function writeFileData(arr){
 	var config = {
 		quoteChar: '',

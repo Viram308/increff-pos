@@ -73,9 +73,9 @@ public class OrderItemService {
 		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
 		availableQuantity = ip.getQuantity() + o.getQuantity();
 		// Check quantity
-		if(enteredQuantity == availableQuantity) {
-			throw new ApiException(
-					"Available Inventory for Barcode " + orderItem.getBarcode() + " will be 0 !! Please enter lesser quantity !");
+		if (enteredQuantity == availableQuantity) {
+			throw new ApiException("Available Inventory for Barcode " + orderItem.getBarcode()
+					+ " will be 0 !! Please enter lesser quantity !");
 		}
 		if (enteredQuantity > availableQuantity) {
 			throw new ApiException(

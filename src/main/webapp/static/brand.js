@@ -1,3 +1,4 @@
+// get url
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
 	return baseUrl + "/api/brand";
@@ -5,23 +6,24 @@ function getBrandUrl(){
 
 //BUTTON ACTIONS
 function addBrand(event){
-	//Set the values to update
+	//Set the values to add
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var url = getBrandUrl();
-
+	// call api
 	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
+		url: url,
+		type: 'POST',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+	   		// get list
 	   		getBrandList();  
-	   },
-	   error: handleAjaxError
-	});
+	   	},
+	   	error: handleAjaxError
+	   });
 
 	return false;
 }
@@ -35,19 +37,20 @@ function updateBrand(event){
 	//Set the values to update
 	var $form = $("#brand-edit-form");
 	var json = toJson($form);
-
+	// call api
 	$.ajax({
-	   url: url,
-	   type: 'PUT',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
+		url: url,
+		type: 'PUT',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+	   		// get list
 	   		getBrandList();   
-	   },
-	   error: handleAjaxError
-	});
+	   	},
+	   	error: handleAjaxError
+	   });
 
 	return false;
 }
@@ -55,27 +58,30 @@ function updateBrand(event){
 
 function getBrandList(){
 	var url = getBrandUrl();
+	// call api
 	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
+		url: url,
+		type: 'GET',
+		success: function(data) {
+	   		// display data
 	   		displayBrandList(data);  
-	   },
-	   error: handleAjaxError
-	});
+	   	},
+	   	error: handleAjaxError
+	   });
 }
 
 function deleteBrand(id){
 	var url = getBrandUrl() + "/" + id;
-
+	// call api
 	$.ajax({
-	   url: url,
-	   type: 'DELETE',
-	   success: function(data) {
+		url: url,
+		type: 'DELETE',
+		success: function(data) {
+	   		// get list
 	   		getBrandList();  
-	   },
-	   error: handleAjaxError
-	});
+	   	},
+	   	error: handleAjaxError
+	   });
 }
 
 // FILE UPLOAD METHODS
@@ -91,6 +97,7 @@ function processDataBrand(){
 
 function readFileDataCallbackBrand(results){
 	fileData = results.data;
+	// check no of rows
 	if(fileData.length > 5000)
 	{
 		alert('File Contains more than 5000 rows !!');
@@ -117,20 +124,20 @@ function uploadRowsBrand(){
 
 	//Make ajax call
 	$.ajax({
-	   url: url,
-	   type: 'POST',
-	   data: json,
-	   headers: {
-       	'Content-Type': 'application/json'
-       },	   
-	   success: function(response) {
-	   		uploadRowsBrand();  
-	   },
-	   error: function(response){
-	   		row.error=response.responseText
-	   		errorData.push(row);
-	   		uploadRowsBrand();
-	   }
+		url: url,
+		type: 'POST',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+			uploadRowsBrand();  
+		},
+		error: function(response){
+			row.error=response.responseText
+			errorData.push(row);
+			uploadRowsBrand();
+		}
 	});
 
 }
@@ -146,6 +153,7 @@ function displayBrandList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
+		// dynamic buttons
 		var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteBrand(' + e.id + ')">Delete</button>'
 		buttonHtml += ' <button class="btn btn-outline-success" onclick="displayEditBrand(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
@@ -154,20 +162,22 @@ function displayBrandList(data){
 		+ '<td>'  + e.category + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
-        $tbody.append(row);
+		$tbody.append(row);
 	}
 }
 
 function displayEditBrand(id){
 	var url = getBrandUrl() + "/" + id;
+	// call api
 	$.ajax({
-	   url: url,
-	   type: 'GET',
-	   success: function(data) {
+		url: url,
+		type: 'GET',
+		success: function(data) {
+	   		// display brand for update
 	   		displayBrand(data);   
-	   },
-	   error: handleAjaxError
-	});	
+	   	},
+	   	error: handleAjaxError
+	   });	
 }
 
 function resetUploadDialogBrand(){
@@ -184,6 +194,7 @@ function resetUploadDialogBrand(){
 }
 
 function updateUploadDialogBrand(){
+	// update counts
 	$('#rowCountBrand').html("" + fileData.length);
 	$('#processCountBrand').html("" + processCount);
 	$('#errorCountBrand').html("" + errorData.length);
@@ -196,27 +207,29 @@ function updateFileNameBrand(){
 }
 
 function displayUploadDataBrand(){
- 	resetUploadDialogBrand(); 	
+	resetUploadDialogBrand(); 	
 	$('#upload-brand-modal').modal('toggle');
 }
 
 function displayBrand(data){
+	// fill entries
 	$("#brand-edit-form input[name=brand]").val(data.brand);	
 	$("#brand-edit-form input[name=category]").val(data.category);	
 	$("#brand-edit-form input[name=id]").val(data.id);	
 	$('#edit-brand-modal').modal('toggle');
 }
 function viewBrandList(){
+	// hide and view toggle
 	if ($(this).val() == "Hide") {
-      $(this).html("View");
-      $(this).val("View");
-      $("#brand-table").hide();
-   }
-   else {
-      $(this).html("Hide");
-      $(this).val("Hide");
-      $("#brand-table").show();
-   }
+		$(this).html("View");
+		$(this).val("View");
+		$("#brand-table").hide();
+	}
+	else {
+		$(this).html("Hide");
+		$(this).val("Hide");
+		$("#brand-table").show();
+	}
 	
 }
 
@@ -228,8 +241,8 @@ function init(){
 	$('#upload-brand-data').click(displayUploadDataBrand);
 	$('#process-data-brand').click(processDataBrand);
 	$('#download-errors-brand').click(downloadErrorsBrand);
-    $('#brandFile').on('change', updateFileNameBrand);
-    $('#refresh-brand-data').click(getBrandList);
+	$('#brandFile').on('change', updateFileNameBrand);
+	$('#refresh-brand-data').click(getBrandList);
 }
 
 $(document).ready(init);

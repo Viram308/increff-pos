@@ -1,4 +1,4 @@
-package com.increff.employee.util;
+package com.increff.employee.model;
 
 public class UserPrincipal {
 

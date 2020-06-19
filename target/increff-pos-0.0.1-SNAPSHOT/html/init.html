@@ -1,56 +1,59 @@
 <!doctype html>
 
 <html lang="en">
-
+<!-- Head -->
 <head th:replace="snippets.html :: name_head"></head>
 
 <body>
+	<!-- Navigation bar -->
+	<nav th:replace="snippets.html :: name_site_navbar"></nav>
 
-<nav th:replace="snippets.html :: name_site_navbar"></nav>
+	<!-- Container start -->
+	<div class="container">
+		<!-- Row -->
+		<div class="row">
+			<!-- Col -->
+			<div class="col-6">
+				<!-- Card -->
+				<div class="card">
+					<div class="card-header">
+						Initialize Application
+					</div>
+					<div class="card-body">
+						Provide an email and password to be used as "admin"
+						<!-- Form for initialization -->
+						<form class="form" id="init-form" method="POST" th:action="@{/site/init}">
+							<div class="form-group">
+								<label for="email" class="col-sm-10 col-form-label">Email</label>
+								<div class="col-sm-10">
+									<input type="email" class="form-control" name="email" id="email" placeholder="Enter Email">
+								</div>
+							</div>
+							<div class="form-group">
+								<label for="password" class="col-sm-10 col-form-label">Password</label>
+								<div class="col-sm-10">
+									<input type="password" class="form-control" name="password" id="password" placeholder="Enter Password">
+								</div>
+							</div>
+							<input type="hidden" name="role" id="role" value="admin">
+							<button type="submit" class="btn btn-primary" id="login">Go</button>
+						</form>
+						<!-- Form -->
+					</div>
+					<div class="card-footer text-danger">
+						[[${info.getMessage()}]]
+					</div>
+					
+				</div>
+				<!-- Card -->
+				
 
+			</div> <!-- Col -->
+		</div> <!-- Row -->
 
-<div class="container">
-
-<div class="row">
-<div class="col-6">
-	
-	<div class="card">
-  	<div class="card-header">
-    	Initialize Application
-  	</div>
-  	<div class="card-body">
-  		Provide an email and password to be used as "admin"
-		<form class="form" id="init-form" method="POST" th:action="@{/site/init}">
-			<div class="form-group">
-				<label for="email" class="col-sm-10 col-form-label">Email</label>
-			    <div class="col-sm-10">
-			      <input type="email" class="form-control" name="email" id="email" placeholder="Enter Email">
-			    </div>
-			</div>
-			<div class="form-group">
-			    <label for="password" class="col-sm-10 col-form-label">Password</label>
-			    <div class="col-sm-10">
-			      <input type="password" class="form-control" name="password" id="password" placeholder="Enter Password">
-			    </div>
-			</div>
-			<input type="hidden" name="role" id="role" value="admin">
-			<button type="submit" class="btn btn-primary" id="login">Go</button>
-		</form>
-	</div>
-	<div class="card-footer text-danger">
-		[[${info.getMessage()}]]
-	</div>
-	
-	</div>
-	
-	
-
-</div> <!-- Col -->
-</div> <!-- Row -->
-
-</div> <!-- Container-->
-
-<footer th:replace="snippets.html :: name_footer"></footer>
+	</div> <!-- Container-->
+	<!-- Footer -->
+	<footer th:replace="snippets.html :: name_footer"></footer>
 
 </body>
 

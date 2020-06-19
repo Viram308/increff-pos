@@ -1,4 +1,4 @@
-
+// get url
 function getOrderItemUrl(){
    var baseUrl = $("meta[name=baseUrl]").attr("content")
    return baseUrl + "/api/orderitem";
@@ -21,9 +21,10 @@ function updateOrderItem(event){
       data: json,
       headers: {
          'Content-Type': 'application/json'
-       },      
+      },      
       success: function(response) {
-            getOrderItemList();   
+         // get list
+         getOrderItemList();   
       },
       error: handleAjaxError
    });
@@ -34,27 +35,30 @@ function updateOrderItem(event){
 
 function getOrderItemList(){
    var url = getOrderItemUrl();
+   // call api
    $.ajax({
       url: url,
       type: 'GET',
       success: function(data) {
+            // display data
             displayOrderItemList(data);  
-      },
-      error: handleAjaxError
-   });
+         },
+         error: handleAjaxError
+      });
 }
 
 function deleteOrderItem(id){
    var url = getOrderItemUrl() + "/" + id;
-
+   // call api
    $.ajax({
       url: url,
       type: 'DELETE',
       success: function(data) {
+            // get list
             getOrderItemList();  
-      },
-      error: handleAjaxError
-   });
+         },
+         error: handleAjaxError
+      });
 }
 
 
@@ -65,6 +69,7 @@ function displayOrderItemList(data){
    $tbody.empty();
    for(var i in data){
       var e = data[i];
+      // dynamic buttons
       var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteOrderItem(' + e.id + ')">Delete</button>'
       buttonHtml += ' <button class="btn btn-outline-success" onclick="displayEditOrderItem(' + e.id + ')">Edit</button>'
       var row = '<tr>'
@@ -75,22 +80,25 @@ function displayOrderItemList(data){
       + '<td>' + e.mrp + '</td>'
       + '<td>' + buttonHtml + '</td>'
       + '</tr>';
-        $tbody.append(row);
+      $tbody.append(row);
    }
 }
 
 function displayEditOrderItem(id){
    var url = getOrderItemUrl() + "/" + id;
+   // call api
    $.ajax({
       url: url,
       type: 'GET',
       success: function(data) {
+            // display data
             displayOrderItem(data);   
-      },
-      error: handleAjaxError
-   });   
+         },
+         error: handleAjaxError
+      });   
 }
 
+// fill entries
 function displayOrderItem(data){
    $("#orderitem-edit-form input[name=barcode]").val(data.barcode);
    $("#orderitem-edit-form input[name=quantity]").val(data.quantity);
@@ -100,6 +108,7 @@ function displayOrderItem(data){
 }
 
 function viewOrderItemList(){
+   // hide and view toggle
    if ($(this).val() == "Hide") {
       $(this).html("View");
       $(this).val("View");

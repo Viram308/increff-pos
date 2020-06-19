@@ -1,20 +1,21 @@
 <!doctype html>
 
 <html lang="en">
-
+<!-- Head -->
 <head th:replace="snippets.html :: name_head"></head>
 
 <body>
-
-<nav th:replace="snippets.html :: name_app_navbar"></nav>
-
-<div class="container">
-<div th:replace="snippets.html :: name_user"></div>
-</div> <!-- Container end-->
-
-<footer th:replace="snippets.html :: name_footer"></footer>
-
-<script th:src="@{/static/users.js}"/></script>
+	<!-- Navigation bar -->
+	<nav th:replace="snippets.html :: name_app_navbar"></nav>
+	<!-- Container -->
+	<div class="container">
+		<!-- Users -->
+		<div th:replace="snippets.html :: name_user"></div>
+	</div> <!-- Container end-->
+	<!-- Footer -->
+	<footer th:replace="snippets.html :: name_footer"></footer>
+	<!-- JS files -->
+	<script th:src="@{/static/users.js}"/></script>
 
 </body>	
 

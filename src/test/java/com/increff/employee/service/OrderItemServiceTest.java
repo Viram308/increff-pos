@@ -126,7 +126,9 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(list);
 		OrderItemForm f = getOrderItemForm();
 		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		// set quantity such that available quantity is zero
 		f.setQuantity(o.getQuantity() + ip.getQuantity());
+		// throws exception for zero available quantity
 		service.checkInventory(list.get(0).getId(), f);
 
 	}
@@ -140,7 +142,9 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(list);
 		OrderItemForm f = getOrderItemForm();
 		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		// set quantity such that available quantity is negative
 		f.setQuantity(o.getQuantity() + ip.getQuantity() + 1);
+		// throws exception for negative available quantity
 		service.checkInventory(list.get(0).getId(), f);
 
 	}
@@ -154,7 +158,9 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(list);
 		OrderItemForm f = getOrderItemForm();
 		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		// set quantity such that available quantity is one
 		f.setQuantity(o.getQuantity() + ip.getQuantity() - 1);
+		// Does not throws exception for positive available quantity
 		service.checkInventory(list.get(0).getId(), f);
 		InventoryPojo ip2 = inService.getByProductId(o.getProductMasterPojo());
 		assertEquals(1, ip2.getQuantity());
@@ -164,13 +170,15 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 	public void testCheckEnteredQuantityZero() throws ApiException {
 		OrderItemForm f = getOrderItemForm();
 		f.setQuantity(0);
+		//
 		service.checkEnteredQuantity(f);
 	}
-	
+
 	@Test
 	public void testCheckEnteredQuantityPerfect() throws ApiException {
 		OrderItemForm f = getOrderItemForm();
 		f.setQuantity(10);
+		// throws exception for zero entered quantity
 		service.checkEnteredQuantity(f);
 	}
 

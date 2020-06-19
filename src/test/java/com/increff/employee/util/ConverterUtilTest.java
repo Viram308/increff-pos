@@ -31,6 +31,11 @@ import com.increff.employee.pojo.ProductMasterPojo;
 import com.increff.employee.pojo.UserPojo;
 
 public class ConverterUtilTest {
+
+	// test ConverterUtil
+
+	// All the tests are just testing converted data with expected one
+
 	@Test
 	public void testConvertUserFormtoUserPojo() {
 		UserForm f = getUserForm();
@@ -116,14 +121,18 @@ public class ConverterUtilTest {
 		String role = "";
 		for (Iterator<? extends GrantedAuthority> i = token.getAuthorities().iterator(); i.hasNext();)
 			role = i.next().toString();
+		// Role here can be admin or standard as set by created data
 		assertEquals(p.getRole(), role);
 	}
 
 	@Test
 	public void testGetDateTime() {
 		String datetime = ConverterUtil.getDateTime();
+		// date and time
 		int s1 = datetime.split(" ").length;
+		// day, month and year
 		int s2 = datetime.split(" ")[0].split("-").length;
+		// hour and minute
 		int s3 = datetime.split(" ")[1].split(":").length;
 		assertEquals(2, s1);
 		assertEquals(3, s2);
@@ -159,99 +168,105 @@ public class ConverterUtilTest {
 		OrderItemPojo o = ConverterUtil.convertOrderItemFormtoOrderItemPojo(f);
 		assertEquals(o.getQuantity(), f.getQuantity());
 	}
-	
+
 	@Test
 	public void testGetOrderItemDataList() {
 		List<OrderItemPojo> list = getOrderItemPojoList();
 		List<OrderItemData> list2 = ConverterUtil.getOrderItemDataList(list);
 		assertEquals(list.size(), list2.size());
 	}
-	
+
 	@Test
 	public void testConvertProductFormtoProductMasterPojoUpdate() {
-		ProductForm f=getProductForm();
-		BrandMasterPojo b=getBrandMasterPojo();
-		int brand_category_id=1;
-		ProductMasterPojo p=ConverterUtil.convertProductFormtoProductMasterPojoUpdate(f,brand_category_id, b);
+		ProductForm f = getProductForm();
+		BrandMasterPojo b = getBrandMasterPojo();
+		int brand_category_id = 1;
+		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojoUpdate(f, brand_category_id, b);
 		assertEquals(b.getBrand(), p.getBrand_category().getBrand());
 		assertEquals(b.getCategory(), p.getBrand_category().getCategory());
 		assertEquals(f.getName(), p.getName());
-		assertEquals(f.getMrp(), p.getMrp(),0.01);
+		assertEquals(f.getMrp(), p.getMrp(), 0.01);
 	}
-	
+
 	@Test
 	public void testConvertProductMasterPojotoProductData() {
-		ProductMasterPojo p=getProductMasterPojo();
-		ProductData d=ConverterUtil.convertProductMasterPojotoProductData(p, p.getBrand_category().getBrand(),p.getBrand_category().getCategory());
+		ProductMasterPojo p = getProductMasterPojo();
+		ProductData d = ConverterUtil.convertProductMasterPojotoProductData(p, p.getBrand_category().getBrand(),
+				p.getBrand_category().getCategory());
 		assertEquals(d.getBrand(), p.getBrand_category().getBrand());
 		assertEquals(d.getCategory(), p.getBrand_category().getCategory());
 		assertEquals(d.getBarcode(), p.getBarcode());
 		assertEquals(d.getName(), p.getName());
-		assertEquals(d.getMrp(), p.getMrp(),0.01);
+		assertEquals(d.getMrp(), p.getMrp(), 0.01);
 	}
-	
+
 	@Test
 	public void testConvertProductFormtoProductMasterPojo() {
-		ProductForm f=getProductForm();
-		BrandMasterPojo b=getBrandMasterPojo();
-		int brand_category_id=1;
-		ProductMasterPojo p=ConverterUtil.convertProductFormtoProductMasterPojo(f,brand_category_id, b);
+		ProductForm f = getProductForm();
+		BrandMasterPojo b = getBrandMasterPojo();
+		int brand_category_id = 1;
+		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojo(f, brand_category_id, b);
 		assertEquals(b.getBrand(), p.getBrand_category().getBrand());
 		assertEquals(b.getCategory(), p.getBrand_category().getCategory());
 		assertEquals(f.getName(), p.getName());
-		assertEquals(f.getMrp(), p.getMrp(),0.01);
+		assertEquals(f.getMrp(), p.getMrp(), 0.01);
 	}
-	
+
 	@Test
 	public void testGetProductDataList() {
 		List<ProductMasterPojo> list = getProductMasterPojoList();
 		List<ProductData> list2 = ConverterUtil.getProductDataList(list);
 		assertEquals(list.size(), list2.size());
 	}
-	
+
 	@Test
 	public void testConvertToSalesData() {
-		List<OrderItemPojo> list=getOrderItemPojoList();
-		List<SalesReportData> list2=ConverterUtil.convertToSalesData(list);
+		List<OrderItemPojo> list = getOrderItemPojoList();
+		List<SalesReportData> list2 = ConverterUtil.convertToSalesData(list);
 		int i;
-		double revenue=0,selling=0;
-		for(i=0;i<list.size();i++) {
-			selling+=list.get(i).getQuantity()*list.get(i).getSellingPrice();
+		double revenue = 0, selling = 0;
+		for (i = 0; i < list.size(); i++) {
+			selling += list.get(i).getQuantity() * list.get(i).getSellingPrice();
 		}
-		for(i=0;i<list2.size();i++) {
+		for (i = 0; i < list2.size(); i++) {
 			assertEquals(list2.get(i).getBrand(), list.get(i).getProductMasterPojo().getBrand_category().getBrand());
-			assertEquals(list2.get(i).getCategory(), list.get(i).getProductMasterPojo().getBrand_category().getCategory());
+			assertEquals(list2.get(i).getCategory(),
+					list.get(i).getProductMasterPojo().getBrand_category().getCategory());
 			assertEquals(list2.get(i).getQuantity(), list.get(i).getQuantity());
-			revenue+=list2.get(i).getRevenue();
+			revenue += list2.get(i).getRevenue();
 		}
-		assertEquals(selling, revenue,0.01);
+		assertEquals(selling, revenue, 0.01);
 	}
-	
+
 	@Test
 	public void testConvertToBrandData() {
-		List<BrandMasterPojo> list=getBrandMasterPojoList();
-		List<BrandData> list2=ConverterUtil.convertToBrandData(list);
+		List<BrandMasterPojo> list = getBrandMasterPojoList();
+		List<BrandData> list2 = ConverterUtil.convertToBrandData(list);
 		int i;
-		for(i=0;i<list2.size();i++) {
+		for (i = 0; i < list2.size(); i++) {
 			assertEquals(list2.get(i).getBrand(), list.get(i).getBrand());
 			assertEquals(list2.get(i).getCategory(), list.get(i).getCategory());
-			
+
 		}
 		assertEquals(list.size(), list2.size());
 	}
-	
+
 	@Test
 	public void testConvertToInventoryReportData() {
-		List<InventoryPojo> list=getInventoryPojoList();
-		List<InventoryReportData> list2=ConverterUtil.convertToInventoryReportData(list);
+		List<InventoryPojo> list = getInventoryPojoList();
+		List<InventoryReportData> list2 = ConverterUtil.convertToInventoryReportData(list);
 		int i;
-		for(i=0;i<list2.size();i++) {
+		for (i = 0; i < list2.size(); i++) {
 			assertEquals(list2.get(i).getBrand(), list.get(i).getProductMasterPojo().getBrand_category().getBrand());
-			assertEquals(list2.get(i).getCategory(), list.get(i).getProductMasterPojo().getBrand_category().getCategory());
+			assertEquals(list2.get(i).getCategory(),
+					list.get(i).getProductMasterPojo().getBrand_category().getCategory());
 			assertEquals(list2.get(i).getQuantity(), list.get(i).getQuantity());
 		}
 		assertEquals(list.size(), list2.size());
 	}
+
+	// create data for tests
+
 	private List<ProductMasterPojo> getProductMasterPojoList() {
 		List<ProductMasterPojo> list = new ArrayList<ProductMasterPojo>();
 		ProductMasterPojo p1 = getProductMasterPojo();
@@ -264,12 +279,12 @@ public class ConverterUtilTest {
 	}
 
 	private ProductForm getProductForm() {
-		ProductForm f=new ProductForm();
-		BrandMasterPojo b=getBrandMasterPojo();
-		String brand=b.getBrand();
-		String category=b.getCategory();
-		String name="munch";
-		double mrp=10.50;
+		ProductForm f = new ProductForm();
+		BrandMasterPojo b = getBrandMasterPojo();
+		String brand = b.getBrand();
+		String category = b.getCategory();
+		String name = "munch";
+		double mrp = 10.50;
 		f.setBrand(brand);
 		f.setCategory(category);
 		f.setMrp(mrp);

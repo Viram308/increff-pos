@@ -89,22 +89,28 @@ public class OrderServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testCheckInventory() throws ApiException {
 		List<OrderItemForm> orderItemForms = getList();
+		// throws exception for negative quantity
 		service.checkInventory(orderItemForms);
 	}
 
 	@Test(expected = ApiException.class)
 	public void testCheckInventoryZeroQuantity() throws ApiException {
 		List<OrderItemForm> orderItemForms = getList();
+		// Update created data so that inventory is zero
 		orderItemForms.get(0).setQuantity(10);
+		// throws exception for zero quantity available
 		service.checkInventory(orderItemForms);
 	}
 
 	@Test
 	public void testCheckInventoryPerfect() throws ApiException {
 		List<OrderItemForm> orderItemForms = getList();
+		// Update created data so that inventory is available
 		orderItemForms.get(1).setQuantity(25);
+		// Does not throws exception
 		service.checkInventory(orderItemForms);
 	}
+
 	@Test
 	public void testGetOrderItemObject() throws ApiException {
 		OrderPojo op = getOrderPojoTest();

@@ -8,13 +8,20 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.employee.dao.UserDao;
+import com.increff.employee.model.InfoData;
+import com.increff.employee.model.UserForm;
 import com.increff.employee.pojo.UserPojo;
+import com.increff.employee.util.ConverterUtil;
 
 @Service
 public class UserService {
 
 	@Autowired
 	private UserDao dao;
+	@Autowired
+	private InfoData info;
+	@Autowired
+	private UserService service;
 
 	@Transactional
 	public void add(UserPojo p) throws ApiException {
@@ -68,6 +75,19 @@ public class UserService {
 	protected static void normalize(UserPojo p) {
 		p.setEmail(p.getEmail().toLowerCase().trim());
 		p.setRole(p.getRole().toLowerCase().trim());
+	}
+
+	public void checkAvailability(List<UserPojo> list, UserForm form) throws ApiException {
+		// check if already exists
+		if (list.size() > 0) {
+			info.setMessage("Application already initialized. Please use existing credentials");
+		} else {
+			// Initialize with admin role
+			form.setRole("admin");
+			UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
+			service.add(p);
+			info.setMessage("Application initialized");
+		}
 	}
 
 }

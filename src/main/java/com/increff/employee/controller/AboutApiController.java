@@ -21,7 +21,7 @@ public class AboutApiController {
 
 	// Gives application name and version
 	@ApiOperation(value = "Gives application name and version")
-	@RequestMapping(value = "",method = RequestMethod.GET)
+	@RequestMapping(value = "", method = RequestMethod.GET)
 	public AboutAppData getDetails() {
 		return service.getNameandVersion();
 	}

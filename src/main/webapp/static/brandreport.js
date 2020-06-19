@@ -1,4 +1,4 @@
-
+// get url
 function getBrandReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
 	return baseUrl + "/api/brandreport";
@@ -6,18 +6,20 @@ function getBrandReportUrl(){
 
 function getBrandReportData(){
 	var url = getBrandReportUrl();
+	// call api
 	$.ajax({
-	   url: url,
-	   type: 'GET',	   
-	   success: function(response) {
-	   		displayBrandReport(response);
+		url: url,
+		type: 'GET',	   
+		success: function(response) {
+	   	// show report
+	   	displayBrandReport(response);
 	   },
 	   error: handleAjaxError
 	});
 
 	return false;
 }
-
+// display method
 function displayBrandReport(data){
 	var $tbody = $('#brandreport-table').find('tbody');
 	$tbody.empty();
@@ -28,21 +30,22 @@ function displayBrandReport(data){
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>' + e.category + '</td>'
 		+ '</tr>';
-        $tbody.append(row);
+		$tbody.append(row);
 	}
 }
 
 function viewBrandReport(){
+	// hide and view toggle
 	if ($(this).val() == "Hide") {
-      $(this).html("View");
-      $(this).val("View");
-      $("#brandreport-table").hide();
-   }
-   else {
-      $(this).html("Hide");
-      $(this).val("Hide");
-      $("#brandreport-table").show();
-   }
+		$(this).html("View");
+		$(this).val("View");
+		$("#brandreport-table").hide();
+	}
+	else {
+		$(this).html("Hide");
+		$(this).val("Hide");
+		$("#brandreport-table").show();
+	}
 	
 }
 
@@ -50,7 +53,7 @@ function viewBrandReport(){
 function init(){
 	$('#refresh-brandreport-data').click(getBrandReportData);
 	$('#view-brandreport-data').click(viewBrandReport);
-        
+	
 }
 $(document).ready(init);
 $(document).ready(getBrandReportData);

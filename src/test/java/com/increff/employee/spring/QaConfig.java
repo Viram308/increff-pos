@@ -19,5 +19,4 @@ import com.increff.employee.spring.SpringConfig;
 })
 public class QaConfig {
 
-
 }

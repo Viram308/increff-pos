@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
+import com.increff.employee.model.UserPrincipal;
+
 public class UserPrincipalTest {
 	// test UserPrincipal
 	@Test

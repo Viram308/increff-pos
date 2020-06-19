@@ -11,6 +11,7 @@ com/increff/employee/spring/ControllerConfig.class
 com/increff/employee/service/InventoryService.class
 com/increff/employee/util/GenerateXML.class
 com/increff/employee/util/IOUtil.class
+com/increff/employee/model/UserPrincipal.class
 com/increff/employee/spring/WebInitializer.class
 com/increff/employee/service/AboutAppService.class
 com/increff/employee/controller/InitApiController.class
@@ -18,7 +19,6 @@ com/increff/employee/util/ConverterUtil.class
 com/increff/employee/model/BillForm.class
 com/increff/employee/pojo/UserPojo.class
 com/increff/employee/controller/InventoryApiController.class
-com/increff/employee/controller/BillController.class
 com/increff/employee/controller/AboutApiController.class
 com/increff/employee/dao/OrderDao.class
 com/increff/employee/dao/OrderItemDao.class
@@ -54,7 +54,6 @@ com/increff/employee/pojo/BrandMasterPojo.class
 com/increff/employee/controller/AdminApiController.class
 com/increff/employee/spring/SecurityConfig.class
 com/increff/employee/model/BrandData.class
-com/increff/employee/util/UserPrincipal.class
 com/increff/employee/dao/ProductDao.class
 com/increff/employee/controller/AppAdminUiController.class
 com/increff/employee/model/InventoryData.class
