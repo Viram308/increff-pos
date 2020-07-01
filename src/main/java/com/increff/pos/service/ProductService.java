@@ -100,7 +100,7 @@ public class ProductService {
 		}
 	}
 
-	protected static void normalize(ProductMasterPojo p) {
+	public static void normalize(ProductMasterPojo p) {
 		p.setName(StringUtil.toLowerCase(p.getName()));
 		p.setBarcode(StringUtil.toLowerCase(p.getBarcode()));
 	}

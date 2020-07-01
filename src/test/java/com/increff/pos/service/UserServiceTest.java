@@ -105,7 +105,7 @@ public class UserServiceTest extends AbstractUnitTest {
 		return f;
 	}
 
-	public UserPojo getUserPojo() {
+	private UserPojo getUserPojo() {
 		UserPojo u = new UserPojo();
 		u.setEmail(" Shahviram308@gmail.coM ");
 		u.setPassword("admin");

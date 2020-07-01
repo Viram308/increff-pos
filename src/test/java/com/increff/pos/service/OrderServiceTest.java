@@ -211,7 +211,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		return datetime;
 	}
 
-	public OrderPojo getOrderPojoTest() throws ApiException {
+	private OrderPojo getOrderPojoTest() throws ApiException {
 		OrderPojo op = new OrderPojo();
 		String datetime = getDateTime();
 		// create data

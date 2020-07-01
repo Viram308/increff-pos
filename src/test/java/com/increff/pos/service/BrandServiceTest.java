@@ -114,7 +114,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		service.checkData(b);
 	}
 
-	public BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
+	private BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
 		BrandMasterPojo b = new BrandMasterPojo();
 		// create data
 		b.setBrand(" viram ");

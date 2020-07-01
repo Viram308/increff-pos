@@ -89,7 +89,7 @@ public class BrandService {
 		}
 	}
 
-	protected static void normalize(BrandMasterPojo p) {
+	public static void normalize(BrandMasterPojo p) {
 		p.setBrand(StringUtil.toLowerCase(p.getBrand()));
 		p.setCategory(StringUtil.toLowerCase(p.getCategory()));
 	}
