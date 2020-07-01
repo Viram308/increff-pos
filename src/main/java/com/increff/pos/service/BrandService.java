@@ -42,9 +42,9 @@ public class BrandService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public int getId(String brand, String category) throws ApiException {
-		if (brand.isBlank() || category.isBlank()) {
-			throw new ApiException("Please enter brand and category !!");
-		}
+//		if (brand.isBlank() || category.isBlank()) {
+//			throw new ApiException("Please enter brand and category !!");
+//		}
 		// Get id
 		int id = dao.selectId(StringUtil.toLowerCase(brand), StringUtil.toLowerCase(category));
 		if (id > 0) {
