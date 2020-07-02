@@ -5,7 +5,7 @@ function getUserUrl(){
 }
 
 //BUTTON ACTIONS
-function addUser(event){
+function addUser(){
 	//Set the values to add
 	var $form = $("#user-form");
 	var json = toJson($form);
@@ -130,7 +130,7 @@ function displayUserList(data){
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-user').click(addUser);
+	// $('#add-user').click(addUser);
 	$('#refresh-user-data').click(getUserList);
 	$('#update-user').click(updateUser);
 
