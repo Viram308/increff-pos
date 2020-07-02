@@ -23,8 +23,7 @@ public class ProductService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(ProductMasterPojo b) throws ApiException {
-		// check input data
-		checkData(b);
+
 		// normalize
 		normalize(b);
 		// check for existing product data with given barcode
@@ -51,7 +50,7 @@ public class ProductService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public ProductMasterPojo get(int id) throws ApiException {
-		return getCheck(id);
+		return dao.select(ProductMasterPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -76,7 +75,6 @@ public class ProductService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(int id, ProductMasterPojo p) throws ApiException {
-		checkData(p);
 		normalize(p);
 		ProductMasterPojo b = getCheck(id);
 		b.setBrand_category(p.getBrand_category());
@@ -92,12 +90,6 @@ public class ProductService {
 			throw new ApiException("Product not exist for id : " + id);
 		}
 		return p;
-	}
-
-	public void checkData(ProductMasterPojo b) throws ApiException {
-		if (b.getName().isBlank() || b.getMrp() <= 0) {
-			throw new ApiException("Please enter name, mrp(positive) !!");
-		}
 	}
 
 	public static void normalize(ProductMasterPojo p) {

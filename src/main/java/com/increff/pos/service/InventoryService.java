@@ -21,8 +21,6 @@ public class InventoryService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(InventoryPojo i) throws ApiException {
-		// check input data
-		checkData(i);
 		// check for existing inventory data
 		InventoryPojo p = dao.selectByProductId(i.getProductMasterPojo().getId());
 		if (p == null) {
@@ -37,12 +35,12 @@ public class InventoryService {
 
 	@Transactional
 	public void delete(int id) {
-		dao.delete(InventoryPojo.class,id);
+		dao.delete(InventoryPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
 	public InventoryPojo get(int id) throws ApiException {
-		return getCheck(id);
+		return dao.select(InventoryPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -63,7 +61,6 @@ public class InventoryService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(int id, InventoryPojo p) throws ApiException {
-		checkData(p);
 		InventoryPojo b = getCheck(id);
 		b.setQuantity(p.getQuantity());
 		dao.update(b);
@@ -71,17 +68,11 @@ public class InventoryService {
 
 	@Transactional
 	public InventoryPojo getCheck(int id) throws ApiException {
-		InventoryPojo p = dao.select(InventoryPojo.class,id);
+		InventoryPojo p = dao.select(InventoryPojo.class, id);
 		if (p == null) {
 			throw new ApiException("Inventory not exist for id : " + id);
 		}
 		return p;
 	}
 
-	public void checkData(InventoryPojo i) throws ApiException {
-		if (i.getQuantity() <= 0) {
-			throw new ApiException("Quantity can not be negative or zero for product : "
-					+ i.getProductMasterPojo().getBarcode() + " !!");
-		}
-	}
 }

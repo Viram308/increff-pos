@@ -25,8 +25,6 @@ public class UserService {
 
 	@Transactional
 	public void add(UserPojo p) throws ApiException {
-		// check input data
-		checkData(p);
 		// normalize
 		normalize(p);
 		// check existing user with given email
@@ -59,18 +57,12 @@ public class UserService {
 
 	@Transactional
 	public void update(int id, UserPojo p) throws ApiException {
-		checkData(p);
 		normalize(p);
 		UserPojo u = get(id);
 		u.setRole(p.getRole());
 		dao.update(u);
 	}
 
-	public void checkData(UserPojo u) throws ApiException {
-		if (u.getEmail().isBlank() || u.getPassword().isBlank() || u.getRole().isBlank()) {
-			throw new ApiException("Please enter email, password and role !!");
-		}
-	}
 
 	public static void normalize(UserPojo p) {
 		p.setEmail(p.getEmail().toLowerCase().trim());

@@ -5,6 +5,7 @@ com/increff/pos/controller/IndexUiController.class
 com/increff/pos/controller/OrderItemApiController.class
 com/increff/pos/spring/WebInitializer.class
 com/increff/pos/model/ProductForm.class
+com/increff/pos/dto/OrderDto.class
 com/increff/pos/pojo/BrandMasterPojo.class
 com/increff/pos/controller/AboutApiController.class
 com/increff/pos/model/BillForm.class
@@ -36,6 +37,7 @@ com/increff/pos/model/SalesReportData.class
 com/increff/pos/model/SalesReportForm.class
 com/increff/pos/model/UserPrincipal.class
 com/increff/pos/controller/AppUiController.class
+com/increff/pos/dto/UserDto.class
 com/increff/pos/util/ConverterUtil.class
 com/increff/pos/model/ProductData.class
 com/increff/pos/pojo/OrderItemPojo.class
@@ -65,6 +67,7 @@ com/increff/pos/controller/InventoryApiController.class
 com/increff/pos/pojo/UserPojo.class
 com/increff/pos/service/ApiException.class
 com/increff/pos/model/OrderData.class
+com/increff/pos/dto/OrderItemDto.class
 com/increff/pos/dto/BrandDto.class
 com/increff/pos/model/OrderForm.class
 com/increff/pos/controller/SiteUiController.class

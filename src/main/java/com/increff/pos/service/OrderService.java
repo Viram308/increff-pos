@@ -44,7 +44,7 @@ public class OrderService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public OrderPojo get(int id) throws ApiException {
-		return getCheck(id);
+		return dao.select(OrderPojo.class, id);
 	}
 
 	@Transactional

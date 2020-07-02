@@ -73,14 +73,14 @@ public class UserServiceTest extends AbstractUnitTest {
 		assertEquals("admin", u.getPassword());
 	}
 
-	@Test(expected = ApiException.class)
-	public void testCheckData() throws ApiException {
-		UserPojo u = getUserPojo();
-		service.checkData(u);
-		// throw exception
-		u.setEmail("");
-		service.checkData(u);
-	}
+//	@Test(expected = ApiException.class)
+//	public void testCheckData() throws ApiException {
+//		UserPojo u = getUserPojo();
+//		service.checkData(u);
+//		// throw exception
+//		u.setEmail("");
+//		service.checkData(u);
+//	}
 
 	@Test
 	public void testCheckAvailbility() throws ApiException {

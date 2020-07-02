@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.pos.dto.OrderDto;
 import com.increff.pos.model.BillData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemForm;
@@ -39,6 +40,10 @@ public class OrderApiController {
 
 	@Autowired
 	private OrderService oService;
+	
+	@Autowired
+	private OrderDto orderDto;
+	
 	@Autowired
 	private OrderItemService iService;
 
@@ -100,15 +105,15 @@ public class OrderApiController {
 	@ApiOperation(value = "Gets a Order")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public OrderData get(@PathVariable int id) throws ApiException {
-		OrderPojo p = oService.get(id);
-		return ConverterUtil.convertOrderPojotoOrderData(p);
+		OrderPojo orderPojo = oService.get(id);
+		return orderDto.convertOrderPojotoOrderData(orderPojo);
 	}
 
 	@ApiOperation(value = "Gets list of all Orders")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<OrderData> getAll() {
 		List<OrderPojo> list = oService.getAll();
-		return ConverterUtil.getOrderDataList(list);
+		return orderDto.getOrderDataList(list);
 	}
 
 }
