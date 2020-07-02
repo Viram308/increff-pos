@@ -44,7 +44,7 @@ public class UserService {
 
 	@Transactional
 	public UserPojo get(int id) {
-		return dao.select(id);
+		return dao.select(UserPojo.class, id);
 	}
 
 	@Transactional
@@ -54,7 +54,7 @@ public class UserService {
 
 	@Transactional
 	public void delete(int id) {
-		dao.delete(id);
+		dao.delete(UserPojo.class, id);
 	}
 
 	@Transactional

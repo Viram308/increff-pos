@@ -46,7 +46,7 @@ public class ProductService {
 
 	@Transactional
 	public void delete(int id) {
-		dao.delete(id);
+		dao.delete(ProductMasterPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -87,7 +87,7 @@ public class ProductService {
 
 	@Transactional
 	public ProductMasterPojo getCheck(int id) throws ApiException {
-		ProductMasterPojo p = dao.select(id);
+		ProductMasterPojo p = dao.select(ProductMasterPojo.class, id);
 		if (p == null) {
 			throw new ApiException("Product not exist for id : " + id);
 		}

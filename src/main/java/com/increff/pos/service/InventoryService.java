@@ -37,7 +37,7 @@ public class InventoryService {
 
 	@Transactional
 	public void delete(int id) {
-		dao.delete(id);
+		dao.delete(InventoryPojo.class,id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -71,7 +71,7 @@ public class InventoryService {
 
 	@Transactional
 	public InventoryPojo getCheck(int id) throws ApiException {
-		InventoryPojo p = dao.select(id);
+		InventoryPojo p = dao.select(InventoryPojo.class,id);
 		if (p == null) {
 			throw new ApiException("Inventory not exist for id : " + id);
 		}

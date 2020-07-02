@@ -39,7 +39,7 @@ public class OrderService {
 
 	@Transactional
 	public void delete(int id) {
-		dao.delete(id);
+		dao.delete(OrderPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -54,7 +54,7 @@ public class OrderService {
 
 	@Transactional
 	public OrderPojo getCheck(int id) throws ApiException {
-		OrderPojo p = dao.select(id);
+		OrderPojo p = dao.select(OrderPojo.class, id);
 		if (p == null) {
 			throw new ApiException("Order not exist for id : " + id);
 		}
