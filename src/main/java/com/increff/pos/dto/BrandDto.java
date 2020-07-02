@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandMasterPojo;
+import com.increff.pos.service.ApiException;
 
 @Component
 public class BrandDto {
@@ -17,8 +18,10 @@ public class BrandDto {
 	private ModelMapper modelMapper;
 
 	// Converts BrandForm to BrandMasterPojo
-	public BrandMasterPojo convertBrandFormtoBrandMasterPojo(BrandForm form) {
-		return modelMapper.map(form, BrandMasterPojo.class);
+	public BrandMasterPojo convertBrandFormtoBrandMasterPojo(BrandForm form) throws ApiException {
+		BrandMasterPojo brandMasterPojo = modelMapper.map(form, BrandMasterPojo.class);
+		checkData(brandMasterPojo);
+		return brandMasterPojo;
 	}
 
 	// Converts BrandMasterPojo to BrandData
@@ -35,5 +38,11 @@ public class BrandDto {
 		}
 		return list2;
 	}
-
+	
+	
+	public void checkData(BrandMasterPojo b) throws ApiException {
+		if (b.getBrand().isBlank() || b.getCategory().isBlank()) {
+			throw new ApiException("Please enter brand and category !!");
+		}
+	}
 }

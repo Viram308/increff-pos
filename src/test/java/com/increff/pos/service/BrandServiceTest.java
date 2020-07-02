@@ -27,10 +27,10 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		// Add data
 		service.add(b);
-		int id = service.getId(b.getBrand(), b.getCategory());
-		assertEquals(id, b.getId());
+		BrandMasterPojo brandMasterPojo = service.getByBrandCategory(b.getBrand(), b.getCategory());
+		assertEquals(brandMasterPojo.getId(), b.getId());
 		// Delete should be successful and should not throw exception as data exists
-		service.delete(id);
+		service.delete(brandMasterPojo.getId());
 	}
 
 	@Test(expected = ApiException.class)
@@ -38,11 +38,11 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		// select data for given brand and category
-		int id = service.getId(b.getBrand(), b.getCategory());
-		assertEquals(id, b.getId());
-		service.delete(id);
+		BrandMasterPojo brandMasterPojo = service.getByBrandCategory(b.getBrand(), b.getCategory());
+		assertEquals(brandMasterPojo.getId(), b.getId());
+		service.delete(brandMasterPojo.getId());
 		// After delete throw exception while getting data
-		service.getId(b.getBrand(), b.getCategory());
+		service.getByBrandCategory(b.getBrand(), b.getCategory());
 	}
 
 	@Test(expected = ApiException.class)
@@ -50,7 +50,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		// select data for given brand and category
-		service.getId("", "");
+		service.getByBrandCategory("", "");
 	}
 
 	@Test
@@ -105,14 +105,14 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
-	@Test(expected = ApiException.class)
-	public void testCheckData() throws ApiException {
-		BrandMasterPojo b = getBrandMasterPojoTest();
-		service.checkData(b);
-		// throw exception
-		b.setBrand("");
-		service.checkData(b);
-	}
+//	@Test(expected = ApiException.class)
+//	public void testCheckData() throws ApiException {
+//		BrandMasterPojo b = getBrandMasterPojoTest();
+//		service.checkData(b);
+//		// throw exception
+//		b.setBrand("");
+//		service.checkData(b);
+//	}
 
 	private BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
 		BrandMasterPojo b = new BrandMasterPojo();

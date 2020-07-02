@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
+import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
@@ -36,9 +37,9 @@ public class ProductApiController {
 	@ApiOperation(value = "Adds a Product")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void add(@RequestBody ProductForm form) throws ApiException {
-		int brand_category_id = bService.getId(form.getBrand(), form.getCategory());
-		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojo(form, brand_category_id,
-				bService.get(brand_category_id));
+		BrandMasterPojo brandMasterPojo = bService.getByBrandCategory(form.getBrand(), form.getCategory());
+		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojo(form, brandMasterPojo.getId(),
+				brandMasterPojo);
 		pService.add(p);
 	}
 
@@ -73,10 +74,10 @@ public class ProductApiController {
 
 	@ApiOperation(value = "Updates a Product")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody ProductForm f) throws ApiException {
-		int brand_category_id = bService.getId(f.getBrand(), f.getCategory());
-		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojoUpdate(f, brand_category_id,
-				bService.get(brand_category_id));
+	public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
+		BrandMasterPojo brandMasterPojo = bService.getByBrandCategory(form.getBrand(), form.getCategory());
+		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojo(form, brandMasterPojo.getId(),
+				brandMasterPojo);
 		pService.update(id, p);
 
 	}

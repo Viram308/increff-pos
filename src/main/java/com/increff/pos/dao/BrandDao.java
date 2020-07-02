@@ -50,7 +50,7 @@ public class BrandDao extends AbstractDao {
 	}
 
 	// select according to brand and category
-	public BrandMasterPojo selectByPair(String brand, String category) {
+	public BrandMasterPojo selectByBrandCategory(String brand, String category) {
 		TypedQuery<BrandMasterPojo> query = getQuery(select_brand_category, BrandMasterPojo.class);
 		query.setParameter("brand", brand);
 		query.setParameter("category", category);

@@ -14,6 +14,7 @@ com/increff/pos/controller/OrderApiController.class
 com/increff/pos/controller/LoginController.class
 com/increff/pos/model/OrderItemForm.class
 com/increff/pos/spring/SecurityConfig.class
+com/increff/pos/dto/InventoryDto.class
 com/increff/pos/util/SecurityUtil.class
 com/increff/pos/spring/SpringConfig.class
 com/increff/pos/controller/AppAdminUiController.class
@@ -39,6 +40,7 @@ com/increff/pos/util/ConverterUtil.class
 com/increff/pos/model/ProductData.class
 com/increff/pos/pojo/OrderItemPojo.class
 com/increff/pos/model/BrandForm.class
+com/increff/pos/dto/ProductDto.class
 com/increff/pos/pojo/InventoryPojo.class
 com/increff/pos/model/BillData.class
 com/increff/pos/model/InventoryReportData.class

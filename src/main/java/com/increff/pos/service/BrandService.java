@@ -21,18 +21,11 @@ public class BrandService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(BrandMasterPojo b) throws ApiException {
-		// check input data
-		checkData(b);
 		// normalize
 		normalize(b);
 		// check for existing pair
-		BrandMasterPojo p = dao.selectByPair(b.getBrand(), b.getCategory());
-		if (p == null) {
-			dao.insert(b);
-		} else {
-			throw new ApiException("Given Brand and Category pair already exist");
-		}
-
+		getCheckExisting(b.getBrand(), b.getCategory());
+		dao.insert(b);
 	}
 
 	@Transactional
@@ -41,22 +34,14 @@ public class BrandService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public int getId(String brand, String category) throws ApiException {
-//		if (brand.isBlank() || category.isBlank()) {
-//			throw new ApiException("Please enter brand and category !!");
-//		}
-		// Get id
-		int id = dao.selectId(StringUtil.toLowerCase(brand), StringUtil.toLowerCase(category));
-		if (id > 0) {
-			return id;
-		} else {
-			throw new ApiException("Given Brand and Category pair dosen't exist");
-		}
+	public BrandMasterPojo getByBrandCategory(String brand, String category) throws ApiException {
+		// Get pojo
+		return getCheckForBrandCategory(brand, category);
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
-	public BrandMasterPojo get(int id) throws ApiException {
-		return getCheck(id);
+	@Transactional
+	public BrandMasterPojo get(int id) {
+		return dao.select(id);
 	}
 
 	@Transactional
@@ -66,27 +51,39 @@ public class BrandService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void update(int id, BrandMasterPojo p) throws ApiException {
-		checkData(p);
 		normalize(p);
-		BrandMasterPojo ex = getCheck(id);
-		ex.setCategory(p.getCategory());
-		ex.setBrand(p.getBrand());
-		dao.update(ex);
+		BrandMasterPojo brandMasterPojo = getCheck(id);
+		brandMasterPojo.setCategory(p.getCategory());
+		brandMasterPojo.setBrand(p.getBrand());
+		getCheckExisting(brandMasterPojo.getBrand(), brandMasterPojo.getCategory());
+		dao.update(brandMasterPojo);
 	}
 
 	@Transactional
 	public BrandMasterPojo getCheck(int id) throws ApiException {
-		BrandMasterPojo p = dao.select(id);
-		if (p == null) {
+		BrandMasterPojo brandMasterPojo = dao.select(id);
+		if (brandMasterPojo == null) {
 			throw new ApiException("Brand and Category not exist for id : " + id);
 		}
-		return p;
+		return brandMasterPojo;
 	}
 
-	public void checkData(BrandMasterPojo b) throws ApiException {
-		if (b.getBrand().isBlank() || b.getCategory().isBlank()) {
-			throw new ApiException("Please enter brand and category !!");
+	@Transactional
+	public void getCheckExisting(String brand, String category) throws ApiException {
+		BrandMasterPojo p = dao.selectByBrandCategory(brand, category);
+		if (p != null) {
+			throw new ApiException("Given Brand and Category pair already exist");
 		}
+	}
+
+	@Transactional
+	public BrandMasterPojo getCheckForBrandCategory(String brand, String category) throws ApiException {
+		BrandMasterPojo brandMasterPojo = dao.selectByBrandCategory(StringUtil.toLowerCase(brand),
+				StringUtil.toLowerCase(category));
+		if (brandMasterPojo == null) {
+			throw new ApiException("Given Brand and Category pair dosen't exist");
+		}
+		return brandMasterPojo;
 	}
 
 	public static void normalize(BrandMasterPojo p) {
