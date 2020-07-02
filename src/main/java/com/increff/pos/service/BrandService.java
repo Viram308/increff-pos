@@ -30,7 +30,7 @@ public class BrandService {
 
 	@Transactional
 	public void delete(int id) {
-		dao.delete(id);
+		dao.delete(BrandMasterPojo.class,id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -41,7 +41,7 @@ public class BrandService {
 
 	@Transactional
 	public BrandMasterPojo get(int id) {
-		return dao.select(id);
+		return dao.select(BrandMasterPojo.class,id);
 	}
 
 	@Transactional
@@ -55,13 +55,12 @@ public class BrandService {
 		BrandMasterPojo brandMasterPojo = getCheck(id);
 		brandMasterPojo.setCategory(p.getCategory());
 		brandMasterPojo.setBrand(p.getBrand());
-		getCheckExisting(brandMasterPojo.getBrand(), brandMasterPojo.getCategory());
 		dao.update(brandMasterPojo);
 	}
 
 	@Transactional
 	public BrandMasterPojo getCheck(int id) throws ApiException {
-		BrandMasterPojo brandMasterPojo = dao.select(id);
+		BrandMasterPojo brandMasterPojo = dao.select(BrandMasterPojo.class,id);
 		if (brandMasterPojo == null) {
 			throw new ApiException("Brand and Category not exist for id : " + id);
 		}

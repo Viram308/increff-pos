@@ -76,7 +76,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandMasterPojo p = service.get(b.getId());
 		p.setBrand("increff");
 		p.setCategory("pos");
-		service.update(p.getId(), p);
+		service.update(b.getId(), p);
 		BrandMasterPojo m = service.get(p.getId());
 		// test updated data
 		assertEquals("increff", m.getBrand());
