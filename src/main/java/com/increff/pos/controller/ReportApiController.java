@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.increff.pos.dto.ReportDto;
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
@@ -23,7 +24,6 @@ import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.OrderItemService;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ReportService;
-import com.increff.pos.util.ConverterUtil;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -44,6 +44,9 @@ public class ReportApiController {
 	@Autowired
 	private BrandService bService;
 
+	@Autowired
+	private ReportDto reportDto;
+
 	// Sales Report
 	@ApiOperation(value = "Gets Sales Report")
 	@RequestMapping(value = "/api/salesreport", method = RequestMethod.POST)
@@ -61,7 +64,7 @@ public class ReportApiController {
 			// Group order item pojo by product id
 			listOfOrderItemPojo = service.groupOrderItemPojoByProductId(listOfOrderItemPojo);
 			// Converts OrderItemPojo to SalesReportData
-			List<SalesReportData> salesReportData = ConverterUtil.convertToSalesData(listOfOrderItemPojo);
+			List<SalesReportData> salesReportData = service.convertToSalesData(listOfOrderItemPojo);
 			// Remove sales report data according to brand and category
 			salesReportData = service.getSalesReportDataByBrandAndCategory(salesReportData, salesReportForm.getBrand(),
 					salesReportForm.getCategory());
@@ -80,7 +83,7 @@ public class ReportApiController {
 	@RequestMapping(value = "/api/brandreport", method = RequestMethod.GET)
 	public List<BrandData> getBrandReport() {
 		List<BrandMasterPojo> list = bService.getAll();
-		return ConverterUtil.convertToBrandData(list);
+		return reportDto.convertToBrandData(list);
 	}
 
 	// Inventory Report
@@ -88,7 +91,7 @@ public class ReportApiController {
 	@RequestMapping(value = "/api/inventoryreport", method = RequestMethod.GET)
 	public List<InventoryReportData> getInventoryReport() throws ApiException {
 		List<InventoryPojo> ip = inService.getAll();
-		List<InventoryReportData> list2 = ConverterUtil.convertToInventoryReportData(ip);
+		List<InventoryReportData> list2 = reportDto.convertToInventoryReportData(ip);
 		// Group list of InventoryReportData brand and category wise
 		return service.groupDataForInventoryReport(list2);
 	}

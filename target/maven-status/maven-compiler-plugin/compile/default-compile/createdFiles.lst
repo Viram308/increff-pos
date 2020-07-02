@@ -5,6 +5,7 @@ com/increff/pos/controller/IndexUiController.class
 com/increff/pos/controller/OrderItemApiController.class
 com/increff/pos/spring/WebInitializer.class
 com/increff/pos/model/ProductForm.class
+com/increff/pos/dto/ReportDto.class
 com/increff/pos/dto/OrderDto.class
 com/increff/pos/pojo/BrandMasterPojo.class
 com/increff/pos/controller/AboutApiController.class

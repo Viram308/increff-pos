@@ -75,5 +75,6 @@
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/spring/WebInitializer.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/controller/LoginController.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/controller/InventoryApiController.java
+/home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dto/ReportDto.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/OrderData.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dto/ProductDto.java
