@@ -4,7 +4,7 @@ public class OrderItemForm {
 
 	private String barcode;
 	private int quantity;
-	private double mrp;
+	private double sellingPrice;
 
 	public String getBarcode() {
 		return barcode;
@@ -22,12 +22,12 @@ public class OrderItemForm {
 		this.quantity = quantity;
 	}
 
-	public double getMrp() {
-		return mrp;
+	public double getSellingPrice() {
+		return sellingPrice;
 	}
 
-	public void setMrp(double mrp) {
-		this.mrp = mrp;
+	public void setSellingPrice(double sellingPrice) {
+		this.sellingPrice = sellingPrice;
 	}
 
 }

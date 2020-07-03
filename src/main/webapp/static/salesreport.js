@@ -60,20 +60,6 @@ function displaySalesReport(data){
 	}
 }
 
-function viewSalesReport(){
-	// hide and view toggle
-	if ($(this).val() == "Hide") {
-		$(this).html("View");
-		$(this).val("View");
-		$("#salesreport-table").hide();
-	}
-	else {
-		$(this).html("Hide");
-		$(this).val("Hide");
-		$("#salesreport-table").show();
-	}
-	
-}
 
 //INITIALIZATION CODE
 function init(){
@@ -93,8 +79,5 @@ function init(){
 			return $('#inputStartDate').val();
 		}
 	});
-	$('#submit-salesreport-data').click(getSalesReportData);
-	$('#view-salesreport-data').click(viewSalesReport);
-	
 }
 $(document).ready(init);

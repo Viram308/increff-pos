@@ -10,9 +10,9 @@ public class AppAdminUiController extends AbstractUiController {
 
 	// Controller which returns model and view of given name of html file
 
-	@RequestMapping(value = "/data")
+	@RequestMapping(value = "/catalog")
 	public ModelAndView data() {
-		return mav("data.html");
+		return mav("catalog.html");
 	}
 
 	@RequestMapping(value = "/reports")

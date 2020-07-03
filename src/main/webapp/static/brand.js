@@ -218,26 +218,9 @@ function displayBrand(data){
 	$("#brand-edit-form input[name=id]").val(data.id);	
 	$('#edit-brand-modal').modal('toggle');
 }
-function viewBrandList(){
-	// hide and view toggle
-	if ($(this).val() == "Hide") {
-		$(this).html("View");
-		$(this).val("View");
-		$("#brand-table").hide();
-	}
-	else {
-		$(this).html("Hide");
-		$(this).val("Hide");
-		$("#brand-table").show();
-	}
-	
-}
 
 //INITIALIZATION CODE
 function init(){
-	$('#add-brand').click(addBrand);
-	$('#update-brand').click(updateBrand);
-	$('#view-brand-data').click(viewBrandList);
 	$('#upload-brand-data').click(displayUploadDataBrand);
 	$('#process-data-brand').click(processDataBrand);
 	$('#download-errors-brand').click(downloadErrorsBrand);
@@ -246,5 +229,4 @@ function init(){
 }
 
 $(document).ready(init);
-$(document).ready(getBrandList);
 

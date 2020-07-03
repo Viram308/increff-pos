@@ -50,28 +50,14 @@ function displayOrderList(data){
 	}
 }
 
-function viewOrderList(){
-	// hide and view toggle
-	if ($(this).val() == "Hide") {
-		$(this).html("View");
-		$(this).val("View");
-		$("#order-table").hide();
-	}
-	else {
-		$(this).html("Hide");
-		$(this).val("Hide");
-		$("#order-table").show();
-	}
-	
-}
+
 
 //INITIALIZATION CODE
 function init(){
-	$('#view-order-data').click(viewOrderList);
 	$('#refresh-order-data').click(getOrderList);
 
 }
 
 $(document).ready(init);
-$(document).ready(getOrderList);
+
 

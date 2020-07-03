@@ -35,25 +35,10 @@ function displayInventoryReport(data){
 	}
 }
 
-function viewInventoryReport(){
-	// hide and view toggle
-	if ($(this).val() == "Hide") {
-		$(this).html("View");
-		$(this).val("View");
-		$("#inventoryreport-table").hide();
-	}
-	else {
-		$(this).html("Hide");
-		$(this).val("Hide");
-		$("#inventoryreport-table").show();
-	}
-	
-}
 
 //INITIALIZATION CODE
 function init(){
 	$('#refresh-inventoryreport-data').click(getInventoryReportData);
-	$('#view-inventoryreport-data').click(viewInventoryReport);
+	
 }
 $(document).ready(init);
-$(document).ready(getInventoryReportData);

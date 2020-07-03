@@ -9,6 +9,9 @@
 	<nav th:replace="snippets.html :: name_app_navbar"></nav>
 	<!-- Container -->
 	<div class="container">
+		
+		<!-- Reports -->
+		<div th:replace="snippets.html :: name_reports"></div>
 		<!-- Sales Report -->
 		<div th:replace="snippets.html :: name_salesreport"></div>
 		<!-- Brand Report -->
@@ -19,6 +22,7 @@
 	<!-- Footer -->
 	<footer th:replace="snippets.html :: name_footer"></footer>
 	<!-- JS files -->
+	<script th:src="@{/static/reports.js}"/></script>
 	<script th:src="@{/static/salesreport.js}"/></script>
 	<script th:src="@{/static/brandreport.js}"/></script>
 	<script th:src="@{/static/inventoryreport.js}"/></script>

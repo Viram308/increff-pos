@@ -130,10 +130,7 @@ function displayUserList(data){
 
 //INITIALIZATION CODE
 function init(){
-	// $('#add-user').click(addUser);
 	$('#refresh-user-data').click(getUserList);
-	$('#update-user').click(updateUser);
-
 }
 
 $(document).ready(init);

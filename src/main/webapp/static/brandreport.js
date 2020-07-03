@@ -34,26 +34,12 @@ function displayBrandReport(data){
 	}
 }
 
-function viewBrandReport(){
-	// hide and view toggle
-	if ($(this).val() == "Hide") {
-		$(this).html("View");
-		$(this).val("View");
-		$("#brandreport-table").hide();
-	}
-	else {
-		$(this).html("Hide");
-		$(this).val("Hide");
-		$("#brandreport-table").show();
-	}
-	
-}
+
 
 //INITIALIZATION CODE
 function init(){
 	$('#refresh-brandreport-data').click(getBrandReportData);
-	$('#view-brandreport-data').click(viewBrandReport);
+
 	
 }
 $(document).ready(init);
-$(document).ready(getBrandReportData);

@@ -85,7 +85,7 @@
         <div class="form-group">
           <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" name="email" id="inputEmail" placeholder="Enter Email" required>
+            <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Enter Email" required>
           </div>
         </div>
       </div>
@@ -835,7 +835,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 </div>
 
 <!-- Sales Report fragment -->
-<div th:fragment="name_salesreport">
+<div th:fragment="name_salesreport" id="salesreport">
   <h3>Sales Report</h3>
   <!-- Blank Row -->
   <div class="row">

@@ -77,7 +77,7 @@ function displayOrderItemList(data){
       + '<td>' + e.orderId + '</td>'
       + '<td>' + e.barcode + '</td>'
       + '<td>' + e.quantity + '</td>'
-      + '<td>' + e.mrp + '</td>'
+      + '<td>' + e.sellingPrice + '</td>'
       + '<td>' + buttonHtml + '</td>'
       + '</tr>';
       $tbody.append(row);
@@ -107,28 +107,9 @@ function displayOrderItem(data){
    $('#edit-orderitem-modal').modal('toggle');
 }
 
-function viewOrderItemList(){
-   // hide and view toggle
-   if ($(this).val() == "Hide") {
-      $(this).html("View");
-      $(this).val("View");
-      $("#orderitem-table").hide();
-   }
-   else {
-      $(this).html("Hide");
-      $(this).val("Hide");
-      $("#orderitem-table").show();
-   }
-   
-}
-
 //INITIALIZATION CODE
 function init(){
-   $('#update-orderitem').click(updateOrderItem);
-   $('#view-orderitem-data').click(viewOrderItemList);
    $('#refresh-orderitem-data').click(getOrderItemList);
-
 }
 
 $(document).ready(init);
-$(document).ready(getOrderItemList);
