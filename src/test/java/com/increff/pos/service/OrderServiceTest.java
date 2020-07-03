@@ -157,10 +157,10 @@ public class OrderServiceTest extends AbstractUnitTest {
 		OrderItemForm o2 = new OrderItemForm();
 		o1.setBarcode(b1);
 		o1.setQuantity(5);
-		o1.setMrp(mrp);
+		o1.setSellingPrice(mrp);
 		o2.setBarcode(b2);
 		o2.setQuantity(35);
-		o2.setMrp(mrp);
+		o2.setSellingPrice(mrp);
 		orderItemForms.add(o1);
 		orderItemForms.add(o2);
 		return orderItemForms;
@@ -200,7 +200,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		double mrp = 50.20;
 		orderItemForm.setBarcode(barcode);
 		orderItemForm.setQuantity(quantity);
-		orderItemForm.setMrp(mrp);
+		orderItemForm.setSellingPrice(mrp);
 		return orderItemForm;
 	}
 

@@ -158,7 +158,7 @@ public class ConverterUtilTest {
 		OrderItemPojo i = getOrderItemPojo();
 		OrderItemData d = ConverterUtil.convertOrderItemPojotoOrderItemData(i, i.getProductMasterPojo().getBarcode());
 		assertEquals(i.getProductMasterPojo().getBarcode(), d.getBarcode());
-		assertEquals(i.getSellingPrice(), d.getMrp(), 0.01);
+		assertEquals(i.getSellingPrice(), d.getSellingPrice(), 0.01);
 		assertEquals(i.getQuantity(), d.getQuantity());
 	}
 
@@ -308,7 +308,7 @@ public class ConverterUtilTest {
 		double mrp = 10.06;
 		String barcode = StringUtil.getAlphaNumericString();
 		int quantity = 15;
-		f.setMrp(mrp);
+		f.setSellingPrice(mrp);
 		f.setBarcode(barcode);
 		f.setQuantity(quantity);
 		return f;

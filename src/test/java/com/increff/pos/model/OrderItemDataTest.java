@@ -21,12 +21,12 @@ public class OrderItemDataTest extends AbstractUnitTest {
 		o.setOrderId(orderId);
 		o.setBarcode(barcode);
 		o.setQuantity(quantity);
-		o.setMrp(mrp);
+		o.setSellingPrice(mrp);
 		assertEquals(id, o.getId());
 		assertEquals(orderId, o.getOrderId());
 		assertEquals(barcode, o.getBarcode());
 		assertEquals(quantity, o.getQuantity());
-		assertEquals(mrp, o.getMrp(), 0.01);
+		assertEquals(mrp, o.getSellingPrice(), 0.01);
 
 	}
 

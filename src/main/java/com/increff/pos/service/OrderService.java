@@ -112,7 +112,7 @@ public class OrderService {
 			item.setOrderPojo(oService.get(orderId));
 			item.setProductMasterPojo(p);
 			item.setQuantity(o.getQuantity());
-			item.setSellingPrice(o.getMrp());
+			item.setSellingPrice(o.getSellingPrice());
 			list.add(item);
 		}
 		return list;

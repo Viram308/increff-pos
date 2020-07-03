@@ -164,7 +164,7 @@ public class ConverterUtil {
 		d.setOrderId(p.getOrderPojo().getId());
 		d.setBarcode(barcode);
 		d.setQuantity(p.getQuantity());
-		d.setMrp(p.getSellingPrice());
+		d.setSellingPrice(p.getSellingPrice());
 		return d;
 	}
 

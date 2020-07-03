@@ -187,7 +187,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		double mrp = 10.06;
 		String barcode = StringUtil.getAlphaNumericString();
 		int quantity = 15;
-		f.setMrp(mrp);
+		f.setSellingPrice(mrp);
 		f.setBarcode(barcode);
 		f.setQuantity(quantity);
 		return f;
