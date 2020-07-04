@@ -20,16 +20,16 @@ public class InventoryService {
 	// CRUD operations for inventory
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void add(InventoryPojo i) throws ApiException {
+	public void add(InventoryPojo inventoryPojo, ProductMasterPojo productMasterPojo) throws ApiException {
 		// check for existing inventory data
-		InventoryPojo p = dao.selectByProductId(i.getProductMasterPojo().getId());
-		if (p == null) {
+		InventoryPojo inventoryPojo2 = dao.selectByProductId(productMasterPojo.getId());
+		if (inventoryPojo2 == null) {
 			// if not exists then insert
-			dao.insert(i);
+			dao.insert(inventoryPojo);
 		} else {
 			// if exists then update
-			i.setQuantity(i.getQuantity() + p.getQuantity());
-			update(p.getId(), i);
+			inventoryPojo.setQuantity(inventoryPojo.getQuantity() + inventoryPojo2.getQuantity());
+			update(inventoryPojo2.getId(), inventoryPojo);
 		}
 	}
 
@@ -38,17 +38,22 @@ public class InventoryService {
 		dao.delete(InventoryPojo.class, id);
 	}
 
+	public List<InventoryPojo> searchData(List<Integer> productIds) {
+		return dao.searchData(productIds);
+	}
+
 	@Transactional(rollbackOn = ApiException.class)
 	public InventoryPojo get(int id) throws ApiException {
 		return dao.select(InventoryPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public InventoryPojo getByProductId(ProductMasterPojo p) throws ApiException {
+	public InventoryPojo getByProductId(ProductMasterPojo productMasterPojo) throws ApiException {
 		// Get inventory data by id
-		InventoryPojo i = dao.selectByProductId(p.getId());
+		InventoryPojo i = dao.selectByProductId(productMasterPojo.getId());
 		if (i == null) {
-			throw new ApiException("Inventory for given product : " + p.getBarcode() + " dosen't exist");
+			throw new ApiException(
+					"Inventory for given product : " + productMasterPojo.getBarcode() + " dosen't exist");
 		} else {
 			return i;
 		}

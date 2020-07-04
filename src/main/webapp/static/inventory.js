@@ -5,9 +5,38 @@ function getInventoryUrl(){
 }
 
 //BUTTON ACTIONS
+
+
+function searchInventory(event){
+	//Set the values to add
+	var $tbody = $('#inventory-table').find('tbody');
+	$tbody.empty();
+	var $form = $("#inventory-form");
+	var json = toJson($form);
+	var url = getInventoryUrl()+"/search";
+	// call api
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+	   		displayInventoryList(response);
+	   	},
+	   	error: handleAjaxError
+	   });
+
+	return false;
+}
+
+
+
 function addInventory(event){
 	//Set the values to add
-	var $form = $("#inventory-form");
+	$('#add-inventory-modal').modal('toggle');
+	var $form = $("#inventory-add-form");
 	var json = toJson($form);
 	var url = getInventoryUrl();
 	// call api
@@ -19,8 +48,7 @@ function addInventory(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   		// get list
-	   		getInventoryList();  
+	   		alert('added');
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -46,8 +74,7 @@ function updateInventory(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   	// get list
-	   	getInventoryList();   
+	   	searchInventory();
 	   },
 	   error: handleAjaxError
 	});
@@ -67,20 +94,6 @@ function getInventoryList(){
 	   	displayInventoryList(data);  
 	   },
 	   error: handleAjaxError
-	});
-}
-
-function deleteInventory(id){
-	var url = getInventoryUrl() + "/" + id;
-	// call api
-	$.ajax({
-		url: url,
-		type: 'DELETE',
-		success: function(data) {
-			// get list
-			getInventoryList();  
-		},
-		error: handleAjaxError
 	});
 }
 
@@ -111,7 +124,6 @@ function uploadRowsInventory(){
 	updateUploadDialogInventory();
 	//If everything processed then return
 	if(processCount==fileData.length){
-		getInventoryList();
 		return;
 	}
 	
@@ -153,11 +165,10 @@ function displayInventoryList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteInventory(' + e.id + ')">Delete</button>'
-		buttonHtml += ' <button class="btn btn-outline-success" onclick="displayEditInventory(' + e.id + ')">Edit</button>'
+		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditInventory(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
+		+ '<td>' + e.name + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
@@ -218,14 +229,17 @@ function displayInventory(data){
 	$('#edit-inventory-modal').modal('toggle');
 }
 
-
+function showAddInventoryModal(){
+	$('#add-inventory-modal').modal('toggle');
+}
 //INITIALIZATION CODE
 function init(){
+	$('#show-add-inventory-modal').click(showAddInventoryModal);
+	$('#search-inventory').click(searchInventory);
 	$('#upload-inventory-data').click(displayUploadDataInventory);
 	$('#process-data-inventory').click(processDataInventory);
 	$('#download-errors-inventory').click(downloadErrorsInventory);
 	$('#inventoryFile').on('change', updateFileNameInventory);
-	$('#refresh-inventory-data').click(getInventoryList);
 }
 
 $(document).ready(init);

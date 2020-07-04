@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.pos.dao.ProductDao;
+import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.util.StringUtil;
 
@@ -16,30 +17,28 @@ public class ProductService {
 
 	@Autowired
 	private ProductDao dao;
-	@Autowired
-	private ProductService service;
 
 	// CRUD operations for product
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void add(ProductMasterPojo b) throws ApiException {
+	public void add(ProductMasterPojo productMasterPojo, BrandMasterPojo brandMasterPojo) throws ApiException {
 
 		// normalize
-		normalize(b);
+		normalize(productMasterPojo);
 		// check for existing product data with given barcode
-		ProductMasterPojo p = dao.selectByBarcode(b.getBarcode());
-		if (p == null) {
+		ProductMasterPojo productMasterPojoTemp = dao.selectByBarcode(productMasterPojo.getBarcode());
+		if (productMasterPojoTemp == null) {
 			// if not exists then insert
-			dao.insert(b);
+			dao.insert(productMasterPojo);
 		} else {
 			// if exists then change barcode
 			String barcode = StringUtil.getAlphaNumericString();
-			ProductMasterPojo pr = new ProductMasterPojo();
-			pr.setBrand_category(b.getBrand_category());
-			pr.setName(b.getName());
-			pr.setBarcode(barcode);
-			pr.setMrp(b.getMrp());
-			service.add(pr);
+			ProductMasterPojo productMasterPojoFinal = new ProductMasterPojo();
+			productMasterPojoFinal.setBrand_category_id(brandMasterPojo.getId());
+			productMasterPojoFinal.setName(productMasterPojo.getName());
+			productMasterPojoFinal.setBarcode(barcode);
+			productMasterPojoFinal.setMrp(productMasterPojo.getMrp());
+			add(productMasterPojoFinal, brandMasterPojo);
 		}
 	}
 
@@ -47,9 +46,17 @@ public class ProductService {
 	public void delete(int id) {
 		dao.delete(ProductMasterPojo.class, id);
 	}
-
+	public List<ProductMasterPojo> searchData(ProductMasterPojo productMasterPojo, List<Integer> brandIds) {
+		normalize(productMasterPojo);
+		if(brandIds.isEmpty()) {
+			return dao.searchData(productMasterPojo.getBarcode(),productMasterPojo.getName());
+		}
+		else {
+			return dao.searchData(productMasterPojo.getBarcode(),productMasterPojo.getName(),brandIds);
+		}
+	}
 	@Transactional(rollbackOn = ApiException.class)
-	public ProductMasterPojo get(int id) throws ApiException {
+	public ProductMasterPojo get(int id){
 		return dao.select(ProductMasterPojo.class, id);
 	}
 
@@ -74,13 +81,14 @@ public class ProductService {
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
-	public void update(int id, ProductMasterPojo p) throws ApiException {
-		normalize(p);
-		ProductMasterPojo b = getCheck(id);
-		b.setBrand_category(p.getBrand_category());
-		b.setName(p.getName());
-		b.setMrp(p.getMrp());
-		dao.update(b);
+	public void update(int id, ProductMasterPojo productMasterPojo, BrandMasterPojo brandMasterPojo)
+			throws ApiException {
+		normalize(productMasterPojo);
+		ProductMasterPojo productMasterPojoUpdate = getCheck(id);
+		productMasterPojoUpdate.setBrand_category_id(brandMasterPojo.getId());
+		productMasterPojoUpdate.setName(productMasterPojo.getName());
+		productMasterPojoUpdate.setMrp(productMasterPojo.getMrp());
+		dao.update(productMasterPojoUpdate);
 	}
 
 	@Transactional
@@ -96,4 +104,6 @@ public class ProductService {
 		p.setName(StringUtil.toLowerCase(p.getName()));
 		p.setBarcode(StringUtil.toLowerCase(p.getBarcode()));
 	}
+
+	
 }

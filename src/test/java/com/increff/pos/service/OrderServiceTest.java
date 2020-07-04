@@ -184,13 +184,13 @@ public class OrderServiceTest extends AbstractUnitTest {
 		bService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
-		p.setBrand_category(b);
+		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
-		pService.add(p);
-		i.setProductMasterPojo(p);
+		pService.add(p, b);
+		i.setProductid(p.getId());
 		i.setQuantity(quantity);
-		inService.add(i);
+		inService.add(i, p);
 	}
 
 	private OrderItemForm getOrderItemForm() {
@@ -237,15 +237,15 @@ public class OrderServiceTest extends AbstractUnitTest {
 		bService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
-		p.setBrand_category(b);
+		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
-		pService.add(p);
-		i.setProductMasterPojo(p);
+		pService.add(p, b);
+		i.setProductid(p.getId());
 		i.setQuantity(quantity + 10);
-		inService.add(i);
-		o.setOrderPojo(op);
-		o.setProductMasterPojo(p);
+		inService.add(i, p);
+		o.setOrderId(op.getId());
+		o.setProductId(p.getId());
 		o.setQuantity(quantity);
 		o.setSellingPrice(sellingPrice);
 		return o;

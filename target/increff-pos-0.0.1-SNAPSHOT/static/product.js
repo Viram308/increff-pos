@@ -4,9 +4,36 @@ function getProductUrl(){
 	return baseUrl + "/api/product";
 }
 
+
+//BUTTON ACTIONS
+function searchProduct(event){
+	//Set the values to add
+	var $tbody = $('#product-table').find('tbody');
+	$tbody.empty();
+	var $form = $("#product-form");
+	var json = toJson($form);
+	var url = getProductUrl()+"/search";
+	// call api
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+	   		displayProductList(response);  
+	   	},
+	   	error: handleAjaxError
+	   });
+
+	return false;
+}
+
 //BUTTON ACTIONS
 function addProduct(event){
 	//Set the values to update
+	$('#add-product-modal').modal('toggle');
 	var $form = $("#product-form");
 	var json = toJson($form);
 	var url = getProductUrl();
@@ -19,7 +46,7 @@ function addProduct(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-			getProductList();  
+			alert('added');
 		},
 		error: handleAjaxError
 	});
@@ -45,8 +72,7 @@ function updateProduct(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   		// get list
-	   		getProductList();   
+	   		searchProduct();  
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -64,20 +90,6 @@ function getProductList(){
 		success: function(data) {
 	   		// display data
 	   		displayProductList(data);  
-	   	},
-	   	error: handleAjaxError
-	   });
-}
-
-function deleteProduct(id){
-	var url = getProductUrl() + "/" + id;
-	// call api
-	$.ajax({
-		url: url,
-		type: 'DELETE',
-		success: function(data) {
-	   		// get list
-	   		getProductList();  
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -110,7 +122,6 @@ function uploadRowsProduct(){
 	updateUploadDialogProduct();
 	//If everything processed then return
 	if(processCount==fileData.length){
-		getProductList();
 		return;
 	}
 	
@@ -152,10 +163,8 @@ function displayProductList(data){
 	$tbody.empty();
 	for(var i in data){
 		var e = data[i];
-		var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteProduct(' + e.id + ')">Delete</button>'
-		buttonHtml += ' <button class="btn btn-outline-success" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
+		var buttonHtml = ' <button class="btn btn-outline-success" onclick="displayEditProduct(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
 		+ '<td>' + e.barcode + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>'  + e.category + '</td>'
@@ -222,33 +231,19 @@ function displayProduct(data){
 	$('#edit-product-modal').modal('toggle');
 }
 
-function viewProductList(){
-	// hide and view toggle
-	if ($(this).val() == "Hide") {
-		$(this).html("View");
-		$(this).val("View");
-		$("#product-table").hide();
-	}
-	else {
-		$(this).html("Hide");
-		$(this).val("Hide");
-		$("#product-table").show();
-	}
-	
+function showAddProductModal(){
+	$('#add-product-modal').modal('toggle');
 }
+
 //INITIALIZATION CODE
 function init(){
-	$('#add-product').click(addProduct);
-	$('#update-product').click(updateProduct);
-	$('#view-product-data').click(viewProductList);
+	$('#show-add-product-modal').click(showAddProductModal);
+	$('#search-product').click(searchProduct);
 	$('#upload-product-data').click(displayUploadDataProduct);
 	$('#process-data-product').click(processDataProduct);
 	$('#download-errors-product').click(downloadErrorsProduct);
 	$('#productFile').on('change', updateFileNameProduct);
-	$('#refresh-product-data').click(getProductList);
-
 }
 
 $(document).ready(init);
-$(document).ready(getProductList);
 

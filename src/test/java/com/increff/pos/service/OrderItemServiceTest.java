@@ -62,8 +62,8 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(list);
 		OrderItemPojo p = service.get(o.getId());
 		// test entered data
-		assertEquals(o.getOrderPojo().getId(), p.getOrderPojo().getId());
-		assertEquals(o.getProductMasterPojo().getId(), p.getProductMasterPojo().getId());
+		assertEquals(o.getOrderId(), p.getOrderId());
+		assertEquals(o.getProductId(), p.getProductId());
 		assertEquals(o.getQuantity(), p.getQuantity());
 		assertEquals(o.getSellingPrice(), p.getSellingPrice(), 0.01);
 	}
@@ -111,7 +111,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		// test add data
 		service.add(list);
 		List<Integer> orderIds = new ArrayList<Integer>();
-		orderIds.add(o.getOrderPojo().getId());
+		orderIds.add(o.getOrderId());
 		List<OrderItemPojo> list1 = service.getList(orderIds);
 		// test list size that should be 1
 		assertEquals(1, list1.size());
@@ -125,7 +125,8 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		// test add data
 		service.add(list);
 		OrderItemForm f = getOrderItemForm();
-		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
+		InventoryPojo ip = inService.getByProductId(productMasterPojo);
 		// set quantity such that available quantity is zero
 		f.setQuantity(o.getQuantity() + ip.getQuantity());
 		// throws exception for zero available quantity
@@ -141,7 +142,8 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		// test add data
 		service.add(list);
 		OrderItemForm f = getOrderItemForm();
-		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
+		InventoryPojo ip = inService.getByProductId(productMasterPojo);
 		// set quantity such that available quantity is negative
 		f.setQuantity(o.getQuantity() + ip.getQuantity() + 1);
 		// throws exception for negative available quantity
@@ -157,12 +159,13 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		// test add data
 		service.add(list);
 		OrderItemForm f = getOrderItemForm();
-		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
+		InventoryPojo ip = inService.getByProductId(productMasterPojo);
 		// set quantity such that available quantity is one
 		f.setQuantity(o.getQuantity() + ip.getQuantity() - 1);
 		// Does not throws exception for positive available quantity
 		service.checkInventory(list.get(0).getId(), f);
-		InventoryPojo ip2 = inService.getByProductId(o.getProductMasterPojo());
+		InventoryPojo ip2 = inService.getByProductId(productMasterPojo);
 		assertEquals(1, ip2.getQuantity());
 	}
 
@@ -219,15 +222,15 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		bService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
-		p.setBrand_category(b);
+		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
-		pService.add(p);
-		i.setProductMasterPojo(p);
+		pService.add(p, b);
+		i.setProductid(p.getId());
 		i.setQuantity(quantity + 10);
-		inService.add(i);
-		o.setOrderPojo(op);
-		o.setProductMasterPojo(p);
+		inService.add(i, p);
+		o.setOrderId(op.getId());
+		o.setProductId(p.getId());
 		o.setQuantity(quantity);
 		o.setSellingPrice(sellingPrice);
 		return o;

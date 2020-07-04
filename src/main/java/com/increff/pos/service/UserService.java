@@ -22,6 +22,8 @@ public class UserService {
 	private InfoData info;
 	@Autowired
 	private UserService service;
+	@Autowired
+	private ConverterUtil converterUtil;
 
 	@Transactional
 	public void add(UserPojo p) throws ApiException {
@@ -63,7 +65,6 @@ public class UserService {
 		dao.update(u);
 	}
 
-
 	public static void normalize(UserPojo p) {
 		p.setEmail(p.getEmail().toLowerCase().trim());
 		p.setRole(p.getRole().toLowerCase().trim());
@@ -76,7 +77,7 @@ public class UserService {
 		} else {
 			// Initialize with admin role
 			form.setRole("admin");
-			UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
+			UserPojo p = converterUtil.convertUserFormtoUserPojo(form);
 			service.add(p);
 			info.setMessage("Application initialized");
 		}

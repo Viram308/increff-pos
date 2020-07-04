@@ -1,6 +1,5 @@
 package com.increff.pos.controller;
 
-import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
@@ -18,15 +17,6 @@ public class AppRestControllerAdvice {
 	public MessageData handle(ApiException e) {
 		MessageData data = new MessageData();
 		data.setMessage(e.getMessage());
-		return data;
-	}
-
-	// Handles exception for foreign key constraints
-	@ExceptionHandler(ConstraintViolationException.class)
-	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public MessageData handle(ConstraintViolationException e) {
-		MessageData data = new MessageData();
-		data.setMessage("Can not perform delete because given key is present in another table");
 		return data;
 	}
 

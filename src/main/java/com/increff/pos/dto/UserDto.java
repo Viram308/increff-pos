@@ -1,9 +1,7 @@
 package com.increff.pos.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -11,33 +9,47 @@ import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
+import com.increff.pos.service.UserService;
+import com.increff.pos.util.ConverterUtil;
 
 @Component
 public class UserDto {
 
 	@Autowired
-	private ModelMapper modelMapper;
+	private UserService userService;
+	@Autowired
+	private ConverterUtil converterUtil;
 
-	// Converts UserForm to UserPojo
-	public UserPojo convertUserFormtoUserPojo(UserForm form) throws ApiException {
-		UserPojo userPojo = modelMapper.map(form, UserPojo.class);
+	public void addUser(UserForm form) throws ApiException {
+		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
 		checkData(userPojo);
-		return userPojo;
+		userService.add(userPojo);
 	}
 
-	// Converts UserPojo to UserData
-	public UserData convertUserPojotoUserData(UserPojo userPojo) {
-		return modelMapper.map(userPojo, UserData.class);
+	public void deleteUser(int id) {
+		userService.delete(id);
 	}
 
-	// Converts list of UserPojo to list of UserData
-	public List<UserData> getUserDataList(List<UserPojo> list) {
-		List<UserData> list2 = new ArrayList<UserData>();
-		for (UserPojo userPojo : list) {
-			UserData userData = modelMapper.map(userPojo, UserData.class);
-			list2.add(userData);
-		}
-		return list2;
+	public UserData getUserData(int id) {
+		UserPojo userPojo = userService.get(id);
+		return converterUtil.convertUserPojotoUserData(userPojo);
+	}
+
+	public void updateUser(int id, UserForm form) throws ApiException {
+		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
+		checkData(userPojo);
+		userService.update(id, userPojo);
+	}
+
+	public List<UserData> getAllUsers() {
+		List<UserPojo> list = userService.getAll();
+		return converterUtil.getUserDataList(list);
+	}
+
+	public void checkInit(UserForm form) throws ApiException {
+		List<UserPojo> list = userService.getAll();
+		// check if already initialized
+		userService.checkAvailability(list, form);
 	}
 
 	public void checkData(UserPojo u) throws ApiException {
@@ -45,4 +57,5 @@ public class UserDto {
 			throw new ApiException("Please enter email, password and role !!");
 		}
 	}
+
 }

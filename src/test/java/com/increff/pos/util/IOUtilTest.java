@@ -5,7 +5,9 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-public class IOUtilTest {
+import com.increff.pos.spring.AbstractUnitTest;
+
+public class IOUtilTest extends AbstractUnitTest{
 	// test IOUtil
 	@Test
 	public void testIOUtil() throws IOException {

@@ -7,7 +7,9 @@ import javax.xml.transform.TransformerException;
 import org.apache.fop.apps.FOPException;
 import org.junit.Test;
 
-public class GeneratePDFTest {
+import com.increff.pos.spring.AbstractUnitTest;
+
+public class GeneratePDFTest extends AbstractUnitTest{
 	// test PDF Generation
 	@Test
 	public void testGeneratePDF() throws FOPException, TransformerException, IOException {

@@ -11,6 +11,7 @@ import com.increff.pos.dao.OrderItemDao;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
+import com.increff.pos.pojo.ProductMasterPojo;
 
 @Service
 public class OrderItemService {
@@ -18,7 +19,9 @@ public class OrderItemService {
 	@Autowired
 	private OrderItemDao dao;
 	@Autowired
-	private InventoryService inService;
+	private InventoryService inventoryService;
+	@Autowired
+	private ProductService productService;
 	// CRUD operations for order item
 
 	@Transactional
@@ -66,12 +69,13 @@ public class OrderItemService {
 
 	public void checkInventory(int id, OrderItemForm orderItem) throws ApiException {
 		int enteredQuantity, availableQuantity;
-		OrderItemPojo o = getCheck(id);
+		OrderItemPojo orderItemPojo = getCheck(id);
 		// Entered quantity
 		enteredQuantity = orderItem.getQuantity();
+		ProductMasterPojo productMasterPojo = productService.get(orderItemPojo.getProductId());
 		// InventoryPojo for available quantity
-		InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
-		availableQuantity = ip.getQuantity() + o.getQuantity();
+		InventoryPojo ip = inventoryService.getByProductId(productMasterPojo);
+		availableQuantity = ip.getQuantity() + orderItemPojo.getQuantity();
 		// Check quantity
 		if (enteredQuantity == availableQuantity) {
 			throw new ApiException("Available Inventory for Barcode " + orderItem.getBarcode()
@@ -82,9 +86,9 @@ public class OrderItemService {
 					"Available Inventory for Barcode " + orderItem.getBarcode() + " is : " + ip.getQuantity());
 		} else {
 			InventoryPojo ip2 = new InventoryPojo();
-			int quantity = ip.getQuantity() + o.getQuantity() - enteredQuantity;
+			int quantity = ip.getQuantity() + orderItemPojo.getQuantity() - enteredQuantity;
 			ip2.setQuantity(quantity);
-			inService.update(ip.getId(), ip2);
+			inventoryService.update(ip.getId(), ip2);
 		}
 
 	}

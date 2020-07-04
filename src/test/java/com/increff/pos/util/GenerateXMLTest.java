@@ -9,8 +9,9 @@ import javax.xml.transform.TransformerException;
 import org.junit.Test;
 
 import com.increff.pos.model.BillData;
+import com.increff.pos.spring.AbstractUnitTest;
 
-public class GenerateXMLTest {
+public class GenerateXMLTest extends AbstractUnitTest{
 	// test XML Generation
 	@Test
 	public void testGenerateXML() throws ParserConfigurationException, TransformerException {

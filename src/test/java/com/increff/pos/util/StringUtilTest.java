@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class StringUtilTest {
+import com.increff.pos.spring.AbstractUnitTest;
+
+public class StringUtilTest extends AbstractUnitTest{
 	// test String Util
 	@Test
 	public void testStringUtil() {

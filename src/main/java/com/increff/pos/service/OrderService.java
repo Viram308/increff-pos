@@ -24,11 +24,9 @@ public class OrderService {
 	@Autowired
 	private OrderDao dao;
 	@Autowired
-	private ProductService pService;
+	private ProductService productService;
 	@Autowired
-	private InventoryService inService;
-	@Autowired
-	private OrderService oService;
+	private InventoryService inventoryService;
 
 	// CRUD operations for order
 
@@ -87,9 +85,9 @@ public class OrderService {
 		for (OrderItemForm i : orderItems) {
 			// Entered quantity
 			enteredQuantity = i.getQuantity();
-			ProductMasterPojo p = pService.getByBarcode(i.getBarcode());
+			ProductMasterPojo p = productService.getByBarcode(i.getBarcode());
 			// InventoryPojo for available quantity
-			InventoryPojo ip = inService.getByProductId(p);
+			InventoryPojo ip = inventoryService.getByProductId(p);
 			// Check quantity
 			if (enteredQuantity == ip.getQuantity()) {
 				throw new ApiException("Available Inventory for Barcode " + i.getBarcode()
@@ -107,10 +105,10 @@ public class OrderService {
 		int orderId = op.getId();
 		// Convert OrderItemForm to OrderItemPojo
 		for (OrderItemForm o : orderItemList) {
-			ProductMasterPojo p = pService.getByBarcode(o.getBarcode());
+			ProductMasterPojo productMasterPojo = productService.getByBarcode(o.getBarcode());
 			OrderItemPojo item = new OrderItemPojo();
-			item.setOrderPojo(oService.get(orderId));
-			item.setProductMasterPojo(p);
+			item.setOrderId(orderId);
+			item.setProductId(productMasterPojo.getId());
 			item.setQuantity(o.getQuantity());
 			item.setSellingPrice(o.getSellingPrice());
 			list.add(item);
@@ -120,11 +118,12 @@ public class OrderService {
 
 	public void updateInventory(List<OrderItemPojo> list) throws ApiException {
 		for (OrderItemPojo o : list) {
-			InventoryPojo ip = inService.getByProductId(o.getProductMasterPojo());
+			ProductMasterPojo productMasterPojo = productService.get(o.getProductId());
+			InventoryPojo ip = inventoryService.getByProductId(productMasterPojo);
 			// Decrease quantity
 			int quantity = ip.getQuantity() - o.getQuantity();
 			ip.setQuantity(quantity);
-			inService.update(ip.getId(), ip);
+			inventoryService.update(ip.getId(), ip);
 		}
 	}
 
@@ -133,7 +132,7 @@ public class OrderService {
 		int i = 1;
 		// Convert OrderItemPojo to BillData
 		for (OrderItemPojo o : list) {
-			ProductMasterPojo p = o.getProductMasterPojo();
+			ProductMasterPojo p = productService.get(o.getProductId());
 			BillData item = new BillData();
 			item.setId(i);
 			item.setName(p.getName());

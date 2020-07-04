@@ -1,0 +1,20 @@
+<!doctype html>
+
+<html lang="en">
+<!-- Head -->
+<head th:replace="snippets.html :: name_head"></head>
+
+<body>
+	<!-- Navigation bar -->
+	<nav th:replace="snippets.html :: name_app_navbar"></nav>
+	<!-- Container -->
+	<div class="container">
+		<!-- Sales Report -->
+		<div th:replace="snippets.html :: name_brandreport"></div>
+	</div> <!-- Container end-->
+	<!-- Footer -->
+	<footer th:replace="snippets.html :: name_footer"></footer>
+	<!-- JS files -->
+	<script th:src="@{/static/brandreport.js}"/></script>
+</body>	
+</html>

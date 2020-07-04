@@ -4,8 +4,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 
 @Entity
 public class ProductMasterPojo {
@@ -14,10 +12,7 @@ public class ProductMasterPojo {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String barcode;
-	// Foreign key for brand_category id
-	@ManyToOne(optional = false)
-	@JoinColumn(name = "brand_category", nullable = false)
-	private BrandMasterPojo brand_category;
+	private int brand_category_id;
 	private String name;
 	private double mrp;
 
@@ -37,12 +32,12 @@ public class ProductMasterPojo {
 		this.barcode = barcode;
 	}
 
-	public BrandMasterPojo getBrand_category() {
-		return brand_category;
+	public int getBrand_category_id() {
+		return brand_category_id;
 	}
 
-	public void setBrand_category(BrandMasterPojo brand_category) {
-		this.brand_category = brand_category;
+	public void setBrand_category_id(int brand_category_id) {
+		this.brand_category_id = brand_category_id;
 	}
 
 	public String getName() {

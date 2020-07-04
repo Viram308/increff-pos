@@ -5,8 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 import com.increff.pos.model.UserPrincipal;
+import com.increff.pos.spring.AbstractUnitTest;
 
-public class UserPrincipalTest {
+public class UserPrincipalTest extends AbstractUnitTest {
 	// test UserPrincipal
 	@Test
 	public void testUserPrincipal() {

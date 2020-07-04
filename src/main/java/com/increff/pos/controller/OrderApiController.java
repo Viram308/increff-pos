@@ -18,15 +18,13 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.dto.OrderDto;
+import com.increff.pos.dto.OrderItemDto;
 import com.increff.pos.model.BillData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.OrderItemService;
-import com.increff.pos.service.OrderService;
-import com.increff.pos.util.ConverterUtil;
 import com.increff.pos.util.GeneratePDF;
 import com.increff.pos.util.GenerateXML;
 
@@ -37,16 +35,11 @@ import io.swagger.annotations.ApiOperation;
 @RestController
 @RequestMapping(value = "/api/order")
 public class OrderApiController {
-
-	@Autowired
-	private OrderService oService;
-	
 	@Autowired
 	private OrderDto orderDto;
-	
-	@Autowired
-	private OrderItemService iService;
 
+	@Autowired
+	private OrderItemDto orderItemDto;
 	// CRUD operations for customer order
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -55,23 +48,19 @@ public class OrderApiController {
 	public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
 		// Check entered inventory with available inventory
-		List<OrderItemForm> orderItems = oService.groupItemsByBarcode(orderItemForms);
-		oService.checkInventory(orderItems);
-		OrderPojo op = new OrderPojo();
-		op.setDatetime(ConverterUtil.getDateTime());
-		// Add order if inventory is available
-		oService.add(op);
+		List<OrderItemForm> orderItems = orderDto.groupItemsByBarcode(orderItemForms);
+		OrderPojo orderPojo = orderDto.addOrder(orderItems);
 		// Convert input to required format
-		List<OrderItemPojo> list = oService.getOrderItemObject(orderItems, op);
+		List<OrderItemPojo> list = orderDto.getOrderItemObject(orderItems, orderPojo);
 		// Decrease inventory according to the entered quantity
-		oService.updateInventory(list);
+		orderDto.updateInventory(list);
 		// Add each order item
-		iService.add(list);
+		orderItemDto.add(list);
 
 		// Convert OrderItemPojo to BillData
-		List<BillData> billItemList = oService.getBillDataObject(list);
+		List<BillData> billItemList = orderDto.getBillDataObject(list);
 		// Generate XML file using BillData list
-		GenerateXML.createXml(billItemList, op.getId());
+		GenerateXML.createXml(billItemList, orderPojo.getId());
 		// Create PDF from generated XML
 		byte[] encodedBytes = GeneratePDF.createPDF();
 		// Create response
@@ -99,21 +88,19 @@ public class OrderApiController {
 	@ApiOperation(value = "Deletes Order")
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	public void delete(@PathVariable int id) {
-		oService.delete(id);
+		orderDto.delete(id);
 	}
 
 	@ApiOperation(value = "Gets a Order")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public OrderData get(@PathVariable int id) throws ApiException {
-		OrderPojo orderPojo = oService.get(id);
-		return orderDto.convertOrderPojotoOrderData(orderPojo);
+		return orderDto.get(id);
 	}
 
 	@ApiOperation(value = "Gets list of all Orders")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<OrderData> getAll() {
-		List<OrderPojo> list = oService.getAll();
-		return orderDto.getOrderDataList(list);
+		return orderDto.getAll();
 	}
 
 }

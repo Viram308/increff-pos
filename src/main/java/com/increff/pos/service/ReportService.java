@@ -12,10 +12,8 @@ import org.springframework.stereotype.Service;
 
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
-import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.util.StringUtil;
 
 @Service
@@ -44,14 +42,14 @@ public class ReportService {
 		LinkedHashMap<Integer, OrderItemPojo> m = new LinkedHashMap<Integer, OrderItemPojo>();
 		for (i = 0; i < listOfOrderItemPojo.size(); i++) {
 			// check key already exists
-			if (m.containsKey(listOfOrderItemPojo.get(i).getProductMasterPojo().getId())) {
+			if (m.containsKey(listOfOrderItemPojo.get(i).getProductId())) {
 				// update existing one
-				OrderItemPojo o = m.get(listOfOrderItemPojo.get(i).getProductMasterPojo().getId());
+				OrderItemPojo o = m.get(listOfOrderItemPojo.get(i).getProductId());
 				o.setQuantity(o.getQuantity() + listOfOrderItemPojo.get(i).getQuantity());
-				m.put(listOfOrderItemPojo.get(i).getProductMasterPojo().getId(), o);
+				m.put(listOfOrderItemPojo.get(i).getProductId(), o);
 			} else {
 				// create new one
-				m.put(listOfOrderItemPojo.get(i).getProductMasterPojo().getId(), listOfOrderItemPojo.get(i));
+				m.put(listOfOrderItemPojo.get(i).getProductId(), listOfOrderItemPojo.get(i));
 			}
 		}
 		Collection<OrderItemPojo> values = m.values();
@@ -144,25 +142,6 @@ public class ReportService {
 			inventoryReportDataList.get(i).setId(i + 1);
 		}
 		return inventoryReportDataList;
-	}
-	
-	
-	public List<SalesReportData> convertToSalesData(List<OrderItemPojo> listOfOrderItemPojo) {
-		List<SalesReportData> salesReportData = new ArrayList<SalesReportData>();
-		int i;
-		// Converts OrderItemPojo to SalesReportData
-		for (i = 0; i < listOfOrderItemPojo.size(); i++) {
-			SalesReportData salesProductData = new SalesReportData();
-			ProductMasterPojo p = listOfOrderItemPojo.get(i).getProductMasterPojo();
-			BrandMasterPojo b = p.getBrand_category();
-			salesProductData.setBrand(b.getBrand());
-			salesProductData.setCategory(b.getCategory());
-			salesProductData.setQuantity(listOfOrderItemPojo.get(i).getQuantity());
-			salesProductData.setRevenue(
-					listOfOrderItemPojo.get(i).getQuantity() * listOfOrderItemPojo.get(i).getSellingPrice());
-			salesReportData.add(salesProductData);
-		}
-		return salesReportData;
 	}
 
 }

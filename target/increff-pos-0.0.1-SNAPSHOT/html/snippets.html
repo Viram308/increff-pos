@@ -47,12 +47,30 @@
       <li class="nav-item">
         <a class="nav-link" th:href="@{/ui/home}">Home</a>
       </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/ui/admin/data}">Data</a>
-      </li>
-      <li class="nav-item">
-        <a class="nav-link" th:href="@{/ui/admin/reports}">Reports</a>
-      </li>
+      
+       <!-- Dropdown -->
+    <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Catelog
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" th:href="@{/ui/admin/brand}">Brand</a>
+        <a class="dropdown-item" th:href="@{/ui/admin/product}">Product</a>
+        <a class="dropdown-item" th:href="@{/ui/admin/inventory}">Inventory</a>
+        <a class="dropdown-item" th:href="@{/ui/admin/order}">Order</a>
+        <a class="dropdown-item" th:href="@{/ui/admin/orderitem}">OrderItem</a>
+      </div>
+    </li>
+     <li class="nav-item dropdown">
+      <a class="nav-link dropdown-toggle" href="#" id="navbardrop" data-toggle="dropdown">
+        Reports
+      </a>
+      <div class="dropdown-menu">
+        <a class="dropdown-item" th:href="@{/ui/admin/salesreport}">Sales Report</a>
+        <a class="dropdown-item" th:href="@{/ui/admin/brandreport}">Brand Report</a>
+        <a class="dropdown-item" th:href="@{/ui/admin/inventoryreport}">Inventory Report</a>
+      </div>
+    </li>
       <li class="nav-item">
         <a class="nav-link" th:href="@{/ui/admin/user}">Users</a>
       </li>
@@ -170,9 +188,10 @@
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <!-- User edit form -->
-          <form  id="user-edit-form">
+        <!-- User edit form -->
+        <form  id="user-edit-form" onsubmit="return updateUser()">
+          <div class="modal-body">
+
             <div class="form-group row">
               <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
               <div class="col-sm-6">
@@ -188,131 +207,180 @@
             <div class="form-group row">
               <label for="inputRole" class="col-sm-2 col-form-label">Role</label>
               <div class="col-sm-6">
-                <input type="text" class="form-control" name="role" id="inputRole" placeholder="Enter Role">
+                <select class="form-control" id="inputRole" name="role" required> 
+                  <option value="">Select Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="standard">Standard</option>
+                </select>
               </div>
             </div>
             <!-- Hidden id -->
             <input type="hidden" name="id" >
-          </form>        
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="update-user">Update</button>
-        </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="update-user">Update</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
 </div>
 
+
 <!-- Brand fragment -->
-<div th:fragment="name_brand">
-  <h3>Brand</h3>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Top row with form-->
-  <div class="row">
-    <!-- Brand form -->
-    <form class="form-inline" id="brand-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-          </div>
+<div th:fragment="name_brand" id="brand">
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<h3>Brand</h3>
+<!-- Top row with form-->
+<div class="row">
+  <!-- Brand form -->
+  <form class="form-inline" id="brand-form">
+    <div class="col">
+      <div class="form-group">
+        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
         </div>
       </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <button type="button" class="btn btn-outline-primary" id="add-brand">Add</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-info" id="refresh-brand-data">Refresh</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-danger" id="view-brand-data" value="Hide">Hide</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-success" id="upload-brand-data">Upload</button>
-      </div>
-    </form>
-    
-  </div> 
-
-
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="brand-table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Category</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
     </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Edit Brand Modal -->
-  <div 
-  class="modal fade" tabindex="-1" role="dialog" id="edit-brand-modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Brand</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+    <div class="col">
+      <div class="form-group">
+        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category">
+        </div>
       </div>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-info" id="search-brand">Search</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-primary" id="show-add-brand-modal">Add</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-success" id="upload-brand-data">Upload</button>
+    </div>
+  </form>
+
+</div> 
+
+
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12">
+    <table class="table table-striped" id="brand-table">
+      <thead>
+        <tr>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+  </div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+<!-- Add Brand Modal -->
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="add-brand-modal">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Brand</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- Brand add form  -->
+    <form  id="brand-add-form" onsubmit="return addBrand()">
       <div class="modal-body">
-        <!-- Brand edit form  -->
-        <form  id="brand-edit-form">
-          <div class="form-group row">
-            <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" name="brand" placeholder="Enter Brand">
-            </div>
+
+
+        <div class="form-group row">
+          <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="brand" placeholder="Enter Brand" required>
           </div>
-          <div class="form-group row">
-            <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" name="category" placeholder="Enter Category">
-            </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="category" placeholder="Enter Category" required>
           </div>
-          <!-- Hidden id -->
-          <input type="hidden" name="id" >
-        </form>        
+        </div>
+        <!-- Hidden id -->
+        <input type="hidden" name="id" >
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="update-brand">Update</button>
+        <button type="submit" class="btn btn-primary" id="add-brand">Add</button>
       </div>
-    </div>
+    </form>
   </div>
+</div>
+</div>
+
+
+<!-- Edit Brand Modal -->
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="edit-brand-modal">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Edit Brand</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- Brand edit form  -->
+    <form  id="brand-edit-form" onsubmit="return updateBrand()">
+      <div class="modal-body">
+
+
+        <div class="form-group row">
+          <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="brand" placeholder="Enter Brand" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="category" placeholder="Enter Category" required>
+          </div>
+        </div>
+        <!-- Hidden id -->
+        <input type="hidden" name="id" >
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="update-brand">Update</button>
+      </div>
+    </form>
+  </div>
+</div>
 </div>
 
 <!-- Upload Brand Model -->
@@ -352,16 +420,39 @@
 </div>
 
 <!-- Product fragment -->
-<div th:fragment="name_product">
-  <h3>Product</h3>
+<div th:fragment="name_product" id="product">
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
   </div>
+  <h3>Product</h3>
   <!-- Top row with form-->
   <div class="row">
     <!-- Product form -->
     <form class="form-inline" id="product-form">
+      <div class="col">
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name">
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode">
+          </div>
+        </div>
+      </div>
+      <div class="col">
+      </div>
+      <div class="w-100"></div>
+      <!-- Blank Row -->
+      <div class="row">
+        &nbsp;
+      </div>
       <div class="col">
         <div class="form-group">
           <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
@@ -379,36 +470,11 @@
         </div>
       </div>
       <div class="col">
-      </div>
-      <div class="w-100"></div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
-          <div class="col-sm-10">
-            <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrp" placeholder="Enter MRP">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <button type="button" class="btn btn-outline-primary" id="add-product">Add</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-info" id="refresh-product-data">Refresh</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-danger" id="view-product-data" value="Hide">Hide</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-success" id="upload-product-data">Upload</button>
+      <button type="button" class="btn btn-outline-info" id="search-product">Search</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-primary" id="show-add-product-modal">Add</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-success" id="upload-product-data">Upload</button>
       </div>
     </form> 
   </div> 
@@ -425,13 +491,12 @@
       <table class="table table-striped" id="product-table">
         <thead>
           <tr>
-            <th scope="col">ID</th>
             <th scope="col">Barcode</th>
             <th scope="col">Brand</th>
             <th scope="col">Category</th>
             <th scope="col">Name</th>
             <th scope="col">MRP</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -449,6 +514,61 @@
   <div class="row">
     &nbsp;
   </div>
+  
+
+ <!-- Add Product Model -->
+  <div 
+  class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Product</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Product add form -->
+      <form  id="product-add-form" onsubmit="return addProduct()">
+        <div class="modal-body">
+
+          <div class="form-group row">
+            <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="brand" placeholder="Enter Brand" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="category" placeholder="Enter Category" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
+            <div class="col-sm-6">
+              <input type="number" step="0.01" class="form-control" name="mrp" placeholder="Enter MRP" required>
+            </div>
+          </div>
+          <input type="hidden" name="id" >       
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="add-product">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
   <!-- Edit Product Model -->
   <div 
   class="modal fade" tabindex="-1" role="dialog" id="edit-product-modal">
@@ -460,40 +580,41 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <!-- Product edit form -->
-        <form  id="product-edit-form">
+      <!-- Product edit form -->
+      <form  id="product-edit-form" onsubmit="return updateProduct()">
+        <div class="modal-body">
+
           <div class="form-group row">
             <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" name="brand" placeholder="Enter Brand">
+              <input type="text" class="form-control" name="brand" placeholder="Enter Brand" required>
             </div>
           </div>
           <div class="form-group row">
             <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" name="category" placeholder="Enter Category">
+              <input type="text" class="form-control" name="category" placeholder="Enter Category" required>
             </div>
           </div>
           <div class="form-group row">
             <label for="inputName" class="col-sm-2 col-form-label">Name</label>
             <div class="col-sm-6">
-              <input type="text" class="form-control" name="name" placeholder="Enter Name">
+              <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
             </div>
           </div>
           <div class="form-group row">
             <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
             <div class="col-sm-6">
-              <input type="number" step="0.01" class="form-control" name="mrp" placeholder="Enter MRP">
+              <input type="number" step="0.01" class="form-control" name="mrp" placeholder="Enter MRP" required>
             </div>
           </div>
-          <input type="hidden" name="id" >
-        </form>        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="update-product">Update</button>
-      </div>
+          <input type="hidden" name="id" >       
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="update-product">Update</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -537,16 +658,24 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
 </div>
 
 <!-- Inventory fragment -->
-<div th:fragment="name_inventory">
-  <h3>Inventory</h3>
+<div th:fragment="name_inventory" id="inventory">
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
   </div>
+  <h3>Inventory</h3>
   <!-- Top row with form-->
   <div class="row">
     <!-- Inventory form -->
     <form class="form-inline" id="inventory-form">
+      <div class="col">
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name">
+          </div>
+        </div>
+      </div>
       <div class="col">
         <div class="form-group">
           <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
@@ -555,22 +684,14 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
           </div>
         </div>
       </div>
+
+      
       <div class="col">
-        <div class="form-group">
-          <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
-          <div class="col-sm-10">
-            <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <button type="button" class="btn btn-outline-primary" id="add-inventory">Add</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-info" id="refresh-inventory-data">Refresh</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-danger" id="view-inventory-data" value="Hide">Hide</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-success" id="upload-inventory-data">Upload</button>
+        <button type="button" class="btn btn-outline-info" id="search-inventory">Search</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-primary" id="show-add-inventory-modal">Add</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-success" id="upload-inventory-data">Upload</button>
       </div>
     </form> 
   </div> 
@@ -587,10 +708,10 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
       <table class="table table-striped" id="inventory-table">
         <thead>
           <tr>
-            <th scope="col">ID</th>
             <th scope="col">Barcode</th>
+            <th scope="col">Name</th>
             <th scope="col">Quantity</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -608,6 +729,47 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
   <div class="row">
     &nbsp;
   </div>
+
+<!-- Add Inventory Model -->
+  <div 
+  class="modal fade" tabindex="-1" role="dialog" id="add-inventory-modal">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Add Inventory</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Inventory add form -->
+      <form  id="inventory-add-form" onsubmit="return addInventory()">
+        <div class="modal-body">
+
+          <div class="form-group row">
+            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" required>
+            </div>
+          </div>
+          <div class="form-group row">
+            <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity" required>
+            </div>
+          </div>
+          <input type="hidden" name="id" >
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="add-inventory">Add</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
   <!-- Edit Inventory Model -->
   <div 
   class="modal fade" tabindex="-1" role="dialog" id="edit-inventory-modal">
@@ -619,9 +781,10 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
-        <!-- Inventory edit form -->
-        <form  id="inventory-edit-form">
+      <!-- Inventory edit form -->
+      <form  id="inventory-edit-form" onsubmit="return updateInventory()">
+        <div class="modal-body">
+
           <div class="form-group row">
             <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
             <div class="col-sm-6">
@@ -631,16 +794,17 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
           <div class="form-group row">
             <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
             <div class="col-sm-6">
-              <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity">
+              <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity" required>
             </div>
           </div>
           <input type="hidden" name="id" >
-        </form>        
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-        <button type="button" class="btn btn-primary" id="update-inventory">Update</button>
-      </div>
+
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="submit" class="btn btn-primary" id="update-inventory">Update</button>
+        </div>
+      </form>
     </div>
   </div>
 </div>
@@ -683,18 +847,16 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 </div>
 
 <!-- Order fragment -->
-<div th:fragment="name_order">
-  <h3>Order</h3>
+<div th:fragment="name_order" id="order">
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
   </div>
+  <h3>Order</h3>
   <!-- Top row with form-->
   <div class="row">
     <div class="col">
       <button type="button" class="btn btn-outline-info" id="refresh-order-data">Refresh</button>
-      &nbsp;
-      <button type="button" class="btn btn-outline-danger" id="view-order-data" value="Hide">Hide</button>
     </div>
     <div class="col">
     </div>
@@ -737,18 +899,16 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 </div>
 
 <!-- Order item fragment -->
-<div th:fragment="name_orderitem">
-  <h3>Order Items</h3>
+<div th:fragment="name_orderitem" id="orderitem">
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
   </div>
+  <h3>Order Items</h3>
   <!-- Top row with form-->
   <div class="row">
     <div class="col">
       <button type="button" class="btn btn-outline-info" id="refresh-orderitem-data">Refresh</button>
-      &nbsp;
-      <button type="button" class="btn btn-outline-danger" id="view-orderitem-data" value="Hide">Hide</button>
     </div>
     <div class="col">
     </div>
@@ -772,7 +932,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
             <th scope="col">OrderId</th>
             <th scope="col">Barcode</th>
             <th scope="col">Quantity</th>
-            <th scope="col">MRP</th>
+            <th scope="col">Selling Price</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -801,9 +961,10 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <div class="modal-body">
-          <!-- OrderItem edit form -->
-          <form  id="orderitem-edit-form">
+        <!-- OrderItem edit form -->
+        <form  id="orderitem-edit-form" onsubmit="return updateOrderItem()">
+          <div class="modal-body">
+
             <div class="form-group row">
               <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
               <div class="col-sm-6">
@@ -822,238 +983,253 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
                 <input type="text" class="form-control" name="mrp" id="inputMrp" placeholder="Enter MRP" readonly>
               </div>
             </div>
-            <input type="hidden" name="id" >
-          </form>        
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="button" class="btn btn-primary" id="update-orderitem">Update</button>
+            <input type="hidden" name="id" >      
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="update-orderitem">Update</button>
+          </div>
+          <!-- OrderItem edit form -->
+          <form  id="orderitem-edit-form" onsubmit="return updateOrderItem()">
+          </div>
         </div>
       </div>
     </div>
-  </div>
-</div>
 
-<!-- Sales Report fragment -->
-<div th:fragment="name_salesreport" id="salesreport">
-  <h3>Sales Report</h3>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Top row with form-->
-  <div class="row">
-    <!-- Sales Report form -->
-    <form class="form-inline" id="salesreport-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
-          <div class="col-sm-10">
-            <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
-          <div class="col-sm-10">
-            <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-      </div>
-      <div class="w-100"></div>
-      <!-- Blank Row -->
+
+    <div th:fragment="name_reports">
+      <h3>Reports</h3>
+
+      <!-- Top row with form-->
       <div class="row">
+       <div class="col-2">
+        <button type="button" class="btn btn-outline-primary" id="salesreport-button" title="Sales Report">Sales Report</button>
+      </div> 
+      <div class="col-2">
+        <button type="button" class="btn btn-outline-danger" id="brandreport-button" title="Brand Report">Brand Report</button>
+      </div> 
+      <div class="col-2">
+        <button type="button" class="btn btn-outline-success" id="inventoryreport-button" title="Inventory Report">Inventory Report</button>
+      </div> 
+    </div> 
+  </div>
+
+  <!-- Sales Report fragment -->
+  <div th:fragment="name_salesreport" id="salesreport">
+    <div class="row">
+      &nbsp;
+    </div>
+    <h3>Sales Report</h3>
+    <!-- Top row with form-->
+    <div class="row">
+      <!-- Sales Report form -->
+      <form class="form-inline" id="salesreport-form" onsubmit="return getSalesReportData()">
+        <div class="col">
+          <div class="form-group">
+            <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
+            <div class="col-sm-10">
+              <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date" required>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
+            <div class="col-sm-10">
+              <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date" required>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+        </div>
+        <div class="w-100"></div>
+        <!-- Blank Row -->
+        <div class="row">
+          &nbsp;
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+            <div class="col-sm-10">
+              <input class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group">
+            <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+            <div class="col-sm-10">
+              <input type="text" class="form-control" name="category" placeholder="Enter Category">
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <button type="submit" class="btn btn-outline-primary" id="submit-salesreport-data">Submit</button>
+          &nbsp;
+        </div>
+      </form>
+
+    </div> 
+
+
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
+    <div class="row">
+
+      <!-- Table -->
+      <div class="col-12">
+        <table class="table table-striped" id="salesreport-table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Category</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Revenue</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
+
+  </div>
+
+  <!-- Brand Report fragment -->
+  <div th:fragment="name_brandreport" id="brandreport">
+    <div class="row">
+      &nbsp;
+    </div>
+    <h3>Brand Report</h3>
+    <!-- Top row with form-->
+    <div class="row">
+      <div class="col">
+        <button type="button" class="btn btn-outline-info" id="refresh-brandreport-data">Refresh</button>
         &nbsp;
       </div>
       <div class="col">
-        <div class="form-group">
-          <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-          <div class="col-sm-10">
-            <input class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-          </div>
-        </div>
       </div>
       <div class="col">
-        <div class="form-group">
-          <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="category" placeholder="Enter Category">
-          </div>
-        </div>
       </div>
+    </div> 
+
+
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
+    <div class="row">
+
+      <!-- Table -->
+      <div class="col-12">
+        <table class="table table-striped" id="brandreport-table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Category</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+      </div>
+    </div>
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
+
+  </div>
+
+  <!-- Inventory Report fragment -->
+  <div th:fragment="name_inventoryreport" id="inventoryreport">
+    <div class="row">
+      &nbsp;
+    </div>
+    <h3>Inventory Report</h3>
+    <!-- Top row with form-->
+    <div class="row">
       <div class="col">
-        <button type="button" class="btn btn-outline-primary" id="submit-salesreport-data">Submit</button>
+        <button type="button" class="btn btn-outline-info" id="refresh-inventoryreport-data">Refresh</button>
         &nbsp;
-        <button type="button" class="btn btn-outline-danger" id="view-salesreport-data" value="Hide">Hide</button>
+        
       </div>
-    </form>
+      <div class="col">
+      </div>
 
-  </div> 
+      <div class="col">
+      </div>
+    </div> 
 
 
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="salesreport-table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Category</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Revenue</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-
-</div>
-
-<!-- Brand Report fragment -->
-<div th:fragment="name_brandreport">
-  <h3>Brand Report</h3>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Top row with form-->
-  <div class="row">
-    <div class="col">
-      <button type="button" class="btn btn-outline-info" id="refresh-brandreport-data">Refresh</button>
+    <!-- Blank Row -->
+    <div class="row">
       &nbsp;
-      <button type="button" class="btn btn-outline-danger" id="view-brandreport-data" value="Hide">Hide</button>  
     </div>
-    <div class="col">
+    <div class="row">
+
+      <!-- Table -->
+      <div class="col-12">
+        <table class="table table-striped" id="inventoryreport-table">
+          <thead>
+            <tr>
+              <th scope="col">ID</th>
+              <th scope="col">Brand</th>
+              <th scope="col">Category</th>
+              <th scope="col">Quantity</th>
+            </tr>
+          </thead>
+          <tbody>
+
+          </tbody>
+        </table>
+
+      </div>
     </div>
-    <div class="col">
-    </div>
-  </div> 
-
-
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="brandreport-table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Category</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-
-</div>
-
-<!-- Inventory Report fragment -->
-<div th:fragment="name_inventoryreport">
-  <h3>Inventory Report</h3>
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Top row with form-->
-  <div class="row">
-    <div class="col">
-      <button type="button" class="btn btn-outline-info" id="refresh-inventoryreport-data">Refresh</button>
+    <!-- Blank Row -->
+    <div class="row">
       &nbsp;
-      <button type="button" class="btn btn-outline-danger" id="view-inventoryreport-data" value="Hide">Hide</button>  
     </div>
-    <div class="col">
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
     </div>
 
-    <div class="col">
-    </div>
-  </div> 
+  </div>
 
 
-  <!-- Blank Row -->
-  <div class="row">
+
+
+  <!-- Footer fragment -->
+  <footer class="footer  mt-1" th:fragment="name_footer">
+    Copyright Increff 2019
     &nbsp;
-  </div>
-  <div class="row">
+    <!-- JS files -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
 
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="inventoryreport-table">
-        <thead>
-          <tr>
-            <th scope="col">ID</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Category</th>
-            <th scope="col">Quantity</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-
-</div>
-
-
-
-
-<!-- Footer fragment -->
-<footer class="footer  mt-1" th:fragment="name_footer">
-  Copyright Increff 2019
-  &nbsp;
-  <!-- JS files -->
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-
-  <script th:src="@{/static/app.js}"/></script>
-  <script th:src="@{/static/papaparse.min.js}"/></script>
-</footer>
+    <script th:src="@{/static/app.js}"/></script>
+    <script th:src="@{/static/papaparse.min.js}"/></script>
+  </footer>
 
 

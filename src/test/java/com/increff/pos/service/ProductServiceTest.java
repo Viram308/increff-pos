@@ -22,14 +22,15 @@ public class ProductServiceTest extends AbstractUnitTest {
 	public void testAdd() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
 		// Add one time
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 		// create new data with same barcode
 		ProductMasterPojo p1 = new ProductMasterPojo();
-		p1.setBrand_category(p.getBrand_category());
+		p1.setBrand_category_id(p.getBrand_category_id());
 		p1.setMrp(p.getMrp());
 		p1.setName(p.getName());
 		p1.setBarcode(p.getBarcode());
-		service.add(p1);
+		service.add(p1, brandMasterPojo);
 		// get barcode for id of first object
 		String b1 = service.get(p.getId()).getBarcode();
 		// get barcode for very next object
@@ -43,7 +44,8 @@ public class ProductServiceTest extends AbstractUnitTest {
 	@Test
 	public void testDelete() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 		// Delete should be successful and should not throw exception as data exists
 		service.delete(p.getId());
 	}
@@ -51,7 +53,8 @@ public class ProductServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testGetByBarcode() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 		ProductMasterPojo pr = service.getByBarcode(p.getBarcode());
 		service.delete(pr.getId());
 		// After delete throw exception while getting data
@@ -61,14 +64,16 @@ public class ProductServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testGetByBarcodeBlank() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 		service.getByBarcode("");
 	}
 
 	@Test
 	public void testGet() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 		ProductMasterPojo pr = service.get(p.getId());
 		// test added data
 		assertEquals("product", pr.getName());
@@ -82,11 +87,12 @@ public class ProductServiceTest extends AbstractUnitTest {
 	@Test
 	public void testUpdate() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 		ProductMasterPojo pr = service.get(p.getId());
 		// update data
 		pr.setName(" Check ");
-		service.update(pr.getId(), pr);
+		service.update(pr.getId(), pr, brandMasterPojo);
 		ProductMasterPojo pm = service.get(pr.getId());
 		// test updated data with normalization
 		assertEquals("check", pm.getName());
@@ -95,7 +101,8 @@ public class ProductServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		service.add(p);
+		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
+		service.add(p, brandMasterPojo);
 
 		ProductMasterPojo pr = service.getCheck(p.getId());
 		service.delete(pr.getId());
@@ -131,7 +138,7 @@ public class ProductServiceTest extends AbstractUnitTest {
 		bService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
-		p.setBrand_category(b);
+		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
 		return p;

@@ -12,9 +12,8 @@ import org.springframework.web.bind.annotation.RestController;
 import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
-import com.increff.pos.pojo.InventoryPojo;
+import com.increff.pos.model.InventorySearchForm;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.InventoryService;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,9 +24,6 @@ import io.swagger.annotations.ApiOperation;
 public class InventoryApiController {
 
 	@Autowired
-	private InventoryService service;
-
-	@Autowired
 	private InventoryDto inventoryDto;
 
 	// CRUD operations for inventory
@@ -35,35 +31,31 @@ public class InventoryApiController {
 	@ApiOperation(value = "Adds Inventory")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void add(@RequestBody InventoryForm form) throws ApiException {
-		InventoryPojo i = inventoryDto.convertInventoryFormtoInventoryPojo(form);
-		service.add(i);
+		inventoryDto.addInventory(form);
 	}
 
-	@ApiOperation(value = "Deletes Inventory")
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable int id) {
-		service.delete(id);
+	@ApiOperation(value = "Search a Product")
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public List<InventoryData> search(@RequestBody InventorySearchForm form) throws ApiException {
+		return inventoryDto.searchInventory(form);
 	}
 
 	@ApiOperation(value = "Gets an Inventory")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public InventoryData get(@PathVariable int id) throws ApiException {
-		InventoryPojo inventoryPojo = service.get(id);
-		return inventoryDto.convertInventoryPojotoInventoryData(inventoryPojo);
+		return inventoryDto.getInventoryData(id);
 	}
 
 	@ApiOperation(value = "Gets list of all Inventory")
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<InventoryData> getAll() throws ApiException {
-		List<InventoryPojo> list = service.getAll();
-		return inventoryDto.getInventoryDataList(list);
+		return inventoryDto.getAllInventory();
 	}
 
 	@ApiOperation(value = "Updates an Inventory")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException {
-		InventoryPojo p = inventoryDto.convertInventoryFormtoInventoryPojo(form);
-		service.update(id, p);
+		inventoryDto.updateInventory(id, form);
 	}
 
 }

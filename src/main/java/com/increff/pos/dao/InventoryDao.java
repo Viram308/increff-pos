@@ -15,6 +15,8 @@ public class InventoryDao extends AbstractDao {
 	private static String select_productId = "select i from InventoryPojo i where productId=:productId";
 	// select all
 	private static String select_all = "select i from InventoryPojo i";
+	// search
+	private static String search = "select i from InventoryPojo i where productid in :productIds";
 
 	// select according to product id
 	public InventoryPojo selectByProductId(int pid) {
@@ -26,6 +28,12 @@ public class InventoryDao extends AbstractDao {
 	// select all
 	public List<InventoryPojo> selectAll() {
 		TypedQuery<InventoryPojo> query = getQuery(select_all, InventoryPojo.class);
+		return query.getResultList();
+	}
+
+	public List<InventoryPojo> searchData(List<Integer> productIds) {
+		TypedQuery<InventoryPojo> query = getQuery(search, InventoryPojo.class);
+		query.setParameter("productIds", productIds);
 		return query.getResultList();
 	}
 }

@@ -39,6 +39,11 @@ public class BrandService {
 		return getCheckForBrandCategory(brand, category);
 	}
 
+	public List<BrandMasterPojo> searchData(BrandMasterPojo brandPojo) {
+		normalize(brandPojo);
+		return dao.searchData(brandPojo.getBrand(),brandPojo.getCategory());
+	}
+	
 	@Transactional
 	public BrandMasterPojo get(int id) {
 		return dao.select(BrandMasterPojo.class,id);
@@ -89,4 +94,6 @@ public class BrandService {
 		p.setBrand(StringUtil.toLowerCase(p.getBrand()));
 		p.setCategory(StringUtil.toLowerCase(p.getCategory()));
 	}
+
+	
 }

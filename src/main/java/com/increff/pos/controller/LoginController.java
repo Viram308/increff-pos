@@ -32,6 +32,8 @@ public class LoginController {
 	private UserService service;
 	@Autowired
 	private InfoData info;
+	@Autowired
+	private ConverterUtil converterUtil;
 
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
@@ -44,7 +46,7 @@ public class LoginController {
 		}
 
 		// Create authentication object
-		Authentication authentication = ConverterUtil.convertUserPojotoAuthentication(p);
+		Authentication authentication = converterUtil.convertUserPojotoAuthentication(p);
 		// Create new session
 		HttpSession session = req.getSession(true);
 		// Attach Spring SecurityContext to this new session
