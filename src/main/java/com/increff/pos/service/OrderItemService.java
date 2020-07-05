@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.increff.pos.dao.OrderItemDao;
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -36,9 +37,14 @@ public class OrderItemService {
 		dao.delete(OrderItemPojo.class, id);
 	}
 
+	@Transactional
+	public void deleteByOrderId(int orderId) {
+		dao.deleteByOrderId(orderId);
+	}
+
 	@Transactional(rollbackOn = ApiException.class)
-	public OrderItemPojo get(int id) throws ApiException {
-		return dao.select(OrderItemPojo.class, id);
+	public List<OrderItemPojo> getByOrderId(int orderId) throws ApiException {
+		return dao.selectByOrderId(orderId);
 	}
 
 	@Transactional
@@ -56,6 +62,15 @@ public class OrderItemService {
 		OrderItemPojo ex = getCheck(id);
 		ex.setQuantity(p.getQuantity());
 		dao.update(ex);
+	}
+
+	public List<OrderItemPojo> searchData(OrderItemData orderItemData, List<Integer> productIds) {
+		if (orderItemData.getOrderId() == 0) {
+			return dao.searchData(productIds);
+		} else {
+			return dao.searchData(orderItemData.getOrderId(), productIds);
+		}
+
 	}
 
 	@Transactional

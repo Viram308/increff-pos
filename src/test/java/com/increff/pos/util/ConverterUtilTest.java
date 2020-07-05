@@ -170,7 +170,8 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	public void testConvertOrderItemPojotoOrderItemData() throws ApiException {
 		OrderItemPojo i = getOrderItemPojo();
 		ProductMasterPojo productMasterPojo = getProductMasterPojo();
-		OrderItemData d = converterUtil.convertOrderItemPojotoOrderItemData(i, productMasterPojo.getBarcode());
+		OrderItemData d = converterUtil.convertOrderItemPojotoOrderItemData(i, productMasterPojo);
+		assertEquals(productMasterPojo.getName(), d.getName());
 		assertEquals(productMasterPojo.getBarcode(), d.getBarcode());
 		assertEquals(i.getSellingPrice(), d.getSellingPrice(), 0.01);
 		assertEquals(i.getQuantity(), d.getQuantity());

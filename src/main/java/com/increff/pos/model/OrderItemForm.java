@@ -3,6 +3,7 @@ package com.increff.pos.model;
 public class OrderItemForm {
 
 	private String barcode;
+	private String name;
 	private int quantity;
 	private double sellingPrice;
 
@@ -12,6 +13,14 @@ public class OrderItemForm {
 
 	public void setBarcode(String barcode) {
 		this.barcode = barcode;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public int getQuantity() {

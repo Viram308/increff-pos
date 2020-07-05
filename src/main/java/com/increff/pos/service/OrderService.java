@@ -1,5 +1,7 @@
 package com.increff.pos.service;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.LinkedHashMap;
@@ -142,6 +144,32 @@ public class OrderService {
 			bill.add(item);
 		}
 		return bill;
+	}
+
+	public List<OrderPojo> getList(List<OrderPojo> orderPojoList, String startdate, String enddate)
+			throws ParseException {
+		List<OrderPojo> orderList = new ArrayList<OrderPojo>();
+		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+		for (OrderPojo orderPojo : orderPojoList) {
+			// Split datetime with space and get first element of array as date
+			String receivedDate = orderPojo.getDatetime().split(" ")[0];
+			// Compares date with startdate and enddate
+			if ((sdf.parse(startdate).before(sdf.parse(receivedDate))
+					|| sdf.parse(startdate).equals(sdf.parse(receivedDate)))
+					&& (sdf.parse(receivedDate).before(sdf.parse(enddate))
+							|| sdf.parse(receivedDate).equals(sdf.parse(enddate)))) {
+				// Add id to array
+				orderList.add(orderPojo);
+			}
+		}
+		return orderList;
+	}
+
+	@Transactional(rollbackOn = ApiException.class)
+	public void update(int id, OrderPojo orderPojo) throws ApiException {
+		OrderPojo orderPojoFinal = getCheck(id);
+		orderPojoFinal.setDatetime(orderPojo.getDatetime());
+		dao.update(orderPojoFinal);
 	}
 
 }

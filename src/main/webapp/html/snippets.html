@@ -857,7 +857,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
   <!-- Top row with form-->
   <div class="row">
     <!-- Order form -->
-    <form class="form-inline" id="order-form" onsubmit="return searchOrder()">
+    <form class="form-inline" id="order-form">
       <div class="col">
         <div class="form-group">
           <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
@@ -875,7 +875,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
         </div>
       </div>
       <div class="col">
-        <button type="submit" class="btn btn-outline-info" id="search-order">Search</button>
+        <button type="button" class="btn btn-outline-info" id="search-order">Search</button>
         &nbsp;
         <button type="button" class="btn btn-outline-primary" id="show-add-order-modal">Add</button>
       </div>
@@ -894,6 +894,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <table class="table table-striped" id="order-table">
         <thead>
           <tr>
+            <th scope="col">Id</th>
             <th scope="col">DateTime</th>
             <th scope="col">Actions</th>
           </tr>
@@ -1026,29 +1027,76 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 </div>
 
 
+<!-- Edit Order Model -->
+  <div 
+  class="modal fade" tabindex="-1" role="dialog" id="edit-order-modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Edit Order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Order add form -->
+      
+      <div class="modal-body">
+        <div class="row">
+     <input type="hidden" id="totalItemsEdit" name="totalItemsEdit" value="0">
+   </div>
+        <form  class="form-inline" id="order-edit-form">
+          <div class="row">
+          <div class="col" style="margin:10px;">
+            <div class="form-group">
+              <label for="inputBarcodeEditOrder" class="col-sm-2 col-form-label">Barcode</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="barcode" id="inputBarcodeEditOrder" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
+              </div>
+            </div>
+          </div>
+          <div class="col" style="margin:10px;">
+            <div class="form-group">
+              <label for="inputQuantityEditOrder" class="col-sm-2 col-form-label">Quantity</label>
+              <div class="col-sm-6">
+                <input type="number" class="form-control" name="quantity" id="inputQuantityEditOrder" placeholder="Enter Quantity" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col">
+          </div>
+          <div class="w-100"></div>
+        </div>
+          <div class="row">
+          <div class="col" style="margin:10px;">
+            <div class="form-group">
+              <label for="inputNameEditOrder" class="col-sm-2 col-form-label">Name</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="name" id="inputNameEditOrder" readonly>
+              </div>
+            </div>
+          </div>
+          <div class="col" style="margin:10px;">
+            <div class="form-group">
+              <label for="inputMrpEditOrder" class="col-sm-2 col-form-label">MRP</label>
+              <div class="col-sm-6">
+               <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrpEditOrder" readonly>
+             </div>
+           </div>
+         </div>
+         <!-- Hidden id -->
+            <input type="hidden" name="id" >
+
+         <div class="col" style="margin:10px;">
+          <button type="button" class="btn btn-outline-primary" id="add-item-button-edit">Add Item</button>
+        </div>
+      </div>
+      </form>
 
 
-</div>
-
-<!-- Order item fragment -->
-<div th:fragment="name_orderitem" id="orderitem">
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
   </div>
-  <h3>Order Items</h3>
-  <!-- Top row with form-->
-  <div class="row">
-    <div class="col">
-      <button type="button" class="btn btn-outline-info" id="refresh-orderitem-data">Refresh</button>
-    </div>
-    <div class="col">
-    </div>
-    <div class="col">
-    </div>
-  </div> 
-
-
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
@@ -1057,15 +1105,14 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 
     <!-- Table -->
     <div class="col-12">
-      <table class="table table-striped" id="orderitem-table">
+      <table class="table table-striped" id="customer-order-edit-table">
         <thead>
           <tr>
-            <th scope="col">ID</th>
-            <th scope="col">OrderId</th>
             <th scope="col">Barcode</th>
+            <th scope="col">Name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Selling Price</th>
-            <th scope="col">Actions</th>
+            <th scope="col">Action</th>
           </tr>
         </thead>
         <tbody>
@@ -1083,7 +1130,156 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
   <div class="row">
     &nbsp;
   </div>
-  <!-- OrderItem edit modal -->
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+      <button type="button" class="btn btn-success" id="update-order">Update Order</button>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+<!-- View Order Modal -->
+  <div 
+  class="modal fade" tabindex="-1" role="dialog" id="view-order-modal">
+  <div class="modal-dialog modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">View Order</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <!-- Order add form -->
+      
+      <div class="modal-body">
+   <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+  <div class="row">
+
+    <!-- Table -->
+    <div class="col-12">
+      <table class="table table-striped" id="view-order-table">
+        <thead>
+          <tr>
+            <th scope="col">Barcode</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Selling Price</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+    </div>
+
+  </div>
+</div>
+</div>
+
+
+
+
+
+</div>
+
+<!-- Order item fragment -->
+<div th:fragment="name_orderitem" id="orderitem">
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+  <h3>Order Items</h3>
+  <!-- Top row with form-->
+   <div class="row">
+    <!-- Product form -->
+    <form class="form-inline" id="orderitem-form">
+      <div class="col">
+        <div class="form-group">
+          <label for="inputOrderId" class="col-sm-2 col-form-label">OrderId</label>
+          <div class="col-sm-10">
+            <input type="number" class="form-control col-10" name="orderId" id="inputOrderId" step="1" placeholder="Enter OrderId">
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control col-10" name="barcode" id="inputBarcode" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-10">
+            <input type="text" class="form-control col-10" name="name" id="inputName" placeholder="Enter Name">
+          </div>
+        </div>
+      </div>
+       <div class="col">
+        <button type="button" class="btn btn-outline-info" id="search-orderitem">Search</button>
+      </div> 
+    </form> 
+  </div> 
+
+
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+  <div class="row">
+
+    <!-- Table -->
+    <div class="col-12">
+      <table class="table table-striped" id="orderitem-table">
+        <thead>
+          <tr>
+            <th scope="col">OrderId</th>
+            <th scope="col">Barcode</th>
+            <th scope="col">Name</th>
+            <th scope="col">Quantity</th>
+            <th scope="col">Selling Price</th>
+          </tr>
+        </thead>
+        <tbody>
+
+        </tbody>
+      </table>
+
+    </div>
+  </div>
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+  <!-- Blank Row -->
+  <div class="row">
+    &nbsp;
+  </div>
+ <!-- OrderItem edit modal
   <div class="modal fade" tabindex="-1" role="dialog" id="edit-orderitem-modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -1093,7 +1289,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
-        <!-- OrderItem edit form -->
+         OrderItem edit form 
         <form  id="orderitem-edit-form" onsubmit="return updateOrderItem()">
           <div class="modal-body">
 
@@ -1121,11 +1317,11 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
             <button type="submit" class="btn btn-primary" id="update-orderitem">Update</button>
           </div>
-          <!-- OrderItem edit form -->
+          OrderItem edit form
           <form  id="orderitem-edit-form" onsubmit="return updateOrderItem()">
           </div>
         </div>
-      </div>
+      </div> -->
     </div>
 
     <!-- Sales Report fragment -->
@@ -1228,17 +1424,31 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       </div>
       <h3>Brand Report</h3>
       <!-- Top row with form-->
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn-outline-info" id="refresh-brandreport-data">Refresh</button>
-          &nbsp;
+     <div class="row">
+  <!-- BrandReport form -->
+  <form class="form-inline" id="brandreport-form">
+    <div class="col">
+      <div class="form-group">
+        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control col-10" name="brand" id="inputBrand" placeholder="Enter Brand">
         </div>
-        <div class="col">
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control col-10" name="category" id="inputCategory" placeholder="Enter Category">
         </div>
-        <div class="col">
-        </div>
-      </div> 
+      </div>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-info" id="search-brandreport">Search</button>
+    </div>
+  </form>
 
+</div> 
 
       <!-- Blank Row -->
       <div class="row">
@@ -1281,18 +1491,31 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       </div>
       <h3>Inventory Report</h3>
       <!-- Top row with form-->
-      <div class="row">
-        <div class="col">
-          <button type="button" class="btn btn-outline-info" id="refresh-inventoryreport-data">Refresh</button>
-          &nbsp;
+       <div class="row">
+  <!-- InventoryReport form -->
+  <form class="form-inline" id="inventoryreport-form">
+    <div class="col">
+      <div class="form-group">
+        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control col-10" name="brand" id="inputBrand" placeholder="Enter Brand">
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <div class="form-group">
+        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+        <div class="col-sm-10">
+          <input type="text" class="form-control col-10" name="category" id="inputCategory" placeholder="Enter Category">
+        </div>
+      </div>
+    </div>
+    <div class="col">
+      <button type="button" class="btn btn-outline-info" id="search-inventoryreport">Search</button>
+    </div>
+  </form>
 
-        </div>
-        <div class="col">
-        </div>
-
-        <div class="col">
-        </div>
-      </div> 
+</div>  
 
 
       <!-- Blank Row -->

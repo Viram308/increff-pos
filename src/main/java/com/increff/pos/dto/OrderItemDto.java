@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,7 +19,6 @@ import com.increff.pos.util.ConverterUtil;
 public class OrderItemDto {
 	@Autowired
 	private OrderItemService orderItemService;
-
 	@Autowired
 	private ProductService productService;
 	@Autowired
@@ -28,14 +28,31 @@ public class OrderItemDto {
 		orderItemService.add(list);
 	}
 
-	public void delete(int id) {
-		orderItemService.delete(id);
+	public void deleteByOrderId(int id) {
+		orderItemService.deleteByOrderId(id);
 	}
 
-	public OrderItemData get(int id) throws ApiException {
-		OrderItemPojo orderItemPojo = orderItemService.get(id);
-		ProductMasterPojo productMasterPojo = productService.get(orderItemPojo.getProductId());
-		return converterUtil.convertOrderItemPojotoOrderItemData(orderItemPojo, productMasterPojo.getBarcode());
+	public List<OrderItemData> get(int orderId) throws ApiException {
+		List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderId);
+		return converterUtil.getOrderItemDataList(orderItemPojoList);
+	}
+
+	public List<OrderItemData> searchOrderItem(OrderItemData orderItemData) throws ApiException {
+		checkSearchData(orderItemData);
+		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
+		productMasterPojo.setBarcode(orderItemData.getBarcode());
+		productMasterPojo.setName(orderItemData.getName());
+		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
+		List<Integer> productIds = getProductIdList(productMasterPojoList);
+		List<OrderItemPojo> orderItemPojos = orderItemService.searchData(orderItemData, productIds);
+		return converterUtil.getOrderItemDataList(orderItemPojos);
+	}
+
+	public void checkSearchData(OrderItemData orderItemData) throws ApiException {
+		if (orderItemData.getBarcode().isBlank() && orderItemData.getName().isBlank()
+				&& orderItemData.getOrderId() <= 0) {
+			throw new ApiException("Please enter anyone(barcode,name,orderId) !!");
+		}
 	}
 
 	public void update(int id, OrderItemForm form) throws ApiException {
@@ -50,9 +67,18 @@ public class OrderItemDto {
 		return converterUtil.getOrderItemDataList(list);
 	}
 
+	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
+		List<Integer> productIdList = new ArrayList<Integer>();
+		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
+			productIdList.add(productMasterPojo.getId());
+		}
+		return productIdList;
+	}
+
 	public void checkEnteredQuantity(OrderItemForm f) throws ApiException {
 		if (f.getQuantity() <= 0) {
 			throw new ApiException("Quantity can not be negative or zero !!");
 		}
 	}
+
 }

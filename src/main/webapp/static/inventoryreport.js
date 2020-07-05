@@ -23,22 +23,45 @@ function getInventoryReportData(){
 function displayInventoryReport(data){
 	var $tbody = $('#inventoryreport-table').find('tbody');
 	$tbody.empty();
+	var j=1;
 	for(var i in data){
 		var e = data[i];
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + j + '</td>'
 		+ '<td>' + e.brand + '</td>'
 		+ '<td>' + e.category + '</td>'
 		+ '<td>' + e.quantity + '</td>'
 		+ '</tr>';
 		$tbody.append(row);
+		j++;
 	}
 }
+function searchInventoryReport(){
+	//Set the values to add
+	var $tbody = $('#inventoryreport-table').find('tbody');
+	$tbody.empty();
+	var $form = $("#inventoryreport-form");
+	var json = toJson($form);
+	var url = getInventoryReportUrl()+"/search";
+	// call api
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+	   		displayInventoryReport(response);  
+	   	},
+	   	error: handleAjaxError
+	   });
 
+	return false;
+}
 
 //INITIALIZATION CODE
 function init(){
-	$('#refresh-inventoryreport-data').click(getInventoryReportData);
-	
+$('#search-inventoryreport').click(searchInventoryReport);
 }
 $(document).ready(init);

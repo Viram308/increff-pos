@@ -46,17 +46,22 @@ public class ProductService {
 	public void delete(int id) {
 		dao.delete(ProductMasterPojo.class, id);
 	}
+
 	public List<ProductMasterPojo> searchData(ProductMasterPojo productMasterPojo, List<Integer> brandIds) {
 		normalize(productMasterPojo);
-		if(brandIds.isEmpty()) {
-			return dao.searchData(productMasterPojo.getBarcode(),productMasterPojo.getName());
-		}
-		else {
-			return dao.searchData(productMasterPojo.getBarcode(),productMasterPojo.getName(),brandIds);
-		}
+		return dao.searchData(productMasterPojo.getBarcode(), productMasterPojo.getName(), brandIds);
 	}
+
+	public List<ProductMasterPojo> searchData(List<Integer> brandIds) {
+		return dao.searchData(brandIds);
+	}
+
+	public List<ProductMasterPojo> searchData(ProductMasterPojo productMasterPojo) {
+		return dao.searchData(productMasterPojo.getBarcode(), productMasterPojo.getName());
+	}
+
 	@Transactional(rollbackOn = ApiException.class)
-	public ProductMasterPojo get(int id){
+	public ProductMasterPojo get(int id) {
 		return dao.select(ProductMasterPojo.class, id);
 	}
 
@@ -105,5 +110,4 @@ public class ProductService {
 		p.setBarcode(StringUtil.toLowerCase(p.getBarcode()));
 	}
 
-	
 }

@@ -28,17 +28,10 @@ public class OrderItemApiController {
 	private OrderItemDto orderItemDto;
 	// CRUD operation for order item
 
-	@ApiOperation(value = "Deletes a OrderItem")
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable int id) {
-		orderItemDto.delete(id);
-	}
-
-	@ApiOperation(value = "Gets a Order Item")
+	@ApiOperation(value = "Gets Order Items for order")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
-	public OrderItemData get(@PathVariable int id) throws ApiException {
+	public List<OrderItemData> get(@PathVariable int id) throws ApiException {
 		return orderItemDto.get(id);
-
 	}
 
 	@ApiOperation(value = "Gets list of all Order Items")
@@ -47,11 +40,18 @@ public class OrderItemApiController {
 		return orderItemDto.getAll();
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
-	@ApiOperation(value = "Updates a OrderItem")
-	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody OrderItemForm form) throws ApiException {
-		orderItemDto.update(id, form);
+	@ApiOperation(value = "Search Order Items")
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public List<OrderItemData> search(@RequestBody OrderItemData orderItemData) throws ApiException {
+		return orderItemDto.searchOrderItem(orderItemData);
 	}
+
+	
+//	@Transactional(rollbackOn = ApiException.class)
+//	@ApiOperation(value = "Updates a OrderItem")
+//	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+//	public void update(@PathVariable int id, @RequestBody OrderItemForm form) throws ApiException {
+//		orderItemDto.update(id, form);
+//	}
 
 }

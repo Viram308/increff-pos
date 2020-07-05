@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.dto.ReportDto;
 import com.increff.pos.model.BrandData;
+import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
 import com.increff.pos.model.SalesReportForm;
@@ -50,6 +51,19 @@ public class ReportApiController {
 		return reportDto.getBrandReportData();
 	}
 
+	// Brand Report
+	@ApiOperation(value = "Search Brand Report")
+	@RequestMapping(value = "/api/brandreport/search", method = RequestMethod.POST)
+	public List<BrandData> searchBrandReport(@RequestBody BrandForm brandForm) throws ApiException {
+		return reportDto.searchBrandReport(brandForm);
+	}
+
+	@ApiOperation(value = "Search Inventory Report")
+	@RequestMapping(value = "/api/inventoryreport/search", method = RequestMethod.POST)
+	public List<InventoryReportData> searchInventoryReport(@RequestBody BrandForm brandForm) throws ApiException {
+		return reportDto.searchInventoryReport(brandForm);
+	}
+	
 	// Inventory Report
 	@ApiOperation(value = "Gets Inventory Report")
 	@RequestMapping(value = "/api/inventoryreport", method = RequestMethod.GET)

@@ -23,7 +23,7 @@ function searchInventory(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   		displayBrandList(response);  
+	   		displayInventoryList(response);
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -35,8 +35,8 @@ function searchInventory(event){
 
 function addInventory(event){
 	//Set the values to add
-	$('#add-inventry-modal').modal('toggle');
-	var $form = $("#inventory-form");
+	$('#add-inventory-modal').modal('toggle');
+	var $form = $("#inventory-add-form");
 	var json = toJson($form);
 	var url = getInventoryUrl();
 	// call api
@@ -230,12 +230,12 @@ function displayInventory(data){
 }
 
 function showAddInventoryModal(){
-	$('#add-inventry-modal').modal('toggle');
+	$('#add-inventory-modal').modal('toggle');
 }
 //INITIALIZATION CODE
 function init(){
 	$('#show-add-inventory-modal').click(showAddInventoryModal);
-	$('#search-inventry').click(searchInventory);
+	$('#search-inventory').click(searchInventory);
 	$('#upload-inventory-data').click(displayUploadDataInventory);
 	$('#process-data-inventory').click(processDataInventory);
 	$('#download-errors-inventory').click(downloadErrorsInventory);

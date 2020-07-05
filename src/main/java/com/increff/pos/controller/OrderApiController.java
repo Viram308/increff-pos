@@ -1,6 +1,7 @@
 package com.increff.pos.controller;
 
 import java.io.IOException;
+import java.text.ParseException;
 import java.util.List;
 
 import javax.servlet.ServletOutputStream;
@@ -21,7 +22,9 @@ import com.increff.pos.dto.OrderDto;
 import com.increff.pos.dto.OrderItemDto;
 import com.increff.pos.model.BillData;
 import com.increff.pos.model.OrderData;
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.OrderSearchForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
@@ -85,10 +88,10 @@ public class OrderApiController {
 		return response;
 	}
 
-	@ApiOperation(value = "Deletes Order")
-	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
-	public void delete(@PathVariable int id) {
-		orderDto.delete(id);
+	@ApiOperation(value = "Search Orders")
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public List<OrderData> search(@RequestBody OrderSearchForm form) throws ApiException, ParseException {
+		return orderDto.searchOrder(form);
 	}
 
 	@ApiOperation(value = "Gets a Order")
@@ -101,6 +104,43 @@ public class OrderApiController {
 	@RequestMapping(value = "", method = RequestMethod.GET)
 	public List<OrderData> getAll() {
 		return orderDto.getAll();
+	}
+
+	@Transactional(rollbackOn = ApiException.class)
+	@ApiOperation(value = "Update Order")
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+	public void update(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
+			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
+		// Get order items according to orderId
+		List<OrderItemData> orderItemDataList = orderItemDto.get(id);
+		// add previous inventory
+		orderDto.addInInventory(orderItemDataList);
+		// Check entered inventory with available inventory
+		List<OrderItemForm> orderItems = orderDto.groupItemsByBarcode(orderItemForms);
+		// update order date and time
+		OrderPojo orderPojo = orderDto.updateOrder(id,orderItems);
+		// Convert input to required format
+		List<OrderItemPojo> list = orderDto.getOrderItemObject(orderItems, orderPojo);
+		// Decrease inventory according to the entered quantity
+		orderDto.updateInventory(list);
+		// Delete previous order items
+		orderItemDto.deleteByOrderId(id);
+		// Add each order item
+		orderItemDto.add(list);
+
+		// Convert OrderItemPojo to BillData
+		List<BillData> billItemList = orderDto.getBillDataObject(list);
+		// Generate XML file using BillData list
+		GenerateXML.createXml(billItemList, orderPojo.getId());
+		// Create PDF from generated XML
+		byte[] encodedBytes = GeneratePDF.createPDF();
+		// Create response
+		response = createResponse(response, encodedBytes);
+		// send to output stream
+		ServletOutputStream servletOutputStream = response.getOutputStream();
+		servletOutputStream.write(encodedBytes);
+		servletOutputStream.flush();
+		servletOutputStream.close();
 	}
 
 }

@@ -4,34 +4,57 @@ function getOrderItemUrl(){
    return baseUrl + "/api/orderitem";
 }
 
-//BUTTON ACTIONS
-function updateOrderItem(event){
-   $('#edit-orderitem-modal').modal('toggle');
-   //Get the ID
-   var id = $("#orderitem-edit-form input[name=id]").val(); 
-   var url = getOrderItemUrl() + "/" + id;
+// //BUTTON ACTIONS
+// function updateOrderItem(event){
+//    $('#edit-orderitem-modal').modal('toggle');
+//    //Get the ID
+//    var id = $("#orderitem-edit-form input[name=id]").val(); 
+//    var url = getOrderItemUrl() + "/" + id;
 
-   //Set the values to update
-   var $form = $("#orderitem-edit-form");
+//    //Set the values to update
+//    var $form = $("#orderitem-edit-form");
+//    var json = toJson($form);
+
+//    $.ajax({
+//       url: url,
+//       type: 'PUT',
+//       data: json,
+//       headers: {
+//          'Content-Type': 'application/json'
+//       },      
+//       success: function(response) {
+//          // get list
+//          getOrderItemList();   
+//       },
+//       error: handleAjaxError
+//    });
+
+//    return false;
+// }
+
+function searchOrderItem(){
+   //Set the values to add
+   var $tbody = $('#orderitem-table').find('tbody');
+   $tbody.empty();
+   var $form = $("#orderitem-form");
    var json = toJson($form);
-
+   var url = getOrderItemUrl()+"/search";
+   // call api
    $.ajax({
       url: url,
-      type: 'PUT',
+      type: 'POST',
       data: json,
       headers: {
          'Content-Type': 'application/json'
-      },      
+      },    
       success: function(response) {
-         // get list
-         getOrderItemList();   
-      },
-      error: handleAjaxError
-   });
+            displayOrderItemList(response);  
+         },
+         error: handleAjaxError
+      });
 
    return false;
 }
-
 
 function getOrderItemList(){
    var url = getOrderItemUrl();
@@ -47,19 +70,6 @@ function getOrderItemList(){
       });
 }
 
-function deleteOrderItem(id){
-   var url = getOrderItemUrl() + "/" + id;
-   // call api
-   $.ajax({
-      url: url,
-      type: 'DELETE',
-      success: function(data) {
-            // get list
-            getOrderItemList();  
-         },
-         error: handleAjaxError
-      });
-}
 
 
 //UI DISPLAY METHODS
@@ -70,15 +80,12 @@ function displayOrderItemList(data){
    for(var i in data){
       var e = data[i];
       // dynamic buttons
-      var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteOrderItem(' + e.id + ')">Delete</button>'
-      buttonHtml += ' <button class="btn btn-outline-success" onclick="displayEditOrderItem(' + e.id + ')">Edit</button>'
-      var row = '<tr>'
-      + '<td>' + e.id + '</td>'
+     var row = '<tr>'
       + '<td>' + e.orderId + '</td>'
       + '<td>' + e.barcode + '</td>'
+      + '<td>' + e.name + '</td>'
       + '<td>' + e.quantity + '</td>'
       + '<td>' + e.sellingPrice + '</td>'
-      + '<td>' + buttonHtml + '</td>'
       + '</tr>';
       $tbody.append(row);
    }
@@ -98,18 +105,18 @@ function displayEditOrderItem(id){
       });   
 }
 
-// fill entries
-function displayOrderItem(data){
-   $("#orderitem-edit-form input[name=barcode]").val(data.barcode);
-   $("#orderitem-edit-form input[name=quantity]").val(data.quantity);
-   $("#orderitem-edit-form input[name=mrp]").val(data.mrp);       
-   $("#orderitem-edit-form input[name=id]").val(data.id);   
-   $('#edit-orderitem-modal').modal('toggle');
-}
+// // fill entries
+// function displayOrderItem(data){
+//    $("#orderitem-edit-form input[name=barcode]").val(data.barcode);
+//    $("#orderitem-edit-form input[name=quantity]").val(data.quantity);
+//    $("#orderitem-edit-form input[name=mrp]").val(data.mrp);       
+//    $("#orderitem-edit-form input[name=id]").val(data.id);   
+//    $('#edit-orderitem-modal').modal('toggle');
+// }
 
 //INITIALIZATION CODE
 function init(){
-   $('#refresh-orderitem-data').click(getOrderItemList);
+   $('#search-orderitem').click(searchOrderItem);
 }
 
 $(document).ready(init);

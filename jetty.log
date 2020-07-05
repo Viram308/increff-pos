@@ -2070,3 +2070,74 @@ line 1:82: unexpected token: category
 2020-07-04 20:46:09 INFO  SecurityConfig:33 - Configuration complete
 2020-07-04 20:54:08 INFO  SecurityConfig:33 - Configuration complete
 2020-07-04 20:55:31 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:13:27 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:30:07 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:31:49 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:32:45 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 13] (through reference chain: java.lang.Object[][0]->com.increff.pos.model.OrderItemForm["barcode"]); nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 13] (through reference chain: java.lang.Object[][0]->com.increff.pos.model.OrderItemForm["barcode"])
+2020-07-05 08:34:26 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:35:06 WARN  DefaultHandlerExceptionResolver:384 - Failed to read HTTP message: org.springframework.http.converter.HttpMessageNotReadableException: Could not read document: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 13] (through reference chain: java.lang.Object[][0]->com.increff.pos.model.OrderItemForm["barcode"]); nested exception is com.fasterxml.jackson.databind.exc.MismatchedInputException: Cannot deserialize instance of `java.lang.String` out of START_OBJECT token
+ at [Source: (PushbackInputStream); line: 1, column: 13] (through reference chain: java.lang.Object[][0]->com.increff.pos.model.OrderItemForm["barcode"])
+2020-07-05 08:41:01 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:43:37 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 08:46:46 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 09:08:58 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 09:32:24 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 09:33:06 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 09:57:27 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 09:59:04 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:00:26 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:04:08 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:06:02 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:08:31 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:11:58 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:32:42 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:37:30 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:38:08 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:39:21 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:48:25 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:50:53 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:53:12 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 10:54:30 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-05 10:54:30 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+2020-07-05 11:06:55 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 11:53:47 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 11:56:40 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 11:59:37 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 12:08:16 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 14:07:48 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 14:24:30 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 14:35:20 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 15:02:54 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 15:17:51 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 15:19:23 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 15:59:12 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 16:00:06 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 16:01:02 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 19:40:58 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 19:44:55 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 19:45:36 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-05 19:45:36 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '))' at line 1
+2020-07-05 19:45:47 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-05 19:45:47 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '))' at line 1
+2020-07-05 19:46:48 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-05 19:46:48 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near '))' at line 1
+2020-07-05 19:47:46 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 20:39:18 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 20:43:01 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 20:54:23 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 20:56:27 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 20:56:38 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 20:56:50 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:04:54 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:07:22 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:10:14 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:47:43 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:48:28 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:56:30 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 21:57:29 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 22:01:48 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 22:03:58 INFO  SecurityConfig:33 - Configuration complete
+2020-07-05 22:05:00 INFO  SecurityConfig:33 - Configuration complete

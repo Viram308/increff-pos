@@ -172,11 +172,12 @@ public class ConverterUtil {
 	}
 
 	// Converts OrderItemPojo to OrderItemData
-	public OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo p, String barcode) {
+	public OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo p, ProductMasterPojo productMasterPojo) {
 		OrderItemData d = new OrderItemData();
 		d.setId(p.getId());
 		d.setOrderId(p.getOrderId());
-		d.setBarcode(barcode);
+		d.setName(productMasterPojo.getName());
+		d.setBarcode(productMasterPojo.getBarcode());
 		d.setQuantity(p.getQuantity());
 		d.setSellingPrice(p.getSellingPrice());
 		return d;
@@ -194,7 +195,7 @@ public class ConverterUtil {
 		List<OrderItemData> list2 = new ArrayList<OrderItemData>();
 		for (OrderItemPojo p : list) {
 			ProductMasterPojo productMasterPojo = productService.get(p.getProductId());
-			list2.add(convertOrderItemPojotoOrderItemData(p, productMasterPojo.getBarcode()));
+			list2.add(convertOrderItemPojotoOrderItemData(p, productMasterPojo));
 		}
 		return list2;
 	}

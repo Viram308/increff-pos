@@ -39,8 +39,7 @@ public class InventoryDto {
 		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
 		productMasterPojo.setBarcode(form.getBarcode());
 		productMasterPojo.setName(form.getName());
-		List<Integer> brandIds = new ArrayList<Integer>();
-		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo, brandIds);
+		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
 		List<Integer> productIds = getProductIdList(productMasterPojoList);
 		List<InventoryPojo> list = inventoryService.searchData(productIds);
 		return converterUtil.getInventoryDataList(list);

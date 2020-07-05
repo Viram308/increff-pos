@@ -34,7 +34,7 @@ function searchProduct(event){
 function addProduct(event){
 	//Set the values to update
 	$('#add-product-modal').modal('toggle');
-	var $form = $("#product-form");
+	var $form = $("#product-add-form");
 	var json = toJson($form);
 	var url = getProductUrl();
 	// call api
