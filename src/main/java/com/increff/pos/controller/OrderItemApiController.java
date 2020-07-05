@@ -2,8 +2,6 @@ package com.increff.pos.controller;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,7 +11,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.dto.OrderItemDto;
 import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -46,7 +43,6 @@ public class OrderItemApiController {
 		return orderItemDto.searchOrderItem(orderItemData);
 	}
 
-	
 //	@Transactional(rollbackOn = ApiException.class)
 //	@ApiOperation(value = "Updates a OrderItem")
 //	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
