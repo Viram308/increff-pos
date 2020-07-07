@@ -83,7 +83,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		List<OrderItemForm> list = service.groupItemsByBarcode(orderItemForms);
 		// test size and doubled quantity
 		assertEquals(2, list.size());
-		assertEquals(20, list.get(0).getQuantity());
+		assertEquals(20, list.get(0).quantity);
 	}
 
 	@Test(expected = ApiException.class)
@@ -97,7 +97,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	public void testCheckInventoryZeroQuantity() throws ApiException {
 		List<OrderItemForm> orderItemForms = getList();
 		// Update created data so that inventory is zero
-		orderItemForms.get(0).setQuantity(10);
+		orderItemForms.get(0).quantity = 10;
 		// throws exception for zero quantity available
 		service.checkInventory(orderItemForms);
 	}
@@ -106,7 +106,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 	public void testCheckInventoryPerfect() throws ApiException {
 		List<OrderItemForm> orderItemForms = getList();
 		// Update created data so that inventory is available
-		orderItemForms.get(1).setQuantity(25);
+		orderItemForms.get(1).quantity = 25;
 		// Does not throws exception
 		service.checkInventory(orderItemForms);
 	}
@@ -155,12 +155,12 @@ public class OrderServiceTest extends AbstractUnitTest {
 		getData(brand2, b2, quantity2);
 		OrderItemForm o1 = new OrderItemForm();
 		OrderItemForm o2 = new OrderItemForm();
-		o1.setBarcode(b1);
-		o1.setQuantity(5);
-		o1.setSellingPrice(mrp);
-		o2.setBarcode(b2);
-		o2.setQuantity(35);
-		o2.setSellingPrice(mrp);
+		o1.barcode = b1;
+		o1.quantity = 5;
+		o1.sellingPrice = mrp;
+		o2.barcode = b2;
+		o2.quantity = 35;
+		o2.sellingPrice = mrp;
 		orderItemForms.add(o1);
 		orderItemForms.add(o2);
 		return orderItemForms;
@@ -198,9 +198,9 @@ public class OrderServiceTest extends AbstractUnitTest {
 		String barcode = StringUtil.getAlphaNumericString();
 		int quantity = 10;
 		double mrp = 50.20;
-		orderItemForm.setBarcode(barcode);
-		orderItemForm.setQuantity(quantity);
-		orderItemForm.setSellingPrice(mrp);
+		orderItemForm.barcode = barcode;
+		orderItemForm.quantity = quantity;
+		orderItemForm.sellingPrice = mrp;
 		return orderItemForm;
 	}
 

@@ -10,6 +10,7 @@ com/increff/pos/dto/OrderDto.class
 com/increff/pos/pojo/BrandMasterPojo.class
 com/increff/pos/model/BillForm.class
 com/increff/pos/service/OrderService.class
+com/increff/pos/model/ProductDetails.class
 com/increff/pos/model/InfoData.class
 com/increff/pos/controller/OrderApiController.class
 com/increff/pos/controller/AboutAppController.class

@@ -54,3 +54,15 @@ function writeFileData(arr){
     tempLink.setAttribute('download', 'download.tsv');
     tempLink.click(); 
 }
+
+
+function init(){
+    $('.modal').on('hidden.bs.modal', function(){
+    $(this).find('form')[0].reset();
+    $(this).find('tbody').empty();
+     
+});
+}
+
+$(document).ready(init);
+

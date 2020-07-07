@@ -50,20 +50,20 @@ public class GenerateXML {
 			Element item = document.createElement("item");
 			root.appendChild(item);
 			Element id = document.createElement("id");
-			id.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).getId())));
+			id.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).id)));
 			item.appendChild(id);
 
 			Element name = document.createElement("name");
-			name.appendChild(document.createTextNode(billDataItems.get(i).getName()));
+			name.appendChild(document.createTextNode(billDataItems.get(i).name));
 			item.appendChild(name);
 			// Calculate total bill amount
-			finalBill = finalBill + billDataItems.get(i).getQuantity() * billDataItems.get(i).getMrp();
+			finalBill = finalBill + billDataItems.get(i).quantity * billDataItems.get(i).mrp;
 			Element quantity = document.createElement("quantity");
-			quantity.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).getQuantity())));
+			quantity.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).quantity)));
 			item.appendChild(quantity);
 
 			Element mrp = document.createElement("mrp");
-			mrp.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).getMrp())));
+			mrp.appendChild(document.createTextNode(String.valueOf(billDataItems.get(i).mrp)));
 			item.appendChild(mrp);
 
 		}

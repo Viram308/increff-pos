@@ -128,7 +128,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
 		InventoryPojo ip = inService.getByProductId(productMasterPojo);
 		// set quantity such that available quantity is zero
-		f.setQuantity(o.getQuantity() + ip.getQuantity());
+		f.quantity = o.getQuantity() + ip.getQuantity();
 		// throws exception for zero available quantity
 		service.checkInventory(list.get(0).getId(), f);
 
@@ -145,7 +145,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
 		InventoryPojo ip = inService.getByProductId(productMasterPojo);
 		// set quantity such that available quantity is negative
-		f.setQuantity(o.getQuantity() + ip.getQuantity() + 1);
+		f.quantity = o.getQuantity() + ip.getQuantity() + 1;
 		// throws exception for negative available quantity
 		service.checkInventory(list.get(0).getId(), f);
 
@@ -162,7 +162,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
 		InventoryPojo ip = inService.getByProductId(productMasterPojo);
 		// set quantity such that available quantity is one
-		f.setQuantity(o.getQuantity() + ip.getQuantity() - 1);
+		f.quantity = o.getQuantity() + ip.getQuantity() - 1;
 		// Does not throws exception for positive available quantity
 		service.checkInventory(list.get(0).getId(), f);
 		InventoryPojo ip2 = inService.getByProductId(productMasterPojo);
@@ -190,9 +190,9 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		double mrp = 10.06;
 		String barcode = StringUtil.getAlphaNumericString();
 		int quantity = 15;
-		f.setSellingPrice(mrp);
-		f.setBarcode(barcode);
-		f.setQuantity(quantity);
+		f.sellingPrice = mrp;
+		f.barcode = barcode;
+		f.quantity = quantity;
 		return f;
 	}
 

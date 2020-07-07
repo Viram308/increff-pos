@@ -40,9 +40,14 @@ function searchProduct(event){
 }
 
 //BUTTON ACTIONS
-function addProduct(event){
+function addProduct(){
 	//Set the values to update
 	$('#add-product-modal').modal('toggle');
+	var mrp=$('#product-add-form input[name=mrp]').val();
+	if(mrp<=0){
+		alert('MRP can not be negative or zero !!');
+		return false;
+	}
 	var $form = $("#product-add-form");
 	var json = toJson($form);
 	var url = getProductUrl();
@@ -63,12 +68,16 @@ function addProduct(event){
 	return false;
 }
 
-function updateProduct(event){
+function updateProduct(){
 	$('#edit-product-modal').modal('toggle');
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();	
 	var url = getProductUrl() + "/" + id;
-
+	var mrp=$('#product-edit-form input[name=mrp]').val();
+	if(mrp<=0){
+		alert('MRP can not be negative or zero !!');
+		return false;
+	}
 	//Set the values to update
 	var $form = $("#product-edit-form");
 	var json = toJson($form);

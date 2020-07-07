@@ -37,10 +37,10 @@ public class LoginController {
 	public ModelAndView login(HttpServletRequest req, LoginForm loginForm) throws ApiException {
 
 		UserPojo userPojo = userDto.checkAuth(loginForm);
-		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.getPassword()));
+		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.password));
 
 		if (!authenticated) {
-			info.setMessage("Invalid username or password");
+			info.message="Invalid username or password";
 			return new ModelAndView("redirect:/site/login");
 		}
 

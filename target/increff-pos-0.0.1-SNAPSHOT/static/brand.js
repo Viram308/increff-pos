@@ -246,6 +246,7 @@ function init(){
 	$('#process-data-brand').click(processDataBrand);
 	$('#download-errors-brand').click(downloadErrorsBrand);
 	$('#brandFile').on('change', updateFileNameBrand);
+	
 }
 
 $(document).ready(init);

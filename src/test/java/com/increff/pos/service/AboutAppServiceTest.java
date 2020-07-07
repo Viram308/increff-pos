@@ -18,9 +18,9 @@ public class AboutAppServiceTest extends AbstractUnitTest {
 	public void testAboutAppService() {
 		AboutAppData d = service.getNameandVersion();
 		// test application name
-		assertEquals("PoS Application", d.getName());
+		assertEquals("PoS Application", d.name);
 		// test application version
-		assertEquals("1.0", d.getVersion());
+		assertEquals("1.0", d.version);
 	}
 
 }

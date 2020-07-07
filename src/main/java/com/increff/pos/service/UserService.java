@@ -40,7 +40,7 @@ public class UserService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
-		email=StringUtil.toLowerCase(email);
+		email = StringUtil.toLowerCase(email);
 		return dao.select(email);
 	}
 
@@ -75,13 +75,13 @@ public class UserService {
 	public void checkAvailability(List<UserPojo> list, UserForm form) throws ApiException {
 		// check if already exists
 		if (list.size() > 0) {
-			info.setMessage("Application already initialized. Please use existing credentials");
+			info.message = "Application already initialized. Please use existing credentials";
 		} else {
 			// Initialize with admin role
-			form.setRole("admin");
+			form.role = "admin";
 			UserPojo p = converterUtil.convertUserFormtoUserPojo(form);
 			service.add(p);
-			info.setMessage("Application initialized");
+			info.message = "Application initialized";
 		}
 	}
 

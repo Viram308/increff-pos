@@ -36,7 +36,7 @@ public class ProductDto {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(ProductForm form) throws ApiException {
-		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.getBrand(), form.getCategory());
+		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.brand, form.category);
 		checkData(form);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductFormtoProductMasterPojo(form,
 				brandMasterPojo);
@@ -51,8 +51,8 @@ public class ProductDto {
 	public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
 		checkSearchData(form);
 		BrandMasterPojo brandMasterPojo = new BrandMasterPojo();
-		brandMasterPojo.setBrand(form.getBrand());
-		brandMasterPojo.setCategory(form.getCategory());
+		brandMasterPojo.setBrand(form.brand);
+		brandMasterPojo.setCategory(form.category);
 		List<BrandMasterPojo> brandMasterPojoList = brandService.searchData(brandMasterPojo);
 		List<Integer> brandIds = getBrandIdList(brandMasterPojoList);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductSearchFormtoProductMasterPojo(form);
@@ -81,7 +81,7 @@ public class ProductDto {
 	}
 
 	public void update(int id, ProductForm form) throws ApiException {
-		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.getBrand(), form.getCategory());
+		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.brand, form.category);
 		checkData(form);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductFormtoProductMasterPojoUpdate(form,
 				brandMasterPojo);
@@ -97,14 +97,14 @@ public class ProductDto {
 	}
 
 	public void checkData(ProductForm b) throws ApiException {
-		if (b.getName().isBlank() || b.getMrp() <= 0) {
+		if (b.name.isBlank() || b.mrp <= 0) {
 			throw new ApiException("Please enter name, mrp(positive) !!");
 		}
 	}
 
 	public void checkSearchData(ProductSearchForm productSearchForm) throws ApiException {
-		if (productSearchForm.getBrand().isBlank() && productSearchForm.getCategory().isBlank()
-				&& productSearchForm.getName().isBlank() && productSearchForm.getBarcode().isBlank()) {
+		if (productSearchForm.brand.isBlank() && productSearchForm.category.isBlank()
+				&& productSearchForm.name.isBlank() && productSearchForm.barcode.isBlank()) {
 			throw new ApiException("Please enter atleast one (brand,category,name,barcode) !!");
 		}
 	}

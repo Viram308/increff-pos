@@ -2,6 +2,9 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -92,6 +95,19 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		service.getCheck(ip.getId());
 	}
 
+	@Test
+	public void testSearchData() throws ApiException {
+		InventoryPojo inventoryPojo1 = getInventoryPojoTest();
+		service.add(inventoryPojo1);
+		List<Integer> productIds=new ArrayList<Integer>();
+		productIds.add(inventoryPojo1.getProductid());
+		List<InventoryPojo> inventoryPojos=service.searchData(productIds);
+		assertEquals(1, inventoryPojos.size());
+		productIds.clear();
+		inventoryPojos=service.searchData(productIds);
+		assertEquals(0, inventoryPojos.size());
+	}
+	
 	private InventoryPojo getInventoryPojoTest() throws ApiException {
 		InventoryPojo i = new InventoryPojo();
 		// create data

@@ -55,12 +55,12 @@ public class UserServiceTest extends AbstractUnitTest {
 		service.add(u);
 		UserPojo p = service.get(u.getId());
 		// update data
-		p.setPassword("password");
+		p.setPassword("getPassword()");
 		p.setRole("standard");
 		service.update(p.getId(), p);
 		UserPojo up = service.get(p.getId());
 		// test updated data
-		assertEquals("password", up.getPassword());
+		assertEquals("getPassword()", up.getPassword());
 		assertEquals("standard", up.getRole());
 	}
 
@@ -78,7 +78,7 @@ public class UserServiceTest extends AbstractUnitTest {
 //		UserPojo u = getUserPojo();
 //		service.checkData(u);
 //		// throw exception
-//		u.setEmail("");
+//		u.email="");
 //		service.checkData(u);
 //	}
 
@@ -99,9 +99,9 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	private UserForm getUserForm() {
 		UserForm f = new UserForm();
-		f.setEmail("shahviram123@gmail.com");
-		f.setPassword("admin");
-		f.setRole("admin");
+		f.email = "shahviram123@gmail.com";
+		f.password = "admin";
+		f.role = "admin";
 		return f;
 	}
 

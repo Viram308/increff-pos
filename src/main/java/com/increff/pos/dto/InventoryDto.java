@@ -30,17 +30,17 @@ public class InventoryDto {
 
 	@Transactional
 	public void addInventory(InventoryForm form) throws ApiException {
-		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.getBarcode());
+		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
 		InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
-		inventoryPojo.setQuantity(form.getQuantity() + inventoryPojo.getQuantity());
+		inventoryPojo.setQuantity(form.quantity + inventoryPojo.getQuantity());
 		inventoryService.update(inventoryPojo.getId(), inventoryPojo);
 	}
 
 	public List<InventoryData> searchInventory(InventorySearchForm form) throws ApiException {
 		checkSearchData(form);
 		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
-		productMasterPojo.setBarcode(form.getBarcode());
-		productMasterPojo.setName(form.getName());
+		productMasterPojo.setBarcode(form.barcode);
+		productMasterPojo.setName(form.name);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
 		List<Integer> productIds = getProductIdList(productMasterPojoList);
 		List<InventoryPojo> list = inventoryService.searchData(productIds);
@@ -54,7 +54,7 @@ public class InventoryDto {
 	}
 
 	public void updateInventory(int id, InventoryForm form) throws ApiException {
-		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.getBarcode());
+		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
 		InventoryPojo inventoryPojo = converterUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
 		checkData(inventoryPojo, productMasterPojo);
 		inventoryService.update(id, inventoryPojo);
@@ -74,14 +74,14 @@ public class InventoryDto {
 	}
 
 	public void checkData(InventoryPojo inventoryPojo, ProductMasterPojo productMasterPojo) throws ApiException {
-		if (inventoryPojo.getQuantity() <= 0) {
+		if (inventoryPojo.getQuantity() < 0) {
 			throw new ApiException(
-					"Quantity can not be negative or zero for product : " + productMasterPojo.getBarcode() + " !!");
+					"Quantity can not be negative for product : " + productMasterPojo.getBarcode() + " !!");
 		}
 	}
 
 	public void checkSearchData(InventorySearchForm inventorySearchForm) throws ApiException {
-		if (inventorySearchForm.getBarcode().isBlank() && inventorySearchForm.getName().isBlank()) {
+		if (inventorySearchForm.barcode.isBlank() && inventorySearchForm.name.isBlank()) {
 			throw new ApiException("Please enter name or barcode !!");
 		}
 	}

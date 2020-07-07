@@ -2,6 +2,8 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -105,6 +107,26 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	}
 
+	@Test
+	public void testSearchData() throws ApiException {
+		BrandMasterPojo brandMasterPojo1=getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo2=getBrandMasterPojoTest();
+		brandMasterPojo2.setBrand("Nestle             ");
+		BrandMasterPojo brandMasterPojo3=getBrandMasterPojoTest();
+		brandMasterPojo3.setCategory("POS");
+		service.add(brandMasterPojo1);
+		service.add(brandMasterPojo2);
+		service.add(brandMasterPojo3);
+		BrandMasterPojo brandMasterPojo=new BrandMasterPojo();
+		brandMasterPojo.setBrand("   Vir        ");
+		brandMasterPojo.setCategory("");
+		List<BrandMasterPojo> list=service.searchData(brandMasterPojo);
+		assertEquals(2, list.size());
+		brandMasterPojo.setCategory("p");
+		list=service.searchData(brandMasterPojo);
+		assertEquals(1, list.size());
+	}
+	
 //	@Test(expected = ApiException.class)
 //	public void testCheckData() throws ApiException {
 //		BrandMasterPojo b = getBrandMasterPojoTest();

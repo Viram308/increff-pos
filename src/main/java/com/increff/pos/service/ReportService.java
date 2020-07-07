@@ -68,7 +68,7 @@ public class ReportService {
 		} else if ((!brand.isBlank()) && category.isBlank()) {
 			// Select SalesReportData brand wise
 			for (i = 0; i < salesReportData.size(); i++) {
-				if (!salesReportData.get(i).getBrand().equals(brand)) {
+				if (!salesReportData.get(i).brand.equals(brand)) {
 					salesReportData.remove(i);
 					i--;
 				}
@@ -76,7 +76,7 @@ public class ReportService {
 		} else if (brand.isBlank() && (!category.isBlank())) {
 			// Select SalesReportData category wise
 			for (i = 0; i < salesReportData.size(); i++) {
-				if (!salesReportData.get(i).getCategory().equals(category)) {
+				if (!salesReportData.get(i).category.equals(category)) {
 					salesReportData.remove(i);
 					i--;
 				}
@@ -84,8 +84,7 @@ public class ReportService {
 		} else if ((!(brand.isBlank())) && (!(category.isBlank()))) {
 			// Select SalesReportData brand and category wise
 			for (i = 0; i < salesReportData.size(); i++) {
-				if (!salesReportData.get(i).getBrand().equals(brand)
-						|| !salesReportData.get(i).getCategory().equals(category)) {
+				if (!salesReportData.get(i).brand.equals(brand) || !salesReportData.get(i).category.equals(category)) {
 					salesReportData.remove(i);
 					i--;
 				}
@@ -99,22 +98,22 @@ public class ReportService {
 		LinkedHashMap<String, SalesReportData> m = new LinkedHashMap<String, SalesReportData>();
 		for (i = 0; i < salesReportData.size(); i++) {
 			// check key already exists
-			if (m.containsKey(salesReportData.get(i).getCategory())) {
+			if (m.containsKey(salesReportData.get(i).category)) {
 				// update existing one
-				SalesReportData o = m.get(salesReportData.get(i).getCategory());
-				o.setQuantity(o.getQuantity() + salesReportData.get(i).getQuantity());
-				o.setRevenue(o.getRevenue() + salesReportData.get(i).getRevenue());
-				m.put(salesReportData.get(i).getCategory(), o);
+				SalesReportData salesReportDataExisting = m.get(salesReportData.get(i).category);
+				salesReportDataExisting.quantity = salesReportDataExisting.quantity + salesReportData.get(i).quantity;
+				salesReportDataExisting.revenue = salesReportDataExisting.revenue + salesReportData.get(i).revenue;
+				m.put(salesReportData.get(i).category, salesReportDataExisting);
 			} else {
 				// create new one
-				m.put(salesReportData.get(i).getCategory(), salesReportData.get(i));
+				m.put(salesReportData.get(i).category, salesReportData.get(i));
 			}
 		}
 		Collection<SalesReportData> values = m.values();
 		// convert hashmap to list
 		List<SalesReportData> salesDataList = new ArrayList<SalesReportData>(values);
 		for (i = 0; i < salesDataList.size(); i++) {
-			salesDataList.get(i).setId(i + 1);
+			salesDataList.get(i).id = i + 1;
 		}
 		return salesDataList;
 	}
@@ -123,12 +122,12 @@ public class ReportService {
 		int i;
 		LinkedHashMap<List<String>, InventoryReportData> map = new LinkedHashMap<List<String>, InventoryReportData>();
 		for (i = 0; i < list.size(); i++) {
-			List<String> key = new ArrayList<String>(Arrays.asList(list.get(i).getBrand(), list.get(i).getCategory()));
+			List<String> key = new ArrayList<String>(Arrays.asList(list.get(i).brand, list.get(i).category));
 			// check key already exists
 			if (map.containsKey(key)) {
 				// update existing one
 				InventoryReportData in = map.get(key);
-				in.setQuantity(in.getQuantity() + list.get(i).getQuantity());
+				in.quantity = in.quantity + list.get(i).quantity;
 				map.put(key, in);
 			} else {
 				// create new one
@@ -139,7 +138,7 @@ public class ReportService {
 		// convert hashmap to list
 		List<InventoryReportData> inventoryReportDataList = new ArrayList<InventoryReportData>(values);
 		for (i = 0; i < inventoryReportDataList.size(); i++) {
-			inventoryReportDataList.get(i).setId(i + 1);
+			inventoryReportDataList.get(i).id = i + 1;
 		}
 		return inventoryReportDataList;
 	}

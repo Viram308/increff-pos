@@ -1,6 +1,8 @@
 package com.increff.pos.dto;
 
 import java.text.ParseException;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -43,7 +45,7 @@ public class OrderDto {
 	@Transactional(rollbackOn = ApiException.class)
 	public List<BillData> createOrder(OrderItemForm[] orderItemForms) throws ApiException {
 		// Check entered inventory with available inventory
-		List<OrderItemForm> orderItems = groupItemsByBarcode(orderItemForms);
+		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
 		OrderPojo orderPojo = addOrder(orderItems);
 		// Convert input to required format
 		List<OrderItemPojo> list = getOrderItemObject(orderItems, orderPojo);
@@ -57,7 +59,7 @@ public class OrderDto {
 	}
 
 	public OrderPojo addOrder(List<OrderItemForm> orderItems) throws ApiException {
-		orderService.checkInventory(orderItems);
+//		orderService.checkInventory(orderItems);
 		OrderPojo orderPojo = new OrderPojo();
 		orderPojo.setDatetime(converterUtil.getDateTime());
 		// Add order if inventory is available
@@ -72,7 +74,7 @@ public class OrderDto {
 		// add previous inventory
 		addInInventory(orderItemDataList);
 		// Check entered inventory with available inventory
-		List<OrderItemForm> orderItems = groupItemsByBarcode(orderItemForms);
+		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
 		// update order date and time
 		OrderPojo orderPojo = updateOrder(id, orderItems);
 		// Convert input to required format
@@ -88,7 +90,7 @@ public class OrderDto {
 	}
 
 	public OrderPojo updateOrder(int id, List<OrderItemForm> orderItems) throws ApiException {
-		orderService.checkInventory(orderItems);
+//		orderService.checkInventory(orderItems);
 		OrderPojo orderPojo = new OrderPojo();
 		orderPojo.setDatetime(converterUtil.getDateTime());
 		// Add order if inventory is available
@@ -99,10 +101,10 @@ public class OrderDto {
 
 	public void addInInventory(List<OrderItemData> orderItemDataList) throws ApiException {
 		for (OrderItemData orderItemData : orderItemDataList) {
-			ProductMasterPojo productMasterPojo = productService.getByBarcode(orderItemData.getBarcode());
+			ProductMasterPojo productMasterPojo = productService.getByBarcode(orderItemData.barcode);
 			InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
 			InventoryPojo inventoryPojoFinal = new InventoryPojo();
-			inventoryPojoFinal.setQuantity(orderItemData.getQuantity() + inventoryPojo.getQuantity());
+			inventoryPojoFinal.setQuantity(orderItemData.quantity + inventoryPojo.getQuantity());
 			inventoryService.update(inventoryPojo.getId(), inventoryPojoFinal);
 		}
 	}
@@ -134,7 +136,7 @@ public class OrderDto {
 		checkSearchData(form);
 		List<OrderPojo> orderPojo = orderService.getAll();
 		// Get list of order ids
-		List<OrderPojo> orderList = orderService.getList(orderPojo, form.getStartdate(), form.getEnddate());
+		List<OrderPojo> orderList = orderService.getList(orderPojo, form.startdate, form.enddate);
 		if (orderList.isEmpty()) {
 			throw new ApiException("There are no orders for given dates !!");
 		}
@@ -142,7 +144,7 @@ public class OrderDto {
 	}
 
 	public void checkSearchData(OrderSearchForm form) throws ApiException {
-		if (form.getStartdate().isBlank() || form.getEnddate().isBlank()) {
+		if (form.startdate.isBlank() || form.enddate.isBlank()) {
 			throw new ApiException("Please enter start and end dates !!");
 		}
 	}

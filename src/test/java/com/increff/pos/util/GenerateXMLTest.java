@@ -21,10 +21,10 @@ public class GenerateXMLTest extends AbstractUnitTest {
 		String name = "increff";
 		int quantity = 40;
 		double mrp = 10.50;
-		b.setId(id);
-		b.setName(name);
-		b.setQuantity(quantity);
-		b.setMrp(mrp);
+		b.id = id;
+		b.name = name;
+		b.quantity = quantity;
+		b.mrp = mrp;
 		billItemList.add(b);
 		// test is successful if it does not throw exception
 		GenerateXML.createXml(billItemList);

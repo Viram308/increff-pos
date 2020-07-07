@@ -50,13 +50,13 @@ public class BrandDto {
 	}
 
 	public void checkData(BrandForm b) throws ApiException {
-		if (b.getBrand().isBlank() || b.getCategory().isBlank()) {
+		if (b.brand.isBlank() || b.category.isBlank()) {
 			throw new ApiException("Please enter brand and category !!");
 		}
 	}
-	
+
 	public void checkSearchData(BrandForm b) throws ApiException {
-		if (b.getBrand().isBlank() && b.getCategory().isBlank()) {
+		if (b.brand.isBlank() && b.category.isBlank()) {
 			throw new ApiException("Please enter brand or category !!");
 		}
 	}

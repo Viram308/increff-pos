@@ -40,8 +40,8 @@ public class OrderItemDto {
 	public List<OrderItemData> searchOrderItem(OrderItemData orderItemData) throws ApiException {
 		checkSearchData(orderItemData);
 		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
-		productMasterPojo.setBarcode(orderItemData.getBarcode());
-		productMasterPojo.setName(orderItemData.getName());
+		productMasterPojo.setBarcode(orderItemData.barcode);
+		productMasterPojo.setName(orderItemData.name);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
 		List<Integer> productIds = getProductIdList(productMasterPojoList);
 		List<OrderItemPojo> orderItemPojos = orderItemService.searchData(orderItemData, productIds);
@@ -49,8 +49,7 @@ public class OrderItemDto {
 	}
 
 	public void checkSearchData(OrderItemData orderItemData) throws ApiException {
-		if (orderItemData.getBarcode().isBlank() && orderItemData.getName().isBlank()
-				&& orderItemData.getOrderId() <= 0) {
+		if (orderItemData.barcode.isBlank() && orderItemData.name.isBlank() && orderItemData.orderId <= 0) {
 			throw new ApiException("Please enter anyone(barcode,name,orderId) !!");
 		}
 	}
@@ -76,7 +75,7 @@ public class OrderItemDto {
 	}
 
 	public void checkEnteredQuantity(OrderItemForm f) throws ApiException {
-		if (f.getQuantity() <= 0) {
+		if (f.quantity <= 0) {
 			throw new ApiException("Quantity can not be negative or zero !!");
 		}
 	}

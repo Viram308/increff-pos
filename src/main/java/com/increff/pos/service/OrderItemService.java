@@ -65,10 +65,10 @@ public class OrderItemService {
 	}
 
 	public List<OrderItemPojo> searchData(OrderItemData orderItemData, List<Integer> productIds) {
-		if (orderItemData.getOrderId() == 0) {
+		if (orderItemData.orderId == 0) {
 			return dao.searchData(productIds);
 		} else {
-			return dao.searchData(orderItemData.getOrderId(), productIds);
+			return dao.searchData(orderItemData.orderId, productIds);
 		}
 
 	}
@@ -86,19 +86,19 @@ public class OrderItemService {
 		int enteredQuantity, availableQuantity;
 		OrderItemPojo orderItemPojo = getCheck(id);
 		// Entered quantity
-		enteredQuantity = orderItem.getQuantity();
+		enteredQuantity = orderItem.quantity;
 		ProductMasterPojo productMasterPojo = productService.get(orderItemPojo.getProductId());
 		// InventoryPojo for available quantity
 		InventoryPojo ip = inventoryService.getByProductId(productMasterPojo);
 		availableQuantity = ip.getQuantity() + orderItemPojo.getQuantity();
 		// Check quantity
 		if (enteredQuantity == availableQuantity) {
-			throw new ApiException("Available Inventory for Barcode " + orderItem.getBarcode()
+			throw new ApiException("Available Inventory for Barcode " + orderItem.barcode
 					+ " will be 0 !! Please enter lesser quantity !");
 		}
 		if (enteredQuantity > availableQuantity) {
 			throw new ApiException(
-					"Available Inventory for Barcode " + orderItem.getBarcode() + " is : " + ip.getQuantity());
+					"Available Inventory for Barcode " + orderItem.barcode + " is : " + ip.getQuantity());
 		} else {
 			InventoryPojo ip2 = new InventoryPojo();
 			int quantity = ip.getQuantity() + orderItemPojo.getQuantity() - enteredQuantity;

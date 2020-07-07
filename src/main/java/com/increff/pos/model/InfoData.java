@@ -12,38 +12,13 @@ public class InfoData implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private String message;
-	private String email;
-	private String role;
+	public String message;
+	public String email;
+	public String role;
 
 	public InfoData() {
 		message = "";
 		email = "No email";
 		role = "No role";
 	}
-
-	public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-
-	public String getEmail() {
-		return email;
-	}
-
-	public void setEmail(String email) {
-		this.email = email;
-	}
-
-	public String getRole() {
-		return role;
-	}
-
-	public void setRole(String role) {
-		this.role = role;
-	}
-
 }

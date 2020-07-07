@@ -15,8 +15,8 @@ public class AboutAppService {
 
 	public AboutAppData getNameandVersion() {
 		AboutAppData d = new AboutAppData();
-		d.setName(name);
-		d.setVersion(version);
+		d.name = name;
+		d.version = version;
 		return d;
 	}
 }

@@ -49,19 +49,19 @@ public class ConverterUtil {
 	// Converts UserForm to UserPojo
 	public UserPojo convertUserFormtoUserPojo(UserForm f) {
 		UserPojo p = new UserPojo();
-		p.setEmail(f.getEmail());
-		p.setRole(f.getRole());
-		p.setPassword(f.getPassword());
+		p.setEmail(f.email);
+		p.setRole(f.role);
+		p.setPassword(f.password);
 		return p;
 	}
 
 	// Converts UserPojo to UserData
 	public UserData convertUserPojotoUserData(UserPojo p) {
 		UserData d = new UserData();
-		d.setEmail(p.getEmail());
-		d.setRole(p.getRole());
-		d.setId(p.getId());
-		d.setPassword(p.getPassword());
+		d.email = p.getEmail();
+		d.role = p.getRole();
+		d.id = p.getId();
+		d.password = p.getPassword();
 		return d;
 	}
 
@@ -77,17 +77,17 @@ public class ConverterUtil {
 	// Converts BrandMasterPojo to BrandData
 	public BrandData convertBrandMasterPojotoBrandData(BrandMasterPojo p) {
 		BrandData d = new BrandData();
-		d.setCategory(p.getCategory());
-		d.setBrand(p.getBrand());
-		d.setId(p.getId());
+		d.category = p.getCategory();
+		d.brand = p.getBrand();
+		d.id = p.getId();
 		return d;
 	}
 
 	// Converts BrandForm to BrandMasterPojo
 	public BrandMasterPojo convertBrandFormtoBrandMasterPojo(BrandForm f) {
 		BrandMasterPojo b = new BrandMasterPojo();
-		b.setCategory(f.getCategory());
-		b.setBrand(f.getBrand());
+		b.setCategory(f.category);
+		b.setBrand(f.brand);
 		return b;
 	}
 
@@ -103,10 +103,10 @@ public class ConverterUtil {
 	// Converts InventoryPojo to InventoryData
 	public InventoryData convertInventoryPojotoInventoryData(InventoryPojo i, ProductMasterPojo productMasterPojo) {
 		InventoryData d = new InventoryData();
-		d.setId(i.getId());
-		d.setName(productMasterPojo.getName());
-		d.setBarcode(productMasterPojo.getBarcode());
-		d.setQuantity(i.getQuantity());
+		d.id = i.getId();
+		d.name = productMasterPojo.getName();
+		d.barcode = productMasterPojo.getBarcode();
+		d.quantity = i.getQuantity();
 		return d;
 	}
 
@@ -114,7 +114,7 @@ public class ConverterUtil {
 	public InventoryPojo convertInventoryFormtoInventoryPojo(InventoryForm f, ProductMasterPojo p) {
 		InventoryPojo i = new InventoryPojo();
 		i.setProductid(p.getId());
-		i.setQuantity(f.getQuantity());
+		i.setQuantity(f.quantity);
 		return i;
 	}
 
@@ -132,9 +132,9 @@ public class ConverterUtil {
 	public Authentication convertUserPojotoAuthentication(UserPojo p) {
 		// Create principal
 		UserPrincipal principal = new UserPrincipal();
-		principal.setEmail(p.getEmail());
-		principal.setId(p.getId());
-		principal.setRole(p.getRole());
+		principal.email = p.getEmail();
+		principal.id = p.getId();
+		principal.role = p.getRole();
 		// Create Authorities
 		ArrayList<SimpleGrantedAuthority> authorities = new ArrayList<SimpleGrantedAuthority>();
 		authorities.add(new SimpleGrantedAuthority(p.getRole()));
@@ -158,8 +158,8 @@ public class ConverterUtil {
 	// Converts OrderPojo to OrderData
 	public OrderData convertOrderPojotoOrderData(OrderPojo p) {
 		OrderData d = new OrderData();
-		d.setId(p.getId());
-		d.setDatetime(p.getDatetime());
+		d.id = p.getId();
+		d.datetime = p.getDatetime();
 		return d;
 	}
 
@@ -173,22 +173,23 @@ public class ConverterUtil {
 	}
 
 	// Converts OrderItemPojo to OrderItemData
-	public OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo p, ProductMasterPojo productMasterPojo) {
+	public OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo orderItemPojo,
+			ProductMasterPojo productMasterPojo) {
 		OrderItemData d = new OrderItemData();
-		d.setId(p.getId());
-		d.setOrderId(p.getOrderId());
-		d.setName(productMasterPojo.getName());
-		d.setBarcode(productMasterPojo.getBarcode());
-		d.setQuantity(p.getQuantity());
-		d.setSellingPrice(p.getSellingPrice());
+		d.id = orderItemPojo.getId();
+		d.orderId = orderItemPojo.getOrderId();
+		d.name = productMasterPojo.getName();
+		d.barcode = productMasterPojo.getBarcode();
+		d.quantity = orderItemPojo.getQuantity();
+		d.sellingPrice = orderItemPojo.getSellingPrice();
 		return d;
 	}
 
 	// Converts OrderItemForm to OrderItemPojo
-	public OrderItemPojo convertOrderItemFormtoOrderItemPojo(OrderItemForm f) {
-		OrderItemPojo i = new OrderItemPojo();
-		i.setQuantity(f.getQuantity());
-		return i;
+	public OrderItemPojo convertOrderItemFormtoOrderItemPojo(OrderItemForm orderItemForm) {
+		OrderItemPojo orderItemPojo = new OrderItemPojo();
+		orderItemPojo.setQuantity(orderItemForm.quantity);
+		return orderItemPojo;
 	}
 
 	// Converts list of OrderItemPojo to list of OrderItemData
@@ -206,20 +207,20 @@ public class ConverterUtil {
 			BrandMasterPojo brandMasterPojo) {
 		ProductMasterPojo p = new ProductMasterPojo();
 		p.setBrand_category_id(brandMasterPojo.getId());
-		p.setName(f.getName());
-		p.setMrp(f.getMrp());
+		p.setName(f.name);
+		p.setMrp(f.mrp);
 		return p;
 	}
 
 	// Converts ProductMasterPojo to ProductData
 	public ProductData convertProductMasterPojotoProductData(ProductMasterPojo p, BrandMasterPojo brandMasterPojo) {
 		ProductData d = new ProductData();
-		d.setBrand(brandMasterPojo.getBrand());
-		d.setCategory(brandMasterPojo.getCategory());
-		d.setId(p.getId());
-		d.setName(p.getName());
-		d.setMrp(p.getMrp());
-		d.setBarcode(p.getBarcode());
+		d.brand = brandMasterPojo.getBrand();
+		d.category = brandMasterPojo.getCategory();
+		d.id = p.getId();
+		d.name = p.getName();
+		d.mrp = p.getMrp();
+		d.barcode = p.getBarcode();
 		return d;
 	}
 
@@ -229,8 +230,8 @@ public class ConverterUtil {
 		String barcode = StringUtil.getAlphaNumericString();
 		p.setBarcode(barcode);
 		p.setBrand_category_id(brandMasterPojo.getId());
-		p.setName(f.getName());
-		p.setMrp(f.getMrp());
+		p.setName(f.name);
+		p.setMrp(f.mrp);
 		return p;
 	}
 
@@ -252,11 +253,11 @@ public class ConverterUtil {
 			SalesReportData salesProductData = new SalesReportData();
 			ProductMasterPojo p = productService.get(listOfOrderItemPojo.get(i).getProductId());
 			BrandMasterPojo b = brandService.get(p.getBrand_category_id());
-			salesProductData.setBrand(b.getBrand());
-			salesProductData.setCategory(b.getCategory());
-			salesProductData.setQuantity(listOfOrderItemPojo.get(i).getQuantity());
-			salesProductData.setRevenue(
-					listOfOrderItemPojo.get(i).getQuantity() * listOfOrderItemPojo.get(i).getSellingPrice());
+			salesProductData.brand = b.getBrand();
+			salesProductData.category = b.getCategory();
+			salesProductData.quantity = listOfOrderItemPojo.get(i).getQuantity();
+			salesProductData.revenue = listOfOrderItemPojo.get(i).getQuantity()
+					* listOfOrderItemPojo.get(i).getSellingPrice();
 			salesReportData.add(salesProductData);
 		}
 		return salesReportData;
@@ -268,9 +269,9 @@ public class ConverterUtil {
 		// Converts BrandMasterPojo to BrandData
 		for (i = 0; i < list.size(); i++) {
 			BrandData b = new BrandData();
-			b.setId(i + 1);
-			b.setBrand(list.get(i).getBrand());
-			b.setCategory(list.get(i).getCategory());
+			b.id = i + 1;
+			b.brand = list.get(i).getBrand();
+			b.category = list.get(i).getCategory();
 			list2.add(b);
 		}
 		return list2;
@@ -283,31 +284,31 @@ public class ConverterUtil {
 		for (i = 0; i < ip.size(); i++) {
 			ProductMasterPojo p = productService.get(ip.get(i).getProductid());
 			BrandMasterPojo b = brandService.get(p.getBrand_category_id());
-			InventoryReportData ir = new InventoryReportData();
-			ir.setBrand(b.getBrand());
-			ir.setCategory(b.getCategory());
-			ir.setQuantity(ip.get(i).getQuantity());
-			list2.add(ir);
+			InventoryReportData inventoryReportData = new InventoryReportData();
+			inventoryReportData.brand = b.getBrand();
+			inventoryReportData.category = b.getCategory();
+			inventoryReportData.quantity = ip.get(i).getQuantity();
+			list2.add(inventoryReportData);
 		}
 		return list2;
 	}
 
 	public ProductMasterPojo convertProductSearchFormtoProductMasterPojo(ProductSearchForm form) {
 		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
-		productMasterPojo.setBarcode(form.getBarcode());
-		productMasterPojo.setName(form.getName());
+		productMasterPojo.setBarcode(form.barcode);
+		productMasterPojo.setName(form.name);
 		return productMasterPojo;
 	}
 
 	public ProductDetails convertProductDatatoProductDetails(ProductData productData, InventoryPojo inventoryPojo) {
-		ProductDetails productDetails=new ProductDetails();
-		productDetails.setBarcode(productData.getBarcode());
-		productDetails.setBrand(productData.getBrand());
-		productDetails.setAvailableQuantity(inventoryPojo.getQuantity());
-		productDetails.setCategory(productData.getCategory());
-		productDetails.setMrp(productData.getMrp());
-		productDetails.setName(productData.getName());
-		productDetails.setId(productData.getId());
+		ProductDetails productDetails = new ProductDetails();
+		productDetails.barcode = productData.barcode;
+		productDetails.brand = productData.brand;
+		productDetails.availableQuantity = inventoryPojo.getQuantity();
+		productDetails.category = productData.category;
+		productDetails.mrp = productData.mrp;
+		productDetails.name = productData.name;
+		productDetails.id = productData.id;
 		return productDetails;
 	}
 }

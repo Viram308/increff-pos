@@ -66,14 +66,14 @@ public class OrderService {
 		int i;
 		for (i = 0; i < orderItemForms.length; i++) {
 			// check key already exists
-			if (m.containsKey(orderItemForms[i].getBarcode())) {
+			if (m.containsKey(orderItemForms[i].barcode)) {
 				// update existing one
-				OrderItemForm o = m.get(orderItemForms[i].getBarcode());
-				o.setQuantity(o.getQuantity() + orderItemForms[i].getQuantity());
-				m.put(orderItemForms[i].getBarcode(), o);
+				OrderItemForm o = m.get(orderItemForms[i].barcode);
+				o.quantity = o.quantity + orderItemForms[i].quantity;
+				m.put(orderItemForms[i].barcode, o);
 			} else {
 				// create new one
-				m.put(orderItemForms[i].getBarcode(), orderItemForms[i]);
+				m.put(orderItemForms[i].barcode, orderItemForms[i]);
 			}
 		}
 		Collection<OrderItemForm> values = m.values();
@@ -86,18 +86,17 @@ public class OrderService {
 		int enteredQuantity;
 		for (OrderItemForm i : orderItems) {
 			// Entered quantity
-			enteredQuantity = i.getQuantity();
-			ProductMasterPojo p = productService.getByBarcode(i.getBarcode());
+			enteredQuantity = i.quantity;
+			ProductMasterPojo p = productService.getByBarcode(i.barcode);
 			// InventoryPojo for available quantity
 			InventoryPojo ip = inventoryService.getByProductId(p);
 			// Check quantity
 			if (enteredQuantity == ip.getQuantity()) {
-				throw new ApiException("Available Inventory for Barcode " + i.getBarcode()
+				throw new ApiException("Available Inventory for Barcode " + i.barcode
 						+ " will be 0 !! Please enter lesser quantity !");
 			}
 			if (enteredQuantity > ip.getQuantity()) {
-				throw new ApiException(
-						"Available Inventory for Barcode " + i.getBarcode() + " is : " + ip.getQuantity());
+				throw new ApiException("Available Inventory for Barcode " + i.barcode + " is : " + ip.getQuantity());
 			}
 		}
 	}
@@ -107,12 +106,12 @@ public class OrderService {
 		int orderId = op.getId();
 		// Convert OrderItemForm to OrderItemPojo
 		for (OrderItemForm o : orderItemList) {
-			ProductMasterPojo productMasterPojo = productService.getByBarcode(o.getBarcode());
+			ProductMasterPojo productMasterPojo = productService.getByBarcode(o.barcode);
 			OrderItemPojo item = new OrderItemPojo();
 			item.setOrderId(orderId);
 			item.setProductId(productMasterPojo.getId());
-			item.setQuantity(o.getQuantity());
-			item.setSellingPrice(o.getSellingPrice());
+			item.setQuantity(o.quantity);
+			item.setSellingPrice(o.sellingPrice);
 			list.add(item);
 		}
 		return list;
@@ -136,10 +135,10 @@ public class OrderService {
 		for (OrderItemPojo o : list) {
 			ProductMasterPojo p = productService.get(o.getProductId());
 			BillData item = new BillData();
-			item.setId(i);
-			item.setName(p.getName());
-			item.setQuantity(o.getQuantity());
-			item.setMrp(o.getSellingPrice());
+			item.id = i;
+			item.name = p.getName();
+			item.quantity = o.getQuantity();
+			item.mrp = o.getSellingPrice();
 			i++;
 			bill.add(item);
 		}

@@ -86,15 +86,15 @@ public class ReportServiceTest extends AbstractUnitTest {
 		int i, quantity = 0;
 		double revenue = 0;
 		for (i = 0; i < 3; i++) {
-			quantity += list.get(i).getQuantity();
-			revenue += list.get(i).getRevenue();
+			quantity += list.get(i).quantity;
+			revenue += list.get(i).revenue;
 		}
 		// group category wise
 		list = service.groupSalesReportDataCategoryWise(list);
 		// check results
 		assertEquals(1, list.size());
-		assertEquals(quantity, list.get(0).getQuantity());
-		assertEquals(revenue, list.get(0).getRevenue(), 0.01);
+		assertEquals(quantity, list.get(0).quantity);
+		assertEquals(revenue, list.get(0).revenue, 0.01);
 	}
 
 	// test created inventory data
@@ -104,7 +104,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 		list = service.groupDataForInventoryReport(list);
 		// compare data with actual values
 		assertEquals(4, list.size());
-		assertEquals(40, list.get(0).getQuantity());
+		assertEquals(40, list.get(0).quantity);
 	}
 
 	// create order data using dates
@@ -140,10 +140,10 @@ public class ReportServiceTest extends AbstractUnitTest {
 		int i;
 		for (i = 0; i < 5; i++) {
 			SalesReportData s = new SalesReportData();
-			s.setBrand(brand[i]);
-			s.setCategory(category[i]);
-			s.setQuantity(quantity[i]);
-			s.setRevenue(revenue[i]);
+			s.brand = brand[i];
+			s.category = category[i];
+			s.quantity = quantity[i];
+			s.revenue = revenue[i];
 			list.add(s);
 		}
 		return list;
@@ -158,9 +158,9 @@ public class ReportServiceTest extends AbstractUnitTest {
 		int i;
 		for (i = 0; i < 5; i++) {
 			InventoryReportData invData = new InventoryReportData();
-			invData.setBrand(brand[i]);
-			invData.setCategory(category[i]);
-			invData.setQuantity(quantity[i]);
+			invData.brand = brand[i];
+			invData.category = category[i];
+			invData.quantity = quantity[i];
 			list.add(invData);
 		}
 		return list;

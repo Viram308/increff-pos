@@ -61,7 +61,7 @@ public class UserDto {
 	}
 
 	public UserPojo checkAuth(LoginForm loginForm) throws ApiException {
-		UserPojo p = userService.get(loginForm.getEmail());
+		UserPojo p = userService.get(loginForm.email);
 		return p;
 	}
 

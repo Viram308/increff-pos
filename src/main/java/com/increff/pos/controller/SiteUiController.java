@@ -17,7 +17,7 @@ public class SiteUiController extends AbstractUiController {
 
 	@RequestMapping(value = "/init")
 	public ModelAndView init() {
-		info.setMessage("");
+		info.message = "";
 		return mav("init.html");
 	}
 

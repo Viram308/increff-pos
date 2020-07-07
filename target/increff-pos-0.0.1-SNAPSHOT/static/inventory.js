@@ -43,6 +43,11 @@ function searchInventory(event){
 function addInventory(event){
 	//Set the values to add
 	$('#add-inventory-modal').modal('toggle');
+	var quantity=$('#inventory-add-form input[name=quantity]').val();
+	if(quantity<0){
+		alert('Quantity can not be negative !!');
+		return false;
+	}
 	var $form = $("#inventory-add-form");
 	var json = toJson($form);
 	var url = getInventoryUrl();
@@ -68,7 +73,11 @@ function updateInventory(event){
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();	
 	var url = getInventoryUrl() + "/" + id;
-
+var quantity=$('#inventory-edit-form input[name=quantity]').val();
+	if(quantity<0){
+		alert('Quantity can not be negative !!');
+		return false;
+	}
 	//Set the values to update
 	var $form = $("#inventory-edit-form");
 	var json = toJson($form);
