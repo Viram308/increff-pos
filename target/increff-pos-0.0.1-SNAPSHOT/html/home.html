@@ -9,45 +9,24 @@
   <nav th:replace="snippets.html :: name_app_navbar"></nav>
   <!-- Container start -->
   <div class="container">
+<div class=row>
+  &nbsp;
+</div>
+    <h3>Admin</h3>
 
-    <!-- Blank Row -->
-    <div class="row">
-      &nbsp;
-    </div>
-    <div class="row">
-     <input type="hidden" id="totalItems" name="totalItems" value="3">
+ <!-- Top row with form-->
+<div class="row">
+   <div class="col-1">
+    <a th:href="@{/ui/admin/order}" title="Order"> <i class="fa fa-cart-plus fa-3x"></i> </a>
+   </div> 
+   <div class="col-1">
+    <a th:href="@{/ui/admin/salesreport}" title="Sales Report"> <i class="fa fa-money fa-3x"></i> </a>
+   </div> 
+   <div class="col-1">
+    <a th:href="@{/ui/admin/user}" title="Users"> <i class="fa fa-users fa-3x"></i> </a>
    </div>
-   <h3>Customer Order</h3>
-   <div class="row">
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="customer-order-table">
-        <thead>
-          <tr>
-            <th>ID</th>
-            <th>Barcode</th>
-            <th>Quantity</th>
-            <th>MRP</th>
-          </tr>
-        </thead>
-        <tbody>
-        </tbody>
-      </table>
-    </div> 
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-    <center>
-      <div class="col-12 text-center">
-        <button type="button" class="btn btn-outline-primary" id="add-order-item">Add Item</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-success" id="create-order-data">Create Order</button>
-      </div>
-    </center>
-  </div>
+</div> 
+
 </div> <!-- Container end-->
 <!-- Footer -->
 <footer th:replace="snippets.html :: name_footer"></footer>

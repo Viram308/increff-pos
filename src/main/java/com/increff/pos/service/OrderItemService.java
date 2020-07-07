@@ -108,10 +108,4 @@ public class OrderItemService {
 
 	}
 
-	public void checkEnteredQuantity(OrderItemForm f) throws ApiException {
-		if (f.getQuantity() <= 0) {
-			throw new ApiException("Quantity can not be negative or zero !!");
-		}
-	}
-
 }

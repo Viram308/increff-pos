@@ -19,14 +19,10 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.dto.OrderDto;
-import com.increff.pos.dto.OrderItemDto;
 import com.increff.pos.model.BillData;
 import com.increff.pos.model.OrderData;
-import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.OrderSearchForm;
-import com.increff.pos.pojo.OrderItemPojo;
-import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.util.GeneratePDF;
 import com.increff.pos.util.GenerateXML;
@@ -36,13 +32,11 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-@RequestMapping(value = "/api/order")
+@RequestMapping(value = "/api/admin/order")
 public class OrderApiController {
 	@Autowired
 	private OrderDto orderDto;
 
-	@Autowired
-	private OrderItemDto orderItemDto;
 	// CRUD operations for customer order
 
 	@Transactional(rollbackOn = ApiException.class)
@@ -50,20 +44,9 @@ public class OrderApiController {
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
-		// Check entered inventory with available inventory
-		List<OrderItemForm> orderItems = orderDto.groupItemsByBarcode(orderItemForms);
-		OrderPojo orderPojo = orderDto.addOrder(orderItems);
-		// Convert input to required format
-		List<OrderItemPojo> list = orderDto.getOrderItemObject(orderItems, orderPojo);
-		// Decrease inventory according to the entered quantity
-		orderDto.updateInventory(list);
-		// Add each order item
-		orderItemDto.add(list);
-
-		// Convert OrderItemPojo to BillData
-		List<BillData> billItemList = orderDto.getBillDataObject(list);
+		List<BillData> list = orderDto.createOrder(orderItemForms);
 		// Generate XML file using BillData list
-		GenerateXML.createXml(billItemList, orderPojo.getId());
+		GenerateXML.createXml(list);
 		// Create PDF from generated XML
 		byte[] encodedBytes = GeneratePDF.createPDF();
 		// Create response
@@ -111,27 +94,9 @@ public class OrderApiController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
 			throws ApiException, ParserConfigurationException, TransformerException, FOPException, IOException {
-		// Get order items according to orderId
-		List<OrderItemData> orderItemDataList = orderItemDto.get(id);
-		// add previous inventory
-		orderDto.addInInventory(orderItemDataList);
-		// Check entered inventory with available inventory
-		List<OrderItemForm> orderItems = orderDto.groupItemsByBarcode(orderItemForms);
-		// update order date and time
-		OrderPojo orderPojo = orderDto.updateOrder(id,orderItems);
-		// Convert input to required format
-		List<OrderItemPojo> list = orderDto.getOrderItemObject(orderItems, orderPojo);
-		// Decrease inventory according to the entered quantity
-		orderDto.updateInventory(list);
-		// Delete previous order items
-		orderItemDto.deleteByOrderId(id);
-		// Add each order item
-		orderItemDto.add(list);
-
-		// Convert OrderItemPojo to BillData
-		List<BillData> billItemList = orderDto.getBillDataObject(list);
+		List<BillData> billItemList = orderDto.changeOrder(id, orderItemForms);
 		// Generate XML file using BillData list
-		GenerateXML.createXml(billItemList, orderPojo.getId());
+		GenerateXML.createXml(billItemList);
 		// Create PDF from generated XML
 		byte[] encodedBytes = GeneratePDF.createPDF();
 		// Create response

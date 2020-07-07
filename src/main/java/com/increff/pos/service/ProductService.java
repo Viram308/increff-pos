@@ -57,6 +57,7 @@ public class ProductService {
 	}
 
 	public List<ProductMasterPojo> searchData(ProductMasterPojo productMasterPojo) {
+		normalize(productMasterPojo);
 		return dao.searchData(productMasterPojo.getBarcode(), productMasterPojo.getName());
 	}
 

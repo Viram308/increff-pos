@@ -1,7 +1,7 @@
 // get url
 function getInventoryUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/inventory";
+	return baseUrl + "/api/admin/inventory";
 }
 
 //BUTTON ACTIONS
@@ -12,6 +12,13 @@ function searchInventory(event){
 	var $tbody = $('#inventory-table').find('tbody');
 	$tbody.empty();
 	var $form = $("#inventory-form");
+	var name=$('#inputName').val().trim();
+	var barcode=$('#inputBarcode').val().trim();
+		
+	if(name=="" && barcode==""){
+		alert('Enter Name or Barcode');
+		return false;
+	}
 	var json = toJson($form);
 	var url = getInventoryUrl()+"/search";
 	// call api

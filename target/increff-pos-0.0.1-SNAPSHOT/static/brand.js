@@ -1,7 +1,7 @@
 // get url
 function getBrandUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/brand";
+	return baseUrl + "/api/admin/brand";
 }
 
 
@@ -10,6 +10,14 @@ function searchBrand(event){
 	//Set the values to add
 	var $tbody = $('#brand-table').find('tbody');
 	$tbody.empty();
+	var brand=$('#inputBrand').val().trim();
+	var category=$('#inputCategory').val().trim();
+		
+	if(brand=="" && category==""){
+		alert('Enter brand or category');
+		return false;
+	}
+
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var url = getBrandUrl()+"/search";

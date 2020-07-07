@@ -1,7 +1,7 @@
 // get url
 function getSalesReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
-	return baseUrl + "/api/salesreport";
+	return baseUrl + "/api/admin/salesreport";
 }
 
 function getSalesReportData(){

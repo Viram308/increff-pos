@@ -24,19 +24,16 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	@Test
 	public void testAdd() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
-		// Add one time
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
-		service.add(i, productMasterPojo);
-		// test for double quantity
-		service.add(i, productMasterPojo);
-		assertEquals(20, i.getQuantity());
+		// Add
+		service.add(i);
+		InventoryPojo inventoryPojo = service.get(i.getId());
+		assertEquals(i.getQuantity(), inventoryPojo.getQuantity());
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
-		service.add(i, productMasterPojo);
+		service.add(i);
 		// Delete should be successful and should not throw exception as data exists
 		service.delete(i.getId());
 	}
@@ -45,7 +42,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	public void testGetByProductId() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
 		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
-		service.add(i, productMasterPojo);
+		service.add(i);
 		// select data for given productid
 
 		InventoryPojo ip = service.getByProductId(productMasterPojo);
@@ -58,8 +55,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	@Test
 	public void testGet() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
-		service.add(i, productMasterPojo);
+		service.add(i);
 		InventoryPojo ip = service.get(i.getId());
 		// test for same quantity
 		assertEquals(i.getQuantity(), ip.getQuantity());
@@ -73,8 +69,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	@Test
 	public void testUpdate() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
-		service.add(i, productMasterPojo);
+		service.add(i);
 		InventoryPojo ip = service.get(i.getId());
 		int newQuantity = 20;
 		ip.setQuantity(newQuantity);
@@ -88,8 +83,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
-		service.add(i, productMasterPojo);
+		service.add(i);
 		// select data for given id
 		InventoryPojo ip = service.getCheck(i.getId());
 		assertEquals(i.getId(), ip.getId());

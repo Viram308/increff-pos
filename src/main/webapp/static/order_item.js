@@ -1,7 +1,7 @@
 // get url
 function getOrderItemUrl(){
    var baseUrl = $("meta[name=baseUrl]").attr("content")
-   return baseUrl + "/api/orderitem";
+   return baseUrl + "/api/admin/orderitem";
 }
 
 // //BUTTON ACTIONS
@@ -36,6 +36,14 @@ function searchOrderItem(){
    //Set the values to add
    var $tbody = $('#orderitem-table').find('tbody');
    $tbody.empty();
+   var orderId=$('#inputOrderId').val();
+   var name=$('#inputName').val().trim();
+   var barcode=$('#inputBarcode').val().trim();
+      
+   if(name=="" && barcode=="" && orderId<=0){
+      alert('Enter Name or Barcode or valid orderId');
+      return false;
+   }
    var $form = $("#orderitem-form");
    var json = toJson($form);
    var url = getOrderItemUrl()+"/search";

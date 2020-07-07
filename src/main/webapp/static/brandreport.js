@@ -1,7 +1,7 @@
 // get url
 function getBrandReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
-	return baseUrl + "/api/brandreport";
+	return baseUrl + "/api/admin/brandreport";
 }
 
 function getBrandReportData(){
@@ -40,6 +40,13 @@ function searchBrandReport(){
 	//Set the values to add
 	var $tbody = $('#brandreport-table').find('tbody');
 	$tbody.empty();
+	var brand=$('#inputBrand').val().trim();
+	var category=$('#inputCategory').val().trim();
+		
+	if(brand=="" && category==""){
+		alert('Enter brand or category');
+		return false;
+	}
 	var $form = $("#brandreport-form");
 	var json = toJson($form);
 	var url = getBrandReportUrl()+"/search";

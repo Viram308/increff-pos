@@ -200,7 +200,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 		pService.add(p2, b);
 		i.setProductid(p1.getId());
 		i.setQuantity(quantity + 10);
-		inService.add(i, p1);
+		inService.add(i);
 		o1.setOrderId(op.getId());
 		o1.setProductId(p1.getId());
 		o1.setQuantity(quantity);

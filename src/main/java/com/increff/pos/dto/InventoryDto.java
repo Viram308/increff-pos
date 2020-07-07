@@ -3,6 +3,8 @@ package com.increff.pos.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -21,17 +23,17 @@ public class InventoryDto {
 
 	@Autowired
 	private ProductService productService;
-
 	@Autowired
 	private InventoryService inventoryService;
 	@Autowired
 	private ConverterUtil converterUtil;
 
+	@Transactional
 	public void addInventory(InventoryForm form) throws ApiException {
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.getBarcode());
-		InventoryPojo inventoryPojo = converterUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
-		checkData(inventoryPojo, productMasterPojo);
-		inventoryService.add(inventoryPojo, productMasterPojo);
+		InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
+		inventoryPojo.setQuantity(form.getQuantity() + inventoryPojo.getQuantity());
+		inventoryService.update(inventoryPojo.getId(), inventoryPojo);
 	}
 
 	public List<InventoryData> searchInventory(InventorySearchForm form) throws ApiException {

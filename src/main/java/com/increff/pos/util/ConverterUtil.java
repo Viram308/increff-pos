@@ -21,6 +21,7 @@ import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductData;
+import com.increff.pos.model.ProductDetails;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.model.SalesReportData;
@@ -296,5 +297,17 @@ public class ConverterUtil {
 		productMasterPojo.setBarcode(form.getBarcode());
 		productMasterPojo.setName(form.getName());
 		return productMasterPojo;
+	}
+
+	public ProductDetails convertProductDatatoProductDetails(ProductData productData, InventoryPojo inventoryPojo) {
+		ProductDetails productDetails=new ProductDetails();
+		productDetails.setBarcode(productData.getBarcode());
+		productDetails.setBrand(productData.getBrand());
+		productDetails.setAvailableQuantity(inventoryPojo.getQuantity());
+		productDetails.setCategory(productData.getCategory());
+		productDetails.setMrp(productData.getMrp());
+		productDetails.setName(productData.getName());
+		productDetails.setId(productData.getId());
+		return productDetails;
 	}
 }

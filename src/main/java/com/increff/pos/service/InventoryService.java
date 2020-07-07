@@ -19,18 +19,9 @@ public class InventoryService {
 
 	// CRUD operations for inventory
 
-	@Transactional(rollbackOn = ApiException.class)
-	public void add(InventoryPojo inventoryPojo, ProductMasterPojo productMasterPojo) throws ApiException {
-		// check for existing inventory data
-		InventoryPojo inventoryPojo2 = dao.selectByProductId(productMasterPojo.getId());
-		if (inventoryPojo2 == null) {
-			// if not exists then insert
-			dao.insert(inventoryPojo);
-		} else {
-			// if exists then update
-			inventoryPojo.setQuantity(inventoryPojo.getQuantity() + inventoryPojo2.getQuantity());
-			update(inventoryPojo2.getId(), inventoryPojo);
-		}
+	@Transactional
+	public void add(InventoryPojo inventoryPojo) {
+		dao.insert(inventoryPojo);
 	}
 
 	@Transactional

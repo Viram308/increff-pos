@@ -169,21 +169,21 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		assertEquals(1, ip2.getQuantity());
 	}
 
-	@Test(expected = ApiException.class)
-	public void testCheckEnteredQuantityZero() throws ApiException {
-		OrderItemForm f = getOrderItemForm();
-		f.setQuantity(0);
-		//
-		service.checkEnteredQuantity(f);
-	}
+//	@Test(expected = ApiException.class)
+//	public void testCheckEnteredQuantityZero() throws ApiException {
+//		OrderItemForm f = getOrderItemForm();
+//		f.setQuantity(0);
+//		//
+//		service.checkEnteredQuantity(f);
+//	}
 
-	@Test
-	public void testCheckEnteredQuantityPerfect() throws ApiException {
-		OrderItemForm f = getOrderItemForm();
-		f.setQuantity(10);
-		// throws exception for zero entered quantity
-		service.checkEnteredQuantity(f);
-	}
+//	@Test
+//	public void testCheckEnteredQuantityPerfect() throws ApiException {
+//		OrderItemForm f = getOrderItemForm();
+//		f.setQuantity(10);
+//		// throws exception for zero entered quantity
+//		service.checkEnteredQuantity(f);
+//	}
 
 	private OrderItemForm getOrderItemForm() {
 		OrderItemForm f = new OrderItemForm();
@@ -228,7 +228,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		pService.add(p, b);
 		i.setProductid(p.getId());
 		i.setQuantity(quantity + 10);
-		inService.add(i, p);
+		inService.add(i);
 		o.setOrderId(op.getId());
 		o.setProductId(p.getId());
 		o.setQuantity(quantity);

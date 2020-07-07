@@ -190,7 +190,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		pService.add(p, b);
 		i.setProductid(p.getId());
 		i.setQuantity(quantity);
-		inService.add(i, p);
+		inService.add(i);
 	}
 
 	private OrderItemForm getOrderItemForm() {
@@ -243,7 +243,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		pService.add(p, b);
 		i.setProductid(p.getId());
 		i.setQuantity(quantity + 10);
-		inService.add(i, p);
+		inService.add(i);
 		o.setOrderId(op.getId());
 		o.setProductId(p.getId());
 		o.setQuantity(quantity);

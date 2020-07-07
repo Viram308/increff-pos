@@ -14,12 +14,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.InfoData;
 import com.increff.pos.model.LoginForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.UserService;
-import com.increff.pos.util.ConverterUtil;
 import com.increff.pos.util.SecurityUtil;
 
 import io.swagger.annotations.ApiOperation;
@@ -29,24 +28,24 @@ import io.swagger.annotations.ApiOperation;
 public class LoginController {
 
 	@Autowired
-	private UserService service;
+	private UserDto userDto;
 	@Autowired
 	private InfoData info;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ModelAndView login(HttpServletRequest req, LoginForm f) throws ApiException {
-		UserPojo p = service.get(f.getEmail());
-		boolean authenticated = (p != null && Objects.equals(p.getPassword(), f.getPassword()));
+	public ModelAndView login(HttpServletRequest req, LoginForm loginForm) throws ApiException {
+
+		UserPojo userPojo = userDto.checkAuth(loginForm);
+		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.getPassword()));
+
 		if (!authenticated) {
 			info.setMessage("Invalid username or password");
 			return new ModelAndView("redirect:/site/login");
 		}
 
 		// Create authentication object
-		Authentication authentication = converterUtil.convertUserPojotoAuthentication(p);
+		Authentication authentication = userDto.convertUserPojotoAuthentication(userPojo);
 		// Create new session
 		HttpSession session = req.getSession(true);
 		// Attach Spring SecurityContext to this new session

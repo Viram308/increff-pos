@@ -15,7 +15,6 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
 import com.increff.pos.model.SalesReportForm;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -23,6 +22,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
+@RequestMapping(value = "/api/admin")
 public class ReportApiController {
 
 	@Autowired
@@ -30,43 +30,35 @@ public class ReportApiController {
 
 	// Sales Report
 	@ApiOperation(value = "Gets Sales Report")
-	@RequestMapping(value = "/api/salesreport", method = RequestMethod.POST)
+	@RequestMapping(value = "/salesreport", method = RequestMethod.POST)
 	public List<SalesReportData> getSalesReport(@RequestBody SalesReportForm salesReportForm)
 			throws ParseException, ApiException {
-
-		// Get list of order items by given order ids
-		List<OrderItemPojo> listOfOrderItemPojo = reportDto.getOrderItemPojoList(salesReportForm);
-		// Group order item pojo by product id
-		listOfOrderItemPojo = reportDto.groupOrderItemPojoByProductId(listOfOrderItemPojo);
-		// Converts OrderItemPojo to SalesReportData
-		List<SalesReportData> salesReportData = reportDto.convertToSalesData(listOfOrderItemPojo);
-		// Remove sales report data according to brand and category
-		return reportDto.getSalesReportData(salesReportData, salesReportForm);
+		return reportDto.getSalesReportData(salesReportForm);
 	}
 
 	// Brand Report
 	@ApiOperation(value = "Gets Brand Report")
-	@RequestMapping(value = "/api/brandreport", method = RequestMethod.GET)
+	@RequestMapping(value = "/brandreport", method = RequestMethod.GET)
 	public List<BrandData> getBrandReport() {
 		return reportDto.getBrandReportData();
 	}
 
 	// Brand Report
 	@ApiOperation(value = "Search Brand Report")
-	@RequestMapping(value = "/api/brandreport/search", method = RequestMethod.POST)
+	@RequestMapping(value = "/brandreport/search", method = RequestMethod.POST)
 	public List<BrandData> searchBrandReport(@RequestBody BrandForm brandForm) throws ApiException {
 		return reportDto.searchBrandReport(brandForm);
 	}
 
 	@ApiOperation(value = "Search Inventory Report")
-	@RequestMapping(value = "/api/inventoryreport/search", method = RequestMethod.POST)
+	@RequestMapping(value = "/inventoryreport/search", method = RequestMethod.POST)
 	public List<InventoryReportData> searchInventoryReport(@RequestBody BrandForm brandForm) throws ApiException {
 		return reportDto.searchInventoryReport(brandForm);
 	}
-	
+
 	// Inventory Report
 	@ApiOperation(value = "Gets Inventory Report")
-	@RequestMapping(value = "/api/inventoryreport", method = RequestMethod.GET)
+	@RequestMapping(value = "/inventoryreport", method = RequestMethod.GET)
 	public List<InventoryReportData> getInventoryReport() throws ApiException {
 		return reportDto.getInventoryReportData();
 	}

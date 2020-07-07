@@ -64,8 +64,15 @@ public class ReportDto {
 		return converterUtil.convertToSalesData(listOfOrderItemPojo);
 	}
 
-	public List<SalesReportData> getSalesReportData(List<SalesReportData> salesReportData,
-			SalesReportForm salesReportForm) throws ApiException {
+	public List<SalesReportData> getSalesReportData(SalesReportForm salesReportForm) throws ApiException, ParseException {
+		// Get list of order items by given order ids
+		List<OrderItemPojo> listOfOrderItemPojo = getOrderItemPojoList(salesReportForm);
+		// Group order item pojo by product id
+		listOfOrderItemPojo = groupOrderItemPojoByProductId(listOfOrderItemPojo);
+		// Converts OrderItemPojo to SalesReportData
+		List<SalesReportData> salesReportData = convertToSalesData(listOfOrderItemPojo);
+		// Remove sales report data according to brand and category
+
 		salesReportData = reportService.getSalesReportDataByBrandAndCategory(salesReportData,
 				salesReportForm.getBrand(), salesReportForm.getCategory());
 		// Group Sales Report Data category wise
@@ -95,7 +102,7 @@ public class ReportDto {
 		List<BrandMasterPojo> list = brandService.searchData(brandPojo);
 		return converterUtil.getBrandDataList(list);
 	}
-	
+
 	public List<InventoryReportData> searchInventoryReport(BrandForm brandForm) throws ApiException {
 		checkSearchData(brandForm);
 		BrandMasterPojo brandMasterPojo = new BrandMasterPojo();
@@ -110,6 +117,7 @@ public class ReportDto {
 		// Group list of InventoryReportData brand and category wise
 		return reportService.groupDataForInventoryReport(list2);
 	}
+
 	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
 		List<Integer> productIdList = new ArrayList<Integer>();
 		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
@@ -117,6 +125,7 @@ public class ReportDto {
 		}
 		return productIdList;
 	}
+
 	public List<Integer> getBrandIdList(List<BrandMasterPojo> brandMasterPojoList) {
 		List<Integer> brandIdList = new ArrayList<Integer>();
 		for (BrandMasterPojo brandMasterPojo : brandMasterPojoList) {
@@ -124,12 +133,11 @@ public class ReportDto {
 		}
 		return brandIdList;
 	}
-	
+
 	public void checkSearchData(BrandForm b) throws ApiException {
 		if (b.getBrand().isBlank() && b.getCategory().isBlank()) {
 			throw new ApiException("Please enter brand or category !!");
 		}
 	}
 
-	
 }

@@ -1,7 +1,7 @@
 // get url
 function getInventoryReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
-	return baseUrl + "/api/inventoryreport";
+	return baseUrl + "/api/admin/inventoryreport";
 }
 
 function getInventoryReportData(){
@@ -40,6 +40,15 @@ function searchInventoryReport(){
 	//Set the values to add
 	var $tbody = $('#inventoryreport-table').find('tbody');
 	$tbody.empty();
+	var brand=$('#inputBrand').val().trim();
+	var category=$('#inputCategory').val().trim();
+		
+	if(brand=="" && category==""){
+		alert('Enter brand or category');
+		return false;
+	}
+
+	
 	var $form = $("#inventoryreport-form");
 	var json = toJson($form);
 	var url = getInventoryReportUrl()+"/search";

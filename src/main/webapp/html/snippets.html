@@ -982,6 +982,9 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
   <div class="row">
     &nbsp;
   </div>
+  <div class="row justify-content-center" id="availableInventoryRow" style="display:none">
+  <b>Available Inventory :</b>&nbsp;<span style="color: red" id="availableQuantity"></span>
+  </div>
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
@@ -1096,6 +1099,9 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
   <!-- Blank Row -->
   <div class="row">
     &nbsp;
+  </div>
+  <div class="row justify-content-center" id="availableInventoryRowEditOrder" style="display:none">
+  <b>Available Inventory :</b>&nbsp;<span style="color: red" id="availableQuantityEditOrder"></span>
   </div>
   <!-- Blank Row -->
   <div class="row">
@@ -1558,7 +1564,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 
     <!-- Footer fragment -->
     <footer class="footer  mt-1" th:fragment="name_footer">
-      Copyright Increff 2019
+      Copyright Increff 2020
       &nbsp;
       <!-- JS files -->
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>

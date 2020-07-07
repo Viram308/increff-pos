@@ -98,7 +98,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 	@Test
 	public void testNormalize() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
-		BrandService.normalize(b);
+		service.normalize(b);
 		// test for normalized data
 		assertEquals("viram", b.getBrand());
 		assertEquals("shah", b.getCategory());

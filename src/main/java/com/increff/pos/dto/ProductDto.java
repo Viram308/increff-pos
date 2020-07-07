@@ -3,16 +3,21 @@ package com.increff.pos.dto;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.transaction.Transactional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.increff.pos.model.ProductData;
+import com.increff.pos.model.ProductDetails;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.BrandMasterPojo;
+import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.BrandService;
+import com.increff.pos.service.InventoryService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConverterUtil;
 
@@ -25,8 +30,11 @@ public class ProductDto {
 	@Autowired
 	private ProductService productService;
 	@Autowired
+	private InventoryService inventoryService;
+	@Autowired
 	private ConverterUtil converterUtil;
 
+	@Transactional(rollbackOn = ApiException.class)
 	public void add(ProductForm form) throws ApiException {
 		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.getBrand(), form.getCategory());
 		checkData(form);
@@ -34,6 +42,10 @@ public class ProductDto {
 				brandMasterPojo);
 
 		productService.add(productMasterPojo, brandMasterPojo);
+		InventoryPojo inventoryPojo = new InventoryPojo();
+		inventoryPojo.setProductid(productMasterPojo.getId());
+		inventoryPojo.setQuantity(0);
+		inventoryService.add(inventoryPojo);
 	}
 
 	public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
@@ -54,10 +66,13 @@ public class ProductDto {
 		return converterUtil.convertProductMasterPojotoProductData(productMasterPojo, brandMasterPojo);
 	}
 
-	public ProductData getByBarcode(String barcode) throws ApiException {
+	public ProductDetails getByBarcode(String barcode) throws ApiException {
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(barcode);
 		BrandMasterPojo brandMasterPojo = brandService.get(productMasterPojo.getBrand_category_id());
-		return converterUtil.convertProductMasterPojotoProductData(productMasterPojo, brandMasterPojo);
+		ProductData productData = converterUtil.convertProductMasterPojotoProductData(productMasterPojo,
+				brandMasterPojo);
+		InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
+		return converterUtil.convertProductDatatoProductDetails(productData, inventoryPojo);
 	}
 
 	public List<ProductData> getAll() {

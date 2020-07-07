@@ -22,7 +22,7 @@ import com.increff.pos.model.BillData;
 
 public class GenerateXML {
 
-	public static void createXml(List<BillData> billDataItems, int orderId)
+	public static void createXml(List<BillData> billDataItems)
 			throws ParserConfigurationException, TransformerException {
 		String xmlFilePath = "billDataXML.xml";
 

@@ -3,8 +3,10 @@ package com.increff.pos.dto;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import com.increff.pos.model.LoginForm;
 import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
@@ -56,6 +58,15 @@ public class UserDto {
 		if (u.getEmail().isBlank() || u.getPassword().isBlank() || u.getRole().isBlank()) {
 			throw new ApiException("Please enter email, password and role !!");
 		}
+	}
+
+	public UserPojo checkAuth(LoginForm loginForm) throws ApiException {
+		UserPojo p = userService.get(loginForm.getEmail());
+		return p;
+	}
+
+	public Authentication convertUserPojotoAuthentication(UserPojo userPojo) {
+		return converterUtil.convertUserPojotoAuthentication(userPojo);
 	}
 
 }

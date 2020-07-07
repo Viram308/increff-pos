@@ -34,7 +34,6 @@ public class ProductServiceTest extends AbstractUnitTest {
 		// get barcode for id of first object
 		String b1 = service.get(p.getId()).getBarcode();
 		// get barcode for very next object
-		// here other tests are affecting database so id is not 1 and 2 but p.getId()
 		// and p.getId()+1
 		String b2 = service.get(p.getId() + 1).getBarcode();
 		// test for different barcode

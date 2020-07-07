@@ -1,7 +1,7 @@
 // get url
 function getProductUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content")
-	return baseUrl + "/api/product";
+	return baseUrl + "/api/admin/product";
 }
 
 
@@ -10,6 +10,15 @@ function searchProduct(event){
 	//Set the values to add
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
+	var name=$('#inputName').val().trim();
+	var barcode=$('#inputBarcode').val().trim();
+	var brand=$('#inputBrand').val().trim();
+	var category=$('#inputCategory').val().trim();
+	
+	if(name=="" && barcode=="" && brand=="" && category==""){
+		alert('Enter atleast one from (name,barcode,brand,category)');
+		return false;
+	}
 	var $form = $("#product-form");
 	var json = toJson($form);
 	var url = getProductUrl()+"/search";

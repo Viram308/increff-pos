@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.increff.pos.dto.ProductDto;
 import com.increff.pos.model.ProductData;
+import com.increff.pos.model.ProductDetails;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.service.ApiException;
@@ -20,7 +21,7 @@ import io.swagger.annotations.ApiOperation;
 
 @Api
 @RestController
-@RequestMapping(value = "/api/product")
+@RequestMapping(value = "/api/admin/product")
 public class ProductApiController {
 
 	@Autowired
@@ -48,7 +49,7 @@ public class ProductApiController {
 
 	@ApiOperation(value = "Gets a Product")
 	@RequestMapping(value = "/b/{barcode}", method = RequestMethod.GET)
-	public ProductData getByBarcode(@PathVariable String barcode) throws ApiException {
+	public ProductDetails getByBarcode(@PathVariable String barcode) throws ApiException {
 		return productDto.getByBarcode(barcode);
 	}
 

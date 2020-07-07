@@ -28,25 +28,28 @@ public class BrandService {
 		dao.insert(b);
 	}
 
-	@Transactional
+	@Transactional(rollbackOn = ApiException.class)
 	public void delete(int id) {
-		dao.delete(BrandMasterPojo.class,id);
+		dao.delete(BrandMasterPojo.class, id);
 	}
 
 	@Transactional(rollbackOn = ApiException.class)
 	public BrandMasterPojo getByBrandCategory(String brand, String category) throws ApiException {
 		// Get pojo
+		brand = StringUtil.toLowerCase(brand);
+		category = StringUtil.toLowerCase(category);
 		return getCheckForBrandCategory(brand, category);
 	}
 
+	@Transactional
 	public List<BrandMasterPojo> searchData(BrandMasterPojo brandPojo) {
 		normalize(brandPojo);
-		return dao.searchData(brandPojo.getBrand(),brandPojo.getCategory());
+		return dao.searchData(brandPojo.getBrand(), brandPojo.getCategory());
 	}
-	
+
 	@Transactional
 	public BrandMasterPojo get(int id) {
-		return dao.select(BrandMasterPojo.class,id);
+		return dao.select(BrandMasterPojo.class, id);
 	}
 
 	@Transactional
@@ -63,16 +66,16 @@ public class BrandService {
 		dao.update(brandMasterPojo);
 	}
 
-	@Transactional
+	@Transactional(rollbackOn = ApiException.class)
 	public BrandMasterPojo getCheck(int id) throws ApiException {
-		BrandMasterPojo brandMasterPojo = dao.select(BrandMasterPojo.class,id);
+		BrandMasterPojo brandMasterPojo = dao.select(BrandMasterPojo.class, id);
 		if (brandMasterPojo == null) {
 			throw new ApiException("Brand and Category not exist for id : " + id);
 		}
 		return brandMasterPojo;
 	}
 
-	@Transactional
+	@Transactional(rollbackOn = ApiException.class)
 	public void getCheckExisting(String brand, String category) throws ApiException {
 		BrandMasterPojo p = dao.selectByBrandCategory(brand, category);
 		if (p != null) {
@@ -80,7 +83,7 @@ public class BrandService {
 		}
 	}
 
-	@Transactional
+	@Transactional(rollbackOn = ApiException.class)
 	public BrandMasterPojo getCheckForBrandCategory(String brand, String category) throws ApiException {
 		BrandMasterPojo brandMasterPojo = dao.selectByBrandCategory(StringUtil.toLowerCase(brand),
 				StringUtil.toLowerCase(category));
@@ -90,10 +93,9 @@ public class BrandService {
 		return brandMasterPojo;
 	}
 
-	public static void normalize(BrandMasterPojo p) {
+	public void normalize(BrandMasterPojo p) {
 		p.setBrand(StringUtil.toLowerCase(p.getBrand()));
 		p.setCategory(StringUtil.toLowerCase(p.getCategory()));
 	}
 
-	
 }

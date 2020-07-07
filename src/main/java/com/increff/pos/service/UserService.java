@@ -12,6 +12,7 @@ import com.increff.pos.model.InfoData;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.util.ConverterUtil;
+import com.increff.pos.util.StringUtil;
 
 @Service
 public class UserService {
@@ -39,6 +40,7 @@ public class UserService {
 
 	@Transactional(rollbackOn = ApiException.class)
 	public UserPojo get(String email) throws ApiException {
+		email=StringUtil.toLowerCase(email);
 		return dao.select(email);
 	}
 
