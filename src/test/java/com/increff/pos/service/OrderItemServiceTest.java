@@ -11,7 +11,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.OrderItemData;
 import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
@@ -42,15 +42,85 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		service.add(list);
 	}
 
-	@Test
-	public void testDelete() throws ApiException {
+//	@Test
+//	public void testDelete() throws ApiException {
+//		OrderItemPojo o = getOrderItemPojoTest();
+//		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+//		list.add(o);
+//		// test add data
+//		service.add(list);
+//		// Delete should be successful and should not throw exception as data exists
+//		service.delete(o.getId());
+//		
+//	}
+
+	@Test(expected = ApiException.class)
+	public void testDeleteByOrderId() throws ApiException {
 		OrderItemPojo o = getOrderItemPojoTest();
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
 		list.add(o);
 		// test add data
 		service.add(list);
 		// Delete should be successful and should not throw exception as data exists
-		service.delete(o.getId());
+		service.deleteByOrderId(o.getOrderId());
+		service.getByOrderId(o.getOrderId());
+	}
+
+	@Test
+	public void testGetByOrderId() throws ApiException {
+		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		int i = 0;
+		// test add data
+		service.add(list);
+		// Delete should be successful and should not throw exception as data exists
+		List<OrderItemPojo> orderItemPojos = service.getByOrderId(o.getOrderId());
+		for (OrderItemPojo orderItemPojo : orderItemPojos) {
+			assertEquals(list.get(i).getOrderId(), orderItemPojo.getOrderId());
+			assertEquals(list.get(i).getProductId(), orderItemPojo.getProductId());
+			assertEquals(list.get(i).getQuantity(), orderItemPojo.getQuantity());
+			assertEquals(list.get(i).getSellingPrice(), orderItemPojo.getSellingPrice(), 0.01);
+			i++;
+		}
+	}
+
+	@Test(expected = ApiException.class)
+	public void testGetCheckForOrderId() throws ApiException {
+		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		int i = 0;
+		// test add data
+		service.add(list);
+		// Delete should be successful and should not throw exception as data exists
+		List<OrderItemPojo> orderItemPojos = service.getCheckForOrderId(o.getOrderId());
+		for (OrderItemPojo orderItemPojo : orderItemPojos) {
+			assertEquals(list.get(i).getOrderId(), orderItemPojo.getOrderId());
+			assertEquals(list.get(i).getProductId(), orderItemPojo.getProductId());
+			assertEquals(list.get(i).getQuantity(), orderItemPojo.getQuantity());
+			assertEquals(list.get(i).getSellingPrice(), orderItemPojo.getSellingPrice(), 0.01);
+			i++;
+		}
+		service.deleteByOrderId(o.getOrderId());
+		service.getCheckForOrderId(o.getOrderId());
+	}
+
+	@Test
+	public void testSearchData() throws ApiException {
+		OrderItemPojo o = getOrderItemPojoTest();
+		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+		list.add(o);
+		service.add(list);
+		OrderItemData orderItemData = new OrderItemData();
+		List<Integer> productIds = new ArrayList<Integer>();
+		productIds.add(o.getProductId());
+		orderItemData.orderId = 0;
+		List<OrderItemPojo> orderItemPojos = service.searchData(orderItemData, productIds);
+		assertEquals(1, orderItemPojos.size());
+		orderItemData.orderId = o.getOrderId() + 1;
+		orderItemPojos = service.searchData(orderItemData, productIds);
+		assertEquals(0, orderItemPojos.size());
 	}
 
 //	@Test
@@ -90,18 +160,19 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 //		assertEquals(newQuantity, pi.getQuantity());
 //	}
 
-	@Test(expected = ApiException.class)
-	public void testGetCheck() throws ApiException {
-		OrderItemPojo o = getOrderItemPojoTest();
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		list.add(o);
-		// test add data
-		service.add(list);
-		OrderItemPojo p = service.getCheck(o.getId());
-		service.delete(p.getId());
-		// After delete throw exception while getting data
-		service.getCheck(p.getId());
-	}
+//	@Test
+//	public void testGetCheck() throws ApiException {
+//		OrderItemPojo o = getOrderItemPojoTest();
+//		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+//		list.add(o);
+//		// test add data
+//		service.add(list);
+//		OrderItemPojo p = service.getCheck(o.getId());
+//		assertEquals(o.getOrderId(), p.getOrderId());
+//		assertEquals(o.getProductId(), p.getProductId());
+//		assertEquals(o.getQuantity(), p.getQuantity());
+//		assertEquals(o.getSellingPrice(), p.getSellingPrice(), 0.01);
+//	}
 
 	@Test
 	public void testGetList() throws ApiException {
@@ -117,57 +188,57 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		assertEquals(1, list1.size());
 	}
 
-	@Test(expected = ApiException.class)
-	public void testCheckInventoryZeroQuantity() throws ApiException {
-		OrderItemPojo o = getOrderItemPojoTest();
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		list.add(o);
-		// test add data
-		service.add(list);
-		OrderItemForm f = getOrderItemForm();
-		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
-		InventoryPojo ip = inService.getByProductId(productMasterPojo);
-		// set quantity such that available quantity is zero
-		f.quantity = o.getQuantity() + ip.getQuantity();
-		// throws exception for zero available quantity
-		service.checkInventory(list.get(0).getId(), f);
+//	@Test(expected = ApiException.class)
+//	public void testCheckInventoryZeroQuantity() throws ApiException {
+//		OrderItemPojo o = getOrderItemPojoTest();
+//		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+//		list.add(o);
+//		// test add data
+//		service.add(list);
+//		OrderItemForm f = getOrderItemForm();
+//		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
+//		InventoryPojo ip = inService.getByProductId(productMasterPojo);
+//		// set quantity such that available quantity is zero
+//		f.quantity = o.getQuantity() + ip.getQuantity();
+//		// throws exception for zero available quantity
+//		service.checkInventory(list.get(0).getId(), f);
+//
+//	}
 
-	}
-
-	@Test(expected = ApiException.class)
-	public void testCheckInventoryNegativeQuantity() throws ApiException {
-		OrderItemPojo o = getOrderItemPojoTest();
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		list.add(o);
-		// test add data
-		service.add(list);
-		OrderItemForm f = getOrderItemForm();
-		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
-		InventoryPojo ip = inService.getByProductId(productMasterPojo);
-		// set quantity such that available quantity is negative
-		f.quantity = o.getQuantity() + ip.getQuantity() + 1;
-		// throws exception for negative available quantity
-		service.checkInventory(list.get(0).getId(), f);
-
-	}
-
-	@Test
-	public void testCheckInventoryPerfectQuantity() throws ApiException {
-		OrderItemPojo o = getOrderItemPojoTest();
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		list.add(o);
-		// test add data
-		service.add(list);
-		OrderItemForm f = getOrderItemForm();
-		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
-		InventoryPojo ip = inService.getByProductId(productMasterPojo);
-		// set quantity such that available quantity is one
-		f.quantity = o.getQuantity() + ip.getQuantity() - 1;
-		// Does not throws exception for positive available quantity
-		service.checkInventory(list.get(0).getId(), f);
-		InventoryPojo ip2 = inService.getByProductId(productMasterPojo);
-		assertEquals(1, ip2.getQuantity());
-	}
+//	@Test(expected = ApiException.class)
+//	public void testCheckInventoryNegativeQuantity() throws ApiException {
+//		OrderItemPojo o = getOrderItemPojoTest();
+//		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+//		list.add(o);
+//		// test add data
+//		service.add(list);
+//		OrderItemForm f = getOrderItemForm();
+//		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
+//		InventoryPojo ip = inService.getByProductId(productMasterPojo);
+//		// set quantity such that available quantity is negative
+//		f.quantity = o.getQuantity() + ip.getQuantity() + 1;
+//		// throws exception for negative available quantity
+//		service.checkInventory(list.get(0).getId(), f);
+//
+//	}
+//
+//	@Test
+//	public void testCheckInventoryPerfectQuantity() throws ApiException {
+//		OrderItemPojo o = getOrderItemPojoTest();
+//		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
+//		list.add(o);
+//		// test add data
+//		service.add(list);
+//		OrderItemForm f = getOrderItemForm();
+//		ProductMasterPojo productMasterPojo = pService.get(o.getProductId());
+//		InventoryPojo ip = inService.getByProductId(productMasterPojo);
+//		// set quantity such that available quantity is one
+//		f.quantity = o.getQuantity() + ip.getQuantity() - 1;
+//		// Does not throws exception for positive available quantity
+//		service.checkInventory(list.get(0).getId(), f);
+//		InventoryPojo ip2 = inService.getByProductId(productMasterPojo);
+//		assertEquals(1, ip2.getQuantity());
+//	}
 
 //	@Test(expected = ApiException.class)
 //	public void testCheckEnteredQuantityZero() throws ApiException {
@@ -184,17 +255,6 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 //		// throws exception for zero entered quantity
 //		service.checkEnteredQuantity(f);
 //	}
-
-	private OrderItemForm getOrderItemForm() {
-		OrderItemForm f = new OrderItemForm();
-		double mrp = 10.06;
-		String barcode = StringUtil.getAlphaNumericString();
-		int quantity = 15;
-		f.sellingPrice = mrp;
-		f.barcode = barcode;
-		f.quantity = quantity;
-		return f;
-	}
 
 	private String getDateTime() {
 

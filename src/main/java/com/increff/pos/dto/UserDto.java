@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-import com.increff.pos.model.LoginForm;
+import com.increff.pos.model.InfoData;
 import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
@@ -21,6 +21,8 @@ public class UserDto {
 	private UserService userService;
 	@Autowired
 	private ConverterUtil converterUtil;
+	@Autowired
+	private InfoData info;
 
 	public void addUser(UserForm form) throws ApiException {
 		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
@@ -37,6 +39,10 @@ public class UserDto {
 		return converterUtil.convertUserPojotoUserData(userPojo);
 	}
 
+	public UserPojo getByEmail(String email) throws ApiException {
+		return userService.getByEmail(email);
+	}
+
 	public void updateUser(int id, UserForm form) throws ApiException {
 		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
 		checkData(userPojo);
@@ -51,18 +57,22 @@ public class UserDto {
 	public void checkInit(UserForm form) throws ApiException {
 		List<UserPojo> list = userService.getAll();
 		// check if already initialized
-		userService.checkAvailability(list, form);
+		// check if already exists
+		if (list.size() > 0) {
+			info.message = "Application already initialized. Please use existing credentials";
+		} else {
+			// Initialize with admin role
+			form.role = "admin";
+			UserPojo p = converterUtil.convertUserFormtoUserPojo(form);
+			userService.add(p);
+			info.message = "Application initialized";
+		}
 	}
 
 	public void checkData(UserPojo u) throws ApiException {
 		if (u.getEmail().isBlank() || u.getPassword().isBlank() || u.getRole().isBlank()) {
 			throw new ApiException("Please enter email, password and role !!");
 		}
-	}
-
-	public UserPojo checkAuth(LoginForm loginForm) throws ApiException {
-		UserPojo p = userService.get(loginForm.email);
-		return p;
 	}
 
 	public Authentication convertUserPojotoAuthentication(UserPojo userPojo) {

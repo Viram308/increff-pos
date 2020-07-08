@@ -1,6 +1,5 @@
 package com.increff.pos.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.transaction.Transactional;
@@ -27,6 +26,8 @@ public class InventoryDto {
 	private InventoryService inventoryService;
 	@Autowired
 	private ConverterUtil converterUtil;
+	@Autowired
+	private ProductDto productDto;
 
 	@Transactional
 	public void addInventory(InventoryForm form) throws ApiException {
@@ -42,7 +43,7 @@ public class InventoryDto {
 		productMasterPojo.setBarcode(form.barcode);
 		productMasterPojo.setName(form.name);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
-		List<Integer> productIds = getProductIdList(productMasterPojoList);
+		List<Integer> productIds = productDto.getProductIdList(productMasterPojoList);
 		List<InventoryPojo> list = inventoryService.searchData(productIds);
 		return converterUtil.getInventoryDataList(list);
 	}
@@ -63,14 +64,6 @@ public class InventoryDto {
 	public List<InventoryData> getAllInventory() {
 		List<InventoryPojo> list = inventoryService.getAll();
 		return converterUtil.getInventoryDataList(list);
-	}
-
-	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
-		List<Integer> productIdList = new ArrayList<Integer>();
-		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
-			productIdList.add(productMasterPojo.getId());
-		}
-		return productIdList;
 	}
 
 	public void checkData(InventoryPojo inventoryPojo, ProductMasterPojo productMasterPojo) throws ApiException {

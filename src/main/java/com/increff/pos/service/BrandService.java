@@ -66,7 +66,7 @@ public class BrandService {
 		dao.update(brandMasterPojo);
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
+	@Transactional
 	public BrandMasterPojo getCheck(int id) throws ApiException {
 		BrandMasterPojo brandMasterPojo = dao.select(BrandMasterPojo.class, id);
 		if (brandMasterPojo == null) {

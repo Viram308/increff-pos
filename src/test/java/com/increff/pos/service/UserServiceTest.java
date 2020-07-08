@@ -2,13 +2,9 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.spring.AbstractUnitTest;
 
@@ -38,7 +34,7 @@ public class UserServiceTest extends AbstractUnitTest {
 	public void testGet() throws ApiException {
 		UserPojo u = getUserPojo();
 		service.add(u);
-		UserPojo p = service.get(u.getEmail());
+		UserPojo p = service.getByEmail(u.getEmail());
 		// test added data
 		assertEquals("admin", p.getRole());
 		assertEquals("admin", p.getPassword());
@@ -73,6 +69,24 @@ public class UserServiceTest extends AbstractUnitTest {
 		assertEquals("admin", u.getPassword());
 	}
 
+	@Test(expected = ApiException.class)
+	public void testGetCheck() throws ApiException {
+		UserPojo u = getUserPojo();
+		service.add(u);
+		UserPojo userPojo = service.getCheck(u.getId());
+		service.delete(userPojo.getId());
+		service.getCheck(userPojo.getId());
+	}
+
+	@Test(expected = ApiException.class)
+	public void testGetCheckForEmail() throws ApiException {
+		UserPojo u = getUserPojo();
+		service.add(u);
+		UserPojo userPojo = service.getCheckForEmail(u.getEmail());
+		service.delete(userPojo.getId());
+		service.getCheckForEmail(userPojo.getEmail());
+	}
+
 //	@Test(expected = ApiException.class)
 //	public void testCheckData() throws ApiException {
 //		UserPojo u = getUserPojo();
@@ -82,28 +96,28 @@ public class UserServiceTest extends AbstractUnitTest {
 //		service.checkData(u);
 //	}
 
-	@Test
-	public void testCheckAvailbility() throws ApiException {
-		List<UserPojo> list = new ArrayList<UserPojo>();
-		UserPojo u = getUserPojo();
-		UserForm f = getUserForm();
-		// Not initialized as list has 0 users
-		service.checkAvailability(list, f);
-		// add user
-		service.add(u);
-		// update list
-		list = service.getAll();
-		// Initialized
-		service.checkAvailability(list, f);
-	}
+//	@Test
+//	public void testCheckAvailbility() throws ApiException {
+//		List<UserPojo> list = new ArrayList<UserPojo>();
+//		UserPojo u = getUserPojo();
+//		UserForm f = getUserForm();
+//		// Not initialized as list has 0 users
+//		service.checkAvailability(list, f);
+//		// add user
+//		service.add(u);
+//		// update list
+//		list = service.getAll();
+//		// Initialized
+//		service.checkAvailability(list, f);
+//	}
 
-	private UserForm getUserForm() {
-		UserForm f = new UserForm();
-		f.email = "shahviram123@gmail.com";
-		f.password = "admin";
-		f.role = "admin";
-		return f;
-	}
+//	private UserForm getUserForm() {
+//		UserForm f = new UserForm();
+//		f.email = "shahviram123@gmail.com";
+//		f.password = "admin";
+//		f.role = "admin";
+//		return f;
+//	}
 
 	private UserPojo getUserPojo() {
 		UserPojo u = new UserPojo();

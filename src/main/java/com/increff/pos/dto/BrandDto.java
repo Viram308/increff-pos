@@ -1,5 +1,6 @@
 package com.increff.pos.dto;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -44,9 +45,21 @@ public class BrandDto {
 		brandService.update(id, brandPojo);
 	}
 
-	public List<BrandData> getAllBrands() {
-		List<BrandMasterPojo> list = brandService.getAll();
-		return converterUtil.getBrandDataList(list);
+	public BrandMasterPojo getByBrandCategory(String brand, String category) throws ApiException {
+		return brandService.getByBrandCategory(brand, category);
+	}
+
+//	public List<BrandData> getAllBrands() {
+//		List<BrandMasterPojo> list = brandService.getAll();
+//		return converterUtil.getBrandDataList(list);
+//	}
+	
+	public List<Integer> getBrandIdList(List<BrandMasterPojo> brandMasterPojoList) {
+		List<Integer> brandIdList = new ArrayList<Integer>();
+		for (BrandMasterPojo brandMasterPojo : brandMasterPojoList) {
+			brandIdList.add(brandMasterPojo.getId());
+		}
+		return brandIdList;
 	}
 
 	public void checkData(BrandForm b) throws ApiException {
@@ -60,4 +73,5 @@ public class BrandDto {
 			throw new ApiException("Please enter brand or category !!");
 		}
 	}
+
 }

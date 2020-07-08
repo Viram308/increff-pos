@@ -54,12 +54,12 @@ public class OrderItemDto {
 		}
 	}
 
-	public void update(int id, OrderItemForm form) throws ApiException {
-		checkEnteredQuantity(form);
-		orderItemService.checkInventory(id, form);
-		OrderItemPojo p = converterUtil.convertOrderItemFormtoOrderItemPojo(form);
-		orderItemService.update(id, p);
-	}
+//	public void update(int id, OrderItemForm form) throws ApiException {
+//		checkEnteredQuantity(form);
+//		orderItemService.checkInventory(id, form);
+//		OrderItemPojo p = converterUtil.convertOrderItemFormtoOrderItemPojo(form);
+//		orderItemService.update(id, p);
+//	}
 
 	public List<OrderItemData> getAll() {
 		List<OrderItemPojo> list = orderItemService.getAll();

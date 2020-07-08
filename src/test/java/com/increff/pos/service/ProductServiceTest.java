@@ -3,6 +3,9 @@ package com.increff.pos.service;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -127,12 +130,69 @@ public class ProductServiceTest extends AbstractUnitTest {
 //		service.checkData(p);
 //	}
 
+	@Test
+	public void searchDataProductMasterPojo() throws ApiException {
+		ProductMasterPojo productMasterPojo1 = getProductMasterPojoTest();
+		ProductMasterPojo productMasterPojo2 = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo1 = bService.get(productMasterPojo1.getBrand_category_id());
+		BrandMasterPojo brandMasterPojo2 = bService.get(productMasterPojo2.getBrand_category_id());
+		productMasterPojo2.setName("munch");
+		service.add(productMasterPojo1, brandMasterPojo1);
+		service.add(productMasterPojo2, brandMasterPojo2);
+		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
+		productMasterPojo.setBarcode("");
+		productMasterPojo.setName(" M       ");
+		List<ProductMasterPojo> productMasterPojos = service.searchData(productMasterPojo);
+		assertEquals(1, productMasterPojos.size());
+	}
+
+	@Test
+	public void searchDataBrandId() throws ApiException {
+		ProductMasterPojo productMasterPojo1 = getProductMasterPojoTest();
+		ProductMasterPojo productMasterPojo2 = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo1 = bService.get(productMasterPojo1.getBrand_category_id());
+		BrandMasterPojo brandMasterPojo2 = bService.get(productMasterPojo2.getBrand_category_id());
+		service.add(productMasterPojo1, brandMasterPojo1);
+		service.add(productMasterPojo2, brandMasterPojo2);
+		List<Integer> brandIds = new ArrayList<Integer>();
+		brandIds.add(brandMasterPojo1.getId());
+		List<ProductMasterPojo> productMasterPojos = service.searchData(brandIds);
+		assertEquals(1, productMasterPojos.size());
+		brandIds.clear();
+		productMasterPojos = service.searchData(brandIds);
+		assertEquals(0, productMasterPojos.size());
+	}
+
+	@Test
+	public void searchDataProductMasterPojoandBrandId() throws ApiException {
+		ProductMasterPojo productMasterPojo1 = getProductMasterPojoTest();
+		ProductMasterPojo productMasterPojo2 = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo1 = bService.get(productMasterPojo1.getBrand_category_id());
+		BrandMasterPojo brandMasterPojo2 = bService.get(productMasterPojo2.getBrand_category_id());
+		productMasterPojo2.setName("munch");
+		service.add(productMasterPojo1, brandMasterPojo1);
+		service.add(productMasterPojo2, brandMasterPojo2);
+		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
+		productMasterPojo.setBarcode("");
+		productMasterPojo.setName(" M       ");
+		List<Integer> brandIds = new ArrayList<Integer>();
+		brandIds.add(brandMasterPojo1.getId());
+		List<ProductMasterPojo> productMasterPojos = service.searchData(productMasterPojo, brandIds);
+		assertEquals(0, productMasterPojos.size());
+		brandIds.clear();
+		productMasterPojos = service.searchData(productMasterPojo, brandIds);
+		assertEquals(0, productMasterPojos.size());
+		brandIds.add(brandMasterPojo2.getId());
+		productMasterPojos = service.searchData(productMasterPojo, brandIds);
+		assertEquals(1, productMasterPojos.size());
+	}
+
 	private ProductMasterPojo getProductMasterPojoTest() throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();
 		// create data
 		String barcode = StringUtil.getAlphaNumericString();
-		b.setBrand(" viram ");
+		b.setBrand(StringUtil.getAlphaNumericString());
 		b.setCategory("ShaH");
 		bService.add(b);
 		double mrp = 10.25;

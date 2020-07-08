@@ -3,6 +3,7 @@ package com.increff.pos.service;
 import static org.junit.Assert.assertEquals;
 
 import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -142,7 +143,43 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	}
 
-	public List<OrderItemForm> getList() throws ApiException {
+	@Test
+	public void testGetList() throws ParseException {
+		List<OrderPojo> orderPojos = getOrderPojoList();
+		List<OrderPojo> orderPojoList = service.getList(orderPojos, "02-05-2020", "02-07-2020");
+		assertEquals(1, orderPojoList.size());
+		orderPojoList = service.getList(orderPojos, "02-05-2020", "02-06-2020");
+		assertEquals(0, orderPojoList.size());
+		orderPojoList = service.getList(orderPojos, "02-05-2020", "07-07-2020");
+		assertEquals(2, orderPojoList.size());
+		orderPojoList = service.getList(orderPojos, "01-07-2020", "07-07-2020");
+		assertEquals(2, orderPojoList.size());
+		orderPojoList = service.getList(orderPojos, "01-07-2020", "08-07-2020");
+		assertEquals(2, orderPojoList.size());
+	}
+
+	@Test
+	public void testUpdate() throws ApiException {
+		OrderPojo orderPojo1=getOrderPojoTest();
+		service.add(orderPojo1);
+		OrderPojo orderPojo2=new OrderPojo();
+		orderPojo2.setDatetime("02-02-2020 09:45");
+		service.update(orderPojo1.getId(), orderPojo2);
+		assertEquals(orderPojo2.getDatetime(), orderPojo1.getDatetime());
+	}
+	
+	private List<OrderPojo> getOrderPojoList() {
+		OrderPojo orderPojo1 = new OrderPojo();
+		OrderPojo orderPojo2 = new OrderPojo();
+		orderPojo1.setDatetime("01-07-2020 09:45");
+		orderPojo2.setDatetime("07-07-2020 09:45");
+		List<OrderPojo> orderPojos = new ArrayList<OrderPojo>();
+		orderPojos.add(orderPojo1);
+		orderPojos.add(orderPojo2);
+		return orderPojos;
+	}
+
+	private List<OrderItemForm> getList() throws ApiException {
 		List<OrderItemForm> orderItemForms = new ArrayList<OrderItemForm>();
 		String b1 = StringUtil.getAlphaNumericString();
 		String b2 = StringUtil.getAlphaNumericString();
@@ -175,7 +212,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		return orderItemForms;
 	}
 
-	public void getData(String brand, String barcode, int quantity) throws ApiException {
+	private void getData(String brand, String barcode, int quantity) throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();
 		InventoryPojo i = new InventoryPojo();
@@ -211,7 +248,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		return datetime;
 	}
 
-	private OrderPojo getOrderPojoTest() throws ApiException {
+	private OrderPojo getOrderPojoTest(){
 		OrderPojo op = new OrderPojo();
 		String datetime = getDateTime();
 		// create data

@@ -33,10 +33,12 @@ public class ProductDto {
 	private InventoryService inventoryService;
 	@Autowired
 	private ConverterUtil converterUtil;
+	@Autowired
+	private BrandDto brandDto;
 
 	@Transactional(rollbackOn = ApiException.class)
 	public void add(ProductForm form) throws ApiException {
-		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.brand, form.category);
+		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(form.brand, form.category);
 		checkData(form);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductFormtoProductMasterPojo(form,
 				brandMasterPojo);
@@ -54,7 +56,7 @@ public class ProductDto {
 		brandMasterPojo.setBrand(form.brand);
 		brandMasterPojo.setCategory(form.category);
 		List<BrandMasterPojo> brandMasterPojoList = brandService.searchData(brandMasterPojo);
-		List<Integer> brandIds = getBrandIdList(brandMasterPojoList);
+		List<Integer> brandIds = brandDto.getBrandIdList(brandMasterPojoList);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductSearchFormtoProductMasterPojo(form);
 		List<ProductMasterPojo> list = productService.searchData(productMasterPojo, brandIds);
 		return converterUtil.getProductDataList(list);
@@ -88,14 +90,14 @@ public class ProductDto {
 		productService.update(id, productMasterPojo, brandMasterPojo);
 	}
 
-	public List<Integer> getBrandIdList(List<BrandMasterPojo> brandMasterPojoList) {
-		List<Integer> brandIdList = new ArrayList<Integer>();
-		for (BrandMasterPojo brandMasterPojo : brandMasterPojoList) {
-			brandIdList.add(brandMasterPojo.getId());
+	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
+		List<Integer> productIdList = new ArrayList<Integer>();
+		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
+			productIdList.add(productMasterPojo.getId());
 		}
-		return brandIdList;
+		return productIdList;
 	}
-
+	
 	public void checkData(ProductForm b) throws ApiException {
 		if (b.name.isBlank() || b.mrp <= 0) {
 			throw new ApiException("Please enter name, mrp(positive) !!");

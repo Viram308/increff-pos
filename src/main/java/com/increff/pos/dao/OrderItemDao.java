@@ -20,9 +20,9 @@ public class OrderItemDao extends AbstractDao {
 	// delete according to orderId
 	private static String deleteByOrderId = "delete from OrderItemPojo i where orderId=:orderId";
 	// search
-	private static String search = "select i from OrderItemPojo i where orderId=:orderId and productid in :productIds";
+	private static String search = "select i from OrderItemPojo i where orderId=:orderId and productId in :productIds";
 	// search
-	private static String searchByProductId = "select i from OrderItemPojo i where productid in :productIds";
+	private static String searchByProductId = "select i from OrderItemPojo i where productId in :productIds";
 
 	// select according to order id list
 	public List<OrderItemPojo> selectList(List<Integer> orderIds) {

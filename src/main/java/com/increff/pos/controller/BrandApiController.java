@@ -45,11 +45,11 @@ public class BrandApiController {
 		return brandDto.getBrandData(id);
 	}
 
-	@ApiOperation(value = "Gets list of all Brands")
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<BrandData> getAll() {
-		return brandDto.getAllBrands();
-	}
+//	@ApiOperation(value = "Gets list of all Brands")
+//	@RequestMapping(value = "", method = RequestMethod.GET)
+//	public List<BrandData> getAll() {
+//		return brandDto.getAllBrands();
+//	}
 
 	@ApiOperation(value = "Updates a Brand")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)

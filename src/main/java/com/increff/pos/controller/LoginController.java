@@ -36,7 +36,7 @@ public class LoginController {
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 	public ModelAndView login(HttpServletRequest req, LoginForm loginForm) throws ApiException {
 
-		UserPojo userPojo = userDto.checkAuth(loginForm);
+		UserPojo userPojo = userDto.getByEmail(loginForm.email);
 		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.password));
 
 		if (!authenticated) {

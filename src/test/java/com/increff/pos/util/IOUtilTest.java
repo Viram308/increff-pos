@@ -1,5 +1,6 @@
 package com.increff.pos.util;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -15,9 +16,9 @@ public class IOUtilTest extends AbstractUnitTest{
 		i.getClass();
 		// test for null stream
 		IOUtil.closeQuietly(null);
-		String fileClasspath = "/com/increff/employee/test.properties";
+		String fileClasspath = "log4j.properties";
 		// test for file stream
-		InputStream is = IOUtilTest.class.getResourceAsStream(fileClasspath);
+		InputStream is = new FileInputStream(fileClasspath);
 		IOUtil.closeQuietly(is);
 	}
 }

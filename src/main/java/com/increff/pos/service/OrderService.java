@@ -32,8 +32,8 @@ public class OrderService {
 
 	// CRUD operations for order
 
-	@Transactional(rollbackOn = ApiException.class)
-	public void add(OrderPojo o) throws ApiException {
+	@Transactional
+	public void add(OrderPojo o){
 		dao.insert(o);
 	}
 
