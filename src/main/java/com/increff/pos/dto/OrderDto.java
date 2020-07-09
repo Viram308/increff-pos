@@ -21,6 +21,7 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.InventoryService;
+import com.increff.pos.service.OrderItemService;
 import com.increff.pos.service.OrderService;
 import com.increff.pos.service.ProductService;
 import com.increff.pos.util.ConverterUtil;
@@ -30,6 +31,8 @@ public class OrderDto {
 	@Autowired
 	private OrderService orderService;
 	@Autowired
+	private OrderItemService orderItemService;
+	@Autowired
 	private ProductService productService;
 	@Autowired
 	private InventoryService inventoryService;
@@ -38,27 +41,22 @@ public class OrderDto {
 	@Autowired
 	private OrderItemDto orderItemDto;
 
-	public List<OrderItemForm> groupItemsByBarcode(OrderItemForm[] orderItemForms) {
-		return orderService.groupItemsByBarcode(orderItemForms);
-	}
-
 	@Transactional(rollbackOn = ApiException.class)
 	public List<BillData> createOrder(OrderItemForm[] orderItemForms) throws ApiException {
 		// Check entered inventory with available inventory
 		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
-		OrderPojo orderPojo = addOrder(orderItems);
+		OrderPojo orderPojo = addOrder();
 		// Convert input to required format
-		List<OrderItemPojo> list = getOrderItemObject(orderItems, orderPojo);
+		List<OrderItemPojo> list = orderService.getOrderItemObject(orderItems, orderPojo);
 		// Decrease inventory according to the entered quantity
-		updateInventory(list);
+		orderService.updateInventory(list);
 		// Add each order item
-		orderItemDto.add(list);
+		orderItemService.add(list);
 		// Convert OrderItemPojo to BillData
-		List<BillData> billItemList = getBillDataObject(list);
-		return billItemList;
+		return orderService.getBillDataObject(list);
 	}
 
-	public OrderPojo addOrder(List<OrderItemForm> orderItems) throws ApiException {
+	public OrderPojo addOrder() throws ApiException {
 //		orderService.checkInventory(orderItems);
 		OrderPojo orderPojo = new OrderPojo();
 		orderPojo.setDatetime(converterUtil.getDateTime());
@@ -76,21 +74,21 @@ public class OrderDto {
 		// Check entered inventory with available inventory
 		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
 		// update order date and time
-		OrderPojo orderPojo = updateOrder(id, orderItems);
+		OrderPojo orderPojo = updateOrder(id);
 		// Convert input to required format
-		List<OrderItemPojo> list = getOrderItemObject(orderItems, orderPojo);
+		List<OrderItemPojo> list = orderService.getOrderItemObject(orderItems, orderPojo);
 		// Decrease inventory according to the entered quantity
-		updateInventory(list);
+		orderService.updateInventory(list);
 		// Delete previous order items
-		orderItemDto.deleteByOrderId(id);
+		orderItemService.deleteByOrderId(id);
 		// Add each order item
-		orderItemDto.add(list);
+		orderItemService.add(list);
 		// Convert OrderItemPojo to BillData
-		return getBillDataObject(list);
+		return orderService.getBillDataObject(list);
 	}
 
-	public OrderPojo updateOrder(int id, List<OrderItemForm> orderItems) throws ApiException {
-//		orderService.checkInventory(orderItems);
+	public OrderPojo updateOrder(int id) throws ApiException {
+		// orderService.checkInventory(orderItems);
 		OrderPojo orderPojo = new OrderPojo();
 		orderPojo.setDatetime(converterUtil.getDateTime());
 		// Add order if inventory is available
@@ -107,19 +105,6 @@ public class OrderDto {
 			inventoryPojoFinal.setQuantity(orderItemData.quantity + inventoryPojo.getQuantity());
 			inventoryService.update(inventoryPojo.getId(), inventoryPojoFinal);
 		}
-	}
-
-	public List<OrderItemPojo> getOrderItemObject(List<OrderItemForm> orderItems, OrderPojo orderPojo)
-			throws ApiException {
-		return orderService.getOrderItemObject(orderItems, orderPojo);
-	}
-
-	public void updateInventory(List<OrderItemPojo> list) throws ApiException {
-		orderService.updateInventory(list);
-	}
-
-	public List<BillData> getBillDataObject(List<OrderItemPojo> list) throws ApiException {
-		return orderService.getBillDataObject(list);
 	}
 
 	public OrderData get(int id) throws ApiException {

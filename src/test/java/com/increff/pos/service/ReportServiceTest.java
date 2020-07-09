@@ -37,13 +37,16 @@ public class ReportServiceTest extends AbstractUnitTest {
 	private OrderItemService iService;
 
 	// test order id list with range(start date-end date)
-	@Test
+	@Test(expected = ApiException.class)
 	public void testGetOrderIdList() throws ParseException, ApiException {
 		String startdate = "01-02-2020";
 		String enddate = "23-03-2020";
 		List<OrderPojo> list = getOrderPojoList();
 		List<Integer> orderIds = service.getOrderIdList(list, startdate, enddate);
 		assertEquals(1, orderIds.size());
+		startdate = "01-02-2018";
+		enddate = "23-03-2018";
+		service.getOrderIdList(list, startdate, enddate);
 	}
 
 	// test order items with same product id
@@ -76,8 +79,8 @@ public class ReportServiceTest extends AbstractUnitTest {
 	}
 
 	// test created sales data category wise
-	@Test
-	public void testGroupSalesReportDataCategoryWise() {
+	@Test(expected = ApiException.class)
+	public void testGroupSalesReportDataCategoryWise() throws ApiException {
 		List<SalesReportData> list = getSalesData();
 		list = service.getSalesReportDataByBrandAndCategory(list, "", "shah");
 		// check list size after selecting category
@@ -95,6 +98,8 @@ public class ReportServiceTest extends AbstractUnitTest {
 		assertEquals(1, list.size());
 		assertEquals(quantity, list.get(0).quantity);
 		assertEquals(revenue, list.get(0).revenue, 0.01);
+		list = service.getSalesReportDataByBrandAndCategory(list, "", "abc");
+		service.groupSalesReportDataCategoryWise(list);
 	}
 
 	// test created inventory data

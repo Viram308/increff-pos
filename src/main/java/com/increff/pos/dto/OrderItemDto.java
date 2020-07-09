@@ -1,13 +1,11 @@
 package com.increff.pos.dto;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.increff.pos.model.OrderItemData;
-import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
@@ -23,14 +21,8 @@ public class OrderItemDto {
 	private ProductService productService;
 	@Autowired
 	private ConverterUtil converterUtil;
-
-	public void add(List<OrderItemPojo> list) {
-		orderItemService.add(list);
-	}
-
-	public void deleteByOrderId(int id) {
-		orderItemService.deleteByOrderId(id);
-	}
+	@Autowired
+	private ProductDto productDto;
 
 	public List<OrderItemData> get(int orderId) throws ApiException {
 		List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderId);
@@ -43,7 +35,7 @@ public class OrderItemDto {
 		productMasterPojo.setBarcode(orderItemData.barcode);
 		productMasterPojo.setName(orderItemData.name);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
-		List<Integer> productIds = getProductIdList(productMasterPojoList);
+		List<Integer> productIds = productDto.getProductIdList(productMasterPojoList);
 		List<OrderItemPojo> orderItemPojos = orderItemService.searchData(orderItemData, productIds);
 		return converterUtil.getOrderItemDataList(orderItemPojos);
 	}
@@ -61,23 +53,15 @@ public class OrderItemDto {
 //		orderItemService.update(id, p);
 //	}
 
-	public List<OrderItemData> getAll() {
-		List<OrderItemPojo> list = orderItemService.getAll();
-		return converterUtil.getOrderItemDataList(list);
-	}
+//	public List<OrderItemData> getAll() {
+//		List<OrderItemPojo> list = orderItemService.getAll();
+//		return converterUtil.getOrderItemDataList(list);
+//	}
 
-	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
-		List<Integer> productIdList = new ArrayList<Integer>();
-		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
-			productIdList.add(productMasterPojo.getId());
-		}
-		return productIdList;
-	}
-
-	public void checkEnteredQuantity(OrderItemForm f) throws ApiException {
-		if (f.quantity <= 0) {
-			throw new ApiException("Quantity can not be negative or zero !!");
-		}
-	}
+//	public void checkEnteredQuantity(OrderItemForm f) throws ApiException {
+//		if (f.quantity <= 0) {
+//			throw new ApiException("Quantity can not be negative or zero !!");
+//		}
+//	}
 
 }

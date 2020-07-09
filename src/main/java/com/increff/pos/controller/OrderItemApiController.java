@@ -31,11 +31,11 @@ public class OrderItemApiController {
 		return orderItemDto.get(id);
 	}
 
-	@ApiOperation(value = "Gets list of all Order Items")
-	@RequestMapping(value = "", method = RequestMethod.GET)
-	public List<OrderItemData> getAll() throws ApiException {
-		return orderItemDto.getAll();
-	}
+//	@ApiOperation(value = "Gets list of all Order Items")
+//	@RequestMapping(value = "", method = RequestMethod.GET)
+//	public List<OrderItemData> getAll() throws ApiException {
+//		return orderItemDto.getAll();
+//	}
 
 	@ApiOperation(value = "Search Order Items")
 	@RequestMapping(value = "/search", method = RequestMethod.POST)

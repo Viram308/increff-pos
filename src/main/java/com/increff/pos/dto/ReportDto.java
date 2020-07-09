@@ -1,7 +1,6 @@
 package com.increff.pos.dto;
 
 import java.text.ParseException;
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +41,10 @@ public class ReportDto {
 	private ProductService productService;
 	@Autowired
 	private ConverterUtil converterUtil;
+	@Autowired
+	private BrandDto brandDto;
+	@Autowired
+	private ProductDto productDto;
 
 	public List<OrderItemPojo> getOrderItemPojoList(SalesReportForm salesReportForm)
 			throws ParseException, ApiException {
@@ -49,19 +52,7 @@ public class ReportDto {
 		// Get list of order ids
 		List<Integer> orderIds = reportService.getOrderIdList(orderPojo, salesReportForm.startdate,
 				salesReportForm.enddate);
-		if (orderIds.size() == 0) {
-			throw new ApiException("There are no orders for given dates");
-		} else {
-			return orderItemService.getList(orderIds);
-		}
-	}
-
-	public List<OrderItemPojo> groupOrderItemPojoByProductId(List<OrderItemPojo> listOfOrderItemPojo) {
-		return reportService.groupOrderItemPojoByProductId(listOfOrderItemPojo);
-	}
-
-	public List<SalesReportData> convertToSalesData(List<OrderItemPojo> listOfOrderItemPojo) {
-		return converterUtil.convertToSalesData(listOfOrderItemPojo);
+		return orderItemService.getList(orderIds);
 	}
 
 	public List<SalesReportData> getSalesReportData(SalesReportForm salesReportForm)
@@ -69,20 +60,15 @@ public class ReportDto {
 		// Get list of order items by given order ids
 		List<OrderItemPojo> listOfOrderItemPojo = getOrderItemPojoList(salesReportForm);
 		// Group order item pojo by product id
-		listOfOrderItemPojo = groupOrderItemPojoByProductId(listOfOrderItemPojo);
+		listOfOrderItemPojo = reportService.groupOrderItemPojoByProductId(listOfOrderItemPojo);
 		// Converts OrderItemPojo to SalesReportData
-		List<SalesReportData> salesReportData = convertToSalesData(listOfOrderItemPojo);
+		List<SalesReportData> salesReportData = converterUtil.convertToSalesData(listOfOrderItemPojo);
 		// Remove sales report data according to brand and category
 
 		salesReportData = reportService.getSalesReportDataByBrandAndCategory(salesReportData, salesReportForm.brand,
 				salesReportForm.category);
 		// Group Sales Report Data category wise
-		salesReportData = reportService.groupSalesReportDataCategoryWise(salesReportData);
-		if (salesReportData.size() == 0) {
-			throw new ApiException("There are no sales for given data");
-		} else {
-			return salesReportData;
-		}
+		return reportService.groupSalesReportDataCategoryWise(salesReportData);
 	}
 
 	public List<BrandData> getBrandReportData() {
@@ -98,47 +84,25 @@ public class ReportDto {
 	}
 
 	public List<BrandData> searchBrandReport(BrandForm brandForm) throws ApiException {
-		checkSearchData(brandForm);
+		brandDto.checkSearchData(brandForm);
 		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(brandForm);
 		List<BrandMasterPojo> list = brandService.searchData(brandPojo);
 		return converterUtil.getBrandDataList(list);
 	}
 
 	public List<InventoryReportData> searchInventoryReport(BrandForm brandForm) throws ApiException {
-		checkSearchData(brandForm);
+		brandDto.checkSearchData(brandForm);
 		BrandMasterPojo brandMasterPojo = new BrandMasterPojo();
 		brandMasterPojo.setBrand(brandForm.brand);
 		brandMasterPojo.setCategory(brandForm.category);
 		List<BrandMasterPojo> brandMasterPojoList = brandService.searchData(brandMasterPojo);
-		List<Integer> brandIds = getBrandIdList(brandMasterPojoList);
+		List<Integer> brandIds = brandDto.getBrandIdList(brandMasterPojoList);
 		List<ProductMasterPojo> list = productService.searchData(brandIds);
-		List<Integer> productIds = getProductIdList(list);
+		List<Integer> productIds = productDto.getProductIdList(list);
 		List<InventoryPojo> inventoryPojoList = inventoryService.searchData(productIds);
 		List<InventoryReportData> list2 = converterUtil.convertToInventoryReportData(inventoryPojoList);
 		// Group list of InventoryReportData brand and category wise
 		return reportService.groupDataForInventoryReport(list2);
-	}
-
-	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
-		List<Integer> productIdList = new ArrayList<Integer>();
-		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
-			productIdList.add(productMasterPojo.getId());
-		}
-		return productIdList;
-	}
-
-	public List<Integer> getBrandIdList(List<BrandMasterPojo> brandMasterPojoList) {
-		List<Integer> brandIdList = new ArrayList<Integer>();
-		for (BrandMasterPojo brandMasterPojo : brandMasterPojoList) {
-			brandIdList.add(brandMasterPojo.getId());
-		}
-		return brandIdList;
-	}
-
-	public void checkSearchData(BrandForm b) throws ApiException {
-		if (b.brand.isBlank() && b.category.isBlank()) {
-			throw new ApiException("Please enter brand or category !!");
-		}
 	}
 
 }

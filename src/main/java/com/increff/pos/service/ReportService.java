@@ -19,7 +19,8 @@ import com.increff.pos.util.StringUtil;
 @Service
 public class ReportService {
 
-	public List<Integer> getOrderIdList(List<OrderPojo> o, String startdate, String enddate) throws ParseException {
+	public List<Integer> getOrderIdList(List<OrderPojo> o, String startdate, String enddate)
+			throws ParseException, ApiException {
 		List<Integer> orderIds = new ArrayList<Integer>();
 		SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
 		for (OrderPojo p : o) {
@@ -33,6 +34,9 @@ public class ReportService {
 				// Add id to array
 				orderIds.add(p.getId());
 			}
+		}
+		if (orderIds.size() == 0) {
+			throw new ApiException("There are no orders for given dates");
 		}
 		return orderIds;
 	}
@@ -93,7 +97,8 @@ public class ReportService {
 		return salesReportData;
 	}
 
-	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportData) {
+	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportData)
+			throws ApiException {
 		int i;
 		LinkedHashMap<String, SalesReportData> m = new LinkedHashMap<String, SalesReportData>();
 		for (i = 0; i < salesReportData.size(); i++) {
@@ -114,6 +119,9 @@ public class ReportService {
 		List<SalesReportData> salesDataList = new ArrayList<SalesReportData>(values);
 		for (i = 0; i < salesDataList.size(); i++) {
 			salesDataList.get(i).id = i + 1;
+		}
+		if (salesDataList.isEmpty()) {
+			throw new ApiException("There are no sales for given data");
 		}
 		return salesDataList;
 	}
