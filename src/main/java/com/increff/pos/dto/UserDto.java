@@ -1,6 +1,7 @@
 package com.increff.pos.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -24,10 +25,10 @@ public class UserDto {
 	@Autowired
 	private InfoData info;
 
-	public void addUser(UserForm form) throws ApiException {
+	public UserPojo addUser(UserForm form) throws ApiException {
+		checkData(form);
 		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
-		checkData(userPojo);
-		userService.add(userPojo);
+		return userService.add(userPojo);
 	}
 
 	public void deleteUser(int id) {
@@ -43,15 +44,15 @@ public class UserDto {
 		return userService.getByEmail(email);
 	}
 
-	public void updateUser(int id, UserForm form) throws ApiException {
+	public UserPojo updateUser(int id, UserForm form) throws ApiException {
+		checkData(form);
 		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
-		checkData(userPojo);
-		userService.update(id, userPojo);
+		return userService.update(id, userPojo);
 	}
 
 	public List<UserData> getAllUsers() {
 		List<UserPojo> list = userService.getAll();
-		return converterUtil.getUserDataList(list);
+		return list.stream().map(o -> converterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
 	}
 
 	public void checkInit(UserForm form) throws ApiException {
@@ -59,17 +60,17 @@ public class UserDto {
 		// check if already initialized
 		// check if already exists
 		if (list.size() > 0) {
-			info.message = "Application already initialized. Please use existing credentials";
+			info.setMessage("Application already initialized. Please use existing credentials");
 		} else {
 			// Initialize with admin role
-			form.role = "admin";
+			form.setRole("admin");
 			UserPojo p = converterUtil.convertUserFormtoUserPojo(form);
 			userService.add(p);
-			info.message = "Application initialized";
+			info.setMessage("Application initialized");
 		}
 	}
 
-	public void checkData(UserPojo u) throws ApiException {
+	public void checkData(UserForm u) throws ApiException {
 		if (u.getEmail().isBlank() || u.getPassword().isBlank() || u.getRole().isBlank()) {
 			throw new ApiException("Please enter email, password and role !!");
 		}

@@ -1,5 +1,14 @@
 package com.increff.pos.model;
 
 public class UserData extends UserForm {
-	public int id;
+	private int id;
+
+	public int getId() {
+		return id;
+	}
+
+	public void setId(int id) {
+		this.id = id;
+	}
+
 }

@@ -2,10 +2,9 @@ package com.increff.pos.service;
 
 import java.util.List;
 
-import javax.transaction.Transactional;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.increff.pos.dao.InventoryDao;
 import com.increff.pos.pojo.InventoryPojo;
@@ -20,49 +19,46 @@ public class InventoryService {
 	// CRUD operations for inventory
 
 	@Transactional
-	public void add(InventoryPojo inventoryPojo) {
+	public InventoryPojo add(InventoryPojo inventoryPojo) {
 		dao.insert(inventoryPojo);
+		return inventoryPojo;
 	}
 
-	@Transactional
-	public void delete(int id) {
-		dao.delete(InventoryPojo.class, id);
-	}
-
+	@Transactional(readOnly = true)
 	public List<InventoryPojo> searchData(List<Integer> productIds) {
 		return dao.searchData(productIds);
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
-	public InventoryPojo get(int id) throws ApiException {
+	@Transactional(readOnly = true)
+	public InventoryPojo get(int id) {
 		return dao.select(InventoryPojo.class, id);
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
+	@Transactional(readOnly = true)
 	public InventoryPojo getByProductId(ProductMasterPojo productMasterPojo) throws ApiException {
 		// Get inventory data by id
 		InventoryPojo i = dao.selectByProductId(productMasterPojo.getId());
 		if (i == null) {
 			throw new ApiException(
 					"Inventory for given product : " + productMasterPojo.getBarcode() + " dosen't exist");
-		} else {
-			return i;
 		}
+		return i;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<InventoryPojo> getAll() {
 		return dao.selectAll();
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
-	public void update(int id, InventoryPojo p) throws ApiException {
-		InventoryPojo b = getCheck(id);
-		b.setQuantity(p.getQuantity());
-		dao.update(b);
+	@Transactional(rollbackFor = ApiException.class)
+	public InventoryPojo update(int id, InventoryPojo p) throws ApiException {
+		InventoryPojo inventoryPojo = getCheck(id);
+		inventoryPojo.setQuantity(p.getQuantity());
+		dao.update(inventoryPojo);
+		return inventoryPojo;
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public InventoryPojo getCheck(int id) throws ApiException {
 		InventoryPojo p = dao.select(InventoryPojo.class, id);
 		if (p == null) {

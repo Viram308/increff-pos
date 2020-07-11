@@ -137,10 +137,10 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
 		ProductForm productForm = getProductForm("nestle", "dairy", "munch", 10.50);
-		productDto.checkData(productForm);
+		productDto.validateData(productForm);
 		// throws exception
 		productForm = getProductForm("nestle", "dairy", "   ", 0.0);
-		productDto.checkData(productForm);
+		productDto.validateData(productForm);
 	}
 
 	@Test(expected = ApiException.class)

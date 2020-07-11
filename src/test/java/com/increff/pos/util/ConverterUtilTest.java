@@ -54,9 +54,9 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	public void testConvertUserFormtoUserPojo() {
 		UserForm f = getUserForm();
 		UserPojo p = converterUtil.convertUserFormtoUserPojo(f);
-		assertEquals(f.email, p.getEmail());
-		assertEquals(f.password, p.getPassword());
-		assertEquals(f.role, p.getRole());
+		assertEquals(f.getEmail(), p.getEmail());
+		assertEquals(f.getPassword(), p.getPassword());
+		assertEquals(f.getRole(), p.getRole());
 	}
 
 	@Test
@@ -65,10 +65,10 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		int id = 1;
 		p.setId(id);
 		UserData d = converterUtil.convertUserPojotoUserData(p);
-		assertEquals(p.getEmail(), d.email);
-		assertEquals(p.getPassword(), d.password);
-		assertEquals(p.getRole(), d.role);
-		assertEquals(id, d.id);
+		assertEquals(p.getEmail(), d.getEmail());
+		assertEquals(p.getPassword(), d.getPassword());
+		assertEquals(p.getRole(), d.getRole());
+		assertEquals(id, d.getId());
 	}
 
 	@Test
@@ -235,7 +235,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	@Test
 	public void testConvertToSalesData() throws ApiException {
 		List<OrderItemPojo> list = getOrderItemPojoList();
-		List<SalesReportData> list2 = converterUtil.convertToSalesData(list);
+		List<SalesReportData> list2 = converterUtil.getSalesData(list);
 		int i;
 		double revenue = 0, selling = 0;
 		for (i = 0; i < list.size(); i++) {
@@ -289,14 +289,15 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	@Test
 	public void testConvertProductSearchFormtoProductMasterPojo() {
 		ProductSearchForm productSearchForm = new ProductSearchForm();
-		productSearchForm.name="munch";
-		productSearchForm.barcode=StringUtil.getAlphaNumericString();
-		ProductMasterPojo productMasterPojo=converterUtil.convertProductSearchFormtoProductMasterPojo(productSearchForm);
+		productSearchForm.name = "munch";
+		productSearchForm.barcode = StringUtil.getAlphaNumericString();
+		ProductMasterPojo productMasterPojo = converterUtil
+				.convertProductSearchFormtoProductMasterPojo(productSearchForm);
 		assertEquals(productSearchForm.name, productMasterPojo.getName());
 		assertEquals(productSearchForm.barcode, productMasterPojo.getBarcode());
-		
-		
+
 	}
+
 	// create data for tests
 	private ProductData getProductData() {
 		ProductData productData = new ProductData();
@@ -489,9 +490,9 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		String email = "shahviram308@gmail.com";
 		String password = "admin";
 		String role = "admin";
-		f.email = email;
-		f.password = password;
-		f.role = role;
+		f.setEmail(email);
+		f.setPassword(password);
+		f.setRole(role);
 		return f;
 	}
 }

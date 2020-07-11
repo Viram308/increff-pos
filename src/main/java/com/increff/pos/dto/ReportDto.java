@@ -2,6 +2,7 @@ package com.increff.pos.dto;
 
 import java.text.ParseException;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -41,10 +42,6 @@ public class ReportDto {
 	private ProductService productService;
 	@Autowired
 	private ConverterUtil converterUtil;
-	@Autowired
-	private BrandDto brandDto;
-	@Autowired
-	private ProductDto productDto;
 
 	public List<OrderItemPojo> getOrderItemPojoList(SalesReportForm salesReportForm)
 			throws ParseException, ApiException {
@@ -62,9 +59,11 @@ public class ReportDto {
 		// Group order item pojo by product id
 		listOfOrderItemPojo = reportService.groupOrderItemPojoByProductId(listOfOrderItemPojo);
 		// Converts OrderItemPojo to SalesReportData
-		List<SalesReportData> salesReportData = converterUtil.convertToSalesData(listOfOrderItemPojo);
+		List<SalesReportData> salesReportData = listOfOrderItemPojo.stream()
+				.map(o -> converterUtil.convertToSalesReportData(o,
+						brandService.get(productService.get(o.getProductId()).getBrand_category_id())))
+				.collect(Collectors.toList());
 		// Remove sales report data according to brand and category
-
 		salesReportData = reportService.getSalesReportDataByBrandAndCategory(salesReportData, salesReportForm.brand,
 				salesReportForm.category);
 		// Group Sales Report Data category wise
@@ -73,34 +72,35 @@ public class ReportDto {
 
 	public List<BrandData> getBrandReportData() {
 		List<BrandMasterPojo> list = brandService.getAll();
-		return converterUtil.convertToBrandData(list);
+		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
 	public List<InventoryReportData> getInventoryReportData() {
 		List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
-		List<InventoryReportData> list2 = converterUtil.convertToInventoryReportData(inventoryPojoList);
+		List<InventoryReportData> list2 = inventoryPojoList.stream()
+				.map(o -> converterUtil.convertToInventoryReportData(o,
+						brandService.get(productService.get(o.getProductid()).getBrand_category_id())))
+				.collect(Collectors.toList());
 		// Group list of InventoryReportData brand and category wise
 		return reportService.groupDataForInventoryReport(list2);
 	}
 
 	public List<BrandData> searchBrandReport(BrandForm brandForm) throws ApiException {
-		brandDto.checkSearchData(brandForm);
-		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(brandForm);
-		List<BrandMasterPojo> list = brandService.searchData(brandPojo);
-		return converterUtil.getBrandDataList(list);
+		List<BrandMasterPojo> list = brandService.searchBrandData(brandForm);
+		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
 	public List<InventoryReportData> searchInventoryReport(BrandForm brandForm) throws ApiException {
-		brandDto.checkSearchData(brandForm);
-		BrandMasterPojo brandMasterPojo = new BrandMasterPojo();
-		brandMasterPojo.setBrand(brandForm.brand);
-		brandMasterPojo.setCategory(brandForm.category);
-		List<BrandMasterPojo> brandMasterPojoList = brandService.searchData(brandMasterPojo);
-		List<Integer> brandIds = brandDto.getBrandIdList(brandMasterPojoList);
-		List<ProductMasterPojo> list = productService.searchData(brandIds);
-		List<Integer> productIds = productDto.getProductIdList(list);
+		List<BrandMasterPojo> brandMasterPojoList = brandService.searchBrandData(brandForm);
+		List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		List<ProductMasterPojo> list = productService.getAll();
+		list = list.stream().filter(o -> (brandIds.contains(o.getBrand_category_id()))).collect(Collectors.toList());
+		List<Integer> productIds = list.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<InventoryPojo> inventoryPojoList = inventoryService.searchData(productIds);
-		List<InventoryReportData> list2 = converterUtil.convertToInventoryReportData(inventoryPojoList);
+		List<InventoryReportData> list2 = inventoryPojoList.stream()
+				.map(o -> converterUtil.convertToInventoryReportData(o,
+						brandService.get(productService.get(o.getProductid()).getBrand_category_id())))
+				.collect(Collectors.toList());
 		// Group list of InventoryReportData brand and category wise
 		return reportService.groupDataForInventoryReport(list2);
 	}

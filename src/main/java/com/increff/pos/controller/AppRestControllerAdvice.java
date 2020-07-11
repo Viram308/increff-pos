@@ -16,7 +16,7 @@ public class AppRestControllerAdvice {
 	@ResponseStatus(HttpStatus.BAD_REQUEST)
 	public MessageData handle(ApiException e) {
 		MessageData data = new MessageData();
-		data.message = e.getMessage();
+		data.setMessage(e.getMessage());
 		return data;
 	}
 

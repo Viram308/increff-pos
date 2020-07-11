@@ -120,10 +120,10 @@ public class BrandServiceTest extends AbstractUnitTest {
 		BrandMasterPojo brandMasterPojo=new BrandMasterPojo();
 		brandMasterPojo.setBrand("   Vir        ");
 		brandMasterPojo.setCategory("");
-		List<BrandMasterPojo> list=service.searchData(brandMasterPojo);
+		List<BrandMasterPojo> list=service.searchBrandData(brandMasterPojo);
 		assertEquals(2, list.size());
 		brandMasterPojo.setCategory("p");
-		list=service.searchData(brandMasterPojo);
+		list=service.searchBrandData(brandMasterPojo);
 		assertEquals(1, list.size());
 	}
 	

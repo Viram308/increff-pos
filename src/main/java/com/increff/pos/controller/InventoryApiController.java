@@ -13,6 +13,7 @@ import com.increff.pos.dto.InventoryDto;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InventorySearchForm;
+import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -30,8 +31,8 @@ public class InventoryApiController {
 
 	@ApiOperation(value = "Adds Inventory")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public void add(@RequestBody InventoryForm form) throws ApiException {
-		inventoryDto.addInventory(form);
+	public InventoryPojo add(@RequestBody InventoryForm form) throws ApiException {
+		return inventoryDto.addInventory(form);
 	}
 
 	@ApiOperation(value = "Search a Product")
@@ -54,8 +55,8 @@ public class InventoryApiController {
 
 	@ApiOperation(value = "Updates an Inventory")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException {
-		inventoryDto.updateInventory(id, form);
+	public InventoryPojo update(@PathVariable int id, @RequestBody InventoryForm form) throws ApiException {
+		return inventoryDto.updateInventory(id, form);
 	}
 
 }

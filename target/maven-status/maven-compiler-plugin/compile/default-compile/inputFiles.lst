@@ -47,7 +47,6 @@
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dao/BrandDao.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dao/AbstractDao.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dto/OrderItemDto.java
-/home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/LoginForm.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/InventorySearchForm.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/pojo/InventoryPojo.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dto/AboutAppDto.java

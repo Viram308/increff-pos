@@ -1,11 +1,13 @@
 package com.increff.pos.dto;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.increff.pos.model.OrderItemData;
+import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
@@ -21,47 +23,32 @@ public class OrderItemDto {
 	private ProductService productService;
 	@Autowired
 	private ConverterUtil converterUtil;
-	@Autowired
-	private ProductDto productDto;
 
 	public List<OrderItemData> get(int orderId) throws ApiException {
 		List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderId);
-		return converterUtil.getOrderItemDataList(orderItemPojoList);
+		return orderItemPojoList.stream()
+				.map(o -> converterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+				.collect(Collectors.toList());
 	}
 
 	public List<OrderItemData> searchOrderItem(OrderItemData orderItemData) throws ApiException {
-		checkSearchData(orderItemData);
-		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
-		productMasterPojo.setBarcode(orderItemData.barcode);
-		productMasterPojo.setName(orderItemData.name);
-		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
-		List<Integer> productIds = productDto.getProductIdList(productMasterPojoList);
-		List<OrderItemPojo> orderItemPojos = orderItemService.searchData(orderItemData, productIds);
-		return converterUtil.getOrderItemDataList(orderItemPojos);
-	}
-
-	public void checkSearchData(OrderItemData orderItemData) throws ApiException {
-		if (orderItemData.barcode.isBlank() && orderItemData.name.isBlank() && orderItemData.orderId <= 0) {
-			throw new ApiException("Please enter anyone(barcode,name,orderId) !!");
+		ProductSearchForm productSearchForm = converterUtil.convertOrderItemDatatoProductSearchForm(orderItemData);
+		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
+		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		List<OrderItemPojo> orderItemPojos = orderItemService.getAll();
+		if (orderItemData.orderId == 0) {
+			orderItemPojos = orderItemPojos.stream().filter(o -> (productIds.contains(o.getProductId())))
+					.collect(Collectors.toList());
+			return orderItemPojos.stream().map(
+					o -> converterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+					.collect(Collectors.toList());
 		}
+		orderItemPojos = orderItemPojos.stream()
+				.filter(o -> (productIds.contains(o.getProductId()) && o.getOrderId() == orderItemData.orderId))
+				.collect(Collectors.toList());
+		return orderItemPojos.stream()
+				.map(o -> converterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+				.collect(Collectors.toList());
 	}
-
-//	public void update(int id, OrderItemForm form) throws ApiException {
-//		checkEnteredQuantity(form);
-//		orderItemService.checkInventory(id, form);
-//		OrderItemPojo p = converterUtil.convertOrderItemFormtoOrderItemPojo(form);
-//		orderItemService.update(id, p);
-//	}
-
-//	public List<OrderItemData> getAll() {
-//		List<OrderItemPojo> list = orderItemService.getAll();
-//		return converterUtil.getOrderItemDataList(list);
-//	}
-
-//	public void checkEnteredQuantity(OrderItemForm f) throws ApiException {
-//		if (f.quantity <= 0) {
-//			throw new ApiException("Quantity can not be negative or zero !!");
-//		}
-//	}
 
 }

@@ -91,10 +91,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 		inventoryPojo.setQuantity(20);
 		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
 		productMasterPojo.setBarcode(StringUtil.getAlphaNumericString());
-		inventoryDto.checkData(inventoryPojo, productMasterPojo);
+		inventoryDto.validateData(inventoryPojo, productMasterPojo);
 		inventoryPojo.setQuantity(-5);
 		// throws exception
-		inventoryDto.checkData(inventoryPojo, productMasterPojo);
+		inventoryDto.validateData(inventoryPojo, productMasterPojo);
 	}
 
 	@Test(expected = ApiException.class)

@@ -16,13 +16,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.InfoData;
-import com.increff.pos.model.LoginForm;
+import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.util.SecurityUtil;
 
+import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 
+@Api
 @Controller
 @RequestMapping(value = "/session")
 public class LoginController {
@@ -34,13 +36,13 @@ public class LoginController {
 
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ModelAndView login(HttpServletRequest req, LoginForm loginForm) throws ApiException {
+	public ModelAndView login(HttpServletRequest req, UserForm userForm) throws ApiException {
 
-		UserPojo userPojo = userDto.getByEmail(loginForm.email);
-		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), loginForm.password));
+		UserPojo userPojo = userDto.getByEmail(userForm.getEmail());
+		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), userForm.getPassword()));
 
 		if (!authenticated) {
-			info.message="Invalid username or password";
+			info.setMessage("Invalid username or password");
 			return new ModelAndView("redirect:/site/login");
 		}
 

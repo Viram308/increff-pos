@@ -3,14 +3,11 @@ package com.increff.pos.service;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.LinkedHashMap;
 import java.util.List;
-
-import javax.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.increff.pos.dao.OrderDao;
 import com.increff.pos.model.BillData;
@@ -33,53 +30,27 @@ public class OrderService {
 	// CRUD operations for order
 
 	@Transactional
-	public void add(OrderPojo o){
+	public void add(OrderPojo o) {
 		dao.insert(o);
 	}
 
-	@Transactional
-	public void delete(int id) {
-		dao.delete(OrderPojo.class, id);
-	}
-
-	@Transactional(rollbackOn = ApiException.class)
-	public OrderPojo get(int id) throws ApiException {
+	@Transactional(readOnly = true)
+	public OrderPojo get(int id) {
 		return dao.select(OrderPojo.class, id);
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public List<OrderPojo> getAll() {
 		return dao.selectAll();
 	}
 
-	@Transactional
+	@Transactional(readOnly = true)
 	public OrderPojo getCheck(int id) throws ApiException {
 		OrderPojo p = dao.select(OrderPojo.class, id);
 		if (p == null) {
 			throw new ApiException("Order not exist for id : " + id);
 		}
 		return p;
-	}
-
-	public List<OrderItemForm> groupItemsByBarcode(OrderItemForm[] orderItemForms) {
-		LinkedHashMap<String, OrderItemForm> m = new LinkedHashMap<String, OrderItemForm>();
-		int i;
-		for (i = 0; i < orderItemForms.length; i++) {
-			// check key already exists
-			if (m.containsKey(orderItemForms[i].barcode)) {
-				// update existing one
-				OrderItemForm o = m.get(orderItemForms[i].barcode);
-				o.quantity = o.quantity + orderItemForms[i].quantity;
-				m.put(orderItemForms[i].barcode, o);
-			} else {
-				// create new one
-				m.put(orderItemForms[i].barcode, orderItemForms[i]);
-			}
-		}
-		Collection<OrderItemForm> values = m.values();
-		// convert hashmap to list
-		List<OrderItemForm> orderItemList = new ArrayList<OrderItemForm>(values);
-		return orderItemList;
 	}
 
 	public void checkInventory(List<OrderItemForm> orderItems) throws ApiException {
@@ -91,30 +62,10 @@ public class OrderService {
 			// InventoryPojo for available quantity
 			InventoryPojo ip = inventoryService.getByProductId(p);
 			// Check quantity
-			if (enteredQuantity == ip.getQuantity()) {
-				throw new ApiException("Available Inventory for Barcode " + i.barcode
-						+ " will be 0 !! Please enter lesser quantity !");
-			}
 			if (enteredQuantity > ip.getQuantity()) {
 				throw new ApiException("Available Inventory for Barcode " + i.barcode + " is : " + ip.getQuantity());
 			}
 		}
-	}
-
-	public List<OrderItemPojo> getOrderItemObject(List<OrderItemForm> orderItemList, OrderPojo op) throws ApiException {
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		int orderId = op.getId();
-		// Convert OrderItemForm to OrderItemPojo
-		for (OrderItemForm o : orderItemList) {
-			ProductMasterPojo productMasterPojo = productService.getByBarcode(o.barcode);
-			OrderItemPojo item = new OrderItemPojo();
-			item.setOrderId(orderId);
-			item.setProductId(productMasterPojo.getId());
-			item.setQuantity(o.quantity);
-			item.setSellingPrice(o.sellingPrice);
-			list.add(item);
-		}
-		return list;
 	}
 
 	public void updateInventory(List<OrderItemPojo> list) throws ApiException {
@@ -164,7 +115,7 @@ public class OrderService {
 		return orderList;
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
+	@Transactional(rollbackFor = ApiException.class)
 	public void update(int id, OrderPojo orderPojo) throws ApiException {
 		OrderPojo orderPojoFinal = getCheck(id);
 		orderPojoFinal.setDatetime(orderPojo.getDatetime());

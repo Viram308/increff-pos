@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.UserData;
 import com.increff.pos.model.UserForm;
+import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -28,8 +29,8 @@ public class AdminApiController {
 
 	@ApiOperation(value = "Adds a user")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public void addUser(@RequestBody UserForm form) throws ApiException {
-		userDto.addUser(form);
+	public UserPojo addUser(@RequestBody UserForm form) throws ApiException {
+		return userDto.addUser(form);
 	}
 
 	@ApiOperation(value = "Deletes a user")
@@ -46,8 +47,8 @@ public class AdminApiController {
 
 	@ApiOperation(value = "Updates a user")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void updateUser(@PathVariable int id, @RequestBody UserForm form) throws ApiException {
-		userDto.updateUser(id, form);
+	public UserPojo updateUser(@PathVariable int id, @RequestBody UserForm form) throws ApiException {
+		return userDto.updateUser(id, form);
 	}
 
 	@ApiOperation(value = "Gets list of all users")

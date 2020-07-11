@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
-import javax.transaction.Transactional;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
 
@@ -38,8 +37,6 @@ public class OrderApiController {
 	private OrderDto orderDto;
 
 	// CRUD operations for customer order
-
-	@Transactional(rollbackOn = ApiException.class)
 	@ApiOperation(value = "Adds Order")
 	@RequestMapping(value = "", method = RequestMethod.POST)
 	public void add(@RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)
@@ -89,7 +86,6 @@ public class OrderApiController {
 		return orderDto.getAll();
 	}
 
-	@Transactional(rollbackOn = ApiException.class)
 	@ApiOperation(value = "Update Order")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public void update(@PathVariable int id, @RequestBody OrderItemForm[] orderItemForms, HttpServletResponse response)

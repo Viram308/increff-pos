@@ -1,13 +1,13 @@
 package com.increff.pos.dto;
 
-import java.util.ArrayList;
 import java.util.List;
-
-import javax.transaction.Transactional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductDetails;
 import com.increff.pos.model.ProductForm;
@@ -36,30 +36,32 @@ public class ProductDto {
 	@Autowired
 	private BrandDto brandDto;
 
-	@Transactional(rollbackOn = ApiException.class)
-	public void add(ProductForm form) throws ApiException {
-		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(form.brand, form.category);
-		checkData(form);
+	@Transactional(rollbackFor = ApiException.class)
+	public ProductMasterPojo add(ProductForm form) throws ApiException {
+		validateData(form);
+		BrandForm brandForm = converterUtil.convertProductFormtoBrandForm(form);
+		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(brandForm);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductFormtoProductMasterPojo(form,
 				brandMasterPojo);
 
-		productService.add(productMasterPojo, brandMasterPojo);
+		ProductMasterPojo productMasterPojo2=productService.add(productMasterPojo, brandMasterPojo);
+		// Add product with 0 inventory
 		InventoryPojo inventoryPojo = new InventoryPojo();
 		inventoryPojo.setProductid(productMasterPojo.getId());
 		inventoryPojo.setQuantity(0);
 		inventoryService.add(inventoryPojo);
+		return productMasterPojo2;
 	}
 
 	public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
-		checkSearchData(form);
-		BrandMasterPojo brandMasterPojo = new BrandMasterPojo();
-		brandMasterPojo.setBrand(form.brand);
-		brandMasterPojo.setCategory(form.category);
-		List<BrandMasterPojo> brandMasterPojoList = brandService.searchData(brandMasterPojo);
-		List<Integer> brandIds = brandDto.getBrandIdList(brandMasterPojoList);
-		ProductMasterPojo productMasterPojo = converterUtil.convertProductSearchFormtoProductMasterPojo(form);
-		List<ProductMasterPojo> list = productService.searchData(productMasterPojo, brandIds);
-		return converterUtil.getProductDataList(list);
+		BrandForm brandForm = converterUtil.convertProductSearchFormtoBrandForm(form);
+		List<BrandMasterPojo> brandMasterPojoList = brandService.searchBrandData(brandForm);
+		List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		List<ProductMasterPojo> list = productService.searchData(form).stream()
+				.filter(o -> (brandIds.contains(o.getBrand_category_id()))).collect(Collectors.toList());
+		return list.stream().map(
+				o -> converterUtil.convertProductMasterPojotoProductData(o, brandService.get(o.getBrand_category_id())))
+				.collect(Collectors.toList());
 	}
 
 	public ProductData get(int id) throws ApiException {
@@ -79,35 +81,23 @@ public class ProductDto {
 
 	public List<ProductData> getAll() {
 		List<ProductMasterPojo> list = productService.getAll();
-		return converterUtil.getProductDataList(list);
+		return list.stream().map(
+				o -> converterUtil.convertProductMasterPojotoProductData(o, brandService.get(o.getBrand_category_id())))
+				.collect(Collectors.toList());
 	}
 
-	public void update(int id, ProductForm form) throws ApiException {
-		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(form.brand, form.category);
-		checkData(form);
+	public ProductMasterPojo update(int id, ProductForm form) throws ApiException {
+		validateData(form);
+		BrandForm brandForm = converterUtil.convertProductFormtoBrandForm(form);
+		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(brandForm);
 		ProductMasterPojo productMasterPojo = converterUtil.convertProductFormtoProductMasterPojoUpdate(form,
 				brandMasterPojo);
-		productService.update(id, productMasterPojo, brandMasterPojo);
+		return productService.update(id, productMasterPojo, brandMasterPojo);
 	}
 
-	public List<Integer> getProductIdList(List<ProductMasterPojo> productMasterPojoList) {
-		List<Integer> productIdList = new ArrayList<Integer>();
-		for (ProductMasterPojo productMasterPojo : productMasterPojoList) {
-			productIdList.add(productMasterPojo.getId());
-		}
-		return productIdList;
-	}
-	
-	public void checkData(ProductForm b) throws ApiException {
+	public void validateData(ProductForm b) throws ApiException {
 		if (b.name.isBlank() || b.mrp <= 0) {
 			throw new ApiException("Please enter name, mrp(positive) !!");
-		}
-	}
-
-	public void checkSearchData(ProductSearchForm productSearchForm) throws ApiException {
-		if (productSearchForm.brand.isBlank() && productSearchForm.category.isBlank()
-				&& productSearchForm.name.isBlank() && productSearchForm.barcode.isBlank()) {
-			throw new ApiException("Please enter atleast one (brand,category,name,barcode) !!");
 		}
 	}
 

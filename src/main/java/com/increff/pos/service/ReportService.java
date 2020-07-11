@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
@@ -42,18 +43,17 @@ public class ReportService {
 	}
 
 	public List<OrderItemPojo> groupOrderItemPojoByProductId(List<OrderItemPojo> listOfOrderItemPojo) {
-		int i;
 		LinkedHashMap<Integer, OrderItemPojo> m = new LinkedHashMap<Integer, OrderItemPojo>();
-		for (i = 0; i < listOfOrderItemPojo.size(); i++) {
+		for (OrderItemPojo orderItemPojo : listOfOrderItemPojo) {
 			// check key already exists
-			if (m.containsKey(listOfOrderItemPojo.get(i).getProductId())) {
+			if (m.containsKey(orderItemPojo.getProductId())) {
 				// update existing one
-				OrderItemPojo o = m.get(listOfOrderItemPojo.get(i).getProductId());
-				o.setQuantity(o.getQuantity() + listOfOrderItemPojo.get(i).getQuantity());
-				m.put(listOfOrderItemPojo.get(i).getProductId(), o);
+				OrderItemPojo o = m.get(orderItemPojo.getProductId());
+				o.setQuantity(o.getQuantity() + orderItemPojo.getQuantity());
+				m.put(orderItemPojo.getProductId(), o);
 			} else {
 				// create new one
-				m.put(listOfOrderItemPojo.get(i).getProductId(), listOfOrderItemPojo.get(i));
+				m.put(orderItemPojo.getProductId(), orderItemPojo);
 			}
 		}
 		Collection<OrderItemPojo> values = m.values();
@@ -64,62 +64,46 @@ public class ReportService {
 
 	public List<SalesReportData> getSalesReportDataByBrandAndCategory(List<SalesReportData> salesReportData,
 			String brand, String category) {
-		int i;
 		brand = StringUtil.toLowerCase(brand);
 		category = StringUtil.toLowerCase(category);
 		if (brand.isBlank() && category.isBlank()) {
 			// do nothing
+			return salesReportData;
 		} else if ((!brand.isBlank()) && category.isBlank()) {
 			// Select SalesReportData brand wise
-			for (i = 0; i < salesReportData.size(); i++) {
-				if (!salesReportData.get(i).brand.equals(brand)) {
-					salesReportData.remove(i);
-					i--;
-				}
-			}
+			String finalBrand = brand;
+			return salesReportData.stream().filter(o -> o.brand.equals(finalBrand)).collect(Collectors.toList());
 		} else if (brand.isBlank() && (!category.isBlank())) {
 			// Select SalesReportData category wise
-			for (i = 0; i < salesReportData.size(); i++) {
-				if (!salesReportData.get(i).category.equals(category)) {
-					salesReportData.remove(i);
-					i--;
-				}
-			}
-		} else if ((!(brand.isBlank())) && (!(category.isBlank()))) {
-			// Select SalesReportData brand and category wise
-			for (i = 0; i < salesReportData.size(); i++) {
-				if (!salesReportData.get(i).brand.equals(brand) || !salesReportData.get(i).category.equals(category)) {
-					salesReportData.remove(i);
-					i--;
-				}
-			}
+			String finalCategory = category;
+			return salesReportData.stream().filter(o -> o.category.equals(finalCategory)).collect(Collectors.toList());
 		}
-		return salesReportData;
+		// Select SalesReportData brand and category wise
+		String finalBrand = brand;
+		String finalCategory = category;
+		return salesReportData.stream().filter(o -> (o.category.equals(finalCategory) && o.brand.equals(finalBrand)))
+				.collect(Collectors.toList());
 	}
 
-	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportData)
+	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportDatas)
 			throws ApiException {
-		int i;
 		LinkedHashMap<String, SalesReportData> m = new LinkedHashMap<String, SalesReportData>();
-		for (i = 0; i < salesReportData.size(); i++) {
+		for (SalesReportData salesReportData : salesReportDatas) {
 			// check key already exists
-			if (m.containsKey(salesReportData.get(i).category)) {
+			if (m.containsKey(salesReportData.category)) {
 				// update existing one
-				SalesReportData salesReportDataExisting = m.get(salesReportData.get(i).category);
-				salesReportDataExisting.quantity = salesReportDataExisting.quantity + salesReportData.get(i).quantity;
-				salesReportDataExisting.revenue = salesReportDataExisting.revenue + salesReportData.get(i).revenue;
-				m.put(salesReportData.get(i).category, salesReportDataExisting);
+				SalesReportData salesReportDataExisting = m.get(salesReportData.category);
+				salesReportDataExisting.quantity = salesReportDataExisting.quantity + salesReportData.quantity;
+				salesReportDataExisting.revenue = salesReportDataExisting.revenue + salesReportData.revenue;
+				m.put(salesReportData.category, salesReportDataExisting);
 			} else {
 				// create new one
-				m.put(salesReportData.get(i).category, salesReportData.get(i));
+				m.put(salesReportData.category, salesReportData);
 			}
 		}
 		Collection<SalesReportData> values = m.values();
 		// convert hashmap to list
 		List<SalesReportData> salesDataList = new ArrayList<SalesReportData>(values);
-		for (i = 0; i < salesDataList.size(); i++) {
-			salesDataList.get(i).id = i + 1;
-		}
 		if (salesDataList.isEmpty()) {
 			throw new ApiException("There are no sales for given data");
 		}
@@ -127,27 +111,24 @@ public class ReportService {
 	}
 
 	public List<InventoryReportData> groupDataForInventoryReport(List<InventoryReportData> list) {
-		int i;
 		LinkedHashMap<List<String>, InventoryReportData> map = new LinkedHashMap<List<String>, InventoryReportData>();
-		for (i = 0; i < list.size(); i++) {
-			List<String> key = new ArrayList<String>(Arrays.asList(list.get(i).brand, list.get(i).category));
+		for (InventoryReportData inventoryReportData : list) {
+			List<String> key = new ArrayList<String>(
+					Arrays.asList(inventoryReportData.brand, inventoryReportData.category));
 			// check key already exists
 			if (map.containsKey(key)) {
 				// update existing one
 				InventoryReportData in = map.get(key);
-				in.quantity = in.quantity + list.get(i).quantity;
+				in.quantity = in.quantity + inventoryReportData.quantity;
 				map.put(key, in);
 			} else {
 				// create new one
-				map.put(key, list.get(i));
+				map.put(key, inventoryReportData);
 			}
 		}
 		Collection<InventoryReportData> values = map.values();
 		// convert hashmap to list
 		List<InventoryReportData> inventoryReportDataList = new ArrayList<InventoryReportData>(values);
-		for (i = 0; i < inventoryReportDataList.size(); i++) {
-			inventoryReportDataList.get(i).id = i + 1;
-		}
 		return inventoryReportDataList;
 	}
 

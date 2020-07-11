@@ -38,7 +38,7 @@ public class BrandDtoTest extends AbstractUnitTest {
 		BrandForm brandForm2 = getBrandForm("britania", "dairy");
 		brandDto.addBrand(brandForm2);
 		BrandForm brandForm3 = getBrandForm("       nest     ", "");
-		List<BrandData> brandDatas = brandDto.searchBrand(brandForm3);
+		List<BrandData> brandDatas = brandDto.searchBrandData(brandForm3);
 		assertEquals(1, brandDatas.size());
 	}
 
@@ -77,10 +77,10 @@ public class BrandDtoTest extends AbstractUnitTest {
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
 		BrandForm brandForm1 = getBrandForm("     nestLE        ", "DairY ");
-		brandDto.checkData(brandForm1);
+		brandDto.validateData(brandForm1);
 		// throw exception
 		BrandForm brandForm2 = getBrandForm("    ", "");
-		brandDto.checkData(brandForm2);
+		brandDto.validateData(brandForm2);
 	}
 
 	@Test(expected = ApiException.class)

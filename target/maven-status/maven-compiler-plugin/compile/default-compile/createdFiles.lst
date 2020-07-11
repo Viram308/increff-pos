@@ -63,7 +63,6 @@ com/increff/pos/model/AboutAppData.class
 com/increff/pos/model/InventoryForm.class
 com/increff/pos/controller/InitApiController.class
 com/increff/pos/dao/BrandDao.class
-com/increff/pos/model/LoginForm.class
 com/increff/pos/service/AboutAppService.class
 com/increff/pos/controller/ProductApiController.class
 com/increff/pos/dao/AbstractDao.class

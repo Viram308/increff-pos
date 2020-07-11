@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.increff.pos.dto.BrandDto;
 import com.increff.pos.model.BrandData;
 import com.increff.pos.model.BrandForm;
+import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -28,33 +29,32 @@ public class BrandApiController {
 
 	@ApiOperation(value = "Adds a Brand")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public void add(@RequestBody BrandForm form) throws ApiException {
-		brandDto.addBrand(form);
+	public BrandMasterPojo add(@RequestBody BrandForm form) throws ApiException {
+		return brandDto.addBrand(form);
 	}
 
 	@ApiOperation(value = "Search a Brand")
 	@RequestMapping(value = "/search", method = RequestMethod.POST)
 	public List<BrandData> search(@RequestBody BrandForm form) throws ApiException {
-		return brandDto.searchBrand(form);
+		return brandDto.searchBrandData(form);
 	}
-	
-	
+
 	@ApiOperation(value = "Gets a Brand")
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	public BrandData get(@PathVariable int id) throws ApiException {
 		return brandDto.getBrandData(id);
 	}
 
-//	@ApiOperation(value = "Gets list of all Brands")
-//	@RequestMapping(value = "", method = RequestMethod.GET)
-//	public List<BrandData> getAll() {
-//		return brandDto.getAllBrands();
-//	}
+	@ApiOperation(value = "Gets list of all Brands")
+	@RequestMapping(value = "", method = RequestMethod.GET)
+	public List<BrandData> getAll() {
+		return brandDto.getAllBrands();
+	}
 
 	@ApiOperation(value = "Updates a Brand")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException {
-		brandDto.updateBrand(id, form);
+	public BrandMasterPojo update(@PathVariable int id, @RequestBody BrandForm form) throws ApiException {
+		return brandDto.updateBrand(id, form);
 	}
 
 }

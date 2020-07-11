@@ -65,8 +65,8 @@ public class UserServiceTest extends AbstractUnitTest {
 		UserPojo u = getUserPojo();
 		UserService.normalize(u);
 		// test normalization
+		assertEquals("shahviram308@gmail.com", u.getEmail());
 		assertEquals("admin", u.getRole());
-		assertEquals("admin", u.getPassword());
 	}
 
 	@Test(expected = ApiException.class)

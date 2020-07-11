@@ -1,8 +1,7 @@
 package com.increff.pos.dto;
 
 import java.util.List;
-
-import javax.transaction.Transactional;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -10,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InventorySearchForm;
+import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
@@ -26,26 +26,23 @@ public class InventoryDto {
 	private InventoryService inventoryService;
 	@Autowired
 	private ConverterUtil converterUtil;
-	@Autowired
-	private ProductDto productDto;
 
-	@Transactional
-	public void addInventory(InventoryForm form) throws ApiException {
+	public InventoryPojo addInventory(InventoryForm form) throws ApiException {
+		validateData(form);
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
 		InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
 		inventoryPojo.setQuantity(form.quantity + inventoryPojo.getQuantity());
-		inventoryService.update(inventoryPojo.getId(), inventoryPojo);
+		return inventoryService.update(inventoryPojo.getId(), inventoryPojo);
 	}
 
 	public List<InventoryData> searchInventory(InventorySearchForm form) throws ApiException {
-		checkSearchData(form);
-		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
-		productMasterPojo.setBarcode(form.barcode);
-		productMasterPojo.setName(form.name);
-		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productMasterPojo);
-		List<Integer> productIds = productDto.getProductIdList(productMasterPojoList);
+		ProductSearchForm productSearchForm = converterUtil.convertInventorySearchFormtoProductSearchForm(form);
+		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
+		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<InventoryPojo> list = inventoryService.searchData(productIds);
-		return converterUtil.getInventoryDataList(list);
+		return list.stream()
+				.map(o -> converterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductid())))
+				.collect(Collectors.toList());
 	}
 
 	public InventoryData getInventoryData(int id) throws ApiException {
@@ -54,28 +51,23 @@ public class InventoryDto {
 		return converterUtil.convertInventoryPojotoInventoryData(inventoryPojo, productMasterPojo);
 	}
 
-	public void updateInventory(int id, InventoryForm form) throws ApiException {
+	public InventoryPojo updateInventory(int id, InventoryForm form) throws ApiException {
+		validateData(form);
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
 		InventoryPojo inventoryPojo = converterUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
-		checkData(inventoryPojo, productMasterPojo);
-		inventoryService.update(id, inventoryPojo);
+		return inventoryService.update(id, inventoryPojo);
 	}
 
 	public List<InventoryData> getAllInventory() {
 		List<InventoryPojo> list = inventoryService.getAll();
-		return converterUtil.getInventoryDataList(list);
+		return list.stream()
+				.map(o -> converterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductid())))
+				.collect(Collectors.toList());
 	}
 
-	public void checkData(InventoryPojo inventoryPojo, ProductMasterPojo productMasterPojo) throws ApiException {
-		if (inventoryPojo.getQuantity() < 0) {
-			throw new ApiException(
-					"Quantity can not be negative for product : " + productMasterPojo.getBarcode() + " !!");
-		}
-	}
-
-	public void checkSearchData(InventorySearchForm inventorySearchForm) throws ApiException {
-		if (inventorySearchForm.barcode.isBlank() && inventorySearchForm.name.isBlank()) {
-			throw new ApiException("Please enter name or barcode !!");
+	public void validateData(InventoryForm inventoryForm) throws ApiException {
+		if (inventoryForm.quantity < 0) {
+			throw new ApiException("Quantity can not be negative for product : " + inventoryForm.barcode + " !!");
 		}
 	}
 

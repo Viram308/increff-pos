@@ -1,7 +1,7 @@
 package com.increff.pos.dto;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,17 +21,15 @@ public class BrandDto {
 	@Autowired
 	private ConverterUtil converterUtil;
 
-	public void addBrand(BrandForm form) throws ApiException {
-		checkData(form);
+	public BrandMasterPojo addBrand(BrandForm form) throws ApiException {
+		validateData(form);
 		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(form);
-		brandService.add(brandPojo);
+		return brandService.add(brandPojo);
 	}
 
-	public List<BrandData> searchBrand(BrandForm form) throws ApiException {
-		checkSearchData(form);
-		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(form);
-		List<BrandMasterPojo> list = brandService.searchData(brandPojo);
-		return converterUtil.getBrandDataList(list);
+	public List<BrandData> searchBrandData(BrandForm form) throws ApiException {
+		List<BrandMasterPojo> list = brandService.searchBrandData(form);
+		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
 	public BrandData getBrandData(int id) {
@@ -39,38 +37,24 @@ public class BrandDto {
 		return converterUtil.convertBrandMasterPojotoBrandData(brandPojo);
 	}
 
-	public void updateBrand(int id, BrandForm form) throws ApiException {
-		checkData(form);
+	public BrandMasterPojo updateBrand(int id, BrandForm form) throws ApiException {
+		validateData(form);
 		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(form);
-		brandService.update(id, brandPojo);
+		return brandService.update(id, brandPojo);
 	}
 
-	public BrandMasterPojo getByBrandCategory(String brand, String category) throws ApiException {
-		return brandService.getByBrandCategory(brand, category);
+	public BrandMasterPojo getByBrandCategory(BrandForm brandForm) throws ApiException {
+		return brandService.getByBrandCategory(brandForm);
 	}
 
-//	public List<BrandData> getAllBrands() {
-//		List<BrandMasterPojo> list = brandService.getAll();
-//		return converterUtil.getBrandDataList(list);
-//	}
-	
-	public List<Integer> getBrandIdList(List<BrandMasterPojo> brandMasterPojoList) {
-		List<Integer> brandIdList = new ArrayList<Integer>();
-		for (BrandMasterPojo brandMasterPojo : brandMasterPojoList) {
-			brandIdList.add(brandMasterPojo.getId());
-		}
-		return brandIdList;
+	public List<BrandData> getAllBrands() {
+		List<BrandMasterPojo> list = brandService.getAll();
+		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
-	public void checkData(BrandForm b) throws ApiException {
+	public void validateData(BrandForm b) throws ApiException {
 		if (b.brand.isBlank() || b.category.isBlank()) {
 			throw new ApiException("Please enter brand and category !!");
-		}
-	}
-
-	public void checkSearchData(BrandForm b) throws ApiException {
-		if (b.brand.isBlank() && b.category.isBlank()) {
-			throw new ApiException("Please enter brand or category !!");
 		}
 	}
 

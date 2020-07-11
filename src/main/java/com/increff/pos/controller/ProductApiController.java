@@ -14,6 +14,7 @@ import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductDetails;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
+import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.Api;
@@ -31,8 +32,8 @@ public class ProductApiController {
 
 	@ApiOperation(value = "Adds a Product")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public void add(@RequestBody ProductForm form) throws ApiException {
-		productDto.add(form);
+	public ProductMasterPojo add(@RequestBody ProductForm form) throws ApiException {
+		return productDto.add(form);
 	}
 
 	@ApiOperation(value = "Search a Product")
@@ -61,8 +62,8 @@ public class ProductApiController {
 
 	@ApiOperation(value = "Updates a Product")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public void update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
-		productDto.update(id, form);
+	public ProductMasterPojo update(@PathVariable int id, @RequestBody ProductForm form) throws ApiException {
+		return productDto.update(id, form);
 	}
 
 }
