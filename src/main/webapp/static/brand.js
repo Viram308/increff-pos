@@ -126,7 +126,7 @@ function uploadRowsBrand(){
 	updateUploadDialogBrand();
 	//If everything processed then return
 	if(processCount==fileData.length){
-		$.notify("Brands added successfully !!","success");
+		$.notify("File processed successfully !!","success");
 	   	searchBrand();
 		return;
 	}

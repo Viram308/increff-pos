@@ -19,5 +19,13 @@ public class AppRestControllerAdvice {
 		data.setMessage(e.getMessage());
 		return data;
 	}
+	
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public MessageData handleServerError(Exception e) {
+		MessageData data = new MessageData();
+		data.setMessage(e.getMessage());
+		return data;
+	}
 
 }

@@ -135,7 +135,7 @@ function uploadRowsProduct(){
 	updateUploadDialogProduct();
 	//If everything processed then return
 	if(processCount==fileData.length){
-		$.notify("Products added successfully !!","success");
+		$.notify("File processed successfully !!","success");
 	   	searchProduct();
 		return;
 	}

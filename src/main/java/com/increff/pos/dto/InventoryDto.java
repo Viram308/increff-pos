@@ -37,7 +37,7 @@ public class InventoryDto {
 		ProductSearchForm productSearchForm = ConverterUtil.convertInventorySearchFormtoProductSearchForm(form);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
 		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
-		List<InventoryPojo> list = inventoryService.searchData(productIds);
+		List<InventoryPojo> list = inventoryService.getAll().stream().filter(o->(productIds.contains(o.getProductId()))).collect(Collectors.toList());
 		return list.stream()
 				.map(o -> ConverterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());

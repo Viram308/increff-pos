@@ -2429,3 +2429,28 @@ Caused by: java.lang.Error: Unresolved compilation problems:
 2020-07-12 21:32:17 INFO  SecurityConfig:33 - Configuration complete
 2020-07-13 09:21:40 INFO  SecurityConfig:33 - Configuration complete
 2020-07-13 11:42:12 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:01:51 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:07:22 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-07-13 20:07:22 ERROR SqlExceptionHelper:142 - Duplicate entry 'b1-c1' for key 'BrandMasterPojo.UKt5cco1vjcuhugqih7xqk54eg5'
+2020-07-13 20:07:22 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-13 20:07:40 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-07-13 20:07:40 ERROR SqlExceptionHelper:142 - Duplicate entry 'b1-c1' for key 'BrandMasterPojo.UKt5cco1vjcuhugqih7xqk54eg5'
+2020-07-13 20:07:40 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-13 20:10:35 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:11:31 WARN  SqlExceptionHelper:137 - SQL Error: 1062, SQLState: 23000
+2020-07-13 20:11:31 ERROR SqlExceptionHelper:142 - Duplicate entry 'b1-c1' for key 'BrandMasterPojo.UKt5cco1vjcuhugqih7xqk54eg5'
+2020-07-13 20:11:31 ERROR ExceptionMapperStandardImpl:39 - HHH000346: Error during managed flush [org.hibernate.exception.ConstraintViolationException: could not execute statement]
+2020-07-13 20:13:31 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:16:18 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-13 20:16:18 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+2020-07-13 20:17:06 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-13 20:17:06 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+2020-07-13 20:17:21 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-13 20:17:21 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+2020-07-13 20:17:55 WARN  SqlExceptionHelper:137 - SQL Error: 1064, SQLState: 42000
+2020-07-13 20:17:55 ERROR SqlExceptionHelper:142 - You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near ')' at line 1
+2020-07-13 20:20:03 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:27:51 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:30:02 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 20:38:26 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 21:06:29 INFO  SecurityConfig:33 - Configuration complete

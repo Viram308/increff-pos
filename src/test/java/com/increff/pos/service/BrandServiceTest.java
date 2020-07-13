@@ -62,11 +62,11 @@ public class BrandServiceTest extends AbstractUnitTest {
 	@Test
 	public void testUpdate() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
-		service.add(b);
-		BrandMasterPojo p = service.get(b.getId());
+		b=service.add(b);
+		BrandMasterPojo p = new BrandMasterPojo();
 		p.setBrand("increff");
 		p.setCategory("pos");
-		service.update(b.getId(), p);
+		p=service.update(b.getId(), p);
 		BrandMasterPojo m = service.get(p.getId());
 		// test updated data
 		assertEquals("increff", m.getBrand());

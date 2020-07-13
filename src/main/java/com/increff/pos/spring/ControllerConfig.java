@@ -1,6 +1,5 @@
 package com.increff.pos.spring;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -78,9 +77,5 @@ public class ControllerConfig extends WebMvcConfigurerAdapter {
 		resolver.setPrefix("html/");
 		resolver.setTemplateMode(TemplateMode.HTML);
 		return resolver;
-	}
-	@Bean
-	public ModelMapper modelMapper() {
-	    return new ModelMapper();
 	}
 }

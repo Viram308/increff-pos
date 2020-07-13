@@ -54,6 +54,7 @@ public class BrandService {
 	@Transactional(rollbackFor = ApiException.class)
 	public BrandMasterPojo update(int id, BrandMasterPojo p) throws ApiException {
 		NormalizeUtil.normalizeBrandMasterPojo(p);
+		getCheckExisting(p.getBrand(), p.getCategory());
 		BrandMasterPojo brandMasterPojo = getCheck(id);
 		brandMasterPojo.setCategory(p.getCategory());
 		brandMasterPojo.setBrand(p.getBrand());

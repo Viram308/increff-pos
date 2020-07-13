@@ -139,7 +139,7 @@ function uploadRowsInventory(){
 	updateUploadDialogInventory();
 	//If everything processed then return
 	if(processCount==fileData.length){
-		$.notify("Inventory added successfully !!","success");
+		$.notify("File processed successfully !!","success");
 	   	searchInventory();
 		return;
 	}
