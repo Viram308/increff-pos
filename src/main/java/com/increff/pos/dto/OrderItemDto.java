@@ -21,18 +21,16 @@ public class OrderItemDto {
 	private OrderItemService orderItemService;
 	@Autowired
 	private ProductService productService;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	public List<OrderItemData> get(int orderId) throws ApiException {
 		List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderId);
 		return orderItemPojoList.stream()
-				.map(o -> converterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+				.map(o -> ConverterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
 	}
 
 	public List<OrderItemData> searchOrderItem(OrderItemData orderItemData) throws ApiException {
-		ProductSearchForm productSearchForm = converterUtil.convertOrderItemDatatoProductSearchForm(orderItemData);
+		ProductSearchForm productSearchForm = ConverterUtil.convertOrderItemDatatoProductSearchForm(orderItemData);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
 		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<OrderItemPojo> orderItemPojos = orderItemService.getAll();
@@ -40,14 +38,14 @@ public class OrderItemDto {
 			orderItemPojos = orderItemPojos.stream().filter(o -> (productIds.contains(o.getProductId())))
 					.collect(Collectors.toList());
 			return orderItemPojos.stream().map(
-					o -> converterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+					o -> ConverterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
 					.collect(Collectors.toList());
 		}
 		orderItemPojos = orderItemPojos.stream()
 				.filter(o -> (productIds.contains(o.getProductId()) && o.getOrderId() == orderItemData.orderId))
 				.collect(Collectors.toList());
 		return orderItemPojos.stream()
-				.map(o -> converterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
+				.map(o -> ConverterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
 	}
 

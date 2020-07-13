@@ -10,14 +10,6 @@ function searchBrand(event){
 	//Set the values to add
 	var $tbody = $('#brand-table').find('tbody');
 	$tbody.empty();
-	var brand=$('#inputBrand').val().trim();
-	var category=$('#inputCategory').val().trim();
-		
-	if(brand=="" && category==""){
-		alert('Enter brand or category');
-		return false;
-	}
-
 	var $form = $("#brand-form");
 	var json = toJson($form);
 	var url = getBrandUrl()+"/search";
@@ -41,7 +33,7 @@ function searchBrand(event){
 //BUTTON ACTIONS
 function addBrand(event){
 	//Set the values to add
-	$('#add-brand-modal').modal('toggle');
+	
 	var $form = $("#brand-add-form");
 	var json = toJson($form);
 	var url = getBrandUrl();
@@ -54,7 +46,9 @@ function addBrand(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   		alert('added');
+			$('#add-brand-modal').modal('toggle');
+	   		$.notify("Brand added successfully !!","success");
+	   		searchBrand();
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -63,7 +57,7 @@ function addBrand(event){
 }
 
 function updateBrand(event){
-	$('#edit-brand-modal').modal('toggle');
+	
 	//Get the ID
 	var id = $("#brand-edit-form input[name=id]").val();	
 	var url = getBrandUrl() + "/" + id;
@@ -80,6 +74,8 @@ function updateBrand(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
+			$('#edit-brand-modal').modal('toggle');
+	   		$.notify("Brand updated successfully !!","success");
 	   		searchBrand();
 	   	},
 	   	error: handleAjaxError
@@ -119,7 +115,7 @@ function readFileDataCallbackBrand(results){
 	// check no of rows
 	if(fileData.length > 5000)
 	{
-		alert('File Contains more than 5000 rows !!');
+		$.notify("File Contains more than 5000 rows !!","error");
 		return;
 	}
 	uploadRowsBrand();
@@ -130,6 +126,8 @@ function uploadRowsBrand(){
 	updateUploadDialogBrand();
 	//If everything processed then return
 	if(processCount==fileData.length){
+		$.notify("Brands added successfully !!","success");
+	   	searchBrand();
 		return;
 	}
 	
@@ -250,4 +248,4 @@ function init(){
 }
 
 $(document).ready(init);
-
+$(document).ready(getBrandList);

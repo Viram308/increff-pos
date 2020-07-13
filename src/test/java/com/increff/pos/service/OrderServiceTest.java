@@ -43,14 +43,6 @@ public class OrderServiceTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testDelete() throws ApiException {
-		OrderPojo op = getOrderPojoTest();
-		service.add(op);
-		// test delete
-		service.delete(op.getId());
-	}
-
-	@Test
 	public void testGet() throws ApiException {
 		OrderPojo op = getOrderPojoTest();
 		service.add(op);
@@ -70,21 +62,8 @@ public class OrderServiceTest extends AbstractUnitTest {
 		OrderPojo op = getOrderPojoTest();
 		service.add(op);
 		OrderPojo o = service.getCheck(op.getId());
-		service.delete(o.getId());
-		// After delete throw exception while getting data
-		service.getCheck(o.getId());
-	}
-
-	@Test
-	public void testGroupItemsByBarcode() {
-		OrderItemForm o1 = getOrderItemForm();
-		OrderItemForm o2 = getOrderItemForm();
-		// make list
-		OrderItemForm[] orderItemForms = getArray(o1, o2);
-		List<OrderItemForm> list = service.groupItemsByBarcode(orderItemForms);
-		// test size and doubled quantity
-		assertEquals(2, list.size());
-		assertEquals(20, list.get(0).quantity);
+		// throw exception while getting data for id + 1
+		service.getCheck(o.getId() + 1);
 	}
 
 	@Test(expected = ApiException.class)
@@ -110,15 +89,6 @@ public class OrderServiceTest extends AbstractUnitTest {
 		orderItemForms.get(1).quantity = 25;
 		// Does not throws exception
 		service.checkInventory(orderItemForms);
-	}
-
-	@Test
-	public void testGetOrderItemObject() throws ApiException {
-		OrderPojo op = getOrderPojoTest();
-		service.add(op);
-		List<OrderItemForm> orderItemForms = getList();
-		List<OrderItemPojo> list = service.getOrderItemObject(orderItemForms, op);
-		assertEquals(2, list.size());
 	}
 
 	@Test
@@ -160,14 +130,14 @@ public class OrderServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdate() throws ApiException {
-		OrderPojo orderPojo1=getOrderPojoTest();
+		OrderPojo orderPojo1 = getOrderPojoTest();
 		service.add(orderPojo1);
-		OrderPojo orderPojo2=new OrderPojo();
+		OrderPojo orderPojo2 = new OrderPojo();
 		orderPojo2.setDatetime("02-02-2020 09:45");
 		service.update(orderPojo1.getId(), orderPojo2);
 		assertEquals(orderPojo2.getDatetime(), orderPojo1.getDatetime());
 	}
-	
+
 	private List<OrderPojo> getOrderPojoList() {
 		OrderPojo orderPojo1 = new OrderPojo();
 		OrderPojo orderPojo2 = new OrderPojo();
@@ -203,15 +173,6 @@ public class OrderServiceTest extends AbstractUnitTest {
 		return orderItemForms;
 	}
 
-	private OrderItemForm[] getArray(OrderItemForm o1, OrderItemForm o2) {
-		OrderItemForm[] orderItemForms = new OrderItemForm[4];
-		orderItemForms[0] = o1;
-		orderItemForms[1] = o2;
-		orderItemForms[2] = o2;
-		orderItemForms[3] = o1;
-		return orderItemForms;
-	}
-
 	private void getData(String brand, String barcode, int quantity) throws ApiException {
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();
@@ -225,20 +186,9 @@ public class OrderServiceTest extends AbstractUnitTest {
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
 		pService.add(p, b);
-		i.setProductid(p.getId());
+		i.setProductId(p.getId());
 		i.setQuantity(quantity);
 		inService.add(i);
-	}
-
-	private OrderItemForm getOrderItemForm() {
-		OrderItemForm orderItemForm = new OrderItemForm();
-		String barcode = StringUtil.getAlphaNumericString();
-		int quantity = 10;
-		double mrp = 50.20;
-		orderItemForm.barcode = barcode;
-		orderItemForm.quantity = quantity;
-		orderItemForm.sellingPrice = mrp;
-		return orderItemForm;
 	}
 
 	private String getDateTime() {
@@ -248,7 +198,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		return datetime;
 	}
 
-	private OrderPojo getOrderPojoTest(){
+	private OrderPojo getOrderPojoTest() {
 		OrderPojo op = new OrderPojo();
 		String datetime = getDateTime();
 		// create data
@@ -278,7 +228,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
 		pService.add(p, b);
-		i.setProductid(p.getId());
+		i.setProductId(p.getId());
 		i.setQuantity(quantity + 10);
 		inService.add(i);
 		o.setOrderId(op.getId());

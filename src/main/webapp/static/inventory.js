@@ -14,11 +14,6 @@ function searchInventory(event){
 	var $form = $("#inventory-form");
 	var name=$('#inputName').val().trim();
 	var barcode=$('#inputBarcode').val().trim();
-		
-	if(name=="" && barcode==""){
-		alert('Enter Name or Barcode');
-		return false;
-	}
 	var json = toJson($form);
 	var url = getInventoryUrl()+"/search";
 	// call api
@@ -42,10 +37,10 @@ function searchInventory(event){
 
 function addInventory(event){
 	//Set the values to add
-	$('#add-inventory-modal').modal('toggle');
+	
 	var quantity=$('#inventory-add-form input[name=quantity]').val();
 	if(quantity<0){
-		alert('Quantity can not be negative !!');
+		$.notify("Quantity can not be negative !!","error");
 		return false;
 	}
 	var $form = $("#inventory-add-form");
@@ -60,7 +55,9 @@ function addInventory(event){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   		alert('added');
+			$('#add-inventory-modal').modal('toggle');
+	   		$.notify("Inventory added successfully !!","success");
+	   		searchInventory();
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -69,13 +66,13 @@ function addInventory(event){
 }
 
 function updateInventory(event){
-	$('#edit-inventory-modal').modal('toggle');
+	
 	//Get the ID
 	var id = $("#inventory-edit-form input[name=id]").val();	
 	var url = getInventoryUrl() + "/" + id;
 var quantity=$('#inventory-edit-form input[name=quantity]').val();
 	if(quantity<0){
-		alert('Quantity can not be negative !!');
+		$.notify("Quantity can not be negative !!","error");
 		return false;
 	}
 	//Set the values to update
@@ -90,7 +87,9 @@ var quantity=$('#inventory-edit-form input[name=quantity]').val();
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-	   	searchInventory();
+			$('#edit-inventory-modal').modal('toggle');
+			$.notify("Inventory updated successfully !!","success");
+	   		searchInventory();
 	   },
 	   error: handleAjaxError
 	});
@@ -129,7 +128,7 @@ function readFileDataCallbackInventory(results){
 	// check no of rows
 	if(fileData.length > 5000)
 	{
-		alert('File Contains more than 5000 rows !!');
+		$.notify("File Contains more than 5000 rows !!","error");
 		return;
 	}
 	uploadRowsInventory();
@@ -140,6 +139,8 @@ function uploadRowsInventory(){
 	updateUploadDialogInventory();
 	//If everything processed then return
 	if(processCount==fileData.length){
+		$.notify("Inventory added successfully !!","success");
+	   	searchInventory();
 		return;
 	}
 	
@@ -259,4 +260,4 @@ function init(){
 }
 
 $(document).ready(init);
-
+$(document).ready(getInventoryList);

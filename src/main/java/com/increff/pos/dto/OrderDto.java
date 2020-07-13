@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.increff.pos.model.BillData;
+import com.increff.pos.model.InfoData;
 import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
@@ -37,9 +38,9 @@ public class OrderDto {
 	@Autowired
 	private InventoryService inventoryService;
 	@Autowired
-	private ConverterUtil converterUtil;
-	@Autowired
 	private OrderItemDto orderItemDto;
+	@Autowired
+	private InfoData info;
 
 	@Transactional(rollbackFor = ApiException.class)
 	public List<BillData> createOrder(OrderItemForm[] orderItemForms) throws ApiException {
@@ -47,16 +48,8 @@ public class OrderDto {
 		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
 		OrderPojo orderPojo = addOrder(orderItems);
 		// Convert input to required format
-		List<OrderItemPojo> list = orderItems.stream().map(o -> {
-			try {
-				return converterUtil.convertOrderItemFormToOrderItemPojo(o,
-						orderPojo, productService.getByBarcode(o.barcode));
-			} catch (ApiException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}).collect(Collectors.toList());
+		List<OrderItemPojo> list = orderItems.stream().map(o -> ConverterUtil.convertOrderItemFormToOrderItemPojo(o,
+				orderPojo, productService.getByBarcode(o.barcode))).collect(Collectors.toList());
 		// Decrease inventory according to the entered quantity
 		orderService.updateInventory(list);
 		// Add each order item
@@ -68,7 +61,8 @@ public class OrderDto {
 	public OrderPojo addOrder(List<OrderItemForm> orderItems) throws ApiException {
 		orderService.checkInventory(orderItems);
 		OrderPojo orderPojo = new OrderPojo();
-		orderPojo.setDatetime(converterUtil.getDateTime());
+		orderPojo.setDatetime(ConverterUtil.getDateTime());
+		orderPojo.setOrderCreater(info.getEmail());
 		// Add order if inventory is available
 		orderService.add(orderPojo);
 		return orderPojo;
@@ -85,16 +79,8 @@ public class OrderDto {
 		// update order date and time
 		OrderPojo orderPojo = updateOrder(id, orderItems);
 		// Convert input to required format
-		List<OrderItemPojo> list = orderItems.stream().map(o -> {
-			try {
-				return converterUtil.convertOrderItemFormToOrderItemPojo(o,
-						orderPojo, productService.getByBarcode(o.barcode));
-			} catch (ApiException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
-		}).collect(Collectors.toList());
+		List<OrderItemPojo> list = orderItems.stream().map(o -> ConverterUtil.convertOrderItemFormToOrderItemPojo(o,
+				orderPojo, productService.getByBarcode(o.barcode))).collect(Collectors.toList());
 		// Decrease inventory according to the entered quantity
 		orderService.updateInventory(list);
 		// Delete previous order items
@@ -108,7 +94,8 @@ public class OrderDto {
 	public OrderPojo updateOrder(int id, List<OrderItemForm> orderItems) throws ApiException {
 		orderService.checkInventory(orderItems);
 		OrderPojo orderPojo = new OrderPojo();
-		orderPojo.setDatetime(converterUtil.getDateTime());
+		orderPojo.setDatetime(ConverterUtil.getDateTime());
+		orderPojo.setOrderCreater(info.getEmail());
 		// Add order if inventory is available
 		orderService.update(id, orderPojo);
 		orderPojo.setId(id);
@@ -127,23 +114,30 @@ public class OrderDto {
 
 	public OrderData get(int id) throws ApiException {
 		OrderPojo orderPojo = orderService.get(id);
-		return converterUtil.convertOrderPojotoOrderData(orderPojo);
+		return ConverterUtil.convertOrderPojotoOrderData(orderPojo, orderItemService.getByOrderId(orderPojo.getId()));
 	}
 
 	public List<OrderData> getAll() {
 		List<OrderPojo> list = orderService.getAll();
-		return list.stream().map(o -> converterUtil.convertOrderPojotoOrderData(o)).collect(Collectors.toList());
+		return list.stream()
+				.map(o -> ConverterUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId())))
+				.collect(Collectors.toList());
 	}
 
 	public List<OrderData> searchOrder(OrderSearchForm form) throws ApiException, ParseException {
-		checkSearchData(form);
-		List<OrderPojo> orderPojo = orderService.getAll();
-		// Get list of order ids
-		List<OrderPojo> orderList = orderService.getList(orderPojo, form.startdate, form.enddate);
-		if (orderList.isEmpty()) {
-			throw new ApiException("There are no orders for given dates !!");
+		List<OrderPojo> orderPojo = orderService.searchOrder(form);
+		if (!form.startdate.isBlank() && !form.enddate.isBlank()) {
+			orderPojo = orderService.getList(orderPojo, form.startdate, form.enddate);
 		}
-		return orderList.stream().map(o -> converterUtil.convertOrderPojotoOrderData(o)).collect(Collectors.toList());
+		if (form.orderId == 0) {
+			return orderPojo.stream()
+					.map(o -> ConverterUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId())))
+					.collect(Collectors.toList());
+		}
+		orderPojo = orderPojo.stream().filter(o -> (form.orderId == o.getId())).collect(Collectors.toList());
+		return orderPojo.stream()
+				.map(o -> ConverterUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId())))
+				.collect(Collectors.toList());
 	}
 
 	public void checkSearchData(OrderSearchForm form) throws ApiException {

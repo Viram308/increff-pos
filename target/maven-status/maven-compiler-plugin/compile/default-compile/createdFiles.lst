@@ -73,12 +73,12 @@ com/increff/pos/service/ApiException.class
 com/increff/pos/model/OrderData.class
 com/increff/pos/dto/OrderItemDto.class
 com/increff/pos/dto/BrandDto.class
-com/increff/pos/model/OrderForm.class
 com/increff/pos/controller/SiteUiController.class
 com/increff/pos/util/GenerateXML.class
 com/increff/pos/service/ReportService.class
 com/increff/pos/service/ProductService.class
 com/increff/pos/controller/SampleController.class
 com/increff/pos/controller/ReportApiController.class
+com/increff/pos/util/NormalizeUtil.class
 com/increff/pos/dao/OrderDao.class
 com/increff/pos/model/InventorySearchForm.class

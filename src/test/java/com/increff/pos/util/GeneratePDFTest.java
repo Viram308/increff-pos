@@ -9,7 +9,7 @@ import org.junit.Test;
 
 import com.increff.pos.spring.AbstractUnitTest;
 
-public class GeneratePDFTest extends AbstractUnitTest{
+public class GeneratePDFTest extends AbstractUnitTest {
 	// test PDF Generation
 	@Test
 	public void testGeneratePDF() throws FOPException, TransformerException, IOException {

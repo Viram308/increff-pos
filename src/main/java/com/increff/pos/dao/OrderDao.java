@@ -12,11 +12,19 @@ import com.increff.pos.pojo.OrderPojo;
 public class OrderDao extends AbstractDao {
 
 	// select all
-	private static String select_all = "select o from OrderPojo o";
+	private static String selectAll = "select o from OrderPojo o";
+	// search
+	private static String search = "select o from OrderPojo o where orderCreater like :orderCreater";
 
 	// select all
 	public List<OrderPojo> selectAll() {
-		TypedQuery<OrderPojo> query = getQuery(select_all, OrderPojo.class);
+		TypedQuery<OrderPojo> query = getQuery(selectAll, OrderPojo.class);
+		return query.getResultList();
+	}
+
+	public List<OrderPojo> searchOrder(String orderCreater) {
+		TypedQuery<OrderPojo> query = getQuery(search, OrderPojo.class);
+		query.setParameter("orderCreater", orderCreater + "%");
 		return query.getResultList();
 	}
 

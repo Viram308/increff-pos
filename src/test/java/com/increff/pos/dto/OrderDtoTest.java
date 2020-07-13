@@ -4,6 +4,8 @@ import static org.junit.Assert.assertEquals;
 
 import java.text.ParseException;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 import org.junit.Test;
@@ -37,21 +39,10 @@ public class OrderDtoTest extends AbstractUnitTest {
 	private ProductDto productDto;
 	@Autowired
 	private OrderDto orderDto;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	@Test
 	public void testCreateOrder() throws ApiException, ParseException {
-
-		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
-		InventoryForm inventoryForm1 = getInventoryForm(productData1.barcode, 20);
-		inventoryDto.addInventory(inventoryForm1);
-		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
-		InventoryForm inventoryForm2 = getInventoryForm(productData2.barcode, 20);
-		inventoryDto.addInventory(inventoryForm2);
-
-		OrderItemForm[] orderItemForms = getOrderItemFormArray(productData1.barcode, productData2.barcode,
-				productData1.name, productData2.name, 4, 5, productData1.mrp, productData2.mrp);
+		OrderItemForm[] orderItemForms = getOrderItemArray();
 		List<BillData> billDatas = orderDto.createOrder(orderItemForms);
 		assertEquals(2, billDatas.size());
 		assertEquals("munch", billDatas.get(0).name);
@@ -62,8 +53,10 @@ public class OrderDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testAddOrder() throws ApiException {
-		OrderPojo orderPojo = orderDto.addOrder();
-		assertEquals(converterUtil.getDateTime().split(" ")[0], orderPojo.getDatetime().split(" ")[0]);
+		OrderItemForm[] orderItemForms = getOrderItemArray();
+		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
+		OrderPojo orderPojo = orderDto.addOrder(orderItems);
+		assertEquals(ConverterUtil.getDateTime().split(" ")[0], orderPojo.getDatetime().split(" ")[0]);
 	}
 
 	@Test
@@ -94,8 +87,11 @@ public class OrderDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdateOrder() throws ApiException {
-		OrderPojo orderPojo1 = orderDto.addOrder();
-		OrderPojo orderPojo2 = orderDto.updateOrder(orderPojo1.getId());
+
+		OrderItemForm[] orderItemForms = getOrderItemArray();
+		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
+		OrderPojo orderPojo1 = orderDto.addOrder(orderItems);
+		OrderPojo orderPojo2 = orderDto.updateOrder(orderPojo1.getId(), orderItems);
 		assertEquals(orderPojo1.getId(), orderPojo2.getId());
 	}
 
@@ -118,41 +114,38 @@ public class OrderDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testGet() throws ApiException {
-		OrderPojo orderPojo = orderDto.addOrder();
-		OrderData orderData = orderDto.get(orderPojo.getId());
-		assertEquals(orderPojo.getDatetime(), orderData.datetime);
+	public void testGet() throws ApiException, ParseException {
+		OrderItemForm[] orderItemForms = getOrderItemArray();
+		orderDto.createOrder(orderItemForms);
+		OrderSearchForm orderSearchForm = getOrderSearchForm();
+		List<OrderData> orderDatas = orderDto.searchOrder(orderSearchForm);
+		OrderData orderData = orderDto.get(orderDatas.get(0).id);
+		assertEquals(orderDatas.get(0).datetime, orderData.datetime);
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		orderDto.addOrder();
-		orderDto.addOrder();
+
+		OrderItemForm[] orderItemForms = getOrderItemArray();
+		orderDto.createOrder(orderItemForms);
 		List<OrderData> orderDatas = orderDto.getAll();
-		assertEquals(2, orderDatas.size());
+		assertEquals(1, orderDatas.size());
 	}
 
 	@Test
 	public void testSearchOrder() throws ApiException, ParseException {
-		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
-		InventoryForm inventoryForm1 = getInventoryForm(productData1.barcode, 20);
-		inventoryDto.addInventory(inventoryForm1);
-		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
-		InventoryForm inventoryForm2 = getInventoryForm(productData2.barcode, 20);
-		inventoryDto.addInventory(inventoryForm2);
-
-		OrderItemForm[] orderItemForms = getOrderItemFormArray(productData1.barcode, productData2.barcode,
-				productData1.name, productData2.name, 4, 5, productData1.mrp, productData2.mrp);
+		OrderItemForm[] orderItemForms = getOrderItemArray();
 		orderDto.createOrder(orderItemForms);
 		OrderSearchForm orderSearchForm = getOrderSearchForm();
 		List<OrderData> orderDatas = orderDto.searchOrder(orderSearchForm);
 		assertEquals(1, orderDatas.size());
-	}
-
-	@Test(expected = ApiException.class)
-	public void testZeroSearchOrder() throws ParseException, ApiException {
-		OrderSearchForm orderSearchForm = getOrderSearchForm();
-		orderDto.searchOrder(orderSearchForm);
+		int orderId=orderDatas.get(0).id;
+		orderSearchForm.orderId = orderId;
+		orderDatas = orderDto.searchOrder(orderSearchForm);
+		assertEquals(1, orderDatas.size());
+		orderSearchForm.orderId = orderId+1;
+		orderDatas = orderDto.searchOrder(orderSearchForm);
+		assertEquals(0, orderDatas.size());
 	}
 
 	@Test(expected = ApiException.class)
@@ -187,9 +180,23 @@ public class OrderDtoTest extends AbstractUnitTest {
 
 	private OrderSearchForm getOrderSearchForm() {
 		OrderSearchForm orderSearchForm = new OrderSearchForm();
-		orderSearchForm.startdate = converterUtil.getDateTime().split(" ")[0];
-		orderSearchForm.enddate = converterUtil.getDateTime().split(" ")[0];
+		orderSearchForm.startdate = ConverterUtil.getDateTime().split(" ")[0];
+		orderSearchForm.enddate = ConverterUtil.getDateTime().split(" ")[0];
+		orderSearchForm.orderId=0;
+		orderSearchForm.orderCreater="";
 		return orderSearchForm;
+	}
+
+	private OrderItemForm[] getOrderItemArray() throws ApiException {
+		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
+		InventoryForm inventoryForm1 = getInventoryForm(productData1.barcode, 20);
+		inventoryDto.addInventory(inventoryForm1);
+		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
+		InventoryForm inventoryForm2 = getInventoryForm(productData2.barcode, 20);
+		inventoryDto.addInventory(inventoryForm2);
+
+		return getOrderItemFormArray(productData1.barcode, productData2.barcode, productData1.name, productData2.name,
+				4, 5, productData1.mrp, productData2.mrp);
 	}
 
 	private OrderItemForm[] getOrderItemFormArray(String barcode1, String barcode2, String name1, String name2,

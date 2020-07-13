@@ -2,11 +2,8 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.text.DateFormat;
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -14,27 +11,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
-import com.increff.pos.pojo.BrandMasterPojo;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.StringUtil;
 
 public class ReportServiceTest extends AbstractUnitTest {
 	@Autowired
 	private ReportService service;
 	@Autowired
 	private OrderService oService;
-	@Autowired
-	private BrandService bService;
-	@Autowired
-	private ProductService pService;
-	@Autowired
-	private InventoryService inService;
-	@Autowired
-	private OrderItemService iService;
 
 	// test order id list with range(start date-end date)
 	@Test(expected = ApiException.class)
@@ -47,17 +31,6 @@ public class ReportServiceTest extends AbstractUnitTest {
 		startdate = "01-02-2018";
 		enddate = "23-03-2018";
 		service.getOrderIdList(list, startdate, enddate);
-	}
-
-	// test order items with same product id
-	@Test
-	public void testGroupOrderItemPojoByProductId() throws ApiException {
-		getOrderItemPojoTest();
-		List<OrderItemPojo> list = iService.getAll();
-		list = service.groupOrderItemPojoByProductId(list);
-		// check results
-		assertEquals(2, list.size());
-		assertEquals(25, list.get(0).getQuantity());
 	}
 
 	// test all the conditions of brand-category pair
@@ -126,15 +99,6 @@ public class ReportServiceTest extends AbstractUnitTest {
 		return list;
 	}
 
-	// Returns date and time in required format
-	private String getDateTime() {
-
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		Date dateobj = new Date();
-		String datetime = df.format(dateobj);
-		return datetime;
-	}
-
 	// create sales report data using brand,category,quantity and revenue
 	private List<SalesReportData> getSalesData() {
 		List<SalesReportData> list = new ArrayList<SalesReportData>();
@@ -169,58 +133,5 @@ public class ReportServiceTest extends AbstractUnitTest {
 			list.add(invData);
 		}
 		return list;
-	}
-
-	private void getOrderItemPojoTest() throws ApiException {
-		OrderItemPojo o1 = new OrderItemPojo();
-		OrderItemPojo o2 = new OrderItemPojo();
-		OrderItemPojo o3 = new OrderItemPojo();
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		int quantity = 10;
-		double sellingPrice = 10.25;
-		// create data
-		OrderPojo op = new OrderPojo();
-		String datetime = getDateTime();
-		op.setDatetime(datetime);
-		oService.add(op);
-		ProductMasterPojo p1 = new ProductMasterPojo();
-		ProductMasterPojo p2 = new ProductMasterPojo();
-		BrandMasterPojo b = new BrandMasterPojo();
-		InventoryPojo i = new InventoryPojo();
-		String barcode1 = StringUtil.getAlphaNumericString();
-		String barcode2 = StringUtil.getAlphaNumericString();
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
-		bService.add(b);
-		double mrp = 10.25;
-		p1.setBarcode(barcode1);
-		p1.setBrand_category_id(b.getId());
-		p1.setName(" ProDuct ");
-		p1.setMrp(mrp);
-		p2.setBarcode(barcode2);
-		p2.setBrand_category_id(b.getId());
-		p2.setName(" ProDuct ");
-		p2.setMrp(mrp);
-		pService.add(p1, b);
-		pService.add(p2, b);
-		i.setProductid(p1.getId());
-		i.setQuantity(quantity + 10);
-		inService.add(i);
-		o1.setOrderId(op.getId());
-		o1.setProductId(p1.getId());
-		o1.setQuantity(quantity);
-		o1.setSellingPrice(sellingPrice);
-		o2.setOrderId(op.getId());
-		o2.setProductId(p1.getId());
-		o2.setQuantity(quantity + 5);
-		o2.setSellingPrice(sellingPrice);
-		o3.setOrderId(op.getId());
-		o3.setProductId(p2.getId());
-		o3.setQuantity(quantity + 5);
-		o3.setSellingPrice(sellingPrice);
-		list.add(o1);
-		list.add(o2);
-		list.add(o3);
-		iService.add(list);
 	}
 }

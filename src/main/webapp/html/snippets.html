@@ -94,40 +94,27 @@
 
 <!-- User fragment -->
 <div th:fragment="name_user">
+  <div class="row">
+        &nbsp;
+      </div>
   <h3>Admin > Users</h3>
-
   <!-- Top row with form-->
   <div class="row">
     <!-- User form -->
-    <form class="form-inline" id="user-form" onsubmit="return addUser()">
+    <form class="form-inline" id="user-form">
       <div class="col">
         <div class="form-group">
           <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
           <div class="col-sm-10">
-            <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Enter Email" required>
+            <input type="email" class="form-control col-12" name="email" id="inputEmail" placeholder="Enter Email">
           </div>
         </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="password" id="inputPassword" placeholder="Enter Password" required>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-      </div>
-      <div class="w-100"></div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
       </div>
       <div class="col">
         <div class="form-group">
           <label for="inputRole" class="col-sm-2 col-form-label">Role</label>
           <div class="col-sm-10">
-            <select class="form-control" id="inputRole" name="role" required> 
+            <select class="form-control" id="inputRole" name="role"> 
               <option value="">Select Role</option>
               <option value="admin">Admin</option>
               <option value="standard">Standard</option>
@@ -136,11 +123,9 @@
         </div>
       </div>
       <div class="col">
-        <button type="submit" class="btn btn-outline-primary" id="add-user">Add</button>
+         <button type="button" class="btn btn-outline-info" id="search-user">Search</button>
         &nbsp;
-        <button type="button" class="btn btn-outline-info" id="refresh-user-data">Refresh</button>
-      </div>
-      <div class="col">
+        <button type="button" class="btn btn-outline-primary" id="show-add-user-modal">Add</button>
       </div>
     </form>
   </div> 
@@ -179,6 +164,56 @@
   <div class="row">
     &nbsp;
   </div>
+
+
+   <!-- Add user modal -->
+  <div class="modal fade" tabindex="-1" role="dialog" id="add-user-modal">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add User</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <!-- User add form -->
+        <form  id="user-add-form" onsubmit="return addUser()">
+          <div class="modal-body">
+
+            <div class="form-group row">
+              <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
+              <div class="col-sm-6">
+                <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Enter Email" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
+              <div class="col-sm-6">
+                <input type="text" class="form-control" name="password" id="inputPassword" placeholder="Enter Password" required>
+              </div>
+            </div>
+            <div class="form-group row">
+              <label for="inputRole" class="col-sm-2 col-form-label">Role</label>
+              <div class="col-sm-6">
+                <select class="form-control" id="inputRole" name="role" required> 
+                  <option value="">Select Role</option>
+                  <option value="admin">Admin</option>
+                  <option value="standard">Standard</option>
+                </select>
+              </div>
+            </div>
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+            <button type="submit" class="btn btn-primary" id="add-user">Add</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+
   <!-- Edit user modal -->
   <div class="modal fade" tabindex="-1" role="dialog" id="edit-user-modal">
     <div class="modal-dialog" role="document">
@@ -197,12 +232,6 @@
               <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
               <div class="col-sm-6">
                 <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Enter Email" readonly>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="inputPassword" class="col-sm-2 col-form-label">Password</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="password" id="inputPassword" placeholder="Enter Password" readonly>
               </div>
             </div>
             <div class="form-group row">
@@ -237,7 +266,7 @@
  <div class="row">
   &nbsp;
 </div>
-<h3>Brand</h3>
+<h3>Catelog > Brand</h3>
 <!-- Top row with form-->
 <div class="row">
   <!-- Brand form -->
@@ -426,51 +455,40 @@ class="modal fade" tabindex="-1" role="dialog" id="edit-brand-modal">
   <div class="row">
     &nbsp;
   </div>
-  <h3>Product</h3>
+  <h3>Catelog > Product</h3>
   <!-- Top row with form-->
   <div class="row">
     <!-- Product form -->
     <form class="form-inline" id="product-form">
       <div class="col">
         <div class="form-group">
-          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-          <div class="col-sm-10">
+          <label for="inputName" class="control-label">Name</label>
+          
             <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name">
-          </div>
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-          <div class="col-sm-10">
+          <label for="inputBarcode" class="control-label">Barcode</label>
             <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode">
-          </div>
+          
         </div>
       </div>
       <div class="col">
-      </div>
-      <div class="w-100"></div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <div class="col">
         <div class="form-group">
-          <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-          <div class="col-sm-10">
+          <label for="inputBrand" class="control-label">Brand</label>
+          
             <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-          </div>
+          
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-          <div class="col-sm-10">
+          <label for="inputCategory" class="control-label">Category</label>
             <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category">
-          </div>
         </div>
       </div>
-      <div class="col">
+      <div class="form-group col-5" style="margin-top: 10px">
         <button type="button" class="btn btn-outline-info" id="search-product">Search</button>
         &nbsp;
         <button type="button" class="btn btn-outline-primary" id="show-add-product-modal">Add</button>
@@ -495,7 +513,7 @@ class="modal fade" tabindex="-1" role="dialog" id="edit-brand-modal">
             <th scope="col">Barcode</th>
             <th scope="col">Brand</th>
             <th scope="col">Category</th>
-            <th scope="col">Name</th>
+            <th scope="col">Product Name</th>
             <th scope="col">MRP</th>
             <th scope="col">Action</th>
           </tr>
@@ -664,7 +682,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
   <div class="row">
     &nbsp;
   </div>
-  <h3>Inventory</h3>
+  <h3>Catelog > Inventory</h3>
   <!-- Top row with form-->
   <div class="row">
     <!-- Inventory form -->
@@ -710,7 +728,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
         <thead>
           <tr>
             <th scope="col">Barcode</th>
-            <th scope="col">Name</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Action</th>
           </tr>
@@ -853,7 +871,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
   <div class="row">
     &nbsp;
   </div>
-  <h3>Order</h3>
+  <h3>Catelog > Order</h3>
 
   <!-- Top row with form-->
   <div class="row">
@@ -861,21 +879,29 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
     <form class="form-inline" id="order-form">
       <div class="col">
         <div class="form-group">
-          <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
-          <div class="col-sm-10">
-            <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date" required>
-          </div>
+          <label for="inputStartDate" class="control-label">Start Date</label>
+            <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date">
         </div>
       </div>
       <div class="col">
         <div class="form-group">
-          <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
-          <div class="col-sm-10">
-            <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date" required>
-          </div>
+          <label for="inputEndDate" class="control-label">End Date</label>
+            <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date">
         </div>
       </div>
       <div class="col">
+        <div class="form-group">
+          <label for="orderId" class="control-label">OrderId</label>
+            <input class="form-control" name="orderId" id="orderId" placeholder="Enter OrderId">
+        </div>
+      </div>
+      <div class="col">
+        <div class="form-group">
+          <label for="orderCreater" class="control-label">Order Creater</label>
+            <input class="form-control" name="orderCreater" id="orderCreater" placeholder="Enter Order Creater">
+        </div>
+      </div>
+      <div class="form-group col-5" style="margin-top: 10px">
         <button type="button" class="btn btn-outline-info" id="search-order">Search</button>
         &nbsp;
         <button type="button" class="btn btn-outline-primary" id="show-add-order-modal">Add</button>
@@ -895,8 +921,10 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <table class="table table-striped" id="order-table">
         <thead>
           <tr>
-            <th scope="col">Id</th>
+            <th scope="col">OrderId</th>
+            <th scope="col">Order Creater</th>
             <th scope="col">DateTime</th>
+            <th scope="col">Bill Amount</th>
             <th scope="col">Actions</th>
           </tr>
         </thead>
@@ -998,7 +1026,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
         <thead>
           <tr>
             <th scope="col">Barcode</th>
-            <th scope="col">Name</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Selling Price</th>
             <th scope="col">Action</th>
@@ -1116,7 +1144,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
         <thead>
           <tr>
             <th scope="col">Barcode</th>
-            <th scope="col">Name</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Selling Price</th>
             <th scope="col">Action</th>
@@ -1175,7 +1203,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
         <thead>
           <tr>
             <th scope="col">Barcode</th>
-            <th scope="col">Name</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Selling Price</th>
           </tr>
@@ -1217,7 +1245,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
   <div class="row">
     &nbsp;
   </div>
-  <h3>Order Items</h3>
+  <h3>Catelog > Order Items</h3>
   <!-- Top row with form-->
    <div class="row">
     <!-- Product form -->
@@ -1266,7 +1294,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
           <tr>
             <th scope="col">OrderId</th>
             <th scope="col">Barcode</th>
-            <th scope="col">Name</th>
+            <th scope="col">Product Name</th>
             <th scope="col">Quantity</th>
             <th scope="col">Selling Price</th>
           </tr>
@@ -1336,57 +1364,48 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <div class="row">
         &nbsp;
       </div>
-      <h3>Sales Report</h3>
-      <!-- Top row with form-->
-      <div class="row">
+      <h3>Reports > Sales Report</h3>
         <!-- Sales Report form -->
         <form class="form-inline" id="salesreport-form" onsubmit="return getSalesReportData()">
-          <div class="col">
+         
+         <div class="col">
             <div class="form-group">
-              <label for="inputStartDate" class="col-sm-2 col-form-label">Start Date</label>
-              <div class="col-sm-10">
-                <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date" required>
-              </div>
+              <label for="inputStartDate" class="control-label">Start Date</label>
+              
+                <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date">
+              
             </div>
           </div>
           <div class="col">
             <div class="form-group">
-              <label for="inputEndDate" class="col-sm-2 col-form-label">End Date</label>
-              <div class="col-sm-10">
-                <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date" required>
-              </div>
+              <label for="inputEndDate" class="control-label">End Date</label>
+              
+                <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date">
+              
             </div>
           </div>
           <div class="col">
-          </div>
-          <div class="w-100"></div>
-          <!-- Blank Row -->
-          <div class="row">
-            &nbsp;
-          </div>
-          <div class="col">
             <div class="form-group">
-              <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-              <div class="col-sm-10">
+              <label for="inputBrand" class="control-label">Brand</label>
+              
                 <input class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-              </div>
-            </div>
+          </div>
           </div>
           <div class="col">
             <div class="form-group">
-              <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-              <div class="col-sm-10">
+              <label for="inputCategory" class="control-label">Category</label>
+              
                 <input type="text" class="form-control" name="category" placeholder="Enter Category">
-              </div>
-            </div>
+             </div> 
           </div>
-          <div class="col">
-            <button type="submit" class="btn btn-outline-primary" id="submit-salesreport-data">Submit</button>
+             
+          <div class="form-group col-4" style="margin-top: 10px">
+            <button type="submit" class="btn btn-outline-primary" id="submit-salesreport-data">Get Report</button>
             &nbsp;
-          </div>
+            <button type="button" class="btn btn-outline-success" id="download-salesreport">Download</button>
+         
+        </div>
         </form>
-
-      </div> 
 
 
       <!-- Blank Row -->
@@ -1396,7 +1415,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <div class="row">
 
         <!-- Table -->
-        <div class="col-12">
+        <div class="col-12" id="salesreport-div">
           <table class="table table-striped" id="salesreport-table">
             <thead>
               <tr>
@@ -1429,7 +1448,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <div class="row">
         &nbsp;
       </div>
-      <h3>Brand Report</h3>
+      <h3>Reports > Brand Report</h3>
       <!-- Top row with form-->
      <div class="row">
   <!-- BrandReport form -->
@@ -1451,7 +1470,9 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       </div>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-outline-info" id="search-brandreport">Search</button>
+      <button type="button" class="btn btn-outline-info" id="search-brandreport">Get Report</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-success" id="download-brandreport">Download</button>
     </div>
   </form>
 
@@ -1464,7 +1485,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <div class="row">
 
         <!-- Table -->
-        <div class="col-12">
+        <div class="col-12" id="brandreport-div">
           <table class="table table-striped" id="brandreport-table">
             <thead>
               <tr>
@@ -1496,7 +1517,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <div class="row">
         &nbsp;
       </div>
-      <h3>Inventory Report</h3>
+      <h3>Reports > Inventory Report</h3>
       <!-- Top row with form-->
        <div class="row">
   <!-- InventoryReport form -->
@@ -1518,7 +1539,9 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       </div>
     </div>
     <div class="col">
-      <button type="button" class="btn btn-outline-info" id="search-inventoryreport">Search</button>
+      <button type="button" class="btn btn-outline-info" id="search-inventoryreport">Get Report</button>
+      &nbsp;
+      <button type="button" class="btn btn-outline-success" id="download-inventoryreport">Download</button>
     </div>
   </form>
 
@@ -1532,7 +1555,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <div class="row">
 
         <!-- Table -->
-        <div class="col-12">
+        <div class="col-12" id="inventoryreport-div">
           <table class="table table-striped" id="inventoryreport-table">
             <thead>
               <tr>
@@ -1571,9 +1594,10 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
       <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
       <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
       <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-
+      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
       <script th:src="@{/static/app.js}"/></script>
       <script th:src="@{/static/papaparse.min.js}"/></script>
+      <script th:src="@{/static/notify.js}"></script>
     </footer>
 
 

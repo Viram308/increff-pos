@@ -18,28 +18,26 @@ public class BrandDto {
 
 	@Autowired
 	private BrandService brandService;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	public BrandMasterPojo addBrand(BrandForm form) throws ApiException {
 		validateData(form);
-		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(form);
+		BrandMasterPojo brandPojo = ConverterUtil.convertBrandFormtoBrandMasterPojo(form);
 		return brandService.add(brandPojo);
 	}
 
 	public List<BrandData> searchBrandData(BrandForm form) throws ApiException {
 		List<BrandMasterPojo> list = brandService.searchBrandData(form);
-		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
+		return list.stream().map(o -> ConverterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
 	public BrandData getBrandData(int id) {
 		BrandMasterPojo brandPojo = brandService.get(id);
-		return converterUtil.convertBrandMasterPojotoBrandData(brandPojo);
+		return ConverterUtil.convertBrandMasterPojotoBrandData(brandPojo);
 	}
 
 	public BrandMasterPojo updateBrand(int id, BrandForm form) throws ApiException {
 		validateData(form);
-		BrandMasterPojo brandPojo = converterUtil.convertBrandFormtoBrandMasterPojo(form);
+		BrandMasterPojo brandPojo = ConverterUtil.convertBrandFormtoBrandMasterPojo(form);
 		return brandService.update(id, brandPojo);
 	}
 
@@ -49,7 +47,7 @@ public class BrandDto {
 
 	public List<BrandData> getAllBrands() {
 		List<BrandMasterPojo> list = brandService.getAll();
-		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
+		return list.stream().map(o -> ConverterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
 	public void validateData(BrandForm b) throws ApiException {

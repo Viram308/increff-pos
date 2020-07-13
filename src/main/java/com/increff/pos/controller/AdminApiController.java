@@ -1,5 +1,7 @@
 package com.increff.pos.controller;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +31,8 @@ public class AdminApiController {
 
 	@ApiOperation(value = "Adds a user")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public UserPojo addUser(@RequestBody UserForm form) throws ApiException {
+	public UserPojo addUser(@RequestBody UserForm form)
+			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		return userDto.addUser(form);
 	}
 
@@ -45,9 +48,16 @@ public class AdminApiController {
 		return userDto.getUserData(id);
 	}
 
+	@ApiOperation(value = "Search a User")
+	@RequestMapping(value = "/search", method = RequestMethod.POST)
+	public List<UserData> search(@RequestBody UserForm form) {
+		return userDto.searchData(form);
+	}
+	
 	@ApiOperation(value = "Updates a user")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-	public UserPojo updateUser(@PathVariable int id, @RequestBody UserForm form) throws ApiException {
+	public UserPojo updateUser(@PathVariable int id, @RequestBody UserForm form)
+			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		return userDto.updateUser(id, form);
 	}
 

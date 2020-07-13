@@ -2,7 +2,6 @@ package com.increff.pos.dto;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -13,11 +12,8 @@ import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductDetails;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
-import com.increff.pos.pojo.BrandMasterPojo;
-import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.ConverterUtil;
 
 public class ProductDtoTest extends AbstractUnitTest {
 
@@ -26,9 +22,6 @@ public class ProductDtoTest extends AbstractUnitTest {
 
 	@Autowired
 	private ProductDto productDto;
-
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	@Test
 	public void testAdd() throws ApiException {
@@ -113,27 +106,6 @@ public class ProductDtoTest extends AbstractUnitTest {
 		assertEquals("kitkat", productData.name);
 	}
 
-	@Test
-	public void testGetProductIdList() throws ApiException {
-		BrandMasterPojo brandMasterPojo1 = new BrandMasterPojo();
-		brandMasterPojo1.setId(1);
-		BrandMasterPojo brandMasterPojo2 = new BrandMasterPojo();
-		brandMasterPojo2.setId(2);
-		ProductForm productForm1 = getProductForm("nestle", "dairy", "munch", 10.50);
-		ProductForm productForm2 = getProductForm("nestle", "dairy", "kitkat", 10.50);
-		ProductMasterPojo productMasterPojo1 = converterUtil.convertProductFormtoProductMasterPojo(productForm1,
-				brandMasterPojo1);
-		ProductMasterPojo productMasterPojo2 = converterUtil.convertProductFormtoProductMasterPojo(productForm2,
-				brandMasterPojo2);
-		productMasterPojo1.setId(1);
-		productMasterPojo2.setId(2);
-		List<ProductMasterPojo> productMasterPojolist = new ArrayList<ProductMasterPojo>();
-		productMasterPojolist.add(productMasterPojo1);
-		productMasterPojolist.add(productMasterPojo2);
-		List<Integer> productIds = productDto.getProductIdList(productMasterPojolist);
-		assertEquals(2, productIds.size());
-	}
-
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
 		ProductForm productForm = getProductForm("nestle", "dairy", "munch", 10.50);
@@ -141,15 +113,6 @@ public class ProductDtoTest extends AbstractUnitTest {
 		// throws exception
 		productForm = getProductForm("nestle", "dairy", "   ", 0.0);
 		productDto.validateData(productForm);
-	}
-
-	@Test(expected = ApiException.class)
-	public void testCheckSearchData() throws ApiException {
-		ProductSearchForm productSearchForm = getProductSearchForm("barcode", "nestle", "dairy", "munch");
-		productDto.checkSearchData(productSearchForm);
-		// throws exception
-		productSearchForm = getProductSearchForm("", " ", "", "");
-		productDto.checkSearchData(productSearchForm);
 	}
 
 	private ProductSearchForm getProductSearchForm(String barcode, String brand, String category, String name) {

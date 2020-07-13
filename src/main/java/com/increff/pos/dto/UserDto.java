@@ -1,5 +1,9 @@
 package com.increff.pos.dto;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -14,6 +18,7 @@ import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;
 import com.increff.pos.util.ConverterUtil;
+import com.increff.pos.util.StringUtil;
 
 @Component
 public class UserDto {
@@ -21,13 +26,15 @@ public class UserDto {
 	@Autowired
 	private UserService userService;
 	@Autowired
-	private ConverterUtil converterUtil;
-	@Autowired
 	private InfoData info;
 
-	public UserPojo addUser(UserForm form) throws ApiException {
+	public UserPojo addUser(UserForm form) throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		checkData(form);
-		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
+		UserPojo userPojo = ConverterUtil.convertUserFormtoUserPojo(form);
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.reset();
+	    md.update(form.getPassword().getBytes("UTF-8"));
+	    userPojo.setPassword(String.format("%032x", new BigInteger(1, md.digest())));
 		return userService.add(userPojo);
 	}
 
@@ -37,25 +44,36 @@ public class UserDto {
 
 	public UserData getUserData(int id) {
 		UserPojo userPojo = userService.get(id);
-		return converterUtil.convertUserPojotoUserData(userPojo);
+		return ConverterUtil.convertUserPojotoUserData(userPojo);
+	}
+
+	public List<UserData> searchData(UserForm form) {
+		List<UserPojo> list = userService.searchUserData(form);
+		if (form.getRole().isEmpty()) {
+			return list.stream().map(o -> ConverterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
+		}
+		list = list.stream().filter(o -> (StringUtil.toLowerCase(form.getRole()).equals(o.getRole())))
+				.collect(Collectors.toList());
+		return list.stream().map(o -> ConverterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
 	}
 
 	public UserPojo getByEmail(String email) throws ApiException {
 		return userService.getByEmail(email);
 	}
 
-	public UserPojo updateUser(int id, UserForm form) throws ApiException {
+	public UserPojo updateUser(int id, UserForm form)
+			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		checkData(form);
-		UserPojo userPojo = converterUtil.convertUserFormtoUserPojo(form);
+		UserPojo userPojo = ConverterUtil.convertUserFormtoUserPojo(form);
 		return userService.update(id, userPojo);
 	}
 
 	public List<UserData> getAllUsers() {
 		List<UserPojo> list = userService.getAll();
-		return list.stream().map(o -> converterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
+		return list.stream().map(o -> ConverterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
 	}
 
-	public void checkInit(UserForm form) throws ApiException {
+	public void checkInit(UserForm form) throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		List<UserPojo> list = userService.getAll();
 		// check if already initialized
 		// check if already exists
@@ -64,20 +82,24 @@ public class UserDto {
 		} else {
 			// Initialize with admin role
 			form.setRole("admin");
-			UserPojo p = converterUtil.convertUserFormtoUserPojo(form);
+			UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
+			MessageDigest md = MessageDigest.getInstance("MD5");
+			md.reset();
+		    md.update(form.getPassword().getBytes("UTF-8"));
+		    p.setPassword(String.format("%032x", new BigInteger(1, md.digest())));
 			userService.add(p);
 			info.setMessage("Application initialized");
 		}
 	}
 
 	public void checkData(UserForm u) throws ApiException {
-		if (u.getEmail().isBlank() || u.getPassword().isBlank() || u.getRole().isBlank()) {
+		if (u.getEmail().isBlank() || u.getRole().isBlank()) {
 			throw new ApiException("Please enter email, password and role !!");
 		}
 	}
 
 	public Authentication convertUserPojotoAuthentication(UserPojo userPojo) {
-		return converterUtil.convertUserPojotoAuthentication(userPojo);
+		return ConverterUtil.convertUserPojotoAuthentication(userPojo);
 	}
 
 }

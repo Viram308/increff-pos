@@ -40,54 +40,38 @@ public class ReportDto {
 	private BrandService brandService;
 	@Autowired
 	private ProductService productService;
-	@Autowired
-	private ConverterUtil converterUtil;
 
-	public List<OrderItemPojo> getOrderItemPojoList(SalesReportForm salesReportForm)
-			throws ParseException, ApiException {
+	public List<Integer> getOrderIds(SalesReportForm salesReportForm) throws ParseException, ApiException {
 		List<OrderPojo> orderPojo = orderService.getAll();
 		// Get list of order ids
-		List<Integer> orderIds = reportService.getOrderIdList(orderPojo, salesReportForm.startdate,
-				salesReportForm.enddate);
-		return orderItemService.getList(orderIds);
+		if (salesReportForm.startdate.isBlank() && salesReportForm.enddate.isBlank()) {
+			return orderPojo.stream().map(o -> o.getId()).collect(Collectors.toList());
+		}
+		return reportService.getOrderIdList(orderPojo, salesReportForm.startdate, salesReportForm.enddate);
 	}
 
-	public List<SalesReportData> getSalesReportData(SalesReportForm salesReportForm)
-			throws ApiException, ParseException {
-		// Get list of order items by given order ids
-		List<OrderItemPojo> listOfOrderItemPojo = getOrderItemPojoList(salesReportForm);
-		// Group order item pojo by product id
-		listOfOrderItemPojo = reportService.groupOrderItemPojoByProductId(listOfOrderItemPojo);
-		// Converts OrderItemPojo to SalesReportData
-		List<SalesReportData> salesReportData = listOfOrderItemPojo.stream()
-				.map(o -> converterUtil.convertToSalesReportData(o,
+	public List<SalesReportData> getSalesReport(SalesReportForm salesReportForm) throws ParseException, ApiException {
+		List<Integer> orderIds = getOrderIds(salesReportForm);
+		BrandForm brandForm = ConverterUtil.convertSalesReportFormtoBrandForm(salesReportForm);
+		List<BrandMasterPojo> brandMasterPojoList = brandService.searchBrandData(brandForm);
+		List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		List<Integer> productIds = productService.getAll().stream()
+				.filter(o -> (brandIds.contains(o.getBrand_category_id()))).map(o -> o.getId())
+				.collect(Collectors.toList());
+		List<OrderItemPojo> listOfOrderItemPojos = orderItemService.getAll().stream()
+				.filter(o -> (productIds.contains(o.getProductId()) && orderIds.contains(o.getOrderId())))
+				.collect(Collectors.toList());
+		List<SalesReportData> salesReportData = listOfOrderItemPojos.stream()
+				.map(o -> ConverterUtil.convertToSalesReportData(o,
 						brandService.get(productService.get(o.getProductId()).getBrand_category_id())))
 				.collect(Collectors.toList());
-		// Remove sales report data according to brand and category
-		salesReportData = reportService.getSalesReportDataByBrandAndCategory(salesReportData, salesReportForm.brand,
-				salesReportForm.category);
-		// Group Sales Report Data category wise
+
 		return reportService.groupSalesReportDataCategoryWise(salesReportData);
-	}
-
-	public List<BrandData> getBrandReportData() {
-		List<BrandMasterPojo> list = brandService.getAll();
-		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
-	}
-
-	public List<InventoryReportData> getInventoryReportData() {
-		List<InventoryPojo> inventoryPojoList = inventoryService.getAll();
-		List<InventoryReportData> list2 = inventoryPojoList.stream()
-				.map(o -> converterUtil.convertToInventoryReportData(o,
-						brandService.get(productService.get(o.getProductid()).getBrand_category_id())))
-				.collect(Collectors.toList());
-		// Group list of InventoryReportData brand and category wise
-		return reportService.groupDataForInventoryReport(list2);
 	}
 
 	public List<BrandData> searchBrandReport(BrandForm brandForm) throws ApiException {
 		List<BrandMasterPojo> list = brandService.searchBrandData(brandForm);
-		return list.stream().map(o -> converterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
+		return list.stream().map(o -> ConverterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
 	public List<InventoryReportData> searchInventoryReport(BrandForm brandForm) throws ApiException {
@@ -98,8 +82,8 @@ public class ReportDto {
 		List<Integer> productIds = list.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<InventoryPojo> inventoryPojoList = inventoryService.searchData(productIds);
 		List<InventoryReportData> list2 = inventoryPojoList.stream()
-				.map(o -> converterUtil.convertToInventoryReportData(o,
-						brandService.get(productService.get(o.getProductid()).getBrand_category_id())))
+				.map(o -> ConverterUtil.convertToInventoryReportData(o,
+						brandService.get(productService.get(o.getProductId()).getBrand_category_id())))
 				.collect(Collectors.toList());
 		// Group list of InventoryReportData brand and category wise
 		return reportService.groupDataForInventoryReport(list2);

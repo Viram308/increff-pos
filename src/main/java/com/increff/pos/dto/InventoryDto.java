@@ -24,8 +24,6 @@ public class InventoryDto {
 	private ProductService productService;
 	@Autowired
 	private InventoryService inventoryService;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	public InventoryPojo addInventory(InventoryForm form) throws ApiException {
 		validateData(form);
@@ -36,32 +34,32 @@ public class InventoryDto {
 	}
 
 	public List<InventoryData> searchInventory(InventorySearchForm form) throws ApiException {
-		ProductSearchForm productSearchForm = converterUtil.convertInventorySearchFormtoProductSearchForm(form);
+		ProductSearchForm productSearchForm = ConverterUtil.convertInventorySearchFormtoProductSearchForm(form);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
 		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<InventoryPojo> list = inventoryService.searchData(productIds);
 		return list.stream()
-				.map(o -> converterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductid())))
+				.map(o -> ConverterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
 	}
 
 	public InventoryData getInventoryData(int id) throws ApiException {
 		InventoryPojo inventoryPojo = inventoryService.get(id);
-		ProductMasterPojo productMasterPojo = productService.get(inventoryPojo.getProductid());
-		return converterUtil.convertInventoryPojotoInventoryData(inventoryPojo, productMasterPojo);
+		ProductMasterPojo productMasterPojo = productService.get(inventoryPojo.getProductId());
+		return ConverterUtil.convertInventoryPojotoInventoryData(inventoryPojo, productMasterPojo);
 	}
 
 	public InventoryPojo updateInventory(int id, InventoryForm form) throws ApiException {
 		validateData(form);
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
-		InventoryPojo inventoryPojo = converterUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
+		InventoryPojo inventoryPojo = ConverterUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
 		return inventoryService.update(id, inventoryPojo);
 	}
 
 	public List<InventoryData> getAllInventory() {
 		List<InventoryPojo> list = inventoryService.getAll();
 		return list.stream()
-				.map(o -> converterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductid())))
+				.map(o -> ConverterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
 	}
 

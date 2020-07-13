@@ -32,8 +32,6 @@ public class OrderItemDtoTest extends AbstractUnitTest {
 	private ProductDto productDto;
 	@Autowired
 	private OrderDto orderDto;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	@Test
 	public void testGetByOrderId() throws ApiException, ParseException {
@@ -72,14 +70,16 @@ public class OrderItemDtoTest extends AbstractUnitTest {
 		assertEquals(10, orderItemDatas.get(0).sellingPrice, 0.01);
 		assertEquals(productData1.barcode, orderItemDatas.get(0).barcode);
 		assertEquals(4, orderItemDatas.get(0).quantity);
-	}
-
-	@Test(expected = ApiException.class)
-	public void testCheckSearchData() throws ApiException {
-		OrderItemData orderItemData = getOrderItemData("", "m", 0);
-		orderItemDto.checkSearchData(orderItemData);
-		orderItemData = getOrderItemData("", "", 0);
-		orderItemDto.checkSearchData(orderItemData);
+		
+		List<OrderData> orderDatas = orderDto.getAll();
+		int orderId=orderDatas.get(0).id;
+		orderItemData = getOrderItemData("", "m", orderId);
+		orderItemDatas = orderItemDto.searchOrderItem(orderItemData);
+		assertEquals(1, orderItemDatas.size());
+		orderItemData = getOrderItemData("", "m", orderId+1);
+		orderItemDatas = orderItemDto.searchOrderItem(orderItemData);
+		assertEquals(0, orderItemDatas.size());
+		
 	}
 
 	private OrderItemData getOrderItemData(String barcode, String name, int orderId) {
@@ -92,8 +92,10 @@ public class OrderItemDtoTest extends AbstractUnitTest {
 
 	private OrderSearchForm getOrderSearchForm() {
 		OrderSearchForm orderSearchForm = new OrderSearchForm();
-		orderSearchForm.startdate = converterUtil.getDateTime().split(" ")[0];
-		orderSearchForm.enddate = converterUtil.getDateTime().split(" ")[0];
+		orderSearchForm.startdate = ConverterUtil.getDateTime().split(" ")[0];
+		orderSearchForm.enddate = ConverterUtil.getDateTime().split(" ")[0];
+		orderSearchForm.orderId = 0;
+		orderSearchForm.orderCreater="";
 		return orderSearchForm;
 	}
 

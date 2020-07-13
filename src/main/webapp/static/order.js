@@ -165,12 +165,17 @@ function searchOrder(){
 	// take data
 	var startdate = $('#inputStartDate').val().trim();
 	var enddate = $('#inputEndDate').val().trim();
-
 	// validate dates
-	if(startdate=="" || enddate==""){
-		alert('Dates Required!!');
+	if(startdate=="" && enddate!=""){
+		$.notify("Enter both dates or none !!","error");
 		return false;
 	}
+	
+	if(startdate!="" && enddate==""){
+		$.notify("Enter both dates or none !!","error");
+		return false;
+	}
+
 	var $form = $("#order-form");
 	// form to json
 	var json = toJson($form);
@@ -196,7 +201,7 @@ function searchOrder(){
 // updates order
 function updateOrder(){
 	if($totalItemsEdit.val()==0){
-		alert('Add items to create order');
+		$.notify("Add items to update order !!","error");
 		return false;
 	}
 	var table = document.getElementById("customer-order-edit-table");
@@ -245,6 +250,8 @@ function updateOrder(){
 downloadBillPdf(blob);
 $tbodyEdit.empty();
 $totalItemsEdit.val(0);
+$.notify("Order updated successfully !!","success");
+searchOrder();
 $('#edit-order-modal').modal('toggle');
 
 },
@@ -255,7 +262,7 @@ error: handleAjaxError
 
 	function createOrder(){
 		if($totalItems.val()==0){
-			alert('Add items to create order');
+			$.notify("Add items to create order !!","error");
 			return false;
 		}
 		var table = document.getElementById("customer-order-table");
@@ -300,6 +307,8 @@ error: handleAjaxError
 downloadBillPdf(blob);
 $tbody.empty();
 $totalItems.val(0);
+$.notify("Order added successfully !!","success");
+searchOrder();
 $('#add-order-modal').modal('toggle');
 
 },
@@ -319,7 +328,9 @@ error: handleAjaxError
 			buttonHtml+=' <button class="btn btn-outline-success" onclick="editOrder(' + e.id + ')">Edit</button>'
 			var row = '<tr>'
 			+ '<td>' + e.id + '</td>'
+			+ '<td>' + e.orderCreater + '</td>'
 			+ '<td>' + e.datetime + '</td>'
+			+ '<td>' + e.billAmount + '</td>'
 			+ '<td>' + buttonHtml + '</td>'
 			+ '</tr>';
 			$tbodyOrder.append(row);
@@ -416,12 +427,12 @@ function updateQuantityInTable(barcode,table,finalQuantity){
 		var quantity=$('#inputQuantity').val();
 		if(barcode.length == 8){
 			if(quantity <= 0){
-				alert('Quantity for product can not be negative or zero !!');
+				$.notify("Quantity for product can not be negative or zero !!","error");
 				return false;
 			}
 			var availableQuantity=parseInt($('#availableQuantity').text());
 			if(availableQuantity < quantity){
-				alert('Available quantity is '+availableQuantity);
+				$.notify("Available quantity is "+availableQuantity,"info");
 				return false;		
 			}
 			var table = document.getElementById("customer-order-table");
@@ -456,7 +467,7 @@ else{
 	$('#availableQuantity').text('');
 }
 else{
-	alert('Please enter valid barcode');
+	$.notify("Please enter valid barcode !!","error");
 	return false;
 }
 }
@@ -467,12 +478,12 @@ function addItemInEditTable(){
 	var quantity=$('#inputQuantityEditOrder').val();
 	if(barcode.length == 8){
 		if(quantity <= 0){
-			alert('Quantity for product can not be negative or zero !!');
+			$.notify("Quantity for product can not be negative or zero !!","error");
 			return false;
 		}
 		var availableQuantity=parseInt($('#availableQuantityEditOrder').text());
 			if(availableQuantity < quantity){
-				alert('Available quantity is '+availableQuantity);
+				$.notify("Available quantity is "+availableQuantity,"info");
 				return false;		
 			}
 			var table = document.getElementById("customer-order-edit-table");
@@ -509,7 +520,7 @@ else{
 
 }
 else{
-	alert('Please enter valid barcode');
+	$.notify("Please enter valid barcode !!","error");
 	return false;
 }
 }
@@ -633,5 +644,5 @@ function showOrderModal(){
 	}
 
 	$(document).ready(init);
-
+    $(document).ready(getOrderList);
 

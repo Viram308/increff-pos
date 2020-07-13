@@ -2,6 +2,10 @@ package com.increff.pos.dto;
 
 import static org.junit.Assert.assertEquals;
 
+import java.io.UnsupportedEncodingException;
+import java.math.BigInteger;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -25,48 +29,56 @@ public class UserDtoTest extends AbstractUnitTest {
 	private InfoData info;
 
 	@Test
-	public void testAddUser() throws ApiException {
+	public void testAddUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
 		assertEquals("shahviram308@gmail.com", userMasterPojo.getEmail());
-		assertEquals("password", userMasterPojo.getPassword());
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.reset();
+		md.update("password".getBytes("UTF-8"));
+		String password = String.format("%032x", new BigInteger(1, md.digest()));
+		assertEquals(password, userMasterPojo.getPassword());
 		assertEquals("admin", userMasterPojo.getRole());
 	}
 
 	@Test
-	public void testGetByEmail() throws ApiException {
+	public void testGetByEmail() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
 		assertEquals("shahviram308@gmail.com", userMasterPojo.getEmail());
-		assertEquals("password", userMasterPojo.getPassword());
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.reset();
+		md.update("password".getBytes("UTF-8"));
+		String password = String.format("%032x", new BigInteger(1, md.digest()));
+		assertEquals(password, userMasterPojo.getPassword());
 		assertEquals("admin", userMasterPojo.getRole());
 	}
 
-	@Test(expected = ApiException.class)
-	public void testDeleteUser() throws ApiException {
+	@Test
+	public void testDeleteUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
 		userDto.deleteUser(userMasterPojo.getId());
 		// throws exception
-		userDto.getByEmail(userForm.getEmail());
+		List<UserData> userDatas = userDto.getAllUsers();
+		assertEquals(0, userDatas.size());
 	}
 
 	@Test
-	public void testGetUser() throws ApiException {
+	public void testGetUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
 		UserData userData = userDto.getUserData(userMasterPojo.getId());
 		assertEquals("shahviram308@gmail.com", userData.getEmail());
-		assertEquals("password", userData.getEmail());
 		assertEquals("admin", userData.getRole());
 	}
 
 	@Test
-	public void testUpdateUser() throws ApiException {
+	public void testUpdateUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
@@ -77,7 +89,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testGetAll() throws ApiException {
+	public void testGetAll() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
 		List<UserData> userMasterPojos = userDto.getAllUsers();
@@ -85,7 +97,21 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testCheckInit() throws ApiException {
+	public void testSearchUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		userDto.addUser(userForm);
+		userForm = getUserForm("  sHAHVIRAM123@gMail.coM  ", "password", "Standard");
+		userDto.addUser(userForm);
+		userForm = getUserForm("","","");
+		List<UserData> userDatas = userDto.searchData(userForm);
+		assertEquals(2, userDatas.size());
+		userForm = getUserForm("","","admin");
+		userDatas = userDto.searchData(userForm);
+		assertEquals(1, userDatas.size());
+	}
+	
+	@Test
+	public void testCheckInit() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm userForm1 = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.checkInit(userForm1);
 		assertEquals("Application initialized", info.getMessage());

@@ -19,7 +19,6 @@ import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.model.SalesReportData;
 import com.increff.pos.model.SalesReportForm;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.ConverterUtil;
@@ -37,43 +36,29 @@ public class ReportDtoTest extends AbstractUnitTest {
 	private ProductDto productDto;
 	@Autowired
 	private OrderDto orderDto;
-	@Autowired
-	private ConverterUtil converterUtil;
 
 	@Test
-	public void testGetOrderItemPojoList() throws ApiException, ParseException {
+	public void testGetOrderIds() throws ApiException, ParseException {
 		addOrder();
-		SalesReportForm salesReportForm = getSalesReportForm(converterUtil.getDateTime().split(" ")[0],
-				converterUtil.getDateTime().split(" ")[0], "", "");
-		List<OrderItemPojo> orderItemPojos = reportDto.getOrderItemPojoList(salesReportForm);
-		assertEquals(2, orderItemPojos.size());
+		SalesReportForm salesReportForm = getSalesReportForm(ConverterUtil.getDateTime().split(" ")[0],
+				ConverterUtil.getDateTime().split(" ")[0], "", "");
+		List<Integer> orderIds = reportDto.getOrderIds(salesReportForm);
+		assertEquals(1, orderIds.size());
+		salesReportForm = getSalesReportForm("", "", "", "");
+		orderIds = reportDto.getOrderIds(salesReportForm);
+		assertEquals(1, orderIds.size());
 	}
 
 	@Test
-	public void testGetSalesReportData() throws ApiException, ParseException {
+	public void testGetSalesReport() throws ApiException, ParseException {
 		addOrder();
-		SalesReportForm salesReportForm = getSalesReportForm(converterUtil.getDateTime().split(" ")[0],
-				converterUtil.getDateTime().split(" ")[0], "", "");
-		List<SalesReportData> salesReportDatas = reportDto.getSalesReportData(salesReportForm);
+		SalesReportForm salesReportForm = getSalesReportForm("","", "n", "");
+		List<SalesReportData> salesReportDatas = reportDto.getSalesReport(salesReportForm);
 		assertEquals(2, salesReportDatas.size());
 		assertEquals(40, salesReportDatas.get(0).revenue, 0.01);
 		assertEquals(75, salesReportDatas.get(1).revenue, 0.01);
 		assertEquals(4, salesReportDatas.get(0).quantity);
 		assertEquals(5, salesReportDatas.get(1).quantity);
-	}
-
-	@Test
-	public void testGetBrandReportData() throws ApiException {
-		addOrder();
-		List<BrandData> brandDatas = reportDto.getBrandReportData();
-		assertEquals(2, brandDatas.size());
-	}
-
-	@Test
-	public void testGetInventoryReportData() throws ApiException {
-		addOrder();
-		List<InventoryReportData> inventoryDatas = reportDto.getInventoryReportData();
-		assertEquals(2, inventoryDatas.size());
 	}
 
 	@Test

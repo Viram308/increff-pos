@@ -11,6 +11,7 @@ public class OrderPojo {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
+	private String orderCreater;
 	private String datetime;
 
 	public int getId() {
@@ -19,6 +20,14 @@ public class OrderPojo {
 
 	public void setId(int id) {
 		this.id = id;
+	}
+
+	public String getOrderCreater() {
+		return orderCreater;
+	}
+
+	public void setOrderCreater(String orderCreater) {
+		this.orderCreater = orderCreater;
 	}
 
 	public String getDatetime() {

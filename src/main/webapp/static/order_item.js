@@ -4,46 +4,11 @@ function getOrderItemUrl(){
    return baseUrl + "/api/admin/orderitem";
 }
 
-// //BUTTON ACTIONS
-// function updateOrderItem(event){
-//    $('#edit-orderitem-modal').modal('toggle');
-//    //Get the ID
-//    var id = $("#orderitem-edit-form input[name=id]").val(); 
-//    var url = getOrderItemUrl() + "/" + id;
-
-//    //Set the values to update
-//    var $form = $("#orderitem-edit-form");
-//    var json = toJson($form);
-
-//    $.ajax({
-//       url: url,
-//       type: 'PUT',
-//       data: json,
-//       headers: {
-//          'Content-Type': 'application/json'
-//       },      
-//       success: function(response) {
-//          // get list
-//          getOrderItemList();   
-//       },
-//       error: handleAjaxError
-//    });
-
-//    return false;
-// }
-
 function searchOrderItem(){
    //Set the values to add
    var $tbody = $('#orderitem-table').find('tbody');
    $tbody.empty();
-   var orderId=$('#inputOrderId').val();
-   var name=$('#inputName').val().trim();
-   var barcode=$('#inputBarcode').val().trim();
-      
-   if(name=="" && barcode=="" && orderId<=0){
-      alert('Enter Name or Barcode or valid orderId');
-      return false;
-   }
+   
    var $form = $("#orderitem-form");
    var json = toJson($form);
    var url = getOrderItemUrl()+"/search";
@@ -113,14 +78,6 @@ function displayEditOrderItem(id){
       });   
 }
 
-// // fill entries
-// function displayOrderItem(data){
-//    $("#orderitem-edit-form input[name=barcode]").val(data.barcode);
-//    $("#orderitem-edit-form input[name=quantity]").val(data.quantity);
-//    $("#orderitem-edit-form input[name=mrp]").val(data.mrp);       
-//    $("#orderitem-edit-form input[name=id]").val(data.id);   
-//    $('#edit-orderitem-modal').modal('toggle');
-// }
 
 //INITIALIZATION CODE
 function init(){
@@ -128,3 +85,4 @@ function init(){
 }
 
 $(document).ready(init);
+$(document).ready(searchOrderItem);

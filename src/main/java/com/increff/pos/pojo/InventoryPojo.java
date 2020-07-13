@@ -4,14 +4,17 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 @Entity
+@Table(uniqueConstraints={@UniqueConstraint(columnNames={"productId"})})
 public class InventoryPojo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
-	private int productid;
+	private int productId;
 	private int quantity;
 
 	public int getId() {
@@ -22,12 +25,12 @@ public class InventoryPojo {
 		this.id = id;
 	}
 
-	public int getProductid() {
-		return productid;
+	public int getProductId() {
+		return productId;
 	}
 
-	public void setProductid(int productid) {
-		this.productid = productid;
+	public void setProductId(int productid) {
+		this.productId = productid;
 	}
 
 	public int getQuantity() {

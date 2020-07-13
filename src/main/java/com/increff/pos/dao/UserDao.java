@@ -15,6 +15,8 @@ public class UserDao extends AbstractDao {
 	private static String select_email = "select p from UserPojo p where email=:email";
 	// select all
 	private static String select_all = "select p from UserPojo p";
+	// search
+	private static String search = "select p from UserPojo p where email like :email";
 
 	// select according to email
 	public UserPojo select(String email) {
@@ -26,6 +28,12 @@ public class UserDao extends AbstractDao {
 	// select all
 	public List<UserPojo> selectAll() {
 		TypedQuery<UserPojo> query = getQuery(select_all, UserPojo.class);
+		return query.getResultList();
+	}
+
+	public List<UserPojo> searchData(String email) {
+		TypedQuery<UserPojo> query = getQuery(search, UserPojo.class);
+		query.setParameter("email", email + "%");
 		return query.getResultList();
 	}
 

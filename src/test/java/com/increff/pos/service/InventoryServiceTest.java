@@ -34,25 +34,15 @@ public class InventoryServiceTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testDelete() throws ApiException {
-		InventoryPojo i = getInventoryPojoTest();
-		service.add(i);
-		// Delete should be successful and should not throw exception as data exists
-		service.delete(i.getId());
-	}
-
-	@Test(expected = ApiException.class)
 	public void testGetByProductId() throws ApiException {
 		InventoryPojo i = getInventoryPojoTest();
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductid());
+		ProductMasterPojo productMasterPojo = pService.get(i.getProductId());
 		service.add(i);
 		// select data for given productid
 
 		InventoryPojo ip = service.getByProductId(productMasterPojo);
 		assertEquals(i.getId(), ip.getId());
-		service.delete(ip.getId());
-		// Throw exception after deletion
-		service.getByProductId(productMasterPojo);
+		assertEquals(i.getQuantity(), ip.getQuantity());
 	}
 
 	@Test
@@ -90,9 +80,8 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		// select data for given id
 		InventoryPojo ip = service.getCheck(i.getId());
 		assertEquals(i.getId(), ip.getId());
-		service.delete(ip.getId());
-		// Throw exception after deletion
-		service.getCheck(ip.getId());
+		// Throw exception
+		service.getCheck(ip.getId()+1);
 	}
 
 	@Test
@@ -100,7 +89,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		InventoryPojo inventoryPojo1 = getInventoryPojoTest();
 		service.add(inventoryPojo1);
 		List<Integer> productIds=new ArrayList<Integer>();
-		productIds.add(inventoryPojo1.getProductid());
+		productIds.add(inventoryPojo1.getProductId());
 		List<InventoryPojo> inventoryPojos=service.searchData(productIds);
 		assertEquals(1, inventoryPojos.size());
 		productIds.clear();
@@ -124,7 +113,7 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		p.setMrp(mrp);
 		pService.add(p, b);
 		int quantity = 10;
-		i.setProductid(p.getId());
+		i.setProductId(p.getId());
 		i.setQuantity(quantity);
 		return i;
 	}

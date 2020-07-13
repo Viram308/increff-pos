@@ -7,6 +7,7 @@ import java.util.List;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.spring.AbstractUnitTest;
 
@@ -24,35 +25,19 @@ public class BrandServiceTest extends AbstractUnitTest {
 		service.add(b);
 	}
 
-	@Test
-	public void testDelete() throws ApiException {
-		BrandMasterPojo b = getBrandMasterPojoTest();
-		// Add data
-		service.add(b);
-		BrandMasterPojo brandMasterPojo = service.getByBrandCategory(b.getBrand(), b.getCategory());
-		assertEquals(brandMasterPojo.getId(), b.getId());
-		// Delete should be successful and should not throw exception as data exists
-		service.delete(brandMasterPojo.getId());
-	}
+	
 
 	@Test(expected = ApiException.class)
-	public void testGetId() throws ApiException {
+	public void testGetByBrandCategory() throws ApiException {
 		BrandMasterPojo b = getBrandMasterPojoTest();
 		service.add(b);
 		// select data for given brand and category
-		BrandMasterPojo brandMasterPojo = service.getByBrandCategory(b.getBrand(), b.getCategory());
+		BrandForm brandForm = getBrandForm();
+		BrandMasterPojo brandMasterPojo = service.getByBrandCategory(brandForm);
 		assertEquals(brandMasterPojo.getId(), b.getId());
-		service.delete(brandMasterPojo.getId());
-		// After delete throw exception while getting data
-		service.getByBrandCategory(b.getBrand(), b.getCategory());
-	}
-
-	@Test(expected = ApiException.class)
-	public void testGetIdBlank() throws ApiException {
-		BrandMasterPojo b = getBrandMasterPojoTest();
-		service.add(b);
-		// select data for given brand and category
-		service.getByBrandCategory("", "");
+		brandForm.brand="a";
+		brandForm.category="b";		
+		brandMasterPojo = service.getByBrandCategory(brandForm);
 	}
 
 	@Test
@@ -67,8 +52,11 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetAll() throws ApiException {
+		BrandMasterPojo b = getBrandMasterPojoTest();
+		service.add(b);
 		// test select all
-		service.getAll();
+		List<BrandMasterPojo> brandMasterPojos = service.getAll();
+		assertEquals(1, brandMasterPojos.size());
 	}
 
 	@Test
@@ -91,20 +79,8 @@ public class BrandServiceTest extends AbstractUnitTest {
 		service.add(b);
 		// test getCheck function
 		BrandMasterPojo p = service.getCheck(b.getId());
-		service.delete(p.getId());
-		// After delete throw exception while getting data
-		service.getCheck(p.getId());
-
-	}
-
-	@Test
-	public void testNormalize() throws ApiException {
-		BrandMasterPojo b = getBrandMasterPojoTest();
-		service.normalize(b);
-		// test for normalized data
-		assertEquals("viram", b.getBrand());
-		assertEquals("shah", b.getCategory());
-
+		// throw exception while getting data of id+1
+		service.getCheck(p.getId()+1);
 	}
 
 	@Test
@@ -117,25 +93,21 @@ public class BrandServiceTest extends AbstractUnitTest {
 		service.add(brandMasterPojo1);
 		service.add(brandMasterPojo2);
 		service.add(brandMasterPojo3);
-		BrandMasterPojo brandMasterPojo=new BrandMasterPojo();
-		brandMasterPojo.setBrand("   Vir        ");
-		brandMasterPojo.setCategory("");
-		List<BrandMasterPojo> list=service.searchBrandData(brandMasterPojo);
-		assertEquals(2, list.size());
-		brandMasterPojo.setCategory("p");
-		list=service.searchBrandData(brandMasterPojo);
+		BrandForm brandForm = getBrandForm();
+		List<BrandMasterPojo> list=service.searchBrandData(brandForm);
 		assertEquals(1, list.size());
+		brandForm.category="";
+		list=service.searchBrandData(brandForm);
+		assertEquals(2, list.size());
+	}
+
+	private BrandForm getBrandForm() {
+		BrandForm brandForm = new BrandForm();
+		brandForm.brand = "viram";
+		brandForm.category = "shah";
+		return brandForm;
 	}
 	
-//	@Test(expected = ApiException.class)
-//	public void testCheckData() throws ApiException {
-//		BrandMasterPojo b = getBrandMasterPojoTest();
-//		service.checkData(b);
-//		// throw exception
-//		b.setBrand("");
-//		service.checkData(b);
-//	}
-
 	private BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
 		BrandMasterPojo b = new BrandMasterPojo();
 		// create data

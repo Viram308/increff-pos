@@ -19,10 +19,6 @@ public class OrderItemDao extends AbstractDao {
 	private static String selectByOrderId = "select i from OrderItemPojo i where orderId=:orderId";
 	// delete according to orderId
 	private static String deleteByOrderId = "delete from OrderItemPojo i where orderId=:orderId";
-	// search
-	private static String search = "select i from OrderItemPojo i where orderId=:orderId and productId in :productIds";
-	// search
-	private static String searchByProductId = "select i from OrderItemPojo i where productId in :productIds";
 
 	// select according to order id list
 	public List<OrderItemPojo> selectList(List<Integer> orderIds) {
@@ -47,19 +43,6 @@ public class OrderItemDao extends AbstractDao {
 		Query query = em().createQuery(deleteByOrderId);
 		query.setParameter("orderId", orderId);
 		return query.executeUpdate();
-	}
-
-	public List<OrderItemPojo> searchData(int orderId, List<Integer> productIds) {
-		TypedQuery<OrderItemPojo> query = getQuery(search, OrderItemPojo.class);
-		query.setParameter("orderId", orderId);
-		query.setParameter("productIds", productIds);
-		return query.getResultList();
-	}
-
-	public List<OrderItemPojo> searchData(List<Integer> productIds) {
-		TypedQuery<OrderItemPojo> query = getQuery(searchByProductId, OrderItemPojo.class);
-		query.setParameter("productIds", productIds);
-		return query.getResultList();
 	}
 
 }

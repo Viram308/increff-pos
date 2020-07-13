@@ -35,14 +35,9 @@ public class InventoryService {
 	}
 
 	@Transactional(readOnly = true)
-	public InventoryPojo getByProductId(ProductMasterPojo productMasterPojo) throws ApiException {
-		// Get inventory data by id
-		InventoryPojo i = dao.selectByProductId(productMasterPojo.getId());
-		if (i == null) {
-			throw new ApiException(
-					"Inventory for given product : " + productMasterPojo.getBarcode() + " dosen't exist");
-		}
-		return i;
+	public InventoryPojo getByProductId(ProductMasterPojo productMasterPojo){
+		// Get inventory data by product id
+		return dao.selectByProductId(productMasterPojo.getId());
 	}
 
 	@Transactional(readOnly = true)

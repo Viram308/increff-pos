@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.increff.pos.dao.OrderDao;
 import com.increff.pos.model.BillData;
 import com.increff.pos.model.OrderItemForm;
+import com.increff.pos.model.OrderSearchForm;
 import com.increff.pos.pojo.InventoryPojo;
 import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
@@ -51,6 +52,11 @@ public class OrderService {
 			throw new ApiException("Order not exist for id : " + id);
 		}
 		return p;
+	}
+	
+	@Transactional(readOnly = true)
+	public List<OrderPojo> searchOrder(OrderSearchForm form) {
+		return dao.searchOrder(form.orderCreater);
 	}
 
 	public void checkInventory(List<OrderItemForm> orderItems) throws ApiException {
@@ -119,7 +125,10 @@ public class OrderService {
 	public void update(int id, OrderPojo orderPojo) throws ApiException {
 		OrderPojo orderPojoFinal = getCheck(id);
 		orderPojoFinal.setDatetime(orderPojo.getDatetime());
+		orderPojoFinal.setOrderCreater(orderPojo.getOrderCreater());
 		dao.update(orderPojoFinal);
 	}
+
+	
 
 }

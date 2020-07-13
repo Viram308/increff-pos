@@ -13,7 +13,6 @@ import org.springframework.stereotype.Service;
 
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
-import com.increff.pos.pojo.OrderItemPojo;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.util.StringUtil;
 
@@ -40,26 +39,6 @@ public class ReportService {
 			throw new ApiException("There are no orders for given dates");
 		}
 		return orderIds;
-	}
-
-	public List<OrderItemPojo> groupOrderItemPojoByProductId(List<OrderItemPojo> listOfOrderItemPojo) {
-		LinkedHashMap<Integer, OrderItemPojo> m = new LinkedHashMap<Integer, OrderItemPojo>();
-		for (OrderItemPojo orderItemPojo : listOfOrderItemPojo) {
-			// check key already exists
-			if (m.containsKey(orderItemPojo.getProductId())) {
-				// update existing one
-				OrderItemPojo o = m.get(orderItemPojo.getProductId());
-				o.setQuantity(o.getQuantity() + orderItemPojo.getQuantity());
-				m.put(orderItemPojo.getProductId(), o);
-			} else {
-				// create new one
-				m.put(orderItemPojo.getProductId(), orderItemPojo);
-			}
-		}
-		Collection<OrderItemPojo> values = m.values();
-		// convert hashmap to list
-		List<OrderItemPojo> orderItemPojoList = new ArrayList<OrderItemPojo>(values);
-		return orderItemPojoList;
 	}
 
 	public List<SalesReportData> getSalesReportDataByBrandAndCategory(List<SalesReportData> salesReportData,

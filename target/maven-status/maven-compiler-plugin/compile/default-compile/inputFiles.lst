@@ -2,6 +2,7 @@
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/controller/InitApiController.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dao/OrderDao.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/controller/AboutAppController.java
+/home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/util/NormalizeUtil.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/dao/OrderItemDao.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/UserForm.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/service/OrderService.java
@@ -27,7 +28,6 @@
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/BrandForm.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/SalesReportForm.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/controller/SiteUiController.java
-/home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/model/OrderForm.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/util/GeneratePDF.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/service/AboutAppService.java
 /home/viram/eclipse-workspace/increff-pos/src/main/java/com/increff/pos/spring/SpringSecurityInitializer.java

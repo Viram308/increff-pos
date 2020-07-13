@@ -7,7 +7,7 @@ function getUserUrl(){
 //BUTTON ACTIONS
 function addUser(){
 	//Set the values to add
-	var $form = $("#user-form");
+	var $form = $("#user-add-form");
 	var json = toJson($form);
 	var url = getUserUrl();
 	// call api
@@ -20,7 +20,9 @@ function addUser(){
 		},	   
 		success: function(response) {
 	   		// get list
-	   		getUserList();    
+	   		$('#add-user-modal').modal('toggle');
+	   		$.notify("User added successfully !!","success");
+	   		searchUser();
 	   	},
 	   	error: handleAjaxError
 	   });
@@ -50,13 +52,13 @@ function deleteUser(id){
 		type: 'DELETE',
 		success: function(data) {
 	   		// get list
-	   		getUserList();    
+	   		searchUser();    
 	   	},
 	   	error: handleAjaxError
 	   });
 }
 function updateUser(event){
-	$('#edit-user-modal').modal('toggle');
+	
    //Get the ID
    var id = $("#user-edit-form input[name=id]").val(); 
    var url = getUserUrl() + "/" + id;
@@ -74,7 +76,9 @@ function updateUser(event){
    	},      
    	success: function(response) {
             // get list
-            getUserList();   
+            $('#edit-user-modal').modal('toggle');
+            $.notify("User updated successfully !!","success");
+            searchUser(); 
         },
         error: handleAjaxError
     });
@@ -98,8 +102,7 @@ function displayEditUser(id){
 
 // fill entries
 function displayUser(data){
-	$("#user-edit-form input[name=email]").val(data.email);
-	$("#user-edit-form input[name=password]").val(data.password);       
+	$("#user-edit-form input[name=email]").val(data.email);      
 	$("#user-edit-form input[name=role]").val(data.role);       
 	$("#user-edit-form input[name=id]").val(data.id);   
 	$('#edit-user-modal').modal('toggle');
@@ -109,28 +112,57 @@ function displayUser(data){
 //UI DISPLAY METHODS
 
 function displayUserList(data){
-	console.log('Printing user data');
 	var $tbody = $('#user-table').find('tbody');
 	$tbody.empty();
+	var j=1;
 	for(var i in data){
 		var e = data[i];
 		// dynamic buttons
 		var buttonHtml = '<button class="btn btn-outline-danger" onclick="deleteUser(' + e.id + ')">Delete</button>'
 		buttonHtml += ' <button class="btn btn-outline-success" onclick="displayEditUser(' + e.id + ')">Edit</button>'
 		var row = '<tr>'
-		+ '<td>' + e.id + '</td>'
+		+ '<td>' + j + '</td>'
 		+ '<td>' + e.email + '</td>'
 		+ '<td>' + e.role + '</td>'
 		+ '<td>' + buttonHtml + '</td>'
 		+ '</tr>';
 		$tbody.append(row);
+		j++;
 	}
 }
 
+function searchUser(){
+	//Set the values to add
+	var $tbody = $('#user-table').find('tbody');
+	$tbody.empty();
+	var $form = $("#user-form");
+	var json = toJson($form);
+	var url = getUserUrl()+"/search";
+	// call api
+	$.ajax({
+		url: url,
+		type: 'POST',
+		data: json,
+		headers: {
+			'Content-Type': 'application/json'
+		},	   
+		success: function(response) {
+	   		displayUserList(response);  
+	   	},
+	   	error: handleAjaxError
+	   });
+
+	return false;
+}
+
+function showAddUserModal(){
+	$('#add-user-modal').modal('toggle');
+}
 
 //INITIALIZATION CODE
 function init(){
-	$('#refresh-user-data').click(getUserList);
+	$('#show-add-user-modal').click(showAddUserModal);
+	$('#search-user').click(searchUser);
 }
 
 $(document).ready(init);

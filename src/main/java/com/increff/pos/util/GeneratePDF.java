@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
 import javax.xml.transform.Transformer;
@@ -52,5 +54,21 @@ public class GeneratePDF {
 
 		return encodedBytes;
 
+	}
+
+	public static void createResponse(HttpServletResponse response, byte[] encodedBytes) throws IOException {
+		String pdfFileName = "output.pdf";
+		response.reset();
+		response.addHeader("Pragma", "public");
+		response.addHeader("Cache-Control", "max-age=0");
+		response.setHeader("Content-disposition", "attachment;filename=" + pdfFileName);
+		response.setContentType("application/pdf");
+
+		// avoid "byte shaving" by specifying precise length of transferred data
+		response.setContentLength(encodedBytes.length);
+		ServletOutputStream servletOutputStream = response.getOutputStream();
+		servletOutputStream.write(encodedBytes);
+		servletOutputStream.flush();
+		servletOutputStream.close();
 	}
 }

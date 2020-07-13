@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.text.ParseException;
 import java.util.List;
 
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.TransformerException;
@@ -47,25 +46,7 @@ public class OrderApiController {
 		// Create PDF from generated XML
 		byte[] encodedBytes = GeneratePDF.createPDF();
 		// Create response
-		response = createResponse(response, encodedBytes);
-		// send to output stream
-		ServletOutputStream servletOutputStream = response.getOutputStream();
-		servletOutputStream.write(encodedBytes);
-		servletOutputStream.flush();
-		servletOutputStream.close();
-	}
-
-	private HttpServletResponse createResponse(HttpServletResponse response, byte[] encodedBytes) {
-		String pdfFileName = "output.pdf";
-		response.reset();
-		response.addHeader("Pragma", "public");
-		response.addHeader("Cache-Control", "max-age=0");
-		response.setHeader("Content-disposition", "attachment;filename=" + pdfFileName);
-		response.setContentType("application/pdf");
-
-		// avoid "byte shaving" by specifying precise length of transferred data
-		response.setContentLength(encodedBytes.length);
-		return response;
+		GeneratePDF.createResponse(response, encodedBytes);
 	}
 
 	@ApiOperation(value = "Search Orders")
@@ -96,12 +77,7 @@ public class OrderApiController {
 		// Create PDF from generated XML
 		byte[] encodedBytes = GeneratePDF.createPDF();
 		// Create response
-		response = createResponse(response, encodedBytes);
-		// send to output stream
-		ServletOutputStream servletOutputStream = response.getOutputStream();
-		servletOutputStream.write(encodedBytes);
-		servletOutputStream.flush();
-		servletOutputStream.close();
+		GeneratePDF.createResponse(response, encodedBytes);
 	}
 
 }

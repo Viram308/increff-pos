@@ -2,12 +2,11 @@ package com.increff.pos.util;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
-import java.util.List;
 
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 
@@ -16,7 +15,6 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.model.InventoryData;
 import com.increff.pos.model.InventoryForm;
 import com.increff.pos.model.InventoryReportData;
-import com.increff.pos.model.OrderData;
 import com.increff.pos.model.OrderItemData;
 import com.increff.pos.model.OrderItemForm;
 import com.increff.pos.model.ProductData;
@@ -33,29 +31,19 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
-import com.increff.pos.service.BrandService;
-import com.increff.pos.service.ProductService;
 import com.increff.pos.spring.AbstractUnitTest;
 
 public class ConverterUtilTest extends AbstractUnitTest {
 
-	// test converterUtil
+	// test ConverterUtil
 
 	// All the tests are just testing converted data with expected one
 
-	@Autowired
-	private BrandService bService;
-	@Autowired
-	private ProductService pService;
-	@Autowired
-	private ConverterUtil converterUtil;
-
 	@Test
-	public void testConvertUserFormtoUserPojo() {
+	public void testConvertUserFormtoUserPojo() throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		UserForm f = getUserForm();
-		UserPojo p = converterUtil.convertUserFormtoUserPojo(f);
+		UserPojo p = ConverterUtil.convertUserFormtoUserPojo(f);
 		assertEquals(f.getEmail(), p.getEmail());
-		assertEquals(f.getPassword(), p.getPassword());
 		assertEquals(f.getRole(), p.getRole());
 	}
 
@@ -64,18 +52,10 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		UserPojo p = getUserPojo();
 		int id = 1;
 		p.setId(id);
-		UserData d = converterUtil.convertUserPojotoUserData(p);
+		UserData d = ConverterUtil.convertUserPojotoUserData(p);
 		assertEquals(p.getEmail(), d.getEmail());
-		assertEquals(p.getPassword(), d.getPassword());
 		assertEquals(p.getRole(), d.getRole());
 		assertEquals(id, d.getId());
-	}
-
-	@Test
-	public void testGetUserDataList() {
-		List<UserPojo> list = getUserPojoList();
-		List<UserData> list2 = converterUtil.getUserDataList(list);
-		assertEquals(list.size(), list2.size());
 	}
 
 	@Test
@@ -83,7 +63,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		BrandMasterPojo b = getBrandMasterPojo();
 		int id = 1;
 		b.setId(id);
-		BrandData d = converterUtil.convertBrandMasterPojotoBrandData(b);
+		BrandData d = ConverterUtil.convertBrandMasterPojotoBrandData(b);
 		assertEquals(b.getBrand(), d.brand);
 		assertEquals(b.getCategory(), d.category);
 		assertEquals(b.getId(), d.id);
@@ -92,23 +72,16 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	@Test
 	public void testConvertBrandFormtoBrandMasterPojo() {
 		BrandForm f = getBrandForm();
-		BrandMasterPojo p = converterUtil.convertBrandFormtoBrandMasterPojo(f);
+		BrandMasterPojo p = ConverterUtil.convertBrandFormtoBrandMasterPojo(f);
 		assertEquals(f.brand, p.getBrand());
 		assertEquals(f.category, p.getCategory());
-	}
-
-	@Test
-	public void testGetBrandDataList() throws ApiException {
-		List<BrandMasterPojo> list = getBrandMasterPojoList();
-		List<BrandData> list2 = converterUtil.getBrandDataList(list);
-		assertEquals(list.size(), list2.size());
 	}
 
 	@Test
 	public void testConvertInventoryPojotoInventoryData() throws ApiException {
 		InventoryPojo i = getInventoryPojo();
 		ProductMasterPojo productMasterPojo = getProductMasterPojo();
-		InventoryData d = converterUtil.convertInventoryPojotoInventoryData(i, productMasterPojo);
+		InventoryData d = ConverterUtil.convertInventoryPojotoInventoryData(i, productMasterPojo);
 		assertEquals(i.getQuantity(), d.quantity);
 		assertEquals(productMasterPojo.getBarcode(), d.barcode);
 	}
@@ -116,15 +89,8 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	@Test
 	public void testConvertInventoryFormtoInventoryPojo() throws ApiException {
 		InventoryForm f = getInventoryForm();
-		InventoryPojo p = converterUtil.convertInventoryFormtoInventoryPojo(f, getProductMasterPojo());
+		InventoryPojo p = ConverterUtil.convertInventoryFormtoInventoryPojo(f, getProductMasterPojo());
 		assertEquals(f.quantity, p.getQuantity());
-	}
-
-	@Test
-	public void testGetInventoryDataList() throws ApiException {
-		List<InventoryPojo> list = getInventoryPojoList();
-		List<InventoryData> list2 = converterUtil.getInventoryDataList(list);
-		assertEquals(list.size(), list2.size());
 	}
 
 	@Test
@@ -132,7 +98,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		UserPojo p = getUserPojo();
 		int id = 1;
 		p.setId(id);
-		Authentication token = converterUtil.convertUserPojotoAuthentication(p);
+		Authentication token = ConverterUtil.convertUserPojotoAuthentication(p);
 		String role = "";
 		for (Iterator<? extends GrantedAuthority> i = token.getAuthorities().iterator(); i.hasNext();)
 			role = i.next().toString();
@@ -142,7 +108,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetDateTime() {
-		String datetime = converterUtil.getDateTime();
+		String datetime = ConverterUtil.getDateTime();
 		// date and time
 		int s1 = datetime.split(" ").length;
 		// day, month and year
@@ -154,25 +120,18 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		assertEquals(2, s3);
 	}
 
-	@Test
-	public void testConvertOrderPojotoOrderData() {
-		OrderPojo o = getOrderPojo();
-		OrderData d = converterUtil.convertOrderPojotoOrderData(o);
-		assertEquals(o.getDatetime(), d.datetime);
-	}
-
-	@Test
-	public void testGetOrderDataList() {
-		List<OrderPojo> list = getOrderPojoList();
-		List<OrderData> list2 = converterUtil.getOrderDataList(list);
-		assertEquals(list.size(), list2.size());
-	}
+//	@Test
+//	public void testConvertOrderPojotoOrderData() {
+//		OrderPojo o = getOrderPojo();
+//		OrderData d = ConverterUtil.convertOrderPojotoOrderData(o,or);
+//		assertEquals(o.getDatetime(), d.datetime);
+//	}
 
 	@Test
 	public void testConvertOrderItemPojotoOrderItemData() throws ApiException {
 		OrderItemPojo i = getOrderItemPojo();
 		ProductMasterPojo productMasterPojo = getProductMasterPojo();
-		OrderItemData d = converterUtil.convertOrderItemPojotoOrderItemData(i, productMasterPojo);
+		OrderItemData d = ConverterUtil.convertOrderItemPojotoOrderItemData(i, productMasterPojo);
 		assertEquals(productMasterPojo.getName(), d.name);
 		assertEquals(productMasterPojo.getBarcode(), d.barcode);
 		assertEquals(i.getSellingPrice(), d.sellingPrice, 0.01);
@@ -182,22 +141,15 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	@Test
 	public void testConvertOrderItemFormtoOrderItemPojo() {
 		OrderItemForm f = getOrderItemForm();
-		OrderItemPojo o = converterUtil.convertOrderItemFormtoOrderItemPojo(f);
+		OrderItemPojo o = ConverterUtil.convertOrderItemFormtoOrderItemPojo(f);
 		assertEquals(o.getQuantity(), f.quantity);
-	}
-
-	@Test
-	public void testGetOrderItemDataList() throws ApiException {
-		List<OrderItemPojo> list = getOrderItemPojoList();
-		List<OrderItemData> list2 = converterUtil.getOrderItemDataList(list);
-		assertEquals(list.size(), list2.size());
 	}
 
 	@Test
 	public void testConvertProductFormtoProductMasterPojoUpdate() throws ApiException {
 		ProductForm f = getProductForm();
 		BrandMasterPojo b = getBrandMasterPojo();
-		ProductMasterPojo p = converterUtil.convertProductFormtoProductMasterPojoUpdate(f, b);
+		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojoUpdate(f, b);
 		assertEquals(b.getId(), p.getBrand_category_id());
 		assertEquals(f.name, p.getName());
 		assertEquals(f.mrp, p.getMrp(), 0.01);
@@ -207,7 +159,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	public void testConvertProductMasterPojotoProductData() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojo();
 		BrandMasterPojo brandMasterPojo = getBrandMasterPojo();
-		ProductData d = converterUtil.convertProductMasterPojotoProductData(p, brandMasterPojo);
+		ProductData d = ConverterUtil.convertProductMasterPojotoProductData(p, brandMasterPojo);
 		assertEquals(d.brand, brandMasterPojo.getBrand());
 		assertEquals(d.category, brandMasterPojo.getCategory());
 		assertEquals(d.barcode, p.getBarcode());
@@ -219,64 +171,40 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	public void testConvertProductFormtoProductMasterPojo() throws ApiException {
 		ProductForm f = getProductForm();
 		BrandMasterPojo b = getBrandMasterPojo();
-		ProductMasterPojo p = converterUtil.convertProductFormtoProductMasterPojo(f, b);
+		ProductMasterPojo p = ConverterUtil.convertProductFormtoProductMasterPojo(f, b);
 		assertEquals(b.getId(), p.getBrand_category_id());
 		assertEquals(f.name, p.getName());
 		assertEquals(f.mrp, p.getMrp(), 0.01);
 	}
 
 	@Test
-	public void testGetProductDataList() throws ApiException {
-		List<ProductMasterPojo> list = getProductMasterPojoList();
-		List<ProductData> list2 = converterUtil.getProductDataList(list);
-		assertEquals(list.size(), list2.size());
-	}
-
-	@Test
 	public void testConvertToSalesData() throws ApiException {
-		List<OrderItemPojo> list = getOrderItemPojoList();
-		List<SalesReportData> list2 = converterUtil.getSalesData(list);
-		int i;
-		double revenue = 0, selling = 0;
-		for (i = 0; i < list.size(); i++) {
-			selling += list.get(i).getQuantity() * list.get(i).getSellingPrice();
-		}
-		for (i = 0; i < list2.size(); i++) {
-			assertEquals(list2.get(i).quantity, list.get(i).getQuantity());
-			revenue += list2.get(i).revenue;
-		}
-		assertEquals(selling, revenue, 0.01);
-	}
 
-	@Test
-	public void testConvertToBrandData() throws ApiException {
-		List<BrandMasterPojo> list = getBrandMasterPojoList();
-		List<BrandData> list2 = converterUtil.convertToBrandData(list);
-		int i;
-		for (i = 0; i < list2.size(); i++) {
-			assertEquals(list2.get(i).brand, list.get(i).getBrand());
-			assertEquals(list2.get(i).category, list.get(i).getCategory());
-
-		}
-		assertEquals(list.size(), list2.size());
+		OrderItemPojo orderItemPojo = getOrderItemPojo();
+		BrandMasterPojo brandMasterPojo = getBrandMasterPojo();
+		SalesReportData salesReportData = ConverterUtil.convertToSalesReportData(orderItemPojo, brandMasterPojo);
+		assertEquals(brandMasterPojo.getBrand(), salesReportData.brand);
+		assertEquals(brandMasterPojo.getCategory(), salesReportData.category);
+		assertEquals(orderItemPojo.getQuantity(), salesReportData.quantity);
+		assertEquals(orderItemPojo.getQuantity() * orderItemPojo.getSellingPrice(), salesReportData.revenue, 0.01);
 	}
 
 	@Test
 	public void testConvertToInventoryReportData() throws ApiException {
-		List<InventoryPojo> list = getInventoryPojoList();
-		List<InventoryReportData> list2 = converterUtil.convertToInventoryReportData(list);
-		int i;
-		for (i = 0; i < list2.size(); i++) {
-			assertEquals(list2.get(i).quantity, list.get(i).getQuantity());
-		}
-		assertEquals(list.size(), list2.size());
+		InventoryPojo inventoryPojo = getInventoryPojo();
+		BrandMasterPojo brandMasterPojo = getBrandMasterPojo();
+		InventoryReportData inventoryReportData = ConverterUtil.convertToInventoryReportData(inventoryPojo,
+				brandMasterPojo);
+		assertEquals(brandMasterPojo.getBrand(), inventoryReportData.brand);
+		assertEquals(brandMasterPojo.getCategory(), inventoryReportData.category);
+		assertEquals(inventoryPojo.getQuantity(), inventoryReportData.quantity);
 	}
 
 	@Test
 	public void testConvertProductDatatoProductDetails() throws ApiException {
 		ProductData productData = getProductData();
 		InventoryPojo inventoryPojo = getInventoryPojo();
-		ProductDetails productDetails = converterUtil.convertProductDatatoProductDetails(productData, inventoryPojo);
+		ProductDetails productDetails = ConverterUtil.convertProductDatatoProductDetails(productData, inventoryPojo);
 		assertEquals(productData.barcode, productDetails.barcode);
 		assertEquals(productData.brand, productDetails.brand);
 		assertEquals(productData.category, productDetails.category);
@@ -291,7 +219,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		ProductSearchForm productSearchForm = new ProductSearchForm();
 		productSearchForm.name = "munch";
 		productSearchForm.barcode = StringUtil.getAlphaNumericString();
-		ProductMasterPojo productMasterPojo = converterUtil
+		ProductMasterPojo productMasterPojo = ConverterUtil
 				.convertProductSearchFormtoProductMasterPojo(productSearchForm);
 		assertEquals(productSearchForm.name, productMasterPojo.getName());
 		assertEquals(productSearchForm.barcode, productMasterPojo.getBarcode());
@@ -316,17 +244,6 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		return productData;
 	}
 
-	private List<ProductMasterPojo> getProductMasterPojoList() throws ApiException {
-		List<ProductMasterPojo> list = new ArrayList<ProductMasterPojo>();
-		ProductMasterPojo p1 = getProductMasterPojo();
-		ProductMasterPojo p2 = getProductMasterPojo();
-		p1.setId(1);
-		p2.setId(2);
-		list.add(p1);
-		list.add(p2);
-		return list;
-	}
-
 	private ProductForm getProductForm() throws ApiException {
 		ProductForm f = new ProductForm();
 		BrandMasterPojo b = getBrandMasterPojo();
@@ -339,17 +256,6 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		f.mrp = mrp;
 		f.name = name;
 		return f;
-	}
-
-	private List<OrderItemPojo> getOrderItemPojoList() throws ApiException {
-		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-		OrderItemPojo p1 = getOrderItemPojo();
-		OrderItemPojo p2 = getOrderItemPojo();
-		p1.setId(1);
-		p2.setId(2);
-		list.add(p1);
-		list.add(p2);
-		return list;
 	}
 
 	private OrderItemForm getOrderItemForm() {
@@ -374,32 +280,10 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		return i;
 	}
 
-	private List<OrderPojo> getOrderPojoList() {
-		List<OrderPojo> list = new ArrayList<OrderPojo>();
-		OrderPojo p1 = getOrderPojo();
-		OrderPojo p2 = getOrderPojo();
-		p1.setId(1);
-		p2.setId(2);
-		list.add(p1);
-		list.add(p2);
-		return list;
-	}
-
 	private OrderPojo getOrderPojo() {
 		OrderPojo o = new OrderPojo();
-		o.setDatetime(converterUtil.getDateTime());
+		o.setDatetime(ConverterUtil.getDateTime());
 		return o;
-	}
-
-	private List<InventoryPojo> getInventoryPojoList() throws ApiException {
-		List<InventoryPojo> list = new ArrayList<InventoryPojo>();
-		InventoryPojo p1 = getInventoryPojo();
-		InventoryPojo p2 = getInventoryPojo();
-		p1.setId(1);
-		p2.setId(2);
-		list.add(p1);
-		list.add(p2);
-		return list;
 	}
 
 	private InventoryForm getInventoryForm() {
@@ -414,7 +298,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 	private InventoryPojo getInventoryPojo() throws ApiException {
 		InventoryPojo i = new InventoryPojo();
 		int quantity = 25;
-		i.setProductid(getProductMasterPojo().getId());
+		i.setProductId(getProductMasterPojo().getId());
 		i.setQuantity(quantity);
 		return i;
 	}
@@ -429,19 +313,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		p.setBrand_category_id(brandMasterPojo.getId());
 		p.setName(name);
 		p.setMrp(mrp);
-		pService.add(p, brandMasterPojo);
 		return p;
-	}
-
-	private List<BrandMasterPojo> getBrandMasterPojoList() throws ApiException {
-		List<BrandMasterPojo> list = new ArrayList<BrandMasterPojo>();
-		BrandMasterPojo p1 = getBrandMasterPojo();
-		BrandMasterPojo p2 = getBrandMasterPojo();
-		p1.setId(1);
-		p2.setId(2);
-		list.add(p1);
-		list.add(p2);
-		return list;
 	}
 
 	private BrandForm getBrandForm() {
@@ -459,19 +331,7 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		String category = "dairy";
 		b.setBrand(brand);
 		b.setCategory(category);
-		bService.add(b);
 		return b;
-	}
-
-	private List<UserPojo> getUserPojoList() {
-		List<UserPojo> list = new ArrayList<UserPojo>();
-		UserPojo p1 = getUserPojo();
-		UserPojo p2 = getUserPojo();
-		p1.setId(1);
-		p2.setId(2);
-		list.add(p1);
-		list.add(p2);
-		return list;
 	}
 
 	private UserPojo getUserPojo() {

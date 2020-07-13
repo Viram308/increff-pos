@@ -10,6 +10,7 @@ import com.increff.pos.dao.ProductDao;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
+import com.increff.pos.util.NormalizeUtil;
 import com.increff.pos.util.StringUtil;
 
 @Service
@@ -25,7 +26,7 @@ public class ProductService {
 			throws ApiException {
 
 		// normalize
-		normalize(productMasterPojo);
+		NormalizeUtil.normalizeProductMasterPojo(productMasterPojo);
 		// check for existing product data with given barcode
 		ProductMasterPojo productMasterPojoTemp = dao.selectByBarcode(productMasterPojo.getBarcode());
 		if (productMasterPojoTemp == null) {
@@ -45,7 +46,7 @@ public class ProductService {
 
 	@Transactional(readOnly = true)
 	public List<ProductMasterPojo> searchData(ProductSearchForm productSearchForm) {
-		normalize(productSearchForm);
+		NormalizeUtil.normalizeProductSearchForm(productSearchForm);
 		return dao.searchData(productSearchForm.barcode, productSearchForm.name);
 	}
 
@@ -73,7 +74,7 @@ public class ProductService {
 	@Transactional(rollbackFor = ApiException.class)
 	public ProductMasterPojo update(int id, ProductMasterPojo productMasterPojo, BrandMasterPojo brandMasterPojo)
 			throws ApiException {
-		normalize(productMasterPojo);
+		NormalizeUtil.normalizeProductMasterPojo(productMasterPojo);
 		ProductMasterPojo productMasterPojoUpdate = getCheck(id);
 		productMasterPojoUpdate.setBrand_category_id(brandMasterPojo.getId());
 		productMasterPojoUpdate.setName(productMasterPojo.getName());
@@ -91,14 +92,6 @@ public class ProductService {
 		return p;
 	}
 
-	public void normalize(ProductSearchForm productSearchForm) {
-		productSearchForm.name = StringUtil.toLowerCase(productSearchForm.name);
-		productSearchForm.barcode = StringUtil.toLowerCase(productSearchForm.barcode);
-	}
-
-	public void normalize(ProductMasterPojo p) {
-		p.setName(StringUtil.toLowerCase(p.getName()));
-		p.setBarcode(StringUtil.toLowerCase(p.getBarcode()));
-	}
+	
 
 }

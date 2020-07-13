@@ -10,15 +10,7 @@ function searchProduct(event){
 	//Set the values to add
 	var $tbody = $('#product-table').find('tbody');
 	$tbody.empty();
-	var name=$('#inputName').val().trim();
-	var barcode=$('#inputBarcode').val().trim();
-	var brand=$('#inputBrand').val().trim();
-	var category=$('#inputCategory').val().trim();
 	
-	if(name=="" && barcode=="" && brand=="" && category==""){
-		alert('Enter atleast one from (name,barcode,brand,category)');
-		return false;
-	}
 	var $form = $("#product-form");
 	var json = toJson($form);
 	var url = getProductUrl()+"/search";
@@ -42,10 +34,9 @@ function searchProduct(event){
 //BUTTON ACTIONS
 function addProduct(){
 	//Set the values to update
-	$('#add-product-modal').modal('toggle');
 	var mrp=$('#product-add-form input[name=mrp]').val();
 	if(mrp<=0){
-		alert('MRP can not be negative or zero !!');
+		$.notify("MRP can not be negative or zero !!","error");
 		return false;
 	}
 	var $form = $("#product-add-form");
@@ -60,7 +51,9 @@ function addProduct(){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
-			alert('added');
+			$('#add-product-modal').modal('toggle');
+			$.notify("Product added successfully !!","success");
+			searchProduct();
 		},
 		error: handleAjaxError
 	});
@@ -69,13 +62,13 @@ function addProduct(){
 }
 
 function updateProduct(){
-	$('#edit-product-modal').modal('toggle');
+	
 	//Get the ID
 	var id = $("#product-edit-form input[name=id]").val();	
 	var url = getProductUrl() + "/" + id;
 	var mrp=$('#product-edit-form input[name=mrp]').val();
 	if(mrp<=0){
-		alert('MRP can not be negative or zero !!');
+		$.notify("MRP can not be negative or zero !!","error");
 		return false;
 	}
 	//Set the values to update
@@ -90,6 +83,8 @@ function updateProduct(){
 			'Content-Type': 'application/json'
 		},	   
 		success: function(response) {
+			$('#edit-product-modal').modal('toggle');
+			$.notify("Product updated successfully !!","success");
 	   		searchProduct();  
 	   	},
 	   	error: handleAjaxError
@@ -129,7 +124,7 @@ function readFileDataCallbackProduct(results){
 	// check no of rows
 	if(fileData.length > 5000)
 	{
-		alert('File Contains more than 5000 rows !!');
+		$.notify("File Contains more than 5000 rows !!","error");
 		return;
 	}
 	uploadRowsProduct();
@@ -140,6 +135,8 @@ function uploadRowsProduct(){
 	updateUploadDialogProduct();
 	//If everything processed then return
 	if(processCount==fileData.length){
+		$.notify("Products added successfully !!","success");
+	   	searchProduct();
 		return;
 	}
 	
@@ -264,4 +261,4 @@ function init(){
 }
 
 $(document).ready(init);
-
+$(document).ready(getProductList);

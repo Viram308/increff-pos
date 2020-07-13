@@ -16,12 +16,8 @@ public class ProductDao extends AbstractDao {
 	// select all
 	private static String select_all = "select p from ProductMasterPojo p";
 	// search
-	private static String search = "select p from ProductMasterPojo p where name like :name and barcode like :barcode and brand_category_id in :brandIds";
-	// search
-	private static String searchWithoutId = "select p from ProductMasterPojo p where name like :name and barcode like :barcode";
-	// search
-	private static String searchbybrandId = "select p from ProductMasterPojo p where brand_category_id in :brandIds";
-
+	private static String search = "select p from ProductMasterPojo p where name like :name and barcode like :barcode";
+	
 	// select according to barcode
 	public ProductMasterPojo selectByBarcode(String barcode) {
 		TypedQuery<ProductMasterPojo> query = getQuery(select_barcode, ProductMasterPojo.class);
@@ -35,25 +31,12 @@ public class ProductDao extends AbstractDao {
 		return query.getResultList();
 	}
 
-	public List<ProductMasterPojo> searchData(String barcode, String name, List<Integer> brandIds) {
+	public List<ProductMasterPojo> searchData(String barcode, String name) {
 		TypedQuery<ProductMasterPojo> query = getQuery(search, ProductMasterPojo.class);
 		query.setParameter("barcode", barcode + "%");
 		query.setParameter("name", "%" + name + "%");
-		query.setParameter("brandIds", brandIds);
 		return query.getResultList();
 	}
 
-	public List<ProductMasterPojo> searchData(String barcode, String name) {
-		TypedQuery<ProductMasterPojo> query = getQuery(searchWithoutId, ProductMasterPojo.class);
-		query.setParameter("barcode", barcode + "%");
-		query.setParameter("name", "%" + name + "%");
-		return query.getResultList();
-	}
-
-	public List<ProductMasterPojo> searchData(List<Integer> brandIds) {
-		TypedQuery<ProductMasterPojo> query = getQuery(searchbybrandId, ProductMasterPojo.class);
-		query.setParameter("brandIds", brandIds);
-		return query.getResultList();
-	}
 
 }

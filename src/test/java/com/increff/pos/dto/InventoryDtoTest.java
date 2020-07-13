@@ -14,11 +14,8 @@ import com.increff.pos.model.InventorySearchForm;
 import com.increff.pos.model.ProductData;
 import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
-import com.increff.pos.pojo.InventoryPojo;
-import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.StringUtil;
 
 public class InventoryDtoTest extends AbstractUnitTest {
 	@Autowired
@@ -87,22 +84,11 @@ public class InventoryDtoTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
-		InventoryPojo inventoryPojo = new InventoryPojo();
-		inventoryPojo.setQuantity(20);
-		ProductMasterPojo productMasterPojo = new ProductMasterPojo();
-		productMasterPojo.setBarcode(StringUtil.getAlphaNumericString());
-		inventoryDto.validateData(inventoryPojo, productMasterPojo);
-		inventoryPojo.setQuantity(-5);
+		InventoryForm inventoryForm = getInventoryForm("barcode", 10);
+		inventoryDto.validateData(inventoryForm);
+		inventoryForm = getInventoryForm("barcode", -5);
 		// throws exception
-		inventoryDto.validateData(inventoryPojo, productMasterPojo);
-	}
-
-	@Test(expected = ApiException.class)
-	public void testInventorySearchForm() throws ApiException {
-		InventorySearchForm inventorySearchForm = getInventorySearchForm("barcode", "");
-		inventoryDto.checkSearchData(inventorySearchForm);
-		inventorySearchForm = getInventorySearchForm("", "");
-		inventoryDto.checkSearchData(inventorySearchForm);
+		inventoryDto.validateData(inventoryForm);
 	}
 
 	private InventorySearchForm getInventorySearchForm(String barcode, String name) {

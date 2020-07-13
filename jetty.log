@@ -2265,3 +2265,167 @@ line 1:82: unexpected token: category
 2020-07-10 17:22:21 INFO  SecurityConfig:33 - Configuration complete
 2020-07-10 17:29:35 INFO  SecurityConfig:33 - Configuration complete
 2020-07-10 17:32:32 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 09:33:54 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 09:43:59 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 09:44:47 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 09:51:37 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 10:11:59 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 10:14:52 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 10:24:54 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 10:43:48 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 10:56:46 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 11:02:41 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:08:13 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:19:14 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:24:26 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:25:24 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:32:15 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:34:21 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:39:34 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:43:13 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:49:37 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:50:43 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 13:55:56 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 14:05:53 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 14:18:35 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 14:22:20 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 14:25:37 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 14:36:34 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:17:12 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:24:19 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:27:41 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:29:28 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:31:24 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:51:36 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:52:28 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 17:54:08 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:02:03 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:05:07 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:08:05 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:11:31 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:19:59 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:23:07 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 18:24:56 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 19:45:58 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:25:45 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:33:24 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:43:42 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:44:30 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:46:00 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:47:19 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:50:00 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 20:56:32 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 21:02:45 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 21:04:34 WARN  AnnotationConfigWebApplicationContext:550 - Exception encountered during context initialization - cancelling refresh attempt: org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApiController': Unsatisfied dependency expressed through field 'orderDto'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDto' defined in file [/home/viram/eclipse-workspace/increff-pos/target/classes/com/increff/pos/dto/OrderDto.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.increff.pos.dto.OrderDto]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Type mismatch: cannot convert from List<OrderPojo> to List<Integer>
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+
+2020-07-12 21:04:34 ERROR DispatcherServlet:502 - Context initialization failed
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'orderApiController': Unsatisfied dependency expressed through field 'orderDto'; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDto' defined in file [/home/viram/eclipse-workspace/increff-pos/target/classes/com/increff/pos/dto/OrderDto.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.increff.pos.dto.OrderDto]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Type mismatch: cannot convert from List<OrderPojo> to List<Integer>
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:588)
+	at org.springframework.beans.factory.annotation.InjectionMetadata.inject(InjectionMetadata.java:88)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor.postProcessPropertyValues(AutowiredAnnotationBeanPostProcessor.java:366)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.populateBean(AbstractAutowireCapableBeanFactory.java:1264)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:553)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:197)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:761)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:542)
+	at org.springframework.web.servlet.FrameworkServlet.configureAndRefreshWebApplicationContext(FrameworkServlet.java:668)
+	at org.springframework.web.servlet.FrameworkServlet.initWebApplicationContext(FrameworkServlet.java:540)
+	at org.springframework.web.servlet.FrameworkServlet.initServletBean(FrameworkServlet.java:494)
+	at org.springframework.web.servlet.HttpServletBean.init(HttpServletBean.java:136)
+	at javax.servlet.GenericServlet.init(GenericServlet.java:244)
+	at org.eclipse.jetty.servlet.ServletHolder.initServlet(ServletHolder.java:599)
+	at org.eclipse.jetty.servlet.ServletHolder.initialize(ServletHolder.java:425)
+	at org.eclipse.jetty.servlet.ServletHandler.lambda$initialize$0(ServletHandler.java:751)
+	at java.base/java.util.stream.SortedOps$SizedRefSortingSink.end(SortedOps.java:357)
+	at java.base/java.util.stream.AbstractPipeline.copyInto(AbstractPipeline.java:485)
+	at java.base/java.util.stream.AbstractPipeline.wrapAndCopyInto(AbstractPipeline.java:474)
+	at java.base/java.util.stream.StreamSpliterators$WrappingSpliterator.forEachRemaining(StreamSpliterators.java:312)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:735)
+	at java.base/java.util.stream.Streams$ConcatSpliterator.forEachRemaining(Streams.java:734)
+	at java.base/java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:658)
+	at org.eclipse.jetty.servlet.ServletHandler.initialize(ServletHandler.java:744)
+	at org.eclipse.jetty.servlet.ServletContextHandler.startContext(ServletContextHandler.java:361)
+	at org.eclipse.jetty.webapp.WebAppContext.startWebapp(WebAppContext.java:1443)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.startWebapp(JettyWebAppContext.java:328)
+	at org.eclipse.jetty.webapp.WebAppContext.startContext(WebAppContext.java:1407)
+	at org.eclipse.jetty.server.handler.ContextHandler.doStart(ContextHandler.java:821)
+	at org.eclipse.jetty.servlet.ServletContextHandler.doStart(ServletContextHandler.java:276)
+	at org.eclipse.jetty.webapp.WebAppContext.doStart(WebAppContext.java:524)
+	at org.eclipse.jetty.maven.plugin.JettyWebAppContext.doStart(JettyWebAppContext.java:397)
+	at org.eclipse.jetty.util.component.AbstractLifeCycle.start(AbstractLifeCycle.java:72)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo.restartWebApp(JettyRunMojo.java:513)
+	at org.eclipse.jetty.maven.plugin.JettyRunMojo$1.onPathWatchEvents(JettyRunMojo.java:357)
+	at org.eclipse.jetty.util.PathWatcher.notifyEvents(PathWatcher.java:1342)
+	at org.eclipse.jetty.util.PathWatcher.run(PathWatcher.java:1169)
+	at java.base/java.lang.Thread.run(Thread.java:834)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'orderDto' defined in file [/home/viram/eclipse-workspace/increff-pos/target/classes/com/increff/pos/dto/OrderDto.class]: Instantiation of bean failed; nested exception is org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.increff.pos.dto.OrderDto]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Type mismatch: cannot convert from List<OrderPojo> to List<Integer>
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1155)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1099)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:513)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:483)
+	at org.springframework.beans.factory.support.AbstractBeanFactory$1.getObject(AbstractBeanFactory.java:306)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:230)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:302)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:202)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:208)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1138)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1066)
+	at org.springframework.beans.factory.annotation.AutowiredAnnotationBeanPostProcessor$AutowiredFieldElement.inject(AutowiredAnnotationBeanPostProcessor.java:585)
+	... 42 more
+Caused by: org.springframework.beans.BeanInstantiationException: Failed to instantiate [com.increff.pos.dto.OrderDto]: Constructor threw exception; nested exception is java.lang.Error: Unresolved compilation problems: 
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Type mismatch: cannot convert from List<OrderPojo> to List<Integer>
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:154)
+	at org.springframework.beans.factory.support.SimpleInstantiationStrategy.instantiate(SimpleInstantiationStrategy.java:89)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.instantiateBean(AbstractAutowireCapableBeanFactory.java:1147)
+	... 53 more
+Caused by: java.lang.Error: Unresolved compilation problems: 
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+	Type mismatch: cannot convert from List<OrderPojo> to List<Integer>
+	Cannot infer type argument(s) for <R> map(Function<? super T,? extends R>)
+	The method convertOrderPojotoOrderData(OrderPojo, List<OrderItemPojo>) in the type ConverterUtil is not applicable for the arguments (OrderPojo)
+
+	at com.increff.pos.dto.OrderDto.<init>(OrderDto.java:134)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at java.base/jdk.internal.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at java.base/jdk.internal.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.base/java.lang.reflect.Constructor.newInstance(Constructor.java:490)
+	at org.springframework.beans.BeanUtils.instantiateClass(BeanUtils.java:142)
+	... 55 more
+2020-07-12 21:19:42 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 21:26:36 INFO  SecurityConfig:33 - Configuration complete
+2020-07-12 21:32:17 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 09:21:40 INFO  SecurityConfig:33 - Configuration complete
+2020-07-13 11:42:12 INFO  SecurityConfig:33 - Configuration complete

@@ -9,7 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.increff.pos.dao.BrandDao;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandMasterPojo;
-import com.increff.pos.util.StringUtil;
+import com.increff.pos.util.NormalizeUtil;
 
 @Service
 public class BrandService {
@@ -22,7 +22,7 @@ public class BrandService {
 	@Transactional(rollbackFor = ApiException.class)
 	public BrandMasterPojo add(BrandMasterPojo brandMasterPojo) throws ApiException {
 		// normalize
-		normalize(brandMasterPojo);
+		NormalizeUtil.normalizeBrandMasterPojo(brandMasterPojo);
 		// check for existing pair
 		getCheckExisting(brandMasterPojo.getBrand(), brandMasterPojo.getCategory());
 		dao.insert(brandMasterPojo);
@@ -31,13 +31,13 @@ public class BrandService {
 
 	@Transactional(readOnly = true)
 	public BrandMasterPojo getByBrandCategory(BrandForm brandForm) throws ApiException {
-		normalize(brandForm);
+		NormalizeUtil.normalizeBrandForm(brandForm);
 		return getCheckForBrandCategory(brandForm);
 	}
 
 	@Transactional(readOnly = true)
 	public List<BrandMasterPojo> searchBrandData(BrandForm form) {
-		normalize(form);
+		NormalizeUtil.normalizeBrandForm(form);
 		return dao.searchData(form.brand, form.category);
 	}
 
@@ -53,7 +53,7 @@ public class BrandService {
 
 	@Transactional(rollbackFor = ApiException.class)
 	public BrandMasterPojo update(int id, BrandMasterPojo p) throws ApiException {
-		normalize(p);
+		NormalizeUtil.normalizeBrandMasterPojo(p);
 		BrandMasterPojo brandMasterPojo = getCheck(id);
 		brandMasterPojo.setCategory(p.getCategory());
 		brandMasterPojo.setBrand(p.getBrand());
@@ -85,16 +85,6 @@ public class BrandService {
 			throw new ApiException("Given Brand and Category pair dosen't exist");
 		}
 		return brandMasterPojo;
-	}
-
-	public void normalize(BrandForm brandForm) {
-		brandForm.brand = StringUtil.toLowerCase(brandForm.brand);
-		brandForm.category = StringUtil.toLowerCase(brandForm.category);
-	}
-
-	public void normalize(BrandMasterPojo p) {
-		p.setBrand(StringUtil.toLowerCase(p.getBrand()));
-		p.setCategory(StringUtil.toLowerCase(p.getCategory()));
 	}
 
 }

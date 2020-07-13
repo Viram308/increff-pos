@@ -1,6 +1,6 @@
 package com.increff.pos.service;
 
-public class ApiException extends Exception {
+public class ApiException extends RuntimeException {
 
 	private static final long serialVersionUID = 1L;
 

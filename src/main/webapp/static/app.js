@@ -14,7 +14,7 @@ function toJson($form){
 // handle error for REST api failure
 function handleAjaxError(response){
 	var response = JSON.parse(response.responseText);
-	alert(response.message);
+	$.notify(response.message,"error");
 }
 
 
