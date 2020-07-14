@@ -7,14 +7,12 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.springframework.stereotype.Service;
 
 import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
 import com.increff.pos.pojo.OrderPojo;
-import com.increff.pos.util.StringUtil;
 
 @Service
 public class ReportService {
@@ -39,29 +37,6 @@ public class ReportService {
 			throw new ApiException("There are no orders for given dates");
 		}
 		return orderIds;
-	}
-
-	public List<SalesReportData> getSalesReportDataByBrandAndCategory(List<SalesReportData> salesReportData,
-			String brand, String category) {
-		brand = StringUtil.toLowerCase(brand);
-		category = StringUtil.toLowerCase(category);
-		if (brand.isBlank() && category.isBlank()) {
-			// do nothing
-			return salesReportData;
-		} else if ((!brand.isBlank()) && category.isBlank()) {
-			// Select SalesReportData brand wise
-			String finalBrand = brand;
-			return salesReportData.stream().filter(o -> o.brand.equals(finalBrand)).collect(Collectors.toList());
-		} else if (brand.isBlank() && (!category.isBlank())) {
-			// Select SalesReportData category wise
-			String finalCategory = category;
-			return salesReportData.stream().filter(o -> o.category.equals(finalCategory)).collect(Collectors.toList());
-		}
-		// Select SalesReportData brand and category wise
-		String finalBrand = brand;
-		String finalCategory = category;
-		return salesReportData.stream().filter(o -> (o.category.equals(finalCategory) && o.brand.equals(finalBrand)))
-				.collect(Collectors.toList());
 	}
 
 	public List<SalesReportData> groupSalesReportDataCategoryWise(List<SalesReportData> salesReportDatas)

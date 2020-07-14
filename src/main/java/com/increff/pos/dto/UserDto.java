@@ -29,7 +29,7 @@ public class UserDto {
 	private InfoData info;
 
 	public UserPojo addUser(UserForm form) throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		checkData(form);
+		validateData(form);
 		UserPojo userPojo = ConverterUtil.convertUserFormtoUserPojo(form);
 		MessageDigest md = MessageDigest.getInstance("MD5");
 		md.reset();
@@ -63,7 +63,7 @@ public class UserDto {
 
 	public UserPojo updateUser(int id, UserForm form)
 			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
-		checkData(form);
+		validateData(form);
 		UserPojo userPojo = ConverterUtil.convertUserFormtoUserPojo(form);
 		return userService.update(id, userPojo);
 	}
@@ -92,7 +92,7 @@ public class UserDto {
 		}
 	}
 
-	public void checkData(UserForm u) throws ApiException {
+	public void validateData(UserForm u) throws ApiException {
 		if (u.getEmail().isBlank() || u.getRole().isBlank()) {
 			throw new ApiException("Please enter email, password and role !!");
 		}

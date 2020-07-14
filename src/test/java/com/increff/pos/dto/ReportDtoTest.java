@@ -40,9 +40,12 @@ public class ReportDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetOrderIds() throws ApiException, ParseException {
 		addOrder();
+		// get sales report form
 		SalesReportForm salesReportForm = getSalesReportForm(ConverterUtil.getDateTime().split(" ")[0],
 				ConverterUtil.getDateTime().split(" ")[0], "", "");
+		// get order id list
 		List<Integer> orderIds = reportDto.getOrderIds(salesReportForm);
+		// test
 		assertEquals(1, orderIds.size());
 		salesReportForm = getSalesReportForm("", "", "", "");
 		orderIds = reportDto.getOrderIds(salesReportForm);
@@ -52,8 +55,11 @@ public class ReportDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetSalesReport() throws ApiException, ParseException {
 		addOrder();
-		SalesReportForm salesReportForm = getSalesReportForm("","", "n", "");
+		// get sales report form
+		SalesReportForm salesReportForm = getSalesReportForm("", "", "n", "");
+		// get sales report
 		List<SalesReportData> salesReportDatas = reportDto.getSalesReport(salesReportForm);
+		// test data
 		assertEquals(2, salesReportDatas.size());
 		assertEquals(40, salesReportDatas.get(0).revenue, 0.01);
 		assertEquals(75, salesReportDatas.get(1).revenue, 0.01);
@@ -65,7 +71,9 @@ public class ReportDtoTest extends AbstractUnitTest {
 	public void testSearchBrandReport() throws ApiException {
 		addOrder();
 		BrandForm brandForm = getBrandForm("nestle", "");
+		// get brand report
 		List<BrandData> brandDatas = reportDto.searchBrandReport(brandForm);
+		// test
 		assertEquals(2, brandDatas.size());
 		brandForm = getBrandForm("nestle", "f");
 		brandDatas = reportDto.searchBrandReport(brandForm);
@@ -76,7 +84,9 @@ public class ReportDtoTest extends AbstractUnitTest {
 	public void testSearchInventoryReport() throws ApiException {
 		addOrder();
 		BrandForm brandForm = getBrandForm("nestle", "");
+		// get inventory report
 		List<InventoryReportData> inventoryReportDatas = reportDto.searchInventoryReport(brandForm);
+		// test data
 		assertEquals(2, inventoryReportDatas.size());
 		assertEquals(16, inventoryReportDatas.get(0).quantity);
 		assertEquals(15, inventoryReportDatas.get(1).quantity);
@@ -86,6 +96,8 @@ public class ReportDtoTest extends AbstractUnitTest {
 		assertEquals(15, inventoryReportDatas.get(0).quantity);
 	}
 
+	// functions for creating data
+	
 	private List<BillData> addOrder() throws ApiException {
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
 		InventoryForm inventoryForm1 = getInventoryForm(productData1.barcode, 20);

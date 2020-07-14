@@ -140,10 +140,4 @@ public class OrderDto {
 				.collect(Collectors.toList());
 	}
 
-	public void checkSearchData(OrderSearchForm form) throws ApiException {
-		if (form.startdate.isBlank() || form.enddate.isBlank()) {
-			throw new ApiException("Please enter start and end dates !!");
-		}
-	}
-
 }

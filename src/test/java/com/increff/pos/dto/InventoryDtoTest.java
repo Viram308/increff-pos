@@ -29,67 +29,87 @@ public class InventoryDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testAddInventory() throws ApiException {
+		// add
 		ProductData productData = getProductData();
 		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
+		// search
 		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
+		// test added data
 		assertEquals(20, inventoryDatas.get(0).quantity);
 	}
 
 	@Test
 	public void testSearchInventory() throws ApiException {
+		// add
 		ProductData productData = getProductData();
 		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
+		// search
 		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
+		// test retrieved data
 		assertEquals("munch", inventoryDatas.get(0).name);
 		assertEquals(20, inventoryDatas.get(0).quantity);
 	}
 
 	@Test
 	public void testGetInventoryData() throws ApiException {
+		// add
 		ProductData productData = getProductData();
 		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
+		// search
 		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
+		// get data
 		InventoryData inventoryData = inventoryDto.getInventoryData(inventoryDatas.get(0).id);
+		// test
 		assertEquals("munch", inventoryData.name);
 		assertEquals(20, inventoryData.quantity);
 	}
 
 	@Test
 	public void testUpdateInventory() throws ApiException {
+		// add
 		ProductData productData = getProductData();
 		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
+		// search
 		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		inventoryForm = getInventoryForm(inventoryDatas.get(0).barcode, 30);
+		// update
 		inventoryDto.updateInventory(inventoryDatas.get(0).id, inventoryForm);
 		InventoryData inventoryData = inventoryDto.getInventoryData(inventoryDatas.get(0).id);
+		// test updated data
 		assertEquals(30, inventoryData.quantity);
 	}
 
 	@Test
 	public void testGetAllInventory() throws ApiException {
+		// add
 		ProductData productData = getProductData();
 		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
+		// get all data
 		List<InventoryData> inventoryDatas = inventoryDto.getAllInventory();
+		// test
 		assertEquals(1, inventoryDatas.size());
 	}
 
 	@Test(expected = ApiException.class)
-	public void testCheckData() throws ApiException {
+	public void testValidateData() throws ApiException {
 		InventoryForm inventoryForm = getInventoryForm("barcode", 10);
+		// validate
 		inventoryDto.validateData(inventoryForm);
 		inventoryForm = getInventoryForm("barcode", -5);
 		// throws exception
 		inventoryDto.validateData(inventoryForm);
 	}
+
+	// functions for creating data
 
 	private InventorySearchForm getInventorySearchForm(String barcode, String name) {
 		InventorySearchForm inventorySearchForm = new InventorySearchForm();

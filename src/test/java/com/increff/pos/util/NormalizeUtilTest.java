@@ -14,6 +14,8 @@ import com.increff.pos.service.ApiException;
 
 public class NormalizeUtilTest {
 
+	// tests for normalization
+	
 	@Test
 	public void testNormalizeBrandMasterPojo() throws ApiException {
 		BrandMasterPojo brandMasterPojo = getBrandMasterPojoTest();
@@ -67,6 +69,8 @@ public class NormalizeUtilTest {
 		assertEquals("admin", userPojo.getRole());
 	}
 
+	// functions for creating data
+	
 	private UserForm getUserForm() {
 		UserForm userForm = new UserForm();
 		userForm.setEmail(" Shahviram308@gmail.coM ");

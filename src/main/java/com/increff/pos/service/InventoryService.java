@@ -25,17 +25,12 @@ public class InventoryService {
 	}
 
 	@Transactional(readOnly = true)
-	public List<InventoryPojo> searchData(List<Integer> productIds) {
-		return dao.searchData(productIds);
-	}
-
-	@Transactional(readOnly = true)
 	public InventoryPojo get(int id) {
 		return dao.select(InventoryPojo.class, id);
 	}
 
 	@Transactional(readOnly = true)
-	public InventoryPojo getByProductId(ProductMasterPojo productMasterPojo){
+	public InventoryPojo getByProductId(ProductMasterPojo productMasterPojo) {
 		// Get inventory data by product id
 		return dao.selectByProductId(productMasterPojo.getId());
 	}

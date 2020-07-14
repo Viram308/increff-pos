@@ -24,53 +24,56 @@ import com.increff.pos.util.StringUtil;
 
 public class OrderServiceTest extends AbstractUnitTest {
 	@Autowired
-	private OrderService service;
+	private OrderService orderService;
 	@Autowired
-	private BrandService bService;
+	private BrandService brandService;
 	@Autowired
-	private ProductService pService;
+	private ProductService productService;
 	@Autowired
-	private InventoryService inService;
+	private InventoryService inventoryService;
 	@Autowired
-	private OrderItemService iService;
+	private OrderItemService orderItemService;
 
 	// test order service
 	@Test
 	public void testAdd() throws ApiException {
-		OrderPojo op = getOrderPojoTest();
+		OrderPojo orderPojo = getOrderPojoTest();
 		// test add
-		service.add(op);
+		orderService.add(orderPojo);
 	}
 
 	@Test
 	public void testGet() throws ApiException {
-		OrderPojo op = getOrderPojoTest();
-		service.add(op);
-		OrderPojo o = service.get(op.getId());
+		OrderPojo orderPojo = getOrderPojoTest();
+		orderService.add(orderPojo);
+		OrderPojo orderPojoFinal = orderService.get(orderPojo.getId());
 		// test added data
-		assertEquals(op.getDatetime(), o.getDatetime());
+		assertEquals(orderPojo.getDatetime(), orderPojoFinal.getDatetime());
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		service.getAll();
+		OrderPojo orderPojo = getOrderPojoTest();
+		orderService.add(orderPojo);
+		List<OrderPojo> orderPojos =orderService.getAll();
+		assertEquals(1, orderPojos.size());
 	}
 
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
 
-		OrderPojo op = getOrderPojoTest();
-		service.add(op);
-		OrderPojo o = service.getCheck(op.getId());
+		OrderPojo orderPojo = getOrderPojoTest();
+		orderService.add(orderPojo);
+		OrderPojo orderPojoFinal = orderService.getCheck(orderPojo.getId());
 		// throw exception while getting data for id + 1
-		service.getCheck(o.getId() + 1);
+		orderService.getCheck(orderPojoFinal.getId() + 1);
 	}
 
 	@Test(expected = ApiException.class)
 	public void testCheckInventory() throws ApiException {
 		List<OrderItemForm> orderItemForms = getList();
 		// throws exception for negative quantity
-		service.checkInventory(orderItemForms);
+		orderService.checkInventory(orderItemForms);
 	}
 
 	@Test(expected = ApiException.class)
@@ -79,7 +82,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		// Update created data so that inventory is zero
 		orderItemForms.get(0).quantity = 10;
 		// throws exception for zero quantity available
-		service.checkInventory(orderItemForms);
+		orderService.checkInventory(orderItemForms);
 	}
 
 	@Test
@@ -88,7 +91,7 @@ public class OrderServiceTest extends AbstractUnitTest {
 		// Update created data so that inventory is available
 		orderItemForms.get(1).quantity = 25;
 		// Does not throws exception
-		service.checkInventory(orderItemForms);
+		orderService.checkInventory(orderItemForms);
 	}
 
 	@Test
@@ -97,8 +100,8 @@ public class OrderServiceTest extends AbstractUnitTest {
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
 		list.add(o);
 		// test add data
-		iService.add(list);
-		service.updateInventory(list);
+		orderItemService.add(list);
+		orderService.updateInventory(list);
 	}
 
 	@Test
@@ -107,8 +110,8 @@ public class OrderServiceTest extends AbstractUnitTest {
 		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
 		list.add(o);
 		// test add data
-		iService.add(list);
-		List<BillData> billDataList = service.getBillDataObject(list);
+		orderItemService.add(list);
+		List<BillData> billDataList = orderService.getBillDataObject(list);
 		assertEquals(1, billDataList.size());
 
 	}
@@ -116,28 +119,32 @@ public class OrderServiceTest extends AbstractUnitTest {
 	@Test
 	public void testGetList() throws ParseException {
 		List<OrderPojo> orderPojos = getOrderPojoList();
-		List<OrderPojo> orderPojoList = service.getList(orderPojos, "02-05-2020", "02-07-2020");
+		// test according to date range
+		List<OrderPojo> orderPojoList = orderService.getList(orderPojos, "02-05-2020", "02-07-2020");
 		assertEquals(1, orderPojoList.size());
-		orderPojoList = service.getList(orderPojos, "02-05-2020", "02-06-2020");
+		orderPojoList = orderService.getList(orderPojos, "02-05-2020", "02-06-2020");
 		assertEquals(0, orderPojoList.size());
-		orderPojoList = service.getList(orderPojos, "02-05-2020", "07-07-2020");
+		orderPojoList = orderService.getList(orderPojos, "02-05-2020", "07-07-2020");
 		assertEquals(2, orderPojoList.size());
-		orderPojoList = service.getList(orderPojos, "01-07-2020", "07-07-2020");
+		orderPojoList = orderService.getList(orderPojos, "01-07-2020", "07-07-2020");
 		assertEquals(2, orderPojoList.size());
-		orderPojoList = service.getList(orderPojos, "01-07-2020", "08-07-2020");
+		orderPojoList = orderService.getList(orderPojos, "01-07-2020", "08-07-2020");
 		assertEquals(2, orderPojoList.size());
 	}
 
 	@Test
 	public void testUpdate() throws ApiException {
 		OrderPojo orderPojo1 = getOrderPojoTest();
-		service.add(orderPojo1);
+		orderService.add(orderPojo1);
 		OrderPojo orderPojo2 = new OrderPojo();
+		// change date and time
 		orderPojo2.setDatetime("02-02-2020 09:45");
-		service.update(orderPojo1.getId(), orderPojo2);
+		orderService.update(orderPojo1.getId(), orderPojo2);
 		assertEquals(orderPojo2.getDatetime(), orderPojo1.getDatetime());
 	}
 
+	// functions to create appropriate data
+	
 	private List<OrderPojo> getOrderPojoList() {
 		OrderPojo orderPojo1 = new OrderPojo();
 		OrderPojo orderPojo2 = new OrderPojo();
@@ -179,16 +186,16 @@ public class OrderServiceTest extends AbstractUnitTest {
 		InventoryPojo i = new InventoryPojo();
 		b.setBrand(brand);
 		b.setCategory("ShaH");
-		bService.add(b);
+		brandService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
 		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
-		pService.add(p, b);
+		productService.add(p, b);
 		i.setProductId(p.getId());
 		i.setQuantity(quantity);
-		inService.add(i);
+		inventoryService.add(i);
 	}
 
 	private String getDateTime() {
@@ -214,23 +221,23 @@ public class OrderServiceTest extends AbstractUnitTest {
 		OrderPojo op = new OrderPojo();
 		String datetime = getDateTime();
 		op.setDatetime(datetime);
-		service.add(op);
+		orderService.add(op);
 		ProductMasterPojo p = new ProductMasterPojo();
 		BrandMasterPojo b = new BrandMasterPojo();
 		InventoryPojo i = new InventoryPojo();
 		String barcode = StringUtil.getAlphaNumericString();
 		b.setBrand(" viram ");
 		b.setCategory("ShaH");
-		bService.add(b);
+		brandService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
 		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
-		pService.add(p, b);
+		productService.add(p, b);
 		i.setProductId(p.getId());
 		i.setQuantity(quantity + 10);
-		inService.add(i);
+		inventoryService.add(i);
 		o.setOrderId(op.getId());
 		o.setProductId(p.getId());
 		o.setQuantity(quantity);

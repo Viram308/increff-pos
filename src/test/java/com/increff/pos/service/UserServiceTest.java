@@ -13,83 +13,82 @@ import com.increff.pos.spring.AbstractUnitTest;
 
 public class UserServiceTest extends AbstractUnitTest {
 	@Autowired
-	private UserService service;
+	private UserService userService;
 
 	// test user service
 	@Test(expected = ApiException.class)
 	public void testAdd() throws ApiException {
-		UserPojo u = getUserPojo();
+		UserPojo userPojo = getUserPojo();
 		// Add one time
-		service.add(u);
+		userService.add(userPojo);
 		// Throw exception while entering second time
-		service.add(u);
+		userService.add(userPojo);
 	}
 
 	@Test
 	public void testDelete() throws ApiException {
-		UserPojo u = getUserPojo();
-		service.add(u);
+		UserPojo userPojo = getUserPojo();
+		userService.add(userPojo);
 		// Delete should be successful and should not throw exception as data exists
-		service.delete(u.getId());
+		userService.delete(userPojo.getId());
 	}
 
 	@Test
 	public void testGet() throws ApiException {
-		UserPojo u = getUserPojo();
-		service.add(u);
-		UserPojo p = service.getByEmail(u.getEmail());
+		UserPojo userPojo = getUserPojo();
+		userService.add(userPojo);
+		UserPojo userPojoFinal = userService.getByEmail(userPojo.getEmail());
 		// test added data
-		assertEquals("admin", p.getRole());
-		assertEquals("admin", p.getPassword());
+		assertEquals("admin", userPojoFinal.getRole());
+		assertEquals("admin", userPojoFinal.getPassword());
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		service.getAll();
+		UserPojo userPojo = getUserPojo();
+		userService.add(userPojo);
+		// test get all
+		List<UserPojo> userPojos = userService.getAll();
+		assertEquals(1, userPojos.size());
 	}
 
 	@Test
 	public void testUpdate() throws ApiException {
-		UserPojo u = getUserPojo();
-		service.add(u);
-		UserPojo p = service.get(u.getId());
+		UserPojo userPojo = getUserPojo();
+		userService.add(userPojo);
+		UserPojo userPojoFinal = userService.get(userPojo.getId());
 		// update data
-		p.setPassword("password");
-		p.setRole("standard");
-		service.update(p.getId(), p);
-		UserPojo up = service.get(p.getId());
+		userPojoFinal.setPassword("password");
+		userPojoFinal.setRole("standard");
+		userService.update(userPojoFinal.getId(), userPojoFinal);
+		UserPojo userPojoUpdated = userService.get(userPojoFinal.getId());
 		// test updated data
-		assertEquals("password", up.getPassword());
-		assertEquals("standard", up.getRole());
+		assertEquals("password", userPojoUpdated.getPassword());
+		assertEquals("standard", userPojoUpdated.getRole());
 	}
-
-//	@Test
-//	public void testNormalize() {
-//		UserPojo u = getUserPojo();
-//		UserService.normalize(u);
-//		// test normalization
-//		assertEquals("shahviram308@gmail.com", u.getEmail());
-//		assertEquals("admin", u.getRole());
-//	}
 
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
-		UserPojo u = getUserPojo();
-		service.add(u);
-		UserPojo userPojo = service.getCheck(u.getId());
-		service.delete(userPojo.getId());
-		service.getCheck(userPojo.getId());
+		UserPojo userPojo = getUserPojo();
+		userService.add(userPojo);
+		UserPojo userPojoFinal = userService.getCheck(userPojo.getId());
+		userService.delete(userPojoFinal.getId());
+		userService.getCheck(userPojoFinal.getId());
 	}
 
 	@Test
 	public void testSearchUserData() {
-		UserPojo u = getUserPojo();
-		service.add(u);
+		UserPojo userPojo = getUserPojo();
+		userService.add(userPojo);
+		// create user form
 		UserForm userForm = getUserForm("j  ", "", "");
-		List<UserPojo> userPojos = service.searchUserData(userForm);
+		// search
+		List<UserPojo> userPojos = userService.searchUserData(userForm);
 		assertEquals(0, userPojos.size());
+		// create user form
 		userForm = getUserForm("s", "", "");
-		userPojos = service.searchUserData(userForm);
+		// search
+		userPojos = userService.searchUserData(userForm);
 		assertEquals(1, userPojos.size());
 	}
 
@@ -102,11 +101,11 @@ public class UserServiceTest extends AbstractUnitTest {
 	}
 
 	private UserPojo getUserPojo() {
-		UserPojo u = new UserPojo();
-		u.setEmail(" Shahviram308@gmail.coM ");
-		u.setPassword("admin");
-		u.setRole(" AdmiN ");
-		return u;
+		UserPojo userPojo = new UserPojo();
+		userPojo.setEmail(" Shahviram308@gmail.coM ");
+		userPojo.setPassword("admin");
+		userPojo.setRole(" AdmiN ");
+		return userPojo;
 	}
 
 }

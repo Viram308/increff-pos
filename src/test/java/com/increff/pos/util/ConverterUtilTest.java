@@ -120,13 +120,6 @@ public class ConverterUtilTest extends AbstractUnitTest {
 		assertEquals(2, s3);
 	}
 
-//	@Test
-//	public void testConvertOrderPojotoOrderData() {
-//		OrderPojo o = getOrderPojo();
-//		OrderData d = ConverterUtil.convertOrderPojotoOrderData(o,or);
-//		assertEquals(o.getDatetime(), d.datetime);
-//	}
-
 	@Test
 	public void testConvertOrderItemPojotoOrderItemData() throws ApiException {
 		OrderItemPojo i = getOrderItemPojo();

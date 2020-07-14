@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import org.junit.Test;
 
 public class MessageDataTest {
+
+	// test for MessageData
+	
 	@Test
 	public void testMessageData() {
 		MessageData messageData = new MessageData();

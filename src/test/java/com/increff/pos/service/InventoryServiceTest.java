@@ -2,7 +2,6 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -16,87 +15,77 @@ import com.increff.pos.util.StringUtil;
 
 public class InventoryServiceTest extends AbstractUnitTest {
 	@Autowired
-	private InventoryService service;
+	private InventoryService inventoryService;
 	@Autowired
-	private BrandService bService;
+	private BrandService brandService;
 
 	@Autowired
-	private ProductService pService;
+	private ProductService productService;
 
 	// test Inventory Service
 	@Test
 	public void testAdd() throws ApiException {
-		InventoryPojo i = getInventoryPojoTest();
+		InventoryPojo inventoryPojo = getInventoryPojoTest();
 		// Add
-		service.add(i);
-		InventoryPojo inventoryPojo = service.get(i.getId());
-		assertEquals(i.getQuantity(), inventoryPojo.getQuantity());
+		inventoryService.add(inventoryPojo);
+		InventoryPojo inventoryPojoFinal = inventoryService.get(inventoryPojo.getId());
+		assertEquals(inventoryPojo.getQuantity(), inventoryPojoFinal.getQuantity());
 	}
 
 	@Test
 	public void testGetByProductId() throws ApiException {
-		InventoryPojo i = getInventoryPojoTest();
-		ProductMasterPojo productMasterPojo = pService.get(i.getProductId());
-		service.add(i);
-		// select data for given productid
-
-		InventoryPojo ip = service.getByProductId(productMasterPojo);
-		assertEquals(i.getId(), ip.getId());
-		assertEquals(i.getQuantity(), ip.getQuantity());
+		InventoryPojo inventoryPojo = getInventoryPojoTest();
+		ProductMasterPojo productMasterPojo = productService.get(inventoryPojo.getProductId());
+		inventoryService.add(inventoryPojo);
+		// select data for given product id
+		InventoryPojo ip = inventoryService.getByProductId(productMasterPojo);
+		assertEquals(inventoryPojo.getId(), ip.getId());
+		assertEquals(inventoryPojo.getQuantity(), ip.getQuantity());
 	}
 
 	@Test
 	public void testGet() throws ApiException {
-		InventoryPojo i = getInventoryPojoTest();
-		service.add(i);
-		InventoryPojo ip = service.get(i.getId());
+		InventoryPojo inventoryPojo = getInventoryPojoTest();
+		inventoryService.add(inventoryPojo);
+		InventoryPojo ip = inventoryService.get(inventoryPojo.getId());
 		// test for same quantity
-		assertEquals(i.getQuantity(), ip.getQuantity());
+		assertEquals(inventoryPojo.getQuantity(), ip.getQuantity());
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		service.getAll();
+		InventoryPojo inventoryPojo = getInventoryPojoTest();
+		inventoryService.add(inventoryPojo);
+		// test get all function
+		List<InventoryPojo> inventoryPojos = inventoryService.getAll();
+		assertEquals(1, inventoryPojos.size());
 	}
 
 	@Test
 	public void testUpdate() throws ApiException {
-		InventoryPojo i = getInventoryPojoTest();
-		service.add(i);
-		InventoryPojo ip = service.get(i.getId());
+		InventoryPojo inventoryPojo = getInventoryPojoTest();
+		inventoryService.add(inventoryPojo);
+		InventoryPojo ip = inventoryService.get(inventoryPojo.getId());
 		int newQuantity = 20;
 		ip.setQuantity(newQuantity);
 		// update data
-		service.update(ip.getId(), ip);
-		InventoryPojo pi = service.get(ip.getId());
+		inventoryService.update(ip.getId(), ip);
+		InventoryPojo inventoryPojoFinal = inventoryService.get(ip.getId());
 		// test for updated data
-		assertEquals(newQuantity, pi.getQuantity());
+		assertEquals(newQuantity, inventoryPojoFinal.getQuantity());
 	}
 
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
-		InventoryPojo i = getInventoryPojoTest();
-		service.add(i);
+		InventoryPojo inventoryPojo = getInventoryPojoTest();
+		inventoryService.add(inventoryPojo);
 		// select data for given id
-		InventoryPojo ip = service.getCheck(i.getId());
-		assertEquals(i.getId(), ip.getId());
+		InventoryPojo ip = inventoryService.getCheck(inventoryPojo.getId());
+		assertEquals(inventoryPojo.getId(), ip.getId());
 		// Throw exception
-		service.getCheck(ip.getId()+1);
+		inventoryService.getCheck(ip.getId() + 1);
 	}
 
-	@Test
-	public void testSearchData() throws ApiException {
-		InventoryPojo inventoryPojo1 = getInventoryPojoTest();
-		service.add(inventoryPojo1);
-		List<Integer> productIds=new ArrayList<Integer>();
-		productIds.add(inventoryPojo1.getProductId());
-		List<InventoryPojo> inventoryPojos=service.searchData(productIds);
-		assertEquals(1, inventoryPojos.size());
-		productIds.clear();
-		inventoryPojos=service.searchData(productIds);
-		assertEquals(0, inventoryPojos.size());
-	}
-	
 	private InventoryPojo getInventoryPojoTest() throws ApiException {
 		InventoryPojo i = new InventoryPojo();
 		// create data
@@ -105,13 +94,13 @@ public class InventoryServiceTest extends AbstractUnitTest {
 		ProductMasterPojo p = new ProductMasterPojo();
 		b.setBrand(" viram ");
 		b.setCategory("ShaH");
-		bService.add(b);
+		brandService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
 		p.setBrand_category_id(b.getId());
 		p.setName(" ProDuct ");
 		p.setMrp(mrp);
-		pService.add(p, b);
+		productService.add(p, b);
 		int quantity = 10;
 		i.setProductId(p.getId());
 		i.setQuantity(quantity);

@@ -6,6 +6,8 @@ import org.junit.Test;
 
 public class InfoDataTest {
 
+	// test InfoData
+	
 	@Test
 	public void testInfoData() {
 		InfoData infoData = new InfoData();

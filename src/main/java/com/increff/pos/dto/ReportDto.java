@@ -80,7 +80,8 @@ public class ReportDto {
 		List<ProductMasterPojo> list = productService.getAll();
 		list = list.stream().filter(o -> (brandIds.contains(o.getBrand_category_id()))).collect(Collectors.toList());
 		List<Integer> productIds = list.stream().map(o -> o.getId()).collect(Collectors.toList());
-		List<InventoryPojo> inventoryPojoList = inventoryService.searchData(productIds);
+		List<InventoryPojo> inventoryPojoList = inventoryService.getAll().stream()
+				.filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
 		List<InventoryReportData> list2 = inventoryPojoList.stream()
 				.map(o -> ConverterUtil.convertToInventoryReportData(o,
 						brandService.get(productService.get(o.getProductId()).getBrand_category_id())))

@@ -35,17 +35,21 @@ public class OrderItemDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetByOrderId() throws ApiException, ParseException {
+		// add data
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
 		InventoryForm inventoryForm1 = getInventoryForm(productData1.barcode, 20);
 		inventoryDto.addInventory(inventoryForm1);
 		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
 		InventoryForm inventoryForm2 = getInventoryForm(productData2.barcode, 20);
 		inventoryDto.addInventory(inventoryForm2);
-
+		// get order item array
 		OrderItemForm[] orderItemForms = getOrderItemFormArray(productData1.barcode, productData2.barcode,
 				productData1.name, productData2.name, 4, 5, productData1.mrp, productData2.mrp);
+		// create order
 		orderDto.createOrder(orderItemForms);
+		// create order search form
 		OrderSearchForm orderSearchForm = getOrderSearchForm();
+		// search
 		List<OrderData> orderDatas = orderDto.searchOrder(orderSearchForm);
 		int orderId = orderDatas.get(0).id;
 		List<OrderItemData> orderItemDatas = orderItemDto.get(orderId);
@@ -54,17 +58,20 @@ public class OrderItemDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testSearchOrderItems() throws ApiException {
+		// add data
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
 		InventoryForm inventoryForm1 = getInventoryForm(productData1.barcode, 20);
 		inventoryDto.addInventory(inventoryForm1);
 		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
 		InventoryForm inventoryForm2 = getInventoryForm(productData2.barcode, 20);
 		inventoryDto.addInventory(inventoryForm2);
-
+		// get order item array
 		OrderItemForm[] orderItemForms = getOrderItemFormArray(productData1.barcode, productData2.barcode,
 				productData1.name, productData2.name, 4, 5, productData1.mrp, productData2.mrp);
+		//create order
 		orderDto.createOrder(orderItemForms);
 		OrderItemData orderItemData = getOrderItemData("", "m", 0);
+		// search
 		List<OrderItemData> orderItemDatas = orderItemDto.searchOrderItem(orderItemData);
 		assertEquals("munch", orderItemDatas.get(0).name);
 		assertEquals(10, orderItemDatas.get(0).sellingPrice, 0.01);
@@ -72,15 +79,19 @@ public class OrderItemDtoTest extends AbstractUnitTest {
 		assertEquals(4, orderItemDatas.get(0).quantity);
 		
 		List<OrderData> orderDatas = orderDto.getAll();
+		// search by order id
 		int orderId=orderDatas.get(0).id;
 		orderItemData = getOrderItemData("", "m", orderId);
 		orderItemDatas = orderItemDto.searchOrderItem(orderItemData);
+		// test
 		assertEquals(1, orderItemDatas.size());
 		orderItemData = getOrderItemData("", "m", orderId+1);
 		orderItemDatas = orderItemDto.searchOrderItem(orderItemData);
 		assertEquals(0, orderItemDatas.size());
 		
 	}
+	
+	// functions for creating data
 
 	private OrderItemData getOrderItemData(String barcode, String name, int orderId) {
 		OrderItemData orderItemData = new OrderItemData();

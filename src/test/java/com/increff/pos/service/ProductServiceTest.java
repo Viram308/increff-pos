@@ -16,105 +16,123 @@ import com.increff.pos.util.StringUtil;
 
 public class ProductServiceTest extends AbstractUnitTest {
 	@Autowired
-	private ProductService service;
+	private ProductService productService;
 	@Autowired
-	private BrandService bService;
+	private BrandService brandService;
 
 	// test product service
 	@Test
 	public void testAdd() throws ApiException {
-		ProductMasterPojo p = getProductMasterPojoTest();
+		ProductMasterPojo productMasterPojo = getProductMasterPojoTest();
 		// Add one time
-		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
-		service.add(p, brandMasterPojo);
+		BrandMasterPojo brandMasterPojo = brandService.get(productMasterPojo.getBrand_category_id());
+		productService.add(productMasterPojo, brandMasterPojo);
 		// create new data with same barcode
-		ProductMasterPojo p1 = new ProductMasterPojo();
-		p1.setBrand_category_id(p.getBrand_category_id());
-		p1.setMrp(p.getMrp());
-		p1.setName(p.getName());
-		p1.setBarcode(p.getBarcode());
-		service.add(p1, brandMasterPojo);
+		ProductMasterPojo productMasterPojoFinal = new ProductMasterPojo();
+		productMasterPojoFinal.setBrand_category_id(productMasterPojo.getBrand_category_id());
+		productMasterPojoFinal.setMrp(productMasterPojo.getMrp());
+		productMasterPojoFinal.setName(productMasterPojo.getName());
+		productMasterPojoFinal.setBarcode(productMasterPojo.getBarcode());
+		productService.add(productMasterPojoFinal, brandMasterPojo);
 		// get barcode for id of first object
-		String b1 = service.get(p.getId()).getBarcode();
+		String b1 = productService.get(productMasterPojo.getId()).getBarcode();
 		// get barcode for very next object
 		// and p.getId()+1
-		String b2 = service.get(p.getId() + 1).getBarcode();
+		String b2 = productService.get(productMasterPojo.getId() + 1).getBarcode();
 		// test for different barcode
 		assertNotEquals(b1, b2);
 	}
 
 	@Test(expected = ApiException.class)
 	public void testGetByBarcode() throws ApiException {
-		ProductMasterPojo p = getProductMasterPojoTest();
-		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
-		service.add(p, brandMasterPojo);
-		service.getByBarcode(p.getBarcode());
+		ProductMasterPojo productMasterPojo = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = brandService.get(productMasterPojo.getBrand_category_id());
+		productService.add(productMasterPojo, brandMasterPojo);
+		ProductMasterPojo productMasterPojo2 = productService.getByBarcode(productMasterPojo.getBarcode());
+		assertEquals(productMasterPojo.getName(), productMasterPojo2.getName());
+		assertEquals(productMasterPojo.getBrand_category_id(), productMasterPojo2.getBrand_category_id());
+		assertEquals(productMasterPojo.getMrp(), productMasterPojo2.getMrp(), 0.01);
+
 		// throw exception while getting data for unavailable barcode
-		service.getByBarcode("barcode");
+		productService.getByBarcode("barcode");
 	}
 
 	@Test(expected = ApiException.class)
 	public void testGetByBarcodeBlank() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
-		service.add(p, brandMasterPojo);
-		service.getByBarcode("");
+		BrandMasterPojo brandMasterPojo = brandService.get(p.getBrand_category_id());
+		productService.add(p, brandMasterPojo);
+		// throw exception
+		productService.getByBarcode("");
 	}
 
 	@Test
 	public void testGet() throws ApiException {
 		ProductMasterPojo p = getProductMasterPojoTest();
-		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
-		service.add(p, brandMasterPojo);
-		ProductMasterPojo pr = service.get(p.getId());
+		BrandMasterPojo brandMasterPojo = brandService.get(p.getBrand_category_id());
+		productService.add(p, brandMasterPojo);
+		ProductMasterPojo pr = productService.get(p.getId());
 		// test added data
 		assertEquals("product", pr.getName());
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		service.getAll();
+		ProductMasterPojo p = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = brandService.get(p.getBrand_category_id());
+		productService.add(p, brandMasterPojo);
+		List<ProductMasterPojo> productMasterPojos=productService.getAll();
+		assertEquals(1, productMasterPojos.size());
 	}
 
 	@Test
 	public void testUpdate() throws ApiException {
-		ProductMasterPojo p = getProductMasterPojoTest();
-		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
-		service.add(p, brandMasterPojo);
-		ProductMasterPojo pr = service.get(p.getId());
+		ProductMasterPojo productMasterPojo = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = brandService.get(productMasterPojo.getBrand_category_id());
+		productService.add(productMasterPojo, brandMasterPojo);
+		ProductMasterPojo productMasterPojoFinal = productService.get(productMasterPojo.getId());
 		// update data
-		pr.setName(" Check ");
-		service.update(pr.getId(), pr, brandMasterPojo);
-		ProductMasterPojo pm = service.get(pr.getId());
+		productMasterPojoFinal.setName(" Check ");
+		productService.update(productMasterPojoFinal.getId(), productMasterPojoFinal, brandMasterPojo);
+		ProductMasterPojo pm = productService.get(productMasterPojoFinal.getId());
 		// test updated data with normalization
 		assertEquals("check", pm.getName());
 	}
 
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
-		ProductMasterPojo p = getProductMasterPojoTest();
-		BrandMasterPojo brandMasterPojo = bService.get(p.getBrand_category_id());
-		service.add(p, brandMasterPojo);
+		ProductMasterPojo productMasterPojo = getProductMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = brandService.get(productMasterPojo.getBrand_category_id());
+		productService.add(productMasterPojo, brandMasterPojo);
 
-		ProductMasterPojo pr = service.getCheck(p.getId());
-		// After delete throw exception while getting data
-		service.getCheck(pr.getId() + 1);
+		ProductMasterPojo productMasterPojo2 = productService.getCheck(productMasterPojo.getId());
+		assertEquals(productMasterPojo.getName(), productMasterPojo2.getName());
+		assertEquals(productMasterPojo.getBrand_category_id(), productMasterPojo2.getBrand_category_id());
+		assertEquals(productMasterPojo.getMrp(), productMasterPojo2.getMrp(), 0.01);
+
+		// throw exception while getting data for id+1
+		productService.getCheck(productMasterPojo2.getId() + 1);
 
 	}
 
 	@Test
 	public void searchDataProductMasterPojo() throws ApiException {
+		// create data
 		ProductMasterPojo productMasterPojo1 = getProductMasterPojoTest();
 		ProductMasterPojo productMasterPojo2 = getProductMasterPojoTest();
-		BrandMasterPojo brandMasterPojo1 = bService.get(productMasterPojo1.getBrand_category_id());
-		BrandMasterPojo brandMasterPojo2 = bService.get(productMasterPojo2.getBrand_category_id());
+		BrandMasterPojo brandMasterPojo1 = brandService.get(productMasterPojo1.getBrand_category_id());
+		BrandMasterPojo brandMasterPojo2 = brandService.get(productMasterPojo2.getBrand_category_id());
 		productMasterPojo2.setName("munch");
-		service.add(productMasterPojo1, brandMasterPojo1);
-		service.add(productMasterPojo2, brandMasterPojo2);
+		// add
+		productService.add(productMasterPojo1, brandMasterPojo1);
+		productService.add(productMasterPojo2, brandMasterPojo2);
+		// create product search form
 		ProductSearchForm productSearchForm = new ProductSearchForm();
 		productSearchForm.barcode = "";
 		productSearchForm.name = " M       ";
-		List<ProductMasterPojo> productMasterPojos = service.searchData(productSearchForm);
+		// search
+		List<ProductMasterPojo> productMasterPojos = productService.searchData(productSearchForm);
+		// test
 		assertEquals(1, productMasterPojos.size());
 	}
 
@@ -125,7 +143,7 @@ public class ProductServiceTest extends AbstractUnitTest {
 		String barcode = StringUtil.getAlphaNumericString();
 		b.setBrand(StringUtil.getAlphaNumericString());
 		b.setCategory("ShaH");
-		bService.add(b);
+		brandService.add(b);
 		double mrp = 10.25;
 		p.setBarcode(barcode);
 		p.setBrand_category_id(b.getId());

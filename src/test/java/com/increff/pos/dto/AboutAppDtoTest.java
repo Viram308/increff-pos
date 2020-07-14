@@ -21,6 +21,7 @@ public class AboutAppDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetNameandVersion() {
 		AboutAppData aboutAppData = aboutAppDto.getNameandVersion();
+		// test data
 		assertEquals(name, aboutAppData.name);
 		assertEquals(version, aboutAppData.version);
 	}
