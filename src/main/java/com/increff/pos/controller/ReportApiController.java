@@ -30,37 +30,24 @@ public class ReportApiController {
 
 	// Sales Report
 	@ApiOperation(value = "Gets Sales Report")
-	@RequestMapping(value = "/salesreport", method = RequestMethod.POST)
+	@RequestMapping(value = "/sales-report", method = RequestMethod.POST)
 	public List<SalesReportData> getSalesReport(@RequestBody SalesReportForm salesReportForm)
 			throws ParseException, ApiException {
 		return reportDto.getSalesReport(salesReportForm);
 	}
 
-//	// Brand Report
-//	@ApiOperation(value = "Gets Brand Report")
-//	@RequestMapping(value = "/brandreport", method = RequestMethod.GET)
-//	public List<BrandData> getBrandReport() {
-//		return reportDto.getBrandReportData();
-//	}
-
 	// Brand Report
 	@ApiOperation(value = "Gets Brand Report")
-	@RequestMapping(value = "/brandreport", method = RequestMethod.POST)
+	@RequestMapping(value = "/brand-report", method = RequestMethod.POST)
 	public List<BrandData> searchBrandReport(@RequestBody BrandForm brandForm) throws ApiException {
 		return reportDto.searchBrandReport(brandForm);
 	}
 
 	@ApiOperation(value = "Gets Inventory Report")
-	@RequestMapping(value = "/inventoryreport", method = RequestMethod.POST)
+	@RequestMapping(value = "/inventory-report", method = RequestMethod.POST)
 	public List<InventoryReportData> searchInventoryReport(@RequestBody BrandForm brandForm) throws ApiException {
 		return reportDto.searchInventoryReport(brandForm);
 	}
 
-//	// Inventory Report
-//	@ApiOperation(value = "Gets Inventory Report")
-//	@RequestMapping(value = "/inventoryreport", method = RequestMethod.GET)
-//	public List<InventoryReportData> getInventoryReport() throws ApiException {
-//		return reportDto.getInventoryReportData();
-//	}
 
 }

@@ -1,7 +1,7 @@
 // get url
 function getSalesReportUrl(){
 	var baseUrl = $("meta[name=baseUrl]").attr("content");
-	return baseUrl + "/api/admin/salesreport";
+	return baseUrl + "/api/admin/sales-report";
 }
 
 function getSalesReportData(){
@@ -125,3 +125,4 @@ function init(){
 	$('#download-salesreport').click(downloadSalesReport);
 }
 $(document).ready(init);
+$(document).ready(getSalesReportData);
