@@ -55,12 +55,15 @@ public class ReportDto {
 		BrandForm brandForm = ConverterUtil.convertSalesReportFormtoBrandForm(salesReportForm);
 		List<BrandMasterPojo> brandMasterPojoList = brandService.searchBrandData(brandForm);
 		List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		// filter using brandId list and map to product id list
 		List<Integer> productIds = productService.getAll().stream()
 				.filter(o -> (brandIds.contains(o.getBrand_category_id()))).map(o -> o.getId())
 				.collect(Collectors.toList());
+		// filter using product and order id list
 		List<OrderItemPojo> listOfOrderItemPojos = orderItemService.getAll().stream()
 				.filter(o -> (productIds.contains(o.getProductId()) && orderIds.contains(o.getOrderId())))
 				.collect(Collectors.toList());
+		// map to sales report data
 		List<SalesReportData> salesReportData = listOfOrderItemPojos.stream()
 				.map(o -> ConverterUtil.convertToSalesReportData(o,
 						brandService.get(productService.get(o.getProductId()).getBrand_category_id())))
@@ -71,6 +74,7 @@ public class ReportDto {
 
 	public List<BrandData> searchBrandReport(BrandForm brandForm) throws ApiException {
 		List<BrandMasterPojo> list = brandService.searchBrandData(brandForm);
+		// map to brand report data
 		return list.stream().map(o -> ConverterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
@@ -78,10 +82,14 @@ public class ReportDto {
 		List<BrandMasterPojo> brandMasterPojoList = brandService.searchBrandData(brandForm);
 		List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<ProductMasterPojo> list = productService.getAll();
+		// filter using brandId list
 		list = list.stream().filter(o -> (brandIds.contains(o.getBrand_category_id()))).collect(Collectors.toList());
+		// map to product id list
 		List<Integer> productIds = list.stream().map(o -> o.getId()).collect(Collectors.toList());
+		// filter using product id list
 		List<InventoryPojo> inventoryPojoList = inventoryService.getAll().stream()
 				.filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
+		// map to inventory report data
 		List<InventoryReportData> list2 = inventoryPojoList.stream()
 				.map(o -> ConverterUtil.convertToInventoryReportData(o,
 						brandService.get(productService.get(o.getProductId()).getBrand_category_id())))

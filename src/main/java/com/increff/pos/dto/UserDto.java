@@ -1,8 +1,6 @@
 package com.increff.pos.dto;
 
 import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,6 +16,7 @@ import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.service.UserService;
 import com.increff.pos.util.ConverterUtil;
+import com.increff.pos.util.PasswordUtil;
 import com.increff.pos.util.StringUtil;
 
 @Component
@@ -28,13 +27,10 @@ public class UserDto {
 	@Autowired
 	private InfoData info;
 
-	public UserPojo addUser(UserForm form) throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public UserPojo addUser(UserForm form) throws Exception {
 		validateData(form);
 		UserPojo userPojo = ConverterUtil.convertUserFormtoUserPojo(form);
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.reset();
-	    md.update(form.getPassword().getBytes("UTF-8"));
-	    userPojo.setPassword(String.format("%032x", new BigInteger(1, md.digest())));
+		userPojo.setPassword(PasswordUtil.getHash(form.getPassword()));
 		return userService.add(userPojo);
 	}
 
@@ -50,10 +46,13 @@ public class UserDto {
 	public List<UserData> searchData(UserForm form) {
 		List<UserPojo> list = userService.searchUserData(form);
 		if (form.getRole().isEmpty()) {
+			// map UserPojo to UserData
 			return list.stream().map(o -> ConverterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
 		}
+		// filter with role
 		list = list.stream().filter(o -> (StringUtil.toLowerCase(form.getRole()).equals(o.getRole())))
 				.collect(Collectors.toList());
+		// map UserPojo to UserData
 		return list.stream().map(o -> ConverterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
 	}
 
@@ -70,10 +69,11 @@ public class UserDto {
 
 	public List<UserData> getAllUsers() {
 		List<UserPojo> list = userService.getAll();
+		// map UserPojo to UserData
 		return list.stream().map(o -> ConverterUtil.convertUserPojotoUserData(o)).collect(Collectors.toList());
 	}
 
-	public void checkInit(UserForm form) throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void checkInit(UserForm form) throws Exception {
 		List<UserPojo> list = userService.getAll();
 		// check if already initialized
 		// check if already exists
@@ -83,10 +83,7 @@ public class UserDto {
 			// Initialize with admin role
 			form.setRole("admin");
 			UserPojo p = ConverterUtil.convertUserFormtoUserPojo(form);
-			MessageDigest md = MessageDigest.getInstance("MD5");
-			md.reset();
-		    md.update(form.getPassword().getBytes("UTF-8"));
-		    p.setPassword(String.format("%032x", new BigInteger(1, md.digest())));
+			p.setPassword(PasswordUtil.getHash(form.getPassword()));
 			userService.add(p);
 			info.setMessage("Application initialized");
 		}

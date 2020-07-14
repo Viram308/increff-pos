@@ -1,8 +1,5 @@
 package com.increff.pos.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,7 +8,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.UserForm;
-import com.increff.pos.service.ApiException;
 
 import io.swagger.annotations.ApiOperation;
 
@@ -24,8 +20,7 @@ public class InitApiController {
 
 	@ApiOperation(value = "Initializes application")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public ModelAndView initSite(UserForm form)
-			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public ModelAndView initSite(UserForm form) throws Exception {
 		userDto.checkInit(form);
 		return new ModelAndView("redirect:/site/login");
 	}

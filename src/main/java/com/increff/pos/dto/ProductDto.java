@@ -53,10 +53,14 @@ public class ProductDto {
 
 	public List<ProductData> searchProduct(ProductSearchForm form) throws ApiException {
 		BrandForm brandForm = ConverterUtil.convertProductSearchFormtoBrandForm(form);
+		// search brands
 		List<BrandMasterPojo> brandMasterPojoList = brandService.searchBrandData(brandForm);
+		// create brandId list
 		List<Integer> brandIds = brandMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		// filter using brandId list
 		List<ProductMasterPojo> list = productService.searchData(form).stream()
 				.filter(o -> (brandIds.contains(o.getBrand_category_id()))).collect(Collectors.toList());
+		// map ProductMasterPojo to ProductData
 		return list.stream().map(
 				o -> ConverterUtil.convertProductMasterPojotoProductData(o, brandService.get(o.getBrand_category_id())))
 				.collect(Collectors.toList());
@@ -79,6 +83,7 @@ public class ProductDto {
 
 	public List<ProductData> getAll() {
 		List<ProductMasterPojo> list = productService.getAll();
+		// map ProductMasterPojo to ProductData
 		return list.stream().map(
 				o -> ConverterUtil.convertProductMasterPojotoProductData(o, brandService.get(o.getBrand_category_id())))
 				.collect(Collectors.toList());

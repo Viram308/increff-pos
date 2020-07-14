@@ -31,8 +31,7 @@ public class AdminApiController {
 
 	@ApiOperation(value = "Adds a user")
 	@RequestMapping(value = "", method = RequestMethod.POST)
-	public UserPojo addUser(@RequestBody UserForm form)
-			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public UserPojo addUser(@RequestBody UserForm form) throws Exception {
 		return userDto.addUser(form);
 	}
 
@@ -53,7 +52,7 @@ public class AdminApiController {
 	public List<UserData> search(@RequestBody UserForm form) {
 		return userDto.searchData(form);
 	}
-	
+
 	@ApiOperation(value = "Updates a user")
 	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	public UserPojo updateUser(@PathVariable int id, @RequestBody UserForm form)

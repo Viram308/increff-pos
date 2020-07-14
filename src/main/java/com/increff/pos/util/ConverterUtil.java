@@ -1,7 +1,5 @@
 package com.increff.pos.util;
 
-import java.io.UnsupportedEncodingException;
-import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -40,8 +38,7 @@ import com.increff.pos.pojo.UserPojo;
 public class ConverterUtil {
 
 	// Converts UserForm to UserPojo
-	public static UserPojo convertUserFormtoUserPojo(UserForm f)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public static UserPojo convertUserFormtoUserPojo(UserForm f) {
 		UserPojo p = new UserPojo();
 		p.setEmail(f.getEmail());
 		p.setRole(f.getRole());
@@ -57,14 +54,7 @@ public class ConverterUtil {
 		return d;
 	}
 
-//	// Converts list of UserPojo to list of UserData
-//	public static List<UserData> getUserDataList(List<UserPojo> list) {
-//		List<UserData> list2 = new ArrayList<UserData>();
-//		for (UserPojo p : list) {
-//			list2.add(convertUserPojotoUserData(p));
-//		}
-//		return list2;
-//	}
+
 
 	// Converts BrandMasterPojo to BrandData
 	public static BrandData convertBrandMasterPojotoBrandData(BrandMasterPojo p) {
@@ -83,14 +73,7 @@ public class ConverterUtil {
 		return b;
 	}
 
-//	// Converts list of BrandMasterPojo to list of BrandData
-//	public static List<BrandData> getBrandDataList(List<BrandMasterPojo> list) {
-//		List<BrandData> list2 = new ArrayList<BrandData>();
-//		for (BrandMasterPojo p : list) {
-//			list2.add(convertBrandMasterPojotoBrandData(p));
-//		}
-//		return list2;
-//	}
+
 
 	// Converts InventoryPojo to InventoryData
 	public static InventoryData convertInventoryPojotoInventoryData(InventoryPojo i,
@@ -152,14 +135,7 @@ public class ConverterUtil {
 		return d;
 	}
 
-//	// Converts list of OrderPojo to list of OrderData
-//	public static List<OrderData> getOrderDataList(List<OrderPojo> list) {
-//		List<OrderData> list2 = new ArrayList<OrderData>();
-//		for (OrderPojo p : list) {
-//			list2.add(convertOrderPojotoOrderData(p));
-//		}
-//		return list2;
-//	}
+
 
 	// Converts OrderItemPojo to OrderItemData
 	public static OrderItemData convertOrderItemPojotoOrderItemData(OrderItemPojo orderItemPojo,
@@ -180,16 +156,6 @@ public class ConverterUtil {
 		orderItemPojo.setQuantity(orderItemForm.quantity);
 		return orderItemPojo;
 	}
-
-//	// Converts list of OrderItemPojo to list of OrderItemData
-//	public static List<OrderItemData> getOrderItemDataList(List<OrderItemPojo> list) {
-//		List<OrderItemData> list2 = new ArrayList<OrderItemData>();
-//		for (OrderItemPojo p : list) {
-//			ProductMasterPojo productMasterPojo = productService.get(p.getProductId());
-//			list2.add(convertOrderItemPojotoOrderItemData(p, productMasterPojo));
-//		}
-//		return list2;
-//	}
 
 	// Converts ProductForm to ProductMasterPojo during update operation
 	public static ProductMasterPojo convertProductFormtoProductMasterPojoUpdate(ProductForm f,
@@ -226,47 +192,6 @@ public class ConverterUtil {
 		return p;
 	}
 
-//	// Converts list of ProductMasterPojo to list of ProductData
-//	public static List<ProductData> getProductDataList(List<ProductMasterPojo> list,List<BrandMasterPojo> brandMasterPojos) {
-////		List<ProductData> list2 = new ArrayList<ProductData>();
-////		for (ProductMasterPojo p : list) {
-////			BrandMasterPojo brandMasterPojo = brandService.get(p.getBrand_category_id());
-////			list2.add(convertProductMasterPojotoProductData(p, brandMasterPojo));
-////		}
-//		return ;
-//	}
-
-//	public static List<SalesReportData> convertToSalesData(List<OrderItemPojo> listOfOrderItemPojo) {
-//		List<SalesReportData> salesReportData = new ArrayList<SalesReportData>();
-//		int i;
-//		// Converts OrderItemPojo to SalesReportData
-//		for (i = 0; i < listOfOrderItemPojo.size(); i++) {
-//			SalesReportData salesProductData = new SalesReportData();
-//			ProductMasterPojo p = productService.get(listOfOrderItemPojo.get(i).getProductId());
-//			BrandMasterPojo b = brandService.get(p.getBrand_category_id());
-//			salesProductData.brand = b.getBrand();
-//			salesProductData.category = b.getCategory();
-//			salesProductData.quantity = listOfOrderItemPojo.get(i).getQuantity();
-//			salesProductData.revenue = listOfOrderItemPojo.get(i).getQuantity()
-//					* listOfOrderItemPojo.get(i).getSellingPrice();
-//			salesReportData.add(salesProductData);
-//		}
-//		return salesReportData;
-//	}
-
-//	public static List<BrandData> convertToBrandData(List<BrandMasterPojo> list) {
-//		List<BrandData> list2 = new ArrayList<BrandData>();
-//		int i = 0;
-//		// Converts BrandMasterPojo to BrandData
-//		for (i = 0; i < list.size(); i++) {
-//			BrandData b = new BrandData();
-//			b.id = i + 1;
-//			b.brand = list.get(i).getBrand();
-//			b.category = list.get(i).getCategory();
-//			list2.add(b);
-//		}
-//		return list2;
-//	}
 
 	public static InventoryReportData convertToInventoryReportData(InventoryPojo inventoryPojo,
 			BrandMasterPojo brandMasterPojo) {
@@ -351,21 +276,5 @@ public class ConverterUtil {
 		brandForm.category = salesReportForm.category;
 		return brandForm;
 	}
-
-//	public static List<OrderItemPojo> getOrderItemObject(List<OrderItemForm> orderItemList, OrderPojo op) throws ApiException {
-//		List<OrderItemPojo> list = new ArrayList<OrderItemPojo>();
-//		int orderId = op.getId();
-//		// Convert OrderItemForm to OrderItemPojo
-//		for (OrderItemForm o : orderItemList) {
-//			ProductMasterPojo productMasterPojo = productService.getByBarcode(o.barcode);
-//			OrderItemPojo item = new OrderItemPojo();
-//			item.setOrderId(orderId);
-//			item.setProductId(productMasterPojo.getId());
-//			item.setQuantity(o.quantity);
-//			item.setSellingPrice(o.sellingPrice);
-//			list.add(item);
-//		}
-//		return list;
-//	}
 
 }

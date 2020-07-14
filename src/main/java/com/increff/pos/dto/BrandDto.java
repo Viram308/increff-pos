@@ -27,6 +27,7 @@ public class BrandDto {
 
 	public List<BrandData> searchBrandData(BrandForm form) throws ApiException {
 		List<BrandMasterPojo> list = brandService.searchBrandData(form);
+		// map BrandMasterPojo to BrandData
 		return list.stream().map(o -> ConverterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 
@@ -47,6 +48,7 @@ public class BrandDto {
 
 	public List<BrandData> getAllBrands() {
 		List<BrandMasterPojo> list = brandService.getAll();
+		// map BrandMasterPojo to BrandData
 		return list.stream().map(o -> ConverterUtil.convertBrandMasterPojotoBrandData(o)).collect(Collectors.toList());
 	}
 

@@ -12,20 +12,20 @@ import com.increff.pos.pojo.InventoryPojo;
 public class InventoryDao extends AbstractDao {
 
 	// select according to product id
-	private static String select_productId = "select i from InventoryPojo i where productId=:productId";
+	private static String selectByProductId = "select i from InventoryPojo i where productId=:productId";
 	// select all
-	private static String select_all = "select i from InventoryPojo i";
+	private static String selectAll = "select i from InventoryPojo i";
 
 	// select according to product id
 	public InventoryPojo selectByProductId(int pid) {
-		TypedQuery<InventoryPojo> query = getQuery(select_productId, InventoryPojo.class);
+		TypedQuery<InventoryPojo> query = getQuery(selectByProductId, InventoryPojo.class);
 		query.setParameter("productId", pid);
 		return getSingle(query);
 	}
 
 	// select all
 	public List<InventoryPojo> selectAll() {
-		TypedQuery<InventoryPojo> query = getQuery(select_all, InventoryPojo.class);
+		TypedQuery<InventoryPojo> query = getQuery(selectAll, InventoryPojo.class);
 		return query.getResultList();
 	}
 

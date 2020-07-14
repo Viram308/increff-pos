@@ -35,6 +35,7 @@ com/increff/pos/controller/AdminApiController.class
 com/increff/pos/controller/AbstractUiController.class
 com/increff/pos/model/UserForm.class
 com/increff/pos/spring/ControllerConfig.class
+com/increff/pos/util/PasswordUtil.class
 com/increff/pos/spring/SpringSecurityInitializer.class
 com/increff/pos/service/InventoryService.class
 com/increff/pos/model/SalesReportData.class

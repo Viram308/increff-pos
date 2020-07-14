@@ -1,9 +1,5 @@
 package com.increff.pos.controller;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Objects;
 
 import javax.servlet.http.HttpServletRequest;
@@ -22,7 +18,7 @@ import com.increff.pos.dto.UserDto;
 import com.increff.pos.model.InfoData;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
-import com.increff.pos.service.ApiException;
+import com.increff.pos.util.PasswordUtil;
 import com.increff.pos.util.SecurityUtil;
 
 import io.swagger.annotations.Api;
@@ -40,19 +36,15 @@ public class LoginController {
 
 	@ApiOperation(value = "Logs in a user")
 	@RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
-	public ModelAndView login(HttpServletRequest req, UserForm userForm)
-			throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public ModelAndView login(HttpServletRequest req, UserForm userForm) throws Exception {
 
 		UserPojo userPojo = userDto.getByEmail(userForm.getEmail());
 		if (userPojo == null) {
 			info.setMessage("Invalid username or password");
 			return new ModelAndView("redirect:/site/login");
 		}
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.reset();
-		md.update(userForm.getPassword().getBytes("UTF-8"));
-		String password = String.format("%032x", new BigInteger(1, md.digest()));
-		boolean authenticated = (userPojo != null && Objects.equals(userPojo.getPassword(), password));
+		boolean authenticated = (userPojo != null
+				&& Objects.equals(userPojo.getPassword(), PasswordUtil.getHash(userForm.getPassword())));
 
 		if (!authenticated) {
 			info.setMessage("Invalid username or password");

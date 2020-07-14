@@ -27,8 +27,11 @@ public class InventoryDto {
 
 	public InventoryPojo addInventory(InventoryForm form) throws ApiException {
 		validateData(form);
+		// get product
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
+		// get inventory
 		InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
+		// update inventory
 		inventoryPojo.setQuantity(form.quantity + inventoryPojo.getQuantity());
 		return inventoryService.update(inventoryPojo.getId(), inventoryPojo);
 	}
@@ -37,8 +40,10 @@ public class InventoryDto {
 		ProductSearchForm productSearchForm = ConverterUtil.convertInventorySearchFormtoProductSearchForm(form);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
 		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
+		// filter according to product id list
 		List<InventoryPojo> list = inventoryService.getAll().stream()
 				.filter(o -> (productIds.contains(o.getProductId()))).collect(Collectors.toList());
+		// map InventoryPojo to InventoryData
 		return list.stream()
 				.map(o -> ConverterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
@@ -52,6 +57,7 @@ public class InventoryDto {
 
 	public InventoryPojo updateInventory(int id, InventoryForm form) throws ApiException {
 		validateData(form);
+		// get product
 		ProductMasterPojo productMasterPojo = productService.getByBarcode(form.barcode);
 		InventoryPojo inventoryPojo = ConverterUtil.convertInventoryFormtoInventoryPojo(form, productMasterPojo);
 		return inventoryService.update(id, inventoryPojo);
@@ -59,6 +65,7 @@ public class InventoryDto {
 
 	public List<InventoryData> getAllInventory() {
 		List<InventoryPojo> list = inventoryService.getAll();
+		// map InventoryPojo to InventoryData
 		return list.stream()
 				.map(o -> ConverterUtil.convertInventoryPojotoInventoryData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());

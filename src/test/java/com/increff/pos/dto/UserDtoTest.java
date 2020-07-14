@@ -2,10 +2,6 @@ package com.increff.pos.dto;
 
 import static org.junit.Assert.assertEquals;
 
-import java.io.UnsupportedEncodingException;
-import java.math.BigInteger;
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 import java.util.Iterator;
 import java.util.List;
 
@@ -20,6 +16,7 @@ import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
+import com.increff.pos.util.PasswordUtil;
 
 public class UserDtoTest extends AbstractUnitTest {
 
@@ -29,7 +26,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	private InfoData info;
 
 	@Test
-	public void testAddUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testAddUser() throws Exception {
 		// get user form
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
@@ -38,17 +35,14 @@ public class UserDtoTest extends AbstractUnitTest {
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
 		assertEquals("shahviram308@gmail.com", userMasterPojo.getEmail());
 		// hash password
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.reset();
-		md.update("password".getBytes("UTF-8"));
-		String password = String.format("%032x", new BigInteger(1, md.digest()));
+		String password = PasswordUtil.getHash("password");
 		// test hashed password
 		assertEquals(password, userMasterPojo.getPassword());
 		assertEquals("admin", userMasterPojo.getRole());
 	}
 
 	@Test
-	public void testGetByEmail() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testGetByEmail() throws Exception {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
@@ -56,16 +50,13 @@ public class UserDtoTest extends AbstractUnitTest {
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
 		// test data
 		assertEquals("shahviram308@gmail.com", userMasterPojo.getEmail());
-		MessageDigest md = MessageDigest.getInstance("MD5");
-		md.reset();
-		md.update("password".getBytes("UTF-8"));
-		String password = String.format("%032x", new BigInteger(1, md.digest()));
+		String password = PasswordUtil.getHash("password");
 		assertEquals(password, userMasterPojo.getPassword());
 		assertEquals("admin", userMasterPojo.getRole());
 	}
 
 	@Test
-	public void testDeleteUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testDeleteUser() throws Exception {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
@@ -78,7 +69,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testGetUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testGetUser() throws Exception {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
@@ -91,7 +82,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testUpdateUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testUpdateUser() throws Exception {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
@@ -105,7 +96,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testGetAll() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testGetAll() throws Exception {
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
@@ -115,7 +106,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testSearchUser() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testSearchUser() throws Exception {
 		// add 2 users
 		UserForm userForm = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
@@ -132,7 +123,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	}
 
 	@Test
-	public void testCheckInit() throws ApiException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void testCheckInit() throws Exception {
 		UserForm userForm1 = getUserForm("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// check first time
 		userDto.checkInit(userForm1);

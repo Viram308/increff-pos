@@ -12,22 +12,22 @@ import com.increff.pos.pojo.ProductMasterPojo;
 public class ProductDao extends AbstractDao {
 
 	// select according to barcode
-	private static String select_barcode = "select p from ProductMasterPojo p where barcode=:barcode";
+	private static String selectBarcode = "select p from ProductMasterPojo p where barcode=:barcode";
 	// select all
-	private static String select_all = "select p from ProductMasterPojo p";
+	private static String selectAll = "select p from ProductMasterPojo p";
 	// search
 	private static String search = "select p from ProductMasterPojo p where name like :name and barcode like :barcode";
 	
 	// select according to barcode
 	public ProductMasterPojo selectByBarcode(String barcode) {
-		TypedQuery<ProductMasterPojo> query = getQuery(select_barcode, ProductMasterPojo.class);
+		TypedQuery<ProductMasterPojo> query = getQuery(selectBarcode, ProductMasterPojo.class);
 		query.setParameter("barcode", barcode);
 		return getSingle(query);
 	}
 
 	// select all
 	public List<ProductMasterPojo> selectAll() {
-		TypedQuery<ProductMasterPojo> query = getQuery(select_all, ProductMasterPojo.class);
+		TypedQuery<ProductMasterPojo> query = getQuery(selectAll, ProductMasterPojo.class);
 		return query.getResultList();
 	}
 

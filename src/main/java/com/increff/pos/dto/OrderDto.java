@@ -47,7 +47,7 @@ public class OrderDto {
 		// Check entered inventory with available inventory
 		List<OrderItemForm> orderItems = new LinkedList<OrderItemForm>(Arrays.asList(orderItemForms));
 		OrderPojo orderPojo = addOrder(orderItems);
-		// Convert input to required format
+		// map OrderItemForm to OrderItemPojo
 		List<OrderItemPojo> list = orderItems.stream().map(o -> ConverterUtil.convertOrderItemFormToOrderItemPojo(o,
 				orderPojo, productService.getByBarcode(o.barcode))).collect(Collectors.toList());
 		// Decrease inventory according to the entered quantity
@@ -96,7 +96,7 @@ public class OrderDto {
 		OrderPojo orderPojo = new OrderPojo();
 		orderPojo.setDatetime(ConverterUtil.getDateTime());
 		orderPojo.setOrderCreater(info.getEmail());
-		// Add order if inventory is available
+		// update order if inventory is available
 		orderService.update(id, orderPojo);
 		orderPojo.setId(id);
 		return orderPojo;
@@ -107,6 +107,7 @@ public class OrderDto {
 			ProductMasterPojo productMasterPojo = productService.getByBarcode(orderItemData.barcode);
 			InventoryPojo inventoryPojo = inventoryService.getByProductId(productMasterPojo);
 			InventoryPojo inventoryPojoFinal = new InventoryPojo();
+			// update inventory for each OrderItem
 			inventoryPojoFinal.setQuantity(orderItemData.quantity + inventoryPojo.getQuantity());
 			inventoryService.update(inventoryPojo.getId(), inventoryPojoFinal);
 		}
@@ -119,6 +120,7 @@ public class OrderDto {
 
 	public List<OrderData> getAll() {
 		List<OrderPojo> list = orderService.getAll();
+		// map OrderPojo to OrderData
 		return list.stream()
 				.map(o -> ConverterUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId())))
 				.collect(Collectors.toList());
@@ -126,15 +128,20 @@ public class OrderDto {
 
 	public List<OrderData> searchOrder(OrderSearchForm form) throws ApiException, ParseException {
 		List<OrderPojo> orderPojo = orderService.searchOrder(form);
+		// create list by date range
 		if (!form.startdate.isBlank() && !form.enddate.isBlank()) {
 			orderPojo = orderService.getList(orderPojo, form.startdate, form.enddate);
 		}
+		// update list by order id
 		if (form.orderId == 0) {
+			// map OrderPojo to OrderData
 			return orderPojo.stream()
 					.map(o -> ConverterUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId())))
 					.collect(Collectors.toList());
 		}
+		// filter using orderId
 		orderPojo = orderPojo.stream().filter(o -> (form.orderId == o.getId())).collect(Collectors.toList());
+		// map OrderPojo to OrderData
 		return orderPojo.stream()
 				.map(o -> ConverterUtil.convertOrderPojotoOrderData(o, orderItemService.getByOrderId(o.getId())))
 				.collect(Collectors.toList());

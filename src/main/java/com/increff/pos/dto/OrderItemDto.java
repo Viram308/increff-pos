@@ -24,26 +24,33 @@ public class OrderItemDto {
 
 	public List<OrderItemData> get(int orderId) throws ApiException {
 		List<OrderItemPojo> orderItemPojoList = orderItemService.getByOrderId(orderId);
+		// map OrderItemPojo to OrderItemData
 		return orderItemPojoList.stream()
 				.map(o -> ConverterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
 	}
 
 	public List<OrderItemData> searchOrderItem(OrderItemData orderItemData) throws ApiException {
+		// create product search form
 		ProductSearchForm productSearchForm = ConverterUtil.convertOrderItemDatatoProductSearchForm(orderItemData);
 		List<ProductMasterPojo> productMasterPojoList = productService.searchData(productSearchForm);
+		// make product id list
 		List<Integer> productIds = productMasterPojoList.stream().map(o -> o.getId()).collect(Collectors.toList());
 		List<OrderItemPojo> orderItemPojos = orderItemService.getAll();
 		if (orderItemData.orderId == 0) {
+			// filter using only product id list
 			orderItemPojos = orderItemPojos.stream().filter(o -> (productIds.contains(o.getProductId())))
 					.collect(Collectors.toList());
+			// map OrderItemPojo to OrderItemData
 			return orderItemPojos.stream().map(
 					o -> ConverterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
 					.collect(Collectors.toList());
 		}
+		// filter using product id list and order id
 		orderItemPojos = orderItemPojos.stream()
 				.filter(o -> (productIds.contains(o.getProductId()) && o.getOrderId() == orderItemData.orderId))
 				.collect(Collectors.toList());
+		// map OrderItemPojo to OrderItemData
 		return orderItemPojos.stream()
 				.map(o -> ConverterUtil.convertOrderItemPojotoOrderItemData(o, productService.get(o.getProductId())))
 				.collect(Collectors.toList());
