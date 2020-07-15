@@ -57,7 +57,6 @@
           <a class="dropdown-item" th:href="@{/ui/admin/product}">Product</a>
           <a class="dropdown-item" th:href="@{/ui/admin/inventory}">Inventory</a>
           <a class="dropdown-item" th:href="@{/ui/admin/order}">Order</a>
-          <a class="dropdown-item" th:href="@{/ui/admin/orderitem}">OrderItem</a>
         </div>
       </li>
       <li class="nav-item dropdown">
@@ -92,41 +91,55 @@
 
 <!-- User fragment -->
 <div th:fragment="name_user">
-  <div class="row">
-        &nbsp;
-      </div>
-  <h3>Admin > Users</h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Admin</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Users</li>
+    </ol>
+  </nav>
   <!-- Top row with form-->
   <div class="row">
+
     <!-- User form -->
-    <form class="form-inline" id="user-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputEmail" class="col-sm-2 col-form-label">Email</label>
-          <div class="col-sm-10">
-            <input type="email" class="form-control col-12" name="email" id="inputEmail" placeholder="Enter Email">
+    <form class="form-inline w-100" id="user-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputEmail" class="control-label">Email</label>
+          </div>
+          <div class="col-2">
+            <label for="inputRole" class="control-label">Role</label>
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputRole" class="col-sm-2 col-form-label">Role</label>
-          <div class="col-sm-10">
-            <select class="form-control" id="inputRole" name="role"> 
-              <option value="">Select Role</option>
-              <option value="admin">Admin</option>
-              <option value="standard">Standard</option>
-            </select>
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input type="email" class="form-control" name="email" id="inputEmail" placeholder="Enter Email" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <select class="form-control" id="inputRole" name="role" style="width:90%"> 
+                <option value="">Select Role</option>
+                <option value="admin">Admin</option>
+                <option value="standard">Standard</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <button type="button" class="btn btn-outline-info" id="search-user">Search</button>
+              &nbsp;&nbsp;
+              <button type="button" class="btn btn-outline-primary" id="show-add-user-modal">Add</button>
+            </div>
           </div>
         </div>
-      </div>
-      <div class="col">
-         <button type="button" class="btn btn-outline-info" id="search-user">Search</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-primary" id="show-add-user-modal">Add</button>
       </div>
     </form>
-  </div> 
+
+  </div>
 
 
   <!-- Blank Row -->
@@ -164,7 +177,7 @@
   </div>
 
 
-   <!-- Add user modal -->
+  <!-- Add user modal -->
   <div class="modal fade" tabindex="-1" role="dialog" id="add-user-modal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -260,45 +273,59 @@
 
 <!-- Brand fragment -->
 <div th:fragment="name_brand" id="brand">
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Catelog</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Brand</li>
+    </ol>
+  </nav>
+  <!-- Top row with form-->
+  <div class="row">
+    <!-- Brand form -->
+
+
+
+    <form class="form-inline w-100" id="brand-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputBrand" class="control-label">Brand</label>
+          </div>
+          <div class="col-2">
+            <label for="inputCategory" class="control-label">Category</label>
+          </div>
+        </div>
+      </div>
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category" style="width:90%">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+             <button type="button" class="btn btn-outline-info" id="search-brand">Search</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-primary" id="show-add-brand-modal">Add</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-success" id="upload-brand-data">Upload</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
+ </div> 
+
+
  <!-- Blank Row -->
  <div class="row">
-  &nbsp;
-</div>
-<h3>Catelog > Brand</h3>
-<!-- Top row with form-->
-<div class="row">
-  <!-- Brand form -->
-  <form class="form-inline" id="brand-form">
-    <div class="col">
-      <div class="form-group">
-        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category">
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-outline-info" id="search-brand">Search</button>
-      &nbsp;
-      <button type="button" class="btn btn-outline-primary" id="show-add-brand-modal">Add</button>
-      &nbsp;
-      <button type="button" class="btn btn-outline-success" id="upload-brand-data">Upload</button>
-    </div>
-  </form>
-
-</div> 
-
-
-<!-- Blank Row -->
-<div class="row">
   &nbsp;
 </div>
 <div class="row">
@@ -449,138 +476,155 @@ class="modal fade" tabindex="-1" role="dialog" id="edit-brand-modal">
 
 <!-- Product fragment -->
 <div th:fragment="name_product" id="product">
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <h3>Catelog > Product</h3>
+
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Catelog</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Product</li>
+    </ol>
+  </nav>
   <!-- Top row with form-->
   <div class="row">
     <!-- Product form -->
-    <form class="form-inline" id="product-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputName" class="control-label">Name</label>
-          
-            <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name">
+    <form class="form-inline w-100" id="product-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputName" class="control-label">Name</label>
+          </div>
+          <div class="col-2">
+            <label for="inputBarcode" class="control-label">Barcode</label>
+          </div>
+          <div class="col-2">
+            <label for="inputBrand" class="control-label">Brand</label>
+          </div>
+          <div class="col-2">
+            <label for="inputCategory" class="control-label">Category</label>
+          </div>
         </div>
       </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputBarcode" class="control-label">Barcode</label>
-            <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode">
-          
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputBrand" class="control-label">Brand</label>
-          
-            <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-          
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputCategory" class="control-label">Category</label>
-            <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category">
-        </div>
-      </div>
-      <div class="form-group col-5" style="margin-top: 10px">
-        <button type="button" class="btn btn-outline-info" id="search-product">Search</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-primary" id="show-add-product-modal">Add</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-success" id="upload-product-data">Upload</button>
-      </div>
-    </form> 
-  </div> 
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category" style="width:90%">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+             <button type="button" class="btn btn-outline-info" id="search-product">Search</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-primary" id="show-add-product-modal">Add</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-success" id="upload-product-data">Upload</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
+
+ </div> 
 
 
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12">
+    <table class="table table-striped" id="product-table">
+      <thead>
+        <tr>
+          <th scope="col">Barcode</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">MRP</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
   </div>
-  <div class="row">
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
 
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="product-table">
-        <thead>
-          <tr>
-            <th scope="col">Barcode</th>
-            <th scope="col">Brand</th>
-            <th scope="col">Category</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">MRP</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
 
-        </tbody>
-      </table>
-
+<!-- Add Product Model -->
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Product</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  
+    <!-- Product add form -->
+    <form  id="product-add-form" onsubmit="return addProduct()">
+      <div class="modal-body">
 
-  <!-- Add Product Model -->
-  <div 
-  class="modal fade" tabindex="-1" role="dialog" id="add-product-modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Product</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
+        <div class="form-group row">
+          <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="brand" placeholder="Enter Brand" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="category" placeholder="Enter Category" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
+          </div>
+        </div>
+        <div class="form-group row">
+          <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
+          <div class="col-sm-6">
+            <input type="number" step="0.01" class="form-control" name="mrp" placeholder="Enter MRP" required>
+          </div>
+        </div>
+        <input type="hidden" name="id" >       
       </div>
-      <!-- Product add form -->
-      <form  id="product-add-form" onsubmit="return addProduct()">
-        <div class="modal-body">
-
-          <div class="form-group row">
-            <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" name="brand" placeholder="Enter Brand" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" name="category" placeholder="Enter Category" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" name="name" placeholder="Enter Name" required>
-            </div>
-          </div>
-          <div class="form-group row">
-            <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
-            <div class="col-sm-6">
-              <input type="number" step="0.01" class="form-control" name="mrp" placeholder="Enter MRP" required>
-            </div>
-          </div>
-          <input type="hidden" name="id" >       
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="add-product">Add</button>
-        </div>
-      </form>
-    </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="add-product">Add</button>
+      </div>
+    </form>
   </div>
+</div>
 </div>
 
 
@@ -676,114 +720,123 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-product-modal">
 
 <!-- Inventory fragment -->
 <div th:fragment="name_inventory" id="inventory">
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <h3>Catelog > Inventory</h3>
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Catelog</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Inventory</li>
+    </ol>
+  </nav>
   <!-- Top row with form-->
   <div class="row">
     <!-- Inventory form -->
-    <form class="form-inline" id="inventory-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name">
+    <form class="form-inline w-100" id="inventory-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputName" class="control-label">Name</label>
+          </div>
+          <div class="col-2">
+            <label for="inputBarcode" class="control-label">Barcode</label>
           </div>
         </div>
       </div>
-      <div class="col">
-        <div class="form-group">
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="name" id="inputName" placeholder="Enter Name" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" style="width:90%">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+             <button type="button" class="btn btn-outline-info" id="search-inventory">Search</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-primary" id="show-add-inventory-modal">Add</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-success" id="upload-inventory-data">Upload</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
+ </div> 
+
+
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12">
+    <table class="table table-striped" id="inventory-table">
+      <thead>
+        <tr>
+          <th scope="col">Barcode</th>
+          <th scope="col">Product Name</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Action</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+<!-- Add Inventory Model -->
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="add-inventory-modal">
+<div class="modal-dialog" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Inventory</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- Inventory add form -->
+    <form  id="inventory-add-form" onsubmit="return addInventory()">
+      <div class="modal-body">
+
+        <div class="form-group row">
           <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode">
+          <div class="col-sm-6">
+            <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" required>
           </div>
         </div>
-      </div>
-
-      
-      <div class="col">
-        <button type="button" class="btn btn-outline-info" id="search-inventory">Search</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-primary" id="show-add-inventory-modal">Add</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-success" id="upload-inventory-data">Upload</button>
-      </div>
-    </form> 
-  </div> 
-
-
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="inventory-table">
-        <thead>
-          <tr>
-            <th scope="col">Barcode</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Action</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-
-  <!-- Add Inventory Model -->
-  <div 
-  class="modal fade" tabindex="-1" role="dialog" id="add-inventory-modal">
-  <div class="modal-dialog" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Inventory</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Inventory add form -->
-      <form  id="inventory-add-form" onsubmit="return addInventory()">
-        <div class="modal-body">
-
-          <div class="form-group row">
-            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-            <div class="col-sm-6">
-              <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" required>
-            </div>
+        <div class="form-group row">
+          <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+          <div class="col-sm-6">
+            <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity" required>
           </div>
-          <div class="form-group row">
-            <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
-            <div class="col-sm-6">
-              <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity" required>
-            </div>
-          </div>
-          <input type="hidden" name="id" >
+        </div>
+        <input type="hidden" name="id" >
 
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-          <button type="submit" class="btn btn-primary" id="add-inventory">Add</button>
-        </div>
-      </form>
-    </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-primary" id="add-inventory">Add</button>
+      </div>
+    </form>
   </div>
+</div>
 </div>
 
 
@@ -865,144 +918,165 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
 
 <!-- Order fragment -->
 <div th:fragment="name_order" id="order">
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <h3>Catelog > Order</h3>
+  
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Catelog</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Order</li>
+    </ol>
+  </nav>
 
   <!-- Top row with form-->
   <div class="row">
     <!-- Order form -->
-    <form class="form-inline" id="order-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputStartDate" class="control-label">Start Date</label>
-            <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date">
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputEndDate" class="control-label">End Date</label>
-            <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date">
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="orderId" class="control-label">OrderId</label>
-            <input class="form-control" name="orderId" id="orderId" placeholder="Enter OrderId">
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="orderCreater" class="control-label">Order Creater</label>
-            <input class="form-control" name="orderCreater" id="orderCreater" placeholder="Enter Order Creater">
-        </div>
-      </div>
-      <div class="form-group col-5" style="margin-top: 10px">
-        <button type="button" class="btn btn-outline-info" id="search-order">Search</button>
-        &nbsp;
-        <button type="button" class="btn btn-outline-primary" id="show-add-order-modal">Add</button>
-      </div>
-    </form>
-  </div>
-
-
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="order-table">
-        <thead>
-          <tr>
-            <th scope="col">OrderId</th>
-            <th scope="col">Order Creater</th>
-            <th scope="col">DateTime</th>
-            <th scope="col">Bill Amount</th>
-            <th scope="col">Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-
-  <!-- Add Order Model -->
-  <div 
-  class="modal fade" tabindex="-1" role="dialog" id="add-order-modal">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add Order</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Order add form -->
-      
-      <div class="modal-body">
+    <form class="form-inline w-100" id="order-form">
+      <div class="col-12">
         <div class="row">
-     <input type="hidden" id="totalItems" name="totalItems" value="0">
-   </div>
-        <form  class="form-inline" id="order-add-form">
-          <div class="row">
-          <div class="col" style="margin:10px;">
-            <div class="form-group">
-              <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
-              </div>
-            </div>
+          <div class="col-2">
+            <label for="inputStartDate" class="control-label">Start Date</label>
           </div>
-          <div class="col" style="margin:10px;">
-            <div class="form-group">
-              <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
-              <div class="col-sm-6">
-                <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity" readonly>
-              </div>
-            </div>
+          <div class="col-2">
+            <label for="inputEndDate" class="control-label">End Date</label>
           </div>
-          <div class="col">
+          <div class="col-2">
+            <label for="orderId" class="control-label">OrderId</label>
           </div>
-          <div class="w-100"></div>
+          <div class="col-2">
+            <label for="orderCreater" class="control-label">Order Creater</label>
+          </div>
         </div>
-          <div class="row">
-          <div class="col" style="margin:10px;">
+      </div>
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
             <div class="form-group">
-              <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="name" id="inputName" readonly>
-              </div>
+              <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date" style="width:90%">
             </div>
           </div>
-          <div class="col" style="margin:10px;">
+          <div class="col-2">
             <div class="form-group">
-              <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
-              <div class="col-sm-6">
-               <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrp" readonly>
-             </div>
+              <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input class="form-control" name="orderId" id="orderId" placeholder="Enter OrderId" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input class="form-control" name="orderCreater" id="orderCreater" placeholder="Enter Order Creater" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+             <button type="button" class="btn btn-outline-info" id="search-order">Search</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-primary" id="show-add-order-modal">Add</button>
            </div>
          </div>
-         <div class="col" style="margin:10px;">
-          <button type="button" class="btn btn-outline-primary" id="add-item-button">Add Item</button>
+       </div>
+     </div>
+   </form>
+
+ </div>
+
+
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12">
+    <table class="table table-striped" id="order-table">
+      <thead>
+        <tr>
+          <th scope="col">OrderId</th>
+          <th scope="col">Order Creater</th>
+          <th scope="col">DateTime</th>
+          <th scope="col">Bill Amount</th>
+          <th scope="col">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+<!-- Add Order Model -->
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="add-order-modal">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Add Order</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- Order add form -->
+
+    <div class="modal-body">
+      <div class="row">
+       <input type="hidden" id="totalItems" name="totalItems" value="0">
+     </div>
+     <form  class="form-inline" id="order-add-form">
+      <div class="row">
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
+            </div>
+          </div>
         </div>
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+        </div>
+        <div class="w-100"></div>
       </div>
-      </form>
+      <div class="row">
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputName" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="name" id="inputName" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
+            <div class="col-sm-6">
+             <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrp" readonly>
+           </div>
+         </div>
+       </div>
+       <div class="col" style="margin:10px;">
+        <button type="button" class="btn btn-outline-primary" id="add-item-button">Add Item</button>
+      </div>
+    </div>
+  </form>
 
 
   <!-- Blank Row -->
@@ -1010,7 +1084,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
     &nbsp;
   </div>
   <div class="row justify-content-center" id="availableInventoryRow" style="display:none">
-  <b>Available Inventory :</b>&nbsp;<span style="color: red" id="availableQuantity"></span>
+    <b>Available Inventory :</b>&nbsp;<span style="color: red" id="availableQuantity"></span>
   </div>
   <!-- Blank Row -->
   <div class="row">
@@ -1046,81 +1120,81 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
     &nbsp;
   </div>
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-success" id="create-order">Create Order</button>
-    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+  <button type="button" class="btn btn-success" id="create-order">Create Order</button>
+</div>
 
-  </div>
+</div>
 </div>
 </div>
 
 
 <!-- Edit Order Model -->
-  <div 
-  class="modal fade" tabindex="-1" role="dialog" id="edit-order-modal">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Order</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Order add form -->
-      
-      <div class="modal-body">
-        <div class="row">
-     <input type="hidden" id="totalItemsEdit" name="totalItemsEdit" value="0">
-   </div>
-        <form  class="form-inline" id="order-edit-form">
-          <div class="row">
-          <div class="col" style="margin:10px;">
-            <div class="form-group">
-              <label for="inputBarcodeEditOrder" class="col-sm-2 col-form-label">Barcode</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="barcode" id="inputBarcodeEditOrder" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
-              </div>
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="edit-order-modal">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">Edit Order</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <!-- Order add form -->
+
+    <div class="modal-body">
+      <div class="row">
+       <input type="hidden" id="totalItemsEdit" name="totalItemsEdit" value="0">
+     </div>
+     <form  class="form-inline" id="order-edit-form">
+      <div class="row">
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputBarcodeEditOrder" class="col-sm-2 col-form-label">Barcode</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="barcode" id="inputBarcodeEditOrder" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
             </div>
           </div>
-          <div class="col" style="margin:10px;">
-            <div class="form-group">
-              <label for="inputQuantityEditOrder" class="col-sm-2 col-form-label">Quantity</label>
-              <div class="col-sm-6">
-                <input type="number" class="form-control" name="quantity" id="inputQuantityEditOrder" placeholder="Enter Quantity" readonly>
-              </div>
-            </div>
-          </div>
-          <div class="col">
-          </div>
-          <div class="w-100"></div>
         </div>
-          <div class="row">
-          <div class="col" style="margin:10px;">
-            <div class="form-group">
-              <label for="inputNameEditOrder" class="col-sm-2 col-form-label">Name</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="name" id="inputNameEditOrder" readonly>
-              </div>
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputQuantityEditOrder" class="col-sm-2 col-form-label">Quantity</label>
+            <div class="col-sm-6">
+              <input type="number" class="form-control" name="quantity" id="inputQuantityEditOrder" placeholder="Enter Quantity" readonly>
             </div>
           </div>
-          <div class="col" style="margin:10px;">
-            <div class="form-group">
-              <label for="inputMrpEditOrder" class="col-sm-2 col-form-label">MRP</label>
-              <div class="col-sm-6">
-               <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrpEditOrder" readonly>
-             </div>
+        </div>
+        <div class="col">
+        </div>
+        <div class="w-100"></div>
+      </div>
+      <div class="row">
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputNameEditOrder" class="col-sm-2 col-form-label">Name</label>
+            <div class="col-sm-6">
+              <input type="text" class="form-control" name="name" id="inputNameEditOrder" readonly>
+            </div>
+          </div>
+        </div>
+        <div class="col" style="margin:10px;">
+          <div class="form-group">
+            <label for="inputMrpEditOrder" class="col-sm-2 col-form-label">MRP</label>
+            <div class="col-sm-6">
+             <input type="number" step="0.01" class="form-control" name="mrp" id="inputMrpEditOrder" readonly>
            </div>
          </div>
-         <!-- Hidden id -->
-            <input type="hidden" name="id" >
+       </div>
+       <!-- Hidden id -->
+       <input type="hidden" name="id" >
 
-         <div class="col" style="margin:10px;">
-          <button type="button" class="btn btn-outline-primary" id="add-item-button-edit">Add Item</button>
-        </div>
+       <div class="col" style="margin:10px;">
+        <button type="button" class="btn btn-outline-primary" id="add-item-button-edit">Add Item</button>
       </div>
-      </form>
+    </div>
+  </form>
 
 
   <!-- Blank Row -->
@@ -1128,7 +1202,7 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
     &nbsp;
   </div>
   <div class="row justify-content-center" id="availableInventoryRowEditOrder" style="display:none">
-  <b>Available Inventory :</b>&nbsp;<span style="color: red" id="availableQuantityEditOrder"></span>
+    <b>Available Inventory :</b>&nbsp;<span style="color: red" id="availableQuantityEditOrder"></span>
   </div>
   <!-- Blank Row -->
   <div class="row">
@@ -1164,438 +1238,361 @@ class="modal fade" tabindex="-1" role="dialog" id="upload-inventory-modal">
     &nbsp;
   </div>
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-      <button type="button" class="btn btn-success" id="update-order">Update Order</button>
-    </div>
+</div>
+<div class="modal-footer">
+  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+  <button type="button" class="btn btn-success" id="update-order">Update Order</button>
+</div>
 
-  </div>
+</div>
 </div>
 </div>
 
 
 <!-- View Order Modal -->
-  <div 
-  class="modal fade" tabindex="-1" role="dialog" id="view-order-modal">
-  <div class="modal-dialog modal-lg" role="document">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">View Order</h5>
-        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <!-- Order add form -->
-      
-      <div class="modal-body">
-   <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="view-order-table">
-        <thead>
-          <tr>
-            <th scope="col">Barcode</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Selling Price</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
+<div 
+class="modal fade" tabindex="-1" role="dialog" id="view-order-modal">
+<div class="modal-dialog modal-lg" role="document">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h5 class="modal-title">View Order</h5>
+      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
     </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
+    <!-- Order add form -->
 
-    </div>
-    <div class="modal-footer">
-      <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-    </div>
-
-  </div>
-</div>
-</div>
-
-
-
-
-
-</div>
-
-<!-- Order item fragment -->
-<div th:fragment="name_orderitem" id="orderitem">
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <h3>Catelog > Order Items</h3>
-  <!-- Top row with form-->
-   <div class="row">
-    <!-- Product form -->
-    <form class="form-inline" id="orderitem-form">
-      <div class="col">
-        <div class="form-group">
-          <label for="inputOrderId" class="col-sm-2 col-form-label">OrderId</label>
-          <div class="col-sm-10">
-            <input type="number" class="form-control col-10" name="orderId" id="inputOrderId" step="1" placeholder="Enter OrderId">
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control col-10" name="barcode" id="inputBarcode" placeholder="Enter Barcode" pattern="[a-z0-9]{8}" maxLength=8>
-          </div>
-        </div>
-      </div>
-      <div class="col">
-        <div class="form-group">
-          <label for="inputName" class="col-sm-2 col-form-label">Name</label>
-          <div class="col-sm-10">
-            <input type="text" class="form-control col-10" name="name" id="inputName" placeholder="Enter Name">
-          </div>
-        </div>
-      </div>
-       <div class="col">
-        <button type="button" class="btn btn-outline-info" id="search-orderitem">Search</button>
-      </div> 
-    </form> 
-  </div> 
-
-
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <div class="row">
-
-    <!-- Table -->
-    <div class="col-12">
-      <table class="table table-striped" id="orderitem-table">
-        <thead>
-          <tr>
-            <th scope="col">OrderId</th>
-            <th scope="col">Barcode</th>
-            <th scope="col">Product Name</th>
-            <th scope="col">Quantity</th>
-            <th scope="col">Selling Price</th>
-          </tr>
-        </thead>
-        <tbody>
-
-        </tbody>
-      </table>
-
-    </div>
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
-  <!-- Blank Row -->
-  <div class="row">
-    &nbsp;
-  </div>
- <!-- OrderItem edit modal
-  <div class="modal fade" tabindex="-1" role="dialog" id="edit-orderitem-modal">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title">Edit OrderItem</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-         OrderItem edit form 
-        <form  id="orderitem-edit-form" onsubmit="return updateOrderItem()">
-          <div class="modal-body">
-
-            <div class="form-group row">
-              <label for="inputBarcode" class="col-sm-2 col-form-label">Barcode</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="barcode" id="inputBarcode" placeholder="Enter Barcode" readonly>
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="inputQuantity" class="col-sm-2 col-form-label">Quantity</label>
-              <div class="col-sm-6">
-                <input type="number" class="form-control" name="quantity" id="inputQuantity" placeholder="Enter Quantity">
-              </div>
-            </div>
-            <div class="form-group row">
-              <label for="inputMrp" class="col-sm-2 col-form-label">MRP</label>
-              <div class="col-sm-6">
-                <input type="text" class="form-control" name="mrp" id="inputMrp" placeholder="Enter MRP" readonly>
-              </div>
-            </div>
-            <input type="hidden" name="id" >      
-          </div>
-          <div class="modal-footer">
-            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-            <button type="submit" class="btn btn-primary" id="update-orderitem">Update</button>
-          </div>
-          OrderItem edit form
-          <form  id="orderitem-edit-form" onsubmit="return updateOrderItem()">
-          </div>
-        </div>
-      </div> -->
-    </div>
-
-    <!-- Sales Report fragment -->
-    <div th:fragment="name_salesreport" id="salesreport">
-      <div class="row">
-        &nbsp;
-      </div>
-      <h3>Reports > Sales Report</h3>
-        <!-- Sales Report form -->
-        <form class="form-inline" id="salesreport-form" onsubmit="return getSalesReportData()">
-         
-         <div class="col">
-            <div class="form-group">
-              <label for="inputStartDate" class="control-label">Start Date</label>
-              
-                <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date">
-              
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="inputEndDate" class="control-label">End Date</label>
-              
-                <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date">
-              
-            </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="inputBrand" class="control-label">Brand</label>
-              
-                <input class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand">
-          </div>
-          </div>
-          <div class="col">
-            <div class="form-group">
-              <label for="inputCategory" class="control-label">Category</label>
-              
-                <input type="text" class="form-control" name="category" placeholder="Enter Category">
-             </div> 
-          </div>
-             
-          <div class="form-group col-4" style="margin-top: 10px">
-            <button type="submit" class="btn btn-outline-primary" id="submit-salesreport-data">Get Report</button>
-            &nbsp;
-            <button type="button" class="btn btn-outline-success" id="download-salesreport">Download</button>
-         
-        </div>
-        </form>
-
-
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <div class="row">
-
-        <!-- Table -->
-        <div class="col-12" id="salesreport-div">
-          <table class="table table-striped" id="salesreport-table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Category</th>
-                <th scope="col">Quantity</th>
-                <th scope="col">Revenue</th>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-
-    </div>
-
-    <!-- Brand Report fragment -->
-    <div th:fragment="name_brandreport" id="brandreport">
-      <div class="row">
-        &nbsp;
-      </div>
-      <h3>Reports > Brand Report</h3>
-      <!-- Top row with form-->
+    <div class="modal-body">
+     <!-- Blank Row -->
      <div class="row">
-  <!-- BrandReport form -->
-  <form class="form-inline" id="brandreport-form">
-    <div class="col">
-      <div class="form-group">
-        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control col-10" name="brand" id="inputBrand" placeholder="Enter Brand">
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control col-10" name="category" id="inputCategory" placeholder="Enter Category">
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-outline-info" id="search-brandreport">Get Report</button>
       &nbsp;
-      <button type="button" class="btn btn-outline-success" id="download-brandreport">Download</button>
     </div>
-  </form>
+    <div class="row">
 
-</div> 
+      <!-- Table -->
+      <div class="col-12">
+        <table class="table table-striped" id="view-order-table">
+          <thead>
+            <tr>
+              <th scope="col">Barcode</th>
+              <th scope="col">Product Name</th>
+              <th scope="col">Quantity</th>
+              <th scope="col">Selling Price</th>
+            </tr>
+          </thead>
+          <tbody>
 
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <div class="row">
+          </tbody>
+        </table>
 
-        <!-- Table -->
-        <div class="col-12" id="brandreport-div">
-          <table class="table table-striped" id="brandreport-table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Category</th>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
-
-        </div>
-      </div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-
-    </div>
-
-    <!-- Inventory Report fragment -->
-    <div th:fragment="name_inventoryreport" id="inventoryreport">
-      <div class="row">
-        &nbsp;
-      </div>
-      <h3>Reports > Inventory Report</h3>
-      <!-- Top row with form-->
-       <div class="row">
-  <!-- InventoryReport form -->
-  <form class="form-inline" id="inventoryreport-form">
-    <div class="col">
-      <div class="form-group">
-        <label for="inputBrand" class="col-sm-2 col-form-label">Brand</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control col-10" name="brand" id="inputBrand" placeholder="Enter Brand">
-        </div>
       </div>
     </div>
-    <div class="col">
-      <div class="form-group">
-        <label for="inputCategory" class="col-sm-2 col-form-label">Category</label>
-        <div class="col-sm-10">
-          <input type="text" class="form-control col-10" name="category" id="inputCategory" placeholder="Enter Category">
-        </div>
-      </div>
-    </div>
-    <div class="col">
-      <button type="button" class="btn btn-outline-info" id="search-inventoryreport">Get Report</button>
+    <!-- Blank Row -->
+    <div class="row">
       &nbsp;
-      <button type="button" class="btn btn-outline-success" id="download-inventoryreport">Download</button>
     </div>
-  </form>
+    <!-- Blank Row -->
+    <div class="row">
+      &nbsp;
+    </div>
 
-</div>  
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+  </div>
+
+</div>
+</div>
+</div>
+
+</div>
 
 
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
-      </div>
-      <div class="row">
+<!-- Sales Report fragment -->
+<div th:fragment="name_salesreport" id="salesreport">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Reports</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Sales Report</li>
+    </ol>
+  </nav>
 
-        <!-- Table -->
-        <div class="col-12" id="inventoryreport-div">
-          <table class="table table-striped" id="inventoryreport-table">
-            <thead>
-              <tr>
-                <th scope="col">ID</th>
-                <th scope="col">Brand</th>
-                <th scope="col">Category</th>
-                <th scope="col">Quantity</th>
-              </tr>
-            </thead>
-            <tbody>
-
-            </tbody>
-          </table>
-
+  <!-- Top row with form-->
+  <div class="row">
+    <!-- Sales Report form -->
+    <form class="form-inline w-100" id="salesreport-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputStartDate" class="control-label">Start Date</label>
+          </div>
+          <div class="col-2">
+            <label for="inputEndDate" class="control-label">End Date</label>
+          </div>
+          <div class="col-2">
+            <label for="inputBrand" class="control-label">Brand</label>
+          </div>
+          <div class="col-2">
+            <label for="inputCategory" class="control-label">Category</label>
+          </div>
         </div>
       </div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input class="form-control" name="startdate" id="inputStartDate" placeholder="Enter Start Date" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input class="form-control" name="enddate" id="inputEndDate" placeholder="Enter End Date" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="category" placeholder="Enter Category" style="width:90%">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+             <button type="submit" class="btn btn-outline-primary" id="submit-salesreport-data">Get Report</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-success" id="download-salesreport">Download</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
+
+ </div>
+
+
+
+
+
+
+
+
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12" id="salesreport-div">
+    <table class="table table-striped" id="salesreport-table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Category</th>
+          <th scope="col">Quantity</th>
+          <th scope="col">Revenue</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+</div>
+
+<!-- Brand Report fragment -->
+<div th:fragment="name_brandreport" id="brandreport">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Reports</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Brand Report</li>
+    </ol>
+  </nav>
+  <!-- Top row with form-->
+  <div class="row">
+    <!-- BrandReport form -->
+    <form class="form-inline w-100" id="brandreport-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputBrand" class="control-label">Brand</label>
+          </div>
+          <div class="col-2">
+            <label for="inputCategory" class="control-label">Category</label>
+          </div>
+        </div>
       </div>
-      <!-- Blank Row -->
-      <div class="row">
-        &nbsp;
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category" style="width:90%">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+             <button type="button" class="btn btn-outline-info" id="search-brandreport">Get Report</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-success" id="download-brandreport">Download</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
+
+ </div> 
+
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12" id="brandreport-div">
+    <table class="table table-striped" id="brandreport-table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+</div>
+
+<!-- Inventory Report fragment -->
+<div th:fragment="name_inventoryreport" id="inventoryreport">
+  <nav aria-label="breadcrumb">
+    <ol class="breadcrumb" style="background-color: white;padding-left: 0px;padding-bottom: 10px;margin-bottom: 5px;font-size:20px">
+      <li class="breadcrumb-item">Reports</a></li>
+      <li class="breadcrumb-item active" aria-current="page">Inventory Report</li>
+    </ol>
+  </nav>
+  <!-- Top row with form-->
+  <div class="row">
+    <!-- InventoryReport form -->
+    <form class="form-inline w-100" id="inventoryreport-form">
+      <div class="col-12">
+        <div class="row">
+          <div class="col-2">
+            <label for="inputBrand" class="control-label">Brand</label>
+          </div>
+          <div class="col-2">
+            <label for="inputCategory" class="control-label">Category</label>
+          </div>
+        </div>
       </div>
+      <div class="col-12" style="margin-top: 5px">
+        <div class="row">
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="brand" id="inputBrand" placeholder="Enter Brand" style="width:90%">
+            </div>
+          </div>
+          <div class="col-2">
+            <div class="form-group">
+              <input type="text" class="form-control" name="category" id="inputCategory" placeholder="Enter Category" style="width:90%">
+            </div>
+          </div>
+          <div class="col-3">
+            <div class="form-group">
+             <button type="button" class="btn btn-outline-info" id="search-inventoryreport">Get Report</button>
+             &nbsp;&nbsp;
+             <button type="button" class="btn btn-outline-success" id="download-inventoryreport">Download</button>
+           </div>
+         </div>
+       </div>
+     </div>
+   </form>
 
-    </div>
+ </div>  
+
+
+ <!-- Blank Row -->
+ <div class="row">
+  &nbsp;
+</div>
+<div class="row">
+
+  <!-- Table -->
+  <div class="col-12" id="inventoryreport-div">
+    <table class="table table-striped" id="inventoryreport-table">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Brand</th>
+          <th scope="col">Category</th>
+          <th scope="col">Quantity</th>
+        </tr>
+      </thead>
+      <tbody>
+
+      </tbody>
+    </table>
+
+  </div>
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+<!-- Blank Row -->
+<div class="row">
+  &nbsp;
+</div>
+
+</div>
 
 
 
 
-    <!-- Footer fragment -->
-    <footer class="footer  mt-1" th:fragment="name_footer">
-      Copyright Increff 2020
-      &nbsp;
-      <!-- JS files -->
-      <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
-      <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
-      <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
-      <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
-      <script th:src="@{/static/app.js}"/></script>
-      <script th:src="@{/static/papaparse.min.js}"/></script>
-      <script th:src="@{/static/notify.js}"></script>
-    </footer>
+<!-- Footer fragment -->
+<footer class="footer  mt-1" th:fragment="name_footer">
+  Copyright Increff 2020
+  &nbsp;
+  <!-- JS files -->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"></script>
+  <script src="https://unpkg.com/gijgo@1.9.13/js/gijgo.min.js" type="text/javascript"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.5.3/jspdf.min.js"></script>
+  <script th:src="@{/static/app.js}"/></script>
+  <script th:src="@{/static/papaparse.min.js}"/></script>
+  <script th:src="@{/static/notify.js}"></script>
+</footer>
 
 
