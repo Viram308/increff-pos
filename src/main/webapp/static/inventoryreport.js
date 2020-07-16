@@ -36,7 +36,7 @@ function displayInventoryReport(data){
 		j++;
 	}
 }
-
+// download
 function downloadInventoryReport(){
 	var pdf = new jsPDF('p', 'pt', 'letter');
     // source can be HTML-formatted string, or a reference

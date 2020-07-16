@@ -18,6 +18,7 @@ public class OrderItemService {
 
 	@Transactional
 	public void add(List<OrderItemPojo> list) {
+		// enter one by one
 		for (OrderItemPojo o : list) {
 			dao.insert(o);
 		}

@@ -31,14 +31,16 @@ public class BrandService {
 
 	@Transactional(readOnly = true)
 	public BrandMasterPojo getByBrandCategory(BrandForm brandForm) throws ApiException {
+		// normalize
 		NormalizeUtil.normalizeBrandForm(brandForm);
 		return getCheckForBrandCategory(brandForm);
 	}
 
 	@Transactional(readOnly = true)
-	public List<BrandMasterPojo> searchBrandData(BrandForm form) {
-		NormalizeUtil.normalizeBrandForm(form);
-		return dao.searchData(form.brand, form.category);
+	public List<BrandMasterPojo> searchBrandData(BrandForm brandForm) {
+		// normalize
+		NormalizeUtil.normalizeBrandForm(brandForm);
+		return dao.searchData(brandForm.brand, brandForm.category);
 	}
 
 	@Transactional(readOnly = true)
@@ -52,14 +54,14 @@ public class BrandService {
 	}
 
 	@Transactional(rollbackFor = ApiException.class)
-	public BrandMasterPojo update(int id, BrandMasterPojo p) throws ApiException {
-		NormalizeUtil.normalizeBrandMasterPojo(p);
-		getCheckExisting(p.getBrand(), p.getCategory());
-		BrandMasterPojo brandMasterPojo = getCheck(id);
-		brandMasterPojo.setCategory(p.getCategory());
-		brandMasterPojo.setBrand(p.getBrand());
-		dao.update(brandMasterPojo);
-		return brandMasterPojo;
+	public BrandMasterPojo update(int id, BrandMasterPojo brandMasterPojo) throws ApiException {
+		NormalizeUtil.normalizeBrandMasterPojo(brandMasterPojo);
+		getCheckExisting(brandMasterPojo.getBrand(), brandMasterPojo.getCategory());
+		BrandMasterPojo brandMasterPojoUpdate = getCheck(id);
+		brandMasterPojoUpdate.setCategory(brandMasterPojo.getCategory());
+		brandMasterPojoUpdate.setBrand(brandMasterPojo.getBrand());
+		dao.update(brandMasterPojoUpdate);
+		return brandMasterPojoUpdate;
 	}
 
 	@Transactional(readOnly = true)
@@ -73,8 +75,8 @@ public class BrandService {
 
 	@Transactional(readOnly = true)
 	public void getCheckExisting(String brand, String category) throws ApiException {
-		BrandMasterPojo p = dao.selectByBrandCategory(brand, category);
-		if (p != null) {
+		BrandMasterPojo brandMasterPojo = dao.selectByBrandCategory(brand, category);
+		if (brandMasterPojo != null) {
 			throw new ApiException("Given Brand and Category pair already exist");
 		}
 	}
