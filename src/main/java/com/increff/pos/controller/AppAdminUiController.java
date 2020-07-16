@@ -30,11 +30,6 @@ public class AppAdminUiController extends AbstractUiController {
 		return mav("order.html");
 	}
 
-	@RequestMapping(value = "/orderitem")
-	public ModelAndView orderitem() {
-		return mav("orderitem.html");
-	}
-
 	@RequestMapping(value = "/sales-report")
 	public ModelAndView salesReport() {
 		return mav("salesreport.html");

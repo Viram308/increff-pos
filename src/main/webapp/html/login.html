@@ -37,11 +37,13 @@
 				<!-- Card -->
 				<div class="card">
 					<div class="card-header">
+						<div class="col">
 						Login
+					</div>
 					</div>
 					<div class="card-body">
 						<!-- Form for login -->
-						<form class="form" id="login-form" method="POST" th:action="@{/session/login}">
+						<form class="form" id="login-form" method="POST" th:action="@{/session/login}" autocomplete="off">
 							<div class="form-group">
 								<label for="email" class="col-sm-10 col-form-label">Email</label>
 								<div class="col">
@@ -60,7 +62,9 @@
 							<!-- Form -->
 						</div>
 						<div class="card-footer text-danger">
+							<div class="col">
 							[[${info.getMessage()}]]
+						</div>
 						</div>
 
 					</div>

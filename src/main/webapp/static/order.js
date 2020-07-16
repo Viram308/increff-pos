@@ -620,7 +620,8 @@ function showOrderModal(){
 		$('#update-order').click(updateOrder);
 		$('#inputStartDate').datepicker({
 			uiLibrary: 'bootstrap4',
-			iconsLibrary: 'fontawesome',
+			showOnFocus: true, 
+			showRightIcon: false,
 			format: 'dd-mm-yyyy',
 			maxDate: function () {
 				return $('#inputEndDate').val();
@@ -628,7 +629,8 @@ function showOrderModal(){
 		});
 		$('#inputEndDate').datepicker({
 			uiLibrary: 'bootstrap4',
-			iconsLibrary: 'fontawesome',
+			showOnFocus: true, 
+			showRightIcon: false,
 			format: 'dd-mm-yyyy',
 			minDate: function () {
 				return $('#inputStartDate').val();

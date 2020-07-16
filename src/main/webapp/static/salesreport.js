@@ -108,7 +108,8 @@ function downloadSalesReport(){
 function init(){
 	$('#inputStartDate').datepicker({
 		uiLibrary: 'bootstrap4',
-		iconsLibrary: 'fontawesome',
+		showOnFocus: true, 
+		showRightIcon: false,
 		format: 'dd-mm-yyyy',
 		maxDate: function () {
 			return $('#inputEndDate').val();
@@ -116,7 +117,8 @@ function init(){
 	});
 	$('#inputEndDate').datepicker({
 		uiLibrary: 'bootstrap4',
-		iconsLibrary: 'fontawesome',
+		showOnFocus: true, 
+		showRightIcon: false,
 		format: 'dd-mm-yyyy',
 		minDate: function () {
 			return $('#inputStartDate').val();
