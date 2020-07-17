@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class MessageDataTest {
+import com.increff.pos.spring.AbstractUnitTest;
+
+public class MessageDataTest extends AbstractUnitTest {
 
 	// test for MessageData
 	

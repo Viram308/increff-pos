@@ -49,7 +49,7 @@ public class OrderService {
 	public OrderPojo getCheck(int id) throws ApiException {
 		OrderPojo p = dao.select(OrderPojo.class, id);
 		if (p == null) {
-			throw new ApiException("Order not exist for id : " + id);
+			throw new ApiException("Order doesn't exist for id : " + id);
 		}
 		return p;
 	}

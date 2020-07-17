@@ -48,7 +48,7 @@ public class OrderItemService {
 	public List<OrderItemPojo> getCheckForOrderId(int orderId) throws ApiException {
 		List<OrderItemPojo> orderItemPojos = dao.selectByOrderId(orderId);
 		if (orderItemPojos.isEmpty()) {
-			throw new ApiException("Order Items do not exist for orderId : " + orderId);
+			throw new ApiException("Order Items don't exist for orderId : " + orderId);
 		}
 		return orderItemPojos;
 	}

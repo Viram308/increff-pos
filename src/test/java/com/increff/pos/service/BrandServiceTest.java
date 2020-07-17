@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.spring.AbstractUnitTest;
+import com.increff.pos.util.TestUtil;
 
 public class BrandServiceTest extends AbstractUnitTest {
 	@Autowired
@@ -18,21 +19,21 @@ public class BrandServiceTest extends AbstractUnitTest {
 	// test brand service
 	@Test(expected = ApiException.class)
 	public void testAdd() throws ApiException {
-		BrandMasterPojo brandMasterPojo = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = TestUtil.getBrandMasterPojo();
 		// Add one time
 		brandMasterPojo = brandService.add(brandMasterPojo);
-		assertEquals("viram", brandMasterPojo.getBrand());
-		assertEquals("shah", brandMasterPojo.getCategory());
+		assertEquals("nestle", brandMasterPojo.getBrand());
+		assertEquals("dairy", brandMasterPojo.getCategory());
 		// Throw exception while entering second time
 		brandService.add(brandMasterPojo);
 	}
 
 	@Test(expected = ApiException.class)
 	public void testGetByBrandCategory() throws ApiException {
-		BrandMasterPojo brandMasterPojo1 = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo1 = TestUtil.getBrandMasterPojo();
 		brandService.add(brandMasterPojo1);
 		// select data for given brand and category
-		BrandForm brandForm = getBrandForm();
+		BrandForm brandForm = TestUtil.getBrandForm();
 		BrandMasterPojo brandMasterPojo = brandService.getByBrandCategory(brandForm);
 		assertEquals(brandMasterPojo.getId(), brandMasterPojo1.getId());
 		brandForm.brand = "a";
@@ -42,17 +43,17 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGet() throws ApiException {
-		BrandMasterPojo brandMasterPojo = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = TestUtil.getBrandMasterPojo();
 		brandService.add(brandMasterPojo);
 		BrandMasterPojo p = brandService.get(brandMasterPojo.getId());
 		// check for inserted data
-		assertEquals("viram", p.getBrand());
-		assertEquals("shah", p.getCategory());
+		assertEquals("nestle", p.getBrand());
+		assertEquals("dairy", p.getCategory());
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		BrandMasterPojo brandMasterPojo = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = TestUtil.getBrandMasterPojo();
 		brandService.add(brandMasterPojo);
 		// test select all
 		List<BrandMasterPojo> brandMasterPojos = brandService.getAll();
@@ -61,7 +62,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdate() throws ApiException {
-		BrandMasterPojo brandMasterPojo = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = TestUtil.getBrandMasterPojo();
 		brandMasterPojo = brandService.add(brandMasterPojo);
 		BrandMasterPojo brandMasterPojoUpdate = new BrandMasterPojo();
 		brandMasterPojoUpdate.setBrand("increff");
@@ -75,7 +76,7 @@ public class BrandServiceTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
-		BrandMasterPojo brandMasterPojo = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo = TestUtil.getBrandMasterPojo();
 		brandService.add(brandMasterPojo);
 		// test getCheck function
 		BrandMasterPojo brandMasterPojoResult = brandService.getCheck(brandMasterPojo.getId());
@@ -86,16 +87,16 @@ public class BrandServiceTest extends AbstractUnitTest {
 	@Test
 	public void testSearchData() throws ApiException {
 		// create data
-		BrandMasterPojo brandMasterPojo1 = getBrandMasterPojoTest();
-		BrandMasterPojo brandMasterPojo2 = getBrandMasterPojoTest();
-		brandMasterPojo2.setBrand("Nestle             ");
-		BrandMasterPojo brandMasterPojo3 = getBrandMasterPojoTest();
+		BrandMasterPojo brandMasterPojo1 = TestUtil.getBrandMasterPojo();
+		BrandMasterPojo brandMasterPojo2 = TestUtil.getBrandMasterPojo();
+		brandMasterPojo2.setBrand("Britania             ");
+		BrandMasterPojo brandMasterPojo3 = TestUtil.getBrandMasterPojo();
 		brandMasterPojo3.setCategory("POS");
 		// add
 		brandService.add(brandMasterPojo1);
 		brandService.add(brandMasterPojo2);
 		brandService.add(brandMasterPojo3);
-		BrandForm brandForm = getBrandForm();
+		BrandForm brandForm = TestUtil.getBrandForm();
 		// search
 		List<BrandMasterPojo> list = brandService.searchBrandData(brandForm);
 		// test list size
@@ -105,18 +106,4 @@ public class BrandServiceTest extends AbstractUnitTest {
 		assertEquals(2, list.size());
 	}
 
-	private BrandForm getBrandForm() {
-		BrandForm brandForm = new BrandForm();
-		brandForm.brand = "viram";
-		brandForm.category = "shah";
-		return brandForm;
-	}
-
-	private BrandMasterPojo getBrandMasterPojoTest() throws ApiException {
-		BrandMasterPojo b = new BrandMasterPojo();
-		// create data
-		b.setBrand(" viram ");
-		b.setCategory("ShaH");
-		return b;
-	}
 }

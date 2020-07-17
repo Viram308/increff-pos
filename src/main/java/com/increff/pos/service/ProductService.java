@@ -87,7 +87,7 @@ public class ProductService {
 	public ProductMasterPojo getCheck(int id) throws ApiException {
 		ProductMasterPojo p = dao.select(ProductMasterPojo.class, id);
 		if (p == null) {
-			throw new ApiException("Product not exist for id : " + id);
+			throw new ApiException("Product doesn't exist for id : " + id);
 		}
 		return p;
 	}

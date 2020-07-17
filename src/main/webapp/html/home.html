@@ -9,20 +9,20 @@
   <nav th:replace="snippets.html :: name_app_navbar"></nav>
   <!-- Container start -->
   <div class="container">
-<div class=row>
+<div class="row">
   &nbsp;
 </div>
 
  <!-- Top row with form-->
 <div class="row">
    <div class="col-2">
-    <a th:href="@{/ui/admin/order}" title="Order"> <i class="fa fa-cart-plus fa-3x"></i> </a>
+    <center><a href="/pos/ui/admin/order" title="Order"> <i class="fa fa-cart-plus fa-4x" aria-hidden="true"></i> </a></center>
    </div> 
    <div class="col-2">
-    <a th:href="@{/ui/admin/sales-report}" title="Sales Report"> <i class="fa fa-money fa-3x"></i> </a>
+   <center> <a href="/pos/ui/admin/sales-report" title="Sales Report"> <i class="fa fa-money fa-4x" aria-hidden="true"></i> </a></center>
    </div> 
    <div class="col-2">
-    <a th:href="@{/ui/admin/user}" title="Users"> <i class="fa fa-users fa-3x"></i> </a>
+   <center> <a href="/pos/ui/admin/user" title="Users"> <i class="fa fa-users fa-4x" aria-hidden="true"></i> </a></center>
    </div>
 </div> 
 <div class="row">
@@ -30,25 +30,16 @@
   </div>
 <div class="row">
    <div class="col-2">
-    <h4>Order</h4>
+    <center><h5>Order</h5></center>
+   </div>
+   <div class="col-2">
+    <center><h5>Sales Report</h5></center>
    </div> 
-   <div class="col-2 justify-content-center">
-    <h4>Sales</h4>
-   </div> 
-   <div class="col-2 justify-content-center">
-    <h4>Users</h4>
+   <div class="col-2">
+    <center><h5>Users</h5></center>
    </div>
 </div> 
-<div class="row">
-   <div class="col-2">
-   </div> 
-   <div class="col-2">
-    <h4>Report</h4>
-   </div> 
-   <div class="col-2">
-    
-   </div>
-</div> 
+ 
 
 
 

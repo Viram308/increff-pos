@@ -68,7 +68,7 @@ public class BrandService {
 	public BrandMasterPojo getCheck(int id) throws ApiException {
 		BrandMasterPojo brandMasterPojo = dao.select(BrandMasterPojo.class, id);
 		if (brandMasterPojo == null) {
-			throw new ApiException("Brand and Category not exist for id : " + id);
+			throw new ApiException("Brand and Category doesn't exist for id : " + id);
 		}
 		return brandMasterPojo;
 	}
@@ -77,7 +77,7 @@ public class BrandService {
 	public void getCheckExisting(String brand, String category) throws ApiException {
 		BrandMasterPojo brandMasterPojo = dao.selectByBrandCategory(brand, category);
 		if (brandMasterPojo != null) {
-			throw new ApiException("Given Brand and Category pair already exist");
+			throw new ApiException("Given Brand and Category pair already exists");
 		}
 	}
 

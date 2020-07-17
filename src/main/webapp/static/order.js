@@ -74,11 +74,13 @@ function downloadBillPdf(blob){
 	link.click();
 }	
 
+// view order
 function viewOrder(id){
 	$('#view-order-modal').modal('toggle');
 	getOrderItems(id);
 }
 
+// edit order
 function editOrder(id){
 	$('#edit-order-modal').modal('toggle');
 	$("#order-edit-form input[name=id]").val(id);
@@ -86,7 +88,7 @@ function editOrder(id){
 
 }
 
-
+// get order items by orderId
 function getOrderItemsEdit(id){
 	var url = getOrderItemUrl() + "/" + id;
    // call api
@@ -138,10 +140,12 @@ function displayOrderItemsEdit(data){
 	var j=0;
 	for(var i in data){
 		var e = data[i];
+		// create json for order items already exist for future use
 		var json={
 			"barcode":e.barcode,
 			"quantity":e.quantity
 		};
+		// store json in global array
 		editOrderItemsJsonArray[j]=json;
 		var buttonHtml = ' <input type="button" class="btn btn-outline-danger" value="Delete" id="deleteItemButtonEdit">'
 		var row = '<tr>'
@@ -154,7 +158,6 @@ function displayOrderItemsEdit(data){
 		$tbodyEditOrder.append(row);
 		j++;
 	}
-	console.log(editOrderItemsJsonArray);
 	$totalItemsEdit.val(j);
 }
 
@@ -207,6 +210,7 @@ function updateOrder(){
 	var table = document.getElementById("customer-order-edit-table");
 	var orderData=[];
 	var j=0;
+	// take rows from table and process cells
 	for (var i = 1, row; row = table.rows[i]; i++) {
    			// create json
    			var json = {
@@ -232,6 +236,7 @@ function updateOrder(){
 				'Content-Type': 'application/json; charset=utf-8'
 			},	   
 			success: function(data) {
+				// nullify array
 				editOrderItemsJsonArray=[];
 	   		// process recieved pdf
 	   		let binaryString = window.atob(data);
@@ -248,6 +253,7 @@ function updateOrder(){
 	   		let blob = new Blob([bytes], {type: "application/pdf"});
 //openBillPdf(blob);
 downloadBillPdf(blob);
+// empty table for future edits
 $tbodyEdit.empty();
 $totalItemsEdit.val(0);
 $.notify("Order updated successfully !!","success");
@@ -305,6 +311,7 @@ error: handleAjaxError
 	   		let blob = new Blob([bytes], {type: "application/pdf"});
 //openBillPdf(blob);
 downloadBillPdf(blob);
+// empty table
 $tbody.empty();
 $totalItems.val(0);
 $.notify("Order added successfully !!","success");
@@ -339,10 +346,12 @@ error: handleAjaxError
 
 	// update fields
 	function updateProductDetailsForItem(data){
+		// set data
 		$('#inputMrp').val(data.mrp);
 		$('#inputName').val(data.name);
 		$('#inputQuantity').prop('readonly', false);
 		$('#inputQuantity').val(1);
+		// if item exist in table then minus it from available
 		var table = document.getElementById("customer-order-table");
 		var quantity=checkItemExist(data.barcode,table);
 		var availableQuantity=data.availableQuantity - quantity;
@@ -355,9 +364,11 @@ error: handleAjaxError
 		$('#inputNameEditOrder').val(data.name);
 		$('#inputQuantityEditOrder').prop('readonly', false);
 		$('#inputQuantityEditOrder').val(1);
+		// if item exist in table then minus it from available
 		var table = document.getElementById("customer-order-edit-table");
 		var quantity=checkItemExist(data.barcode,table);
 		var availableQuantity=data.availableQuantity - quantity;
+		// also check global array and add existing item quantity in order
 		for(var i = 0; i < editOrderItemsJsonArray.length; i++) {
 			var barcodeInArray=editOrderItemsJsonArray[i].barcode;
 			var barcode=data.barcode;
@@ -412,6 +423,7 @@ function getProductDetailsEditOrder(barcode){
 function updateQuantityInTable(barcode,table,finalQuantity){
 	
 	var checkEquality=9;
+	// if barcode exist then add quantity in table row
 	for (var i = 1, row; row = table.rows[i]; i++) {
 		var cellBarcode=row.cells[0].innerHTML;
 		checkEquality=cellBarcode.localeCompare(barcode);
@@ -425,6 +437,7 @@ function updateQuantityInTable(barcode,table,finalQuantity){
 	function addItemInTable(){
 		var barcode=$("#inputBarcode").val();
 		var quantity=$('#inputQuantity').val();
+		// validate data 
 		if(barcode.length == 8){
 			if(quantity <= 0){
 				$.notify("Quantity for product can not be negative or zero !!","error");
@@ -437,6 +450,7 @@ function updateQuantityInTable(barcode,table,finalQuantity){
 			}
 			var table = document.getElementById("customer-order-table");
 			var quantityInTable=checkItemExist(barcode,table);
+			// if not exist then add new row
 			if(quantityInTable == 0){
 			var itemId=$totalItems.val();
 			itemId++;
@@ -454,6 +468,7 @@ function updateQuantityInTable(barcode,table,finalQuantity){
 	+ '</tr>';
 	$tbody.append(row);
 }
+// else add it to existing row
 else{
 	var finalQuantity=+quantityInTable + +quantity;
 	updateQuantityInTable(barcode,table,finalQuantity);
@@ -528,6 +543,7 @@ else{
 function checkItemExist(barcode,table){
 	var quantity=0;
 	var checkEquality=9;
+	// check row wise each cell
 	for (var i = 1, row; row = table.rows[i]; i++) {
 		var cellBarcode=row.cells[0].innerHTML;
 		checkEquality=cellBarcode.localeCompare(barcode);
@@ -552,6 +568,7 @@ function showOrderModal(){
 		$("#inputBarcode").on('input',function(){
 			var valOfItem=$(this).val();
 			var len=valOfItem.length;
+			// when length is 8 then get the details else do following
 			if(len < 8){
 				$('#inputQuantity').val('');
 				$('#inputQuantity').prop('readonly', true);
@@ -568,6 +585,7 @@ function showOrderModal(){
 		$("#inputBarcodeEditOrder").on('input',function(){
 			var valOfItem=$(this).val();
 			var len=valOfItem.length;
+			// when length is 8 then get the details else do following
 			if(len < 8){
 				$('#inputQuantityEditOrder').val('');
 				$('#inputQuantityEditOrder').prop('readonly', true);
@@ -581,34 +599,40 @@ function showOrderModal(){
 	      	getProductDetailsEditOrder($(this).val());	
 	      }
 	  });
+		// delete button action
 		$('#customer-order-table').on('click', 'input[type="button"]', function () {
 			var closestTr=$(this).closest('tr');
 			var barcodeInTable=closestTr.find('td:eq(0)').text();
 			var barcode=$('#inputBarcode').val();
 			var checkEquality=barcode.localeCompare(barcodeInTable);
+			// check if existing item in table has same barcode as entered then update available quantity
 			if(checkEquality==0){
+
 				var quantityInTable=closestTr.find('td:eq(2)').text();
 				var availableQuantity=parseInt($('#availableQuantity').text());
 				var finalQuantity=+quantityInTable + +availableQuantity;
 				$('#availableQuantity').text(finalQuantity);
 			}
+			// remove item
 			closestTr.remove();
 			var itemId=$totalItems.val();
 			itemId--;
 			$totalItems.val(itemId);
 		});
-
+		// delete button action
 		$('#customer-order-edit-table').on('click', 'input[type="button"]', function () {
 			var closestTr=$(this).closest('tr');
 			var barcodeInTable=closestTr.find('td:eq(0)').text();
 			var barcode=$('#inputBarcodeEditOrder').val();
 			var checkEquality=barcode.localeCompare(barcodeInTable);
+			// check if existing item in table has same barcode as entered then update available quantity
 			if(checkEquality==0){
 				var quantityInTable=closestTr.find('td:eq(2)').text();
 				var availableQuantity=parseInt($('#availableQuantityEditOrder').text());
 				var finalQuantity=+quantityInTable + +availableQuantity;
 				$('#availableQuantityEditOrder').text(finalQuantity);
 			}
+			// remove item
 			closestTr.remove();
 			var itemId=$totalItemsEdit.val();
 			itemId--;
@@ -618,6 +642,7 @@ function showOrderModal(){
 
 		$('#create-order').click(createOrder);
 		$('#update-order').click(updateOrder);
+		// datepicker
 		$('#inputStartDate').datepicker({
 			uiLibrary: 'bootstrap4',
 			showOnFocus: true, 
@@ -639,6 +664,7 @@ function showOrderModal(){
 
 		$('#search-order').click(searchOrder);
 		$('.modal').on('hidden.bs.modal', function(){
+			// on closing the modal
 			editOrderItemsJsonArray=[];
 			$('#availableInventoryRow').hide();
 			$('#availableInventoryRowEditOrder').hide();

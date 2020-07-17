@@ -71,7 +71,7 @@ public class UserService {
 	public UserPojo getCheck(int id) throws ApiException {
 		UserPojo userPojo = dao.select(UserPojo.class, id);
 		if (userPojo == null) {
-			throw new ApiException("User does not exist for id : " + id);
+			throw new ApiException("User doesn't exist for id : " + id);
 		}
 		return userPojo;
 	}

@@ -16,6 +16,7 @@ import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
+import com.increff.pos.util.TestUtil;
 
 public class InventoryDtoTest extends AbstractUnitTest {
 	@Autowired
@@ -31,10 +32,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testAddInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
+		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test added data
 		assertEquals(20, inventoryDatas.get(0).quantity);
@@ -44,10 +45,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testSearchInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
+		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test retrieved data
 		assertEquals("munch", inventoryDatas.get(0).name);
@@ -58,10 +59,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testGetInventoryData() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
+		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// get data
 		InventoryData inventoryData = inventoryDto.getInventoryData(inventoryDatas.get(0).id);
@@ -74,12 +75,12 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testUpdateInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
+		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = getInventorySearchForm(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
-		inventoryForm = getInventoryForm(inventoryDatas.get(0).barcode, 30);
+		inventoryForm = TestUtil.getInventoryFormDto(inventoryDatas.get(0).barcode, 30);
 		// update
 		inventoryDto.updateInventory(inventoryDatas.get(0).id, inventoryForm);
 		InventoryData inventoryData = inventoryDto.getInventoryData(inventoryDatas.get(0).id);
@@ -91,7 +92,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testGetAllInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = getInventoryForm(productData.barcode, 20);
+		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// get all data
 		List<InventoryData> inventoryDatas = inventoryDto.getAllInventory();
@@ -101,62 +102,22 @@ public class InventoryDtoTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testValidateData() throws ApiException {
-		InventoryForm inventoryForm = getInventoryForm("barcode", 10);
+		InventoryForm inventoryForm = TestUtil.getInventoryFormDto("barcode", 10);
 		// validate
 		inventoryDto.validateData(inventoryForm);
-		inventoryForm = getInventoryForm("barcode", -5);
+		inventoryForm = TestUtil.getInventoryFormDto("barcode", -5);
 		// throws exception
 		inventoryDto.validateData(inventoryForm);
 	}
 
-	// functions for creating data
-
-	private InventorySearchForm getInventorySearchForm(String barcode, String name) {
-		InventorySearchForm inventorySearchForm = new InventorySearchForm();
-		inventorySearchForm.barcode = barcode;
-		inventorySearchForm.name = name;
-		return inventorySearchForm;
-	}
-
-	private InventoryForm getInventoryForm(String barcode, int quantity) {
-		InventoryForm inventoryForm = new InventoryForm();
-		inventoryForm.barcode = barcode;
-		inventoryForm.quantity = quantity;
-		return inventoryForm;
-	}
-
 	private ProductData getProductData() throws ApiException {
-		BrandForm brandForm = getBrandForm("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = getProductForm("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
-		ProductSearchForm productSearchForm = getProductSearchForm("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		return productDatas.get(0);
 	}
 
-	private ProductSearchForm getProductSearchForm(String barcode, String brand, String category, String name) {
-		ProductSearchForm productSearchForm = new ProductSearchForm();
-		productSearchForm.barcode = barcode;
-		productSearchForm.brand = brand;
-		productSearchForm.category = category;
-		productSearchForm.name = name;
-		return productSearchForm;
-	}
-
-	private BrandForm getBrandForm(String brand, String category) {
-		BrandForm brandForm = new BrandForm();
-		brandForm.brand = brand;
-		brandForm.category = category;
-		return brandForm;
-	}
-
-	private ProductForm getProductForm(String brand, String category, String name, double mrp) {
-		ProductForm productForm = new ProductForm();
-		productForm.brand = brand;
-		productForm.category = category;
-		productForm.name = name;
-		productForm.mrp = mrp;
-		return productForm;
-	}
 }

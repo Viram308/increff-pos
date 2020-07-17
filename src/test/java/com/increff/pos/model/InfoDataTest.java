@@ -4,7 +4,9 @@ import static org.junit.Assert.assertEquals;
 
 import org.junit.Test;
 
-public class InfoDataTest {
+import com.increff.pos.spring.AbstractUnitTest;
+
+public class InfoDataTest extends AbstractUnitTest{
 
 	// test InfoData
 	

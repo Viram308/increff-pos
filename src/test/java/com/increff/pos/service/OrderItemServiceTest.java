@@ -2,10 +2,7 @@ package com.increff.pos.service;
 
 import static org.junit.Assert.assertEquals;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
@@ -18,6 +15,7 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.StringUtil;
+import com.increff.pos.util.TestUtil;
 
 public class OrderItemServiceTest extends AbstractUnitTest {
 	@Autowired
@@ -120,21 +118,13 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		assertEquals(1, list1.size());
 	}
 
-	private String getDateTime() {
-
-		DateFormat df = new SimpleDateFormat("dd-MM-yyyy HH:mm");
-		Date dateobj = new Date();
-		String datetime = df.format(dateobj);
-		return datetime;
-	}
-
 	private OrderItemPojo getOrderItemPojoTest() throws ApiException {
 		OrderItemPojo o = new OrderItemPojo();
 		int quantity = 10;
 		double sellingPrice = 10.25;
 		// create data
 		OrderPojo op = new OrderPojo();
-		String datetime = getDateTime();
+		String datetime = TestUtil.getDateTime();
 		op.setDatetime(datetime);
 		orderService.add(op);
 		ProductMasterPojo p = new ProductMasterPojo();

@@ -6,7 +6,7 @@ import java.io.InputStream;
 
 import org.junit.Test;
 
-public class SampleTest {
+public class SampleTest extends AbstractUnitTest {
 	// test Sample files
 	@Test
 	public void testFiles() {
