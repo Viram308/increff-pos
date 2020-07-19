@@ -19,7 +19,7 @@ public class NormalizeUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalizeBrandMasterPojo() throws ApiException {
-		BrandMasterPojo brandMasterPojo = TestUtil.getBrandMasterPojo();
+		BrandMasterPojo brandMasterPojo = TestDataUtil.getBrandMasterPojo();
 		NormalizeUtil.normalizeBrandMasterPojo(brandMasterPojo);
 		// test for normalized data
 		assertEquals("nestle", brandMasterPojo.getBrand());
@@ -29,7 +29,7 @@ public class NormalizeUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalizeBrandForm() {
-		BrandForm brandForm = TestUtil.getBrandForm();
+		BrandForm brandForm = TestDataUtil.getBrandForm();
 		NormalizeUtil.normalizeBrandForm(brandForm);
 		// test for normalized data
 		assertEquals("nestle", brandForm.brand);
@@ -38,7 +38,7 @@ public class NormalizeUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalizeProductMasterPojo() throws ApiException {
-		ProductMasterPojo productMasterPojo = TestUtil.getProductMasterPojo();
+		ProductMasterPojo productMasterPojo = TestDataUtil.getProductMasterPojo();
 		NormalizeUtil.normalizeProductMasterPojo(productMasterPojo);
 		// test normalized data
 		assertEquals("munch", productMasterPojo.getName());
@@ -46,7 +46,7 @@ public class NormalizeUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalizeProductSearchForm() {
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchForm();
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchForm();
 		NormalizeUtil.normalizeProductSearchForm(productSearchForm);
 		// test normalized data
 		assertEquals("munch", productSearchForm.name);
@@ -54,7 +54,7 @@ public class NormalizeUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalizeUserForm() {
-		UserForm userForm = TestUtil.getUserForm();
+		UserForm userForm = TestDataUtil.getUserForm();
 		NormalizeUtil.normalizeUserForm(userForm);
 		// test normalized data
 		assertEquals("shahviram308@gmail.com", userForm.getEmail());
@@ -63,7 +63,7 @@ public class NormalizeUtilTest extends AbstractUnitTest {
 
 	@Test
 	public void testNormalizeUserPojo() {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		NormalizeUtil.normalizeUserPojo(userPojo);
 		// test normalized data
 		assertEquals("shahviram308@gmail.com", userPojo.getEmail());

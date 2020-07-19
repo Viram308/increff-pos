@@ -27,7 +27,7 @@ import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 
-public class TestUtil {
+public class TestDataUtil {
 
 	// functions for creating data
 	

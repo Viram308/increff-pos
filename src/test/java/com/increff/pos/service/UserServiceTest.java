@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.increff.pos.model.UserForm;
 import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class UserServiceTest extends AbstractUnitTest {
 	@Autowired
@@ -19,7 +19,7 @@ public class UserServiceTest extends AbstractUnitTest {
 	// test user service
 	@Test(expected = ApiException.class)
 	public void testAdd() throws ApiException {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		// Add one time
 		userService.add(userPojo);
 		// Throw exception while entering second time
@@ -28,7 +28,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testDelete() throws ApiException {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		userService.add(userPojo);
 		// Delete should be successful and should not throw exception as data exists
 		userService.delete(userPojo.getId());
@@ -36,7 +36,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGet() throws ApiException {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		userService.add(userPojo);
 		UserPojo userPojoFinal = userService.getByEmail(userPojo.getEmail());
 		// test added data
@@ -46,7 +46,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetAll() throws ApiException {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		userService.add(userPojo);
 		// test get all
 		List<UserPojo> userPojos = userService.getAll();
@@ -55,7 +55,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdate() throws ApiException {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		userService.add(userPojo);
 		UserPojo userPojoFinal = userService.get(userPojo.getId());
 		// update data
@@ -70,7 +70,7 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testGetCheck() throws ApiException {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		userService.add(userPojo);
 		UserPojo userPojoFinal = userService.getCheck(userPojo.getId());
 		userService.delete(userPojoFinal.getId());
@@ -79,15 +79,15 @@ public class UserServiceTest extends AbstractUnitTest {
 
 	@Test
 	public void testSearchUserData() {
-		UserPojo userPojo = TestUtil.getUserPojo();
+		UserPojo userPojo = TestDataUtil.getUserPojo();
 		userService.add(userPojo);
 		// create user form
-		UserForm userForm = TestUtil.getUserSearchForm("j  ", "", "");
+		UserForm userForm = TestDataUtil.getUserSearchForm("j  ", "", "");
 		// search
 		List<UserPojo> userPojos = userService.searchUserData(userForm);
 		assertEquals(0, userPojos.size());
 		// create user form
-		userForm = TestUtil.getUserSearchForm("s", "", "");
+		userForm = TestDataUtil.getUserSearchForm("s", "", "");
 		// search
 		userPojos = userService.searchUserData(userForm);
 		assertEquals(1, userPojos.size());

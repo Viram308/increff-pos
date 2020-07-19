@@ -12,7 +12,7 @@ import com.increff.pos.model.BrandForm;
 import com.increff.pos.pojo.BrandMasterPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class BrandDtoTest extends AbstractUnitTest {
 
@@ -21,7 +21,7 @@ public class BrandDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testAddBrand() throws ApiException {
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		// add
 		brandDto.addBrand(brandForm);
 		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(brandForm);
@@ -33,12 +33,12 @@ public class BrandDtoTest extends AbstractUnitTest {
 	@Test
 	public void testSearchBrand() throws ApiException {
 		// add
-		BrandForm brandForm1 = TestUtil.getBrandFormDto("nestle", "dairy");
+		BrandForm brandForm1 = TestDataUtil.getBrandFormDto("nestle", "dairy");
 		brandDto.addBrand(brandForm1);
-		BrandForm brandForm2 = TestUtil.getBrandFormDto("britania", "dairy");
+		BrandForm brandForm2 = TestDataUtil.getBrandFormDto("britania", "dairy");
 		brandDto.addBrand(brandForm2);
 		// search
-		BrandForm brandForm3 = TestUtil.getBrandFormDto("       nest     ", "");
+		BrandForm brandForm3 = TestDataUtil.getBrandFormDto("       nest     ", "");
 		List<BrandData> brandDatas = brandDto.searchBrandData(brandForm3);
 		// test
 		assertEquals(1, brandDatas.size());
@@ -47,7 +47,7 @@ public class BrandDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetBrand() throws ApiException {
 		// add
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
 		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(brandForm);
 		// get data
@@ -59,11 +59,11 @@ public class BrandDtoTest extends AbstractUnitTest {
 	@Test
 	public void testUpdateBrand() throws ApiException {
 		// add
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
 		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(brandForm);
 		// create update form
-		BrandForm brandFormUpdate = TestUtil.getBrandFormDto("nestle", "FOOd    ");
+		BrandForm brandFormUpdate = TestDataUtil.getBrandFormDto("nestle", "FOOd    ");
 		brandDto.updateBrand(brandMasterPojo.getId(), brandFormUpdate);
 		BrandMasterPojo brandMasterPojoUpdate = brandDto.getByBrandCategory(brandFormUpdate);
 		// test update
@@ -74,7 +74,7 @@ public class BrandDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetByBrandCategory() throws ApiException {
 		// add
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
 		// get data
 		BrandMasterPojo brandMasterPojo = brandDto.getByBrandCategory(brandForm);
@@ -85,17 +85,17 @@ public class BrandDtoTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testValidateData() throws ApiException {
-		BrandForm brandForm1 = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm1 = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		// validate
 		brandDto.validateData(brandForm1);
 		// throw exception
-		BrandForm brandForm2 = TestUtil.getBrandFormDto("    ", "");
+		BrandForm brandForm2 = TestDataUtil.getBrandFormDto("    ", "");
 		brandDto.validateData(brandForm2);
 	}
 
 	@Test
 	public void testGetAll() throws ApiException {
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
 		// get all data
 		List<BrandData> brandDatas = brandDto.getAllBrands();

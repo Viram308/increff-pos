@@ -17,7 +17,7 @@ import com.increff.pos.pojo.UserPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.PasswordUtil;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class UserDtoTest extends AbstractUnitTest {
 
@@ -29,7 +29,7 @@ public class UserDtoTest extends AbstractUnitTest {
 	@Test
 	public void testAddUser() throws Exception {
 		// get user form
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
 		// get by email
@@ -44,7 +44,7 @@ public class UserDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetByEmail() throws Exception {
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
 		// get by email
@@ -58,7 +58,7 @@ public class UserDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testDeleteUser() throws Exception {
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
@@ -71,7 +71,7 @@ public class UserDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetUser() throws Exception {
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
@@ -84,11 +84,11 @@ public class UserDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testUpdateUser() throws Exception {
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
 		UserPojo userMasterPojo = userDto.getByEmail(userForm.getEmail());
-		UserForm userFormUpdate = TestUtil.getUserFormDto("shahviram308@gmail.com", "password", "Standard");
+		UserForm userFormUpdate = TestDataUtil.getUserFormDto("shahviram308@gmail.com", "password", "Standard");
 		// update user
 		userDto.updateUser(userMasterPojo.getId(), userFormUpdate);
 		UserPojo userMasterPojoUpdate = userDto.getByEmail(userForm.getEmail());
@@ -98,7 +98,7 @@ public class UserDtoTest extends AbstractUnitTest {
 
 	@Test
 	public void testGetAll() throws Exception {
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// add user
 		userDto.addUser(userForm);
 		// test get all
@@ -109,23 +109,23 @@ public class UserDtoTest extends AbstractUnitTest {
 	@Test
 	public void testSearchUser() throws Exception {
 		// add 2 users
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.addUser(userForm);
-		userForm = TestUtil.getUserFormDto("  sHAHVIRAM123@gMail.coM  ", "password", "Standard");
+		userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM123@gMail.coM  ", "password", "Standard");
 		userDto.addUser(userForm);
-		userForm = TestUtil.getUserFormDto("", "", "");
+		userForm = TestDataUtil.getUserFormDto("", "", "");
 		// search user
 		List<UserData> userDatas = userDto.searchData(userForm);
 		// test
 		assertEquals(2, userDatas.size());
-		userForm = TestUtil.getUserFormDto("", "", "admin");
+		userForm = TestDataUtil.getUserFormDto("", "", "admin");
 		userDatas = userDto.searchData(userForm);
 		assertEquals(1, userDatas.size());
 	}
 
 	@Test
 	public void testCheckInit() throws Exception {
-		UserForm userForm1 = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm1 = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		// check first time
 		userDto.checkInit(userForm1);
 		assertEquals("Application initialized", info.getMessage());
@@ -136,16 +136,16 @@ public class UserDtoTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
-		UserForm userForm = TestUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserForm userForm = TestDataUtil.getUserFormDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		userDto.validateData(userForm);
 		// throw exception
-		userForm = TestUtil.getUserFormDto("    ", "", "");
+		userForm = TestDataUtil.getUserFormDto("    ", "", "");
 		userDto.validateData(userForm);
 	}
 
 	@Test
 	public void testConvertUserPojotoAuthentication() {
-		UserPojo p = TestUtil.getUserPojoDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
+		UserPojo p = TestDataUtil.getUserPojoDto("  sHAHVIRAM308@gMail.coM  ", "password", "Admin");
 		int id = 1;
 		p.setId(id);
 		Authentication token = userDto.convertUserPojotoAuthentication(p);

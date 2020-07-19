@@ -12,7 +12,7 @@ import com.increff.pos.model.InventoryReportData;
 import com.increff.pos.model.SalesReportData;
 import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class ReportServiceTest extends AbstractUnitTest {
 	@Autowired
@@ -25,7 +25,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 	public void testGetOrderIdList() throws ParseException, ApiException {
 		String startdate = "01-02-2020";
 		String enddate = "23-03-2020";
-		List<OrderPojo> list = TestUtil.getOrderPojoListForSalesReport();
+		List<OrderPojo> list = TestDataUtil.getOrderPojoListForSalesReport();
 		for (OrderPojo orderPojo : list) {
 			orderService.add(orderPojo);
 		}
@@ -40,7 +40,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 	// test created sales data category wise
 	@Test(expected = ApiException.class)
 	public void testGroupSalesReportDataCategoryWise() throws ApiException {
-		List<SalesReportData> list = TestUtil.getSalesData();
+		List<SalesReportData> list = TestDataUtil.getSalesData();
 		// group category wise
 		list = reportService.groupSalesReportDataCategoryWise(list);
 		// check results
@@ -55,7 +55,7 @@ public class ReportServiceTest extends AbstractUnitTest {
 	// test created inventory data
 	@Test
 	public void testGroupDataForInventoryReport() {
-		List<InventoryReportData> list = TestUtil.getInventoryData();
+		List<InventoryReportData> list = TestDataUtil.getInventoryData();
 		list = reportService.groupDataForInventoryReport(list);
 		// compare data with actual values
 		assertEquals(4, list.size());

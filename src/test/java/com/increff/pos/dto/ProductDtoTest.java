@@ -14,7 +14,7 @@ import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class ProductDtoTest extends AbstractUnitTest {
 
@@ -27,12 +27,12 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test
 	public void testAdd() throws ApiException {
 		// add data
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
 		// search product
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		// test
 		assertEquals("nestle", productDatas.get(0).brand);
@@ -44,12 +44,12 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test
 	public void testSearchProduct() throws ApiException {
 		// add data
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
 		// search product
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		// test
 		assertEquals("nestle", productDatas.get(0).brand);
@@ -61,12 +61,12 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGet() throws ApiException {
 		// add data
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
 		// search product
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		// get data
 		ProductData productData = productDto.get(productDatas.get(0).id);
@@ -80,12 +80,12 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetByBarcode() throws ApiException {
 		// add data
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
 		// search product
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		// get by barcode
 		ProductDetails productDetails = productDto.getByBarcode(productDatas.get(0).barcode);
@@ -100,9 +100,9 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test
 	public void testGetAll() throws ApiException {
 		// add data
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
 		// get all
 		List<ProductData> productDatas = productDto.getAll();
@@ -112,14 +112,14 @@ public class ProductDtoTest extends AbstractUnitTest {
 	@Test
 	public void testUpdate() throws ApiException {
 		// add data
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
 		// search product
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
-		ProductForm productForm2 = TestUtil.getProductFormDto("nestle", "dairy", "kitkat", 10.50);
+		ProductForm productForm2 = TestDataUtil.getProductFormDto("nestle", "dairy", "kitkat", 10.50);
 		// update product
 		productDto.update(productDatas.get(0).id, productForm2);
 		// get and test
@@ -129,11 +129,11 @@ public class ProductDtoTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testCheckData() throws ApiException {
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		// validate
 		productDto.validateData(productForm);
 		// throws exception
-		productForm = TestUtil.getProductFormDto("nestle", "dairy", "   ", 0.0);
+		productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "   ", 0.0);
 		productDto.validateData(productForm);
 	}
 }

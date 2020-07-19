@@ -26,7 +26,7 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.ConverterUtil;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class OrderDtoTest extends AbstractUnitTest {
 	@Autowired
@@ -67,32 +67,32 @@ public class OrderDtoTest extends AbstractUnitTest {
 	public void testChangeOrder() throws ApiException, ParseException {
 		// add data
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
-		InventoryForm inventoryForm1 = TestUtil.getInventoryFormDto(productData1.barcode, 20);
+		InventoryForm inventoryForm1 = TestDataUtil.getInventoryFormDto(productData1.barcode, 20);
 		inventoryDto.addInventory(inventoryForm1);
 		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
-		InventoryForm inventoryForm2 = TestUtil.getInventoryFormDto(productData2.barcode, 20);
+		InventoryForm inventoryForm2 = TestDataUtil.getInventoryFormDto(productData2.barcode, 20);
 		inventoryDto.addInventory(inventoryForm2);
 		// get array of items
-		OrderItemForm[] orderItemForms = TestUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode,
+		OrderItemForm[] orderItemForms = TestDataUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode,
 				productData1.name, productData2.name, 4, 5, productData1.mrp, productData2.mrp);
 		// create order
 		orderDto.createOrder(orderItemForms);
 		// create order search form
-		OrderSearchForm orderSearchForm = TestUtil.getOrderSearchFormDto();
+		OrderSearchForm orderSearchForm = TestDataUtil.getOrderSearchFormDto();
 		List<OrderData> orderDatas = orderDto.searchOrder(orderSearchForm);
 		int orderId = orderDatas.get(0).id;
 		// update array
-		orderItemForms = TestUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode,
+		orderItemForms = TestDataUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode,
 				productData1.name, productData2.name, 2, 8, productData1.mrp, productData2.mrp);
 		// update order
 		orderDto.changeOrder(orderId, orderItemForms);
 		// create inventory search form
-		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto("", "munch");
+		InventorySearchForm inventorySearchForm = TestDataUtil.getInventorySearchFormDto("", "munch");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test updated inventory
 		assertEquals(18, inventoryDatas.get(0).quantity);
 		// create inventory search form
-		inventorySearchForm = TestUtil.getInventorySearchFormDto("", "kitkat");
+		inventorySearchForm = TestDataUtil.getInventorySearchFormDto("", "kitkat");
 		inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test updated inventory
 		assertEquals(12, inventoryDatas.get(0).quantity);
@@ -113,22 +113,22 @@ public class OrderDtoTest extends AbstractUnitTest {
 	public void testAddInInventory() throws ApiException {
 		// add data
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
-		InventoryForm inventoryForm1 = TestUtil.getInventoryFormDto(productData1.barcode, 20);
+		InventoryForm inventoryForm1 = TestDataUtil.getInventoryFormDto(productData1.barcode, 20);
 		inventoryDto.addInventory(inventoryForm1);
 		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
-		InventoryForm inventoryForm2 = TestUtil.getInventoryFormDto(productData2.barcode, 20);
+		InventoryForm inventoryForm2 = TestDataUtil.getInventoryFormDto(productData2.barcode, 20);
 		inventoryDto.addInventory(inventoryForm2);
 		// get order item data
-		List<OrderItemData> orderItemDatas = TestUtil.getOrderItemDataListDto(productData1, productData2, 5, 10);
+		List<OrderItemData> orderItemDatas = TestDataUtil.getOrderItemDataListDto(productData1, productData2, 5, 10);
 		// add in inventory
 		orderDto.addInInventory(orderItemDatas);
 		// create inventory search form
-		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto("", "munch");
+		InventorySearchForm inventorySearchForm = TestDataUtil.getInventorySearchFormDto("", "munch");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test added inventory
 		assertEquals(25, inventoryDatas.get(0).quantity);
 		// create inventory search form
-		inventorySearchForm = TestUtil.getInventorySearchFormDto("", "kitkat");
+		inventorySearchForm = TestDataUtil.getInventorySearchFormDto("", "kitkat");
 		inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test added inventory
 		assertEquals(30, inventoryDatas.get(0).quantity);
@@ -141,7 +141,7 @@ public class OrderDtoTest extends AbstractUnitTest {
 		// create order
 		orderDto.createOrder(orderItemForms);
 		// create order search form
-		OrderSearchForm orderSearchForm = TestUtil.getOrderSearchFormDto();
+		OrderSearchForm orderSearchForm = TestDataUtil.getOrderSearchFormDto();
 		// search order
 		List<OrderData> orderDatas = orderDto.searchOrder(orderSearchForm);
 		OrderData orderData = orderDto.get(orderDatas.get(0).id);
@@ -166,7 +166,7 @@ public class OrderDtoTest extends AbstractUnitTest {
 		// create order
 		orderDto.createOrder(orderItemForms);
 		// search order
-		OrderSearchForm orderSearchForm = TestUtil.getOrderSearchFormDto();
+		OrderSearchForm orderSearchForm = TestDataUtil.getOrderSearchFormDto();
 		List<OrderData> orderDatas = orderDto.searchOrder(orderSearchForm);
 		assertEquals(1, orderDatas.size());
 		int orderId = orderDatas.get(0).id;
@@ -183,22 +183,22 @@ public class OrderDtoTest extends AbstractUnitTest {
 
 	private OrderItemForm[] getOrderItemArray() throws ApiException {
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
-		InventoryForm inventoryForm1 = TestUtil.getInventoryFormDto(productData1.barcode, 20);
+		InventoryForm inventoryForm1 = TestDataUtil.getInventoryFormDto(productData1.barcode, 20);
 		inventoryDto.addInventory(inventoryForm1);
 		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
-		InventoryForm inventoryForm2 = TestUtil.getInventoryFormDto(productData2.barcode, 20);
+		InventoryForm inventoryForm2 = TestDataUtil.getInventoryFormDto(productData2.barcode, 20);
 		inventoryDto.addInventory(inventoryForm2);
 
-		return TestUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode, productData1.name,
+		return TestDataUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode, productData1.name,
 				productData2.name, 4, 5, productData1.mrp, productData2.mrp);
 	}
 
 	private ProductData getProductData(String brand, String category, String name, double mrp) throws ApiException {
-		BrandForm brandForm = TestUtil.getBrandFormDto(brand, category);
+		BrandForm brandForm = TestDataUtil.getBrandFormDto(brand, category);
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto(brand, category, name, mrp);
+		ProductForm productForm = TestDataUtil.getProductFormDto(brand, category, name, mrp);
 		productDto.add(productForm);
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "", "", name);
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "", "", name);
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		return productDatas.get(0);
 	}

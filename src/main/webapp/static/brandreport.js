@@ -60,6 +60,7 @@ function downloadBrandReport(){
         left: 40,
         width: 522
     };
+    pdf.text(40, 40, "Brand Report");
     // all coords and widths are in jsPDF instance's declared units
     // 'inches' in this case
     pdf.fromHTML(

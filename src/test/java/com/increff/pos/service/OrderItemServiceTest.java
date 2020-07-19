@@ -15,7 +15,7 @@ import com.increff.pos.pojo.OrderPojo;
 import com.increff.pos.pojo.ProductMasterPojo;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.StringUtil;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class OrderItemServiceTest extends AbstractUnitTest {
 	@Autowired
@@ -124,7 +124,7 @@ public class OrderItemServiceTest extends AbstractUnitTest {
 		double sellingPrice = 10.25;
 		// create data
 		OrderPojo op = new OrderPojo();
-		String datetime = TestUtil.getDateTime();
+		String datetime = TestDataUtil.getDateTime();
 		op.setDatetime(datetime);
 		orderService.add(op);
 		ProductMasterPojo p = new ProductMasterPojo();

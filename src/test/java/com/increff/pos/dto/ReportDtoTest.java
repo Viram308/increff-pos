@@ -22,7 +22,7 @@ import com.increff.pos.model.SalesReportForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
 import com.increff.pos.util.ConverterUtil;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class ReportDtoTest extends AbstractUnitTest {
 	@Autowired
@@ -42,13 +42,13 @@ public class ReportDtoTest extends AbstractUnitTest {
 	public void testGetOrderIds() throws ApiException, ParseException {
 		addOrder();
 		// get sales report form
-		SalesReportForm salesReportForm = TestUtil.getSalesReportFormDto(ConverterUtil.getDateTime().split(" ")[0],
+		SalesReportForm salesReportForm = TestDataUtil.getSalesReportFormDto(ConverterUtil.getDateTime().split(" ")[0],
 				ConverterUtil.getDateTime().split(" ")[0], "", "");
 		// get order id list
 		List<Integer> orderIds = reportDto.getOrderIds(salesReportForm);
 		// test
 		assertEquals(1, orderIds.size());
-		salesReportForm = TestUtil.getSalesReportFormDto("", "", "", "");
+		salesReportForm = TestDataUtil.getSalesReportFormDto("", "", "", "");
 		orderIds = reportDto.getOrderIds(salesReportForm);
 		assertEquals(1, orderIds.size());
 	}
@@ -57,7 +57,7 @@ public class ReportDtoTest extends AbstractUnitTest {
 	public void testGetSalesReport() throws ApiException, ParseException {
 		addOrder();
 		// get sales report form
-		SalesReportForm salesReportForm = TestUtil.getSalesReportFormDto("", "", "n", "");
+		SalesReportForm salesReportForm = TestDataUtil.getSalesReportFormDto("", "", "n", "");
 		// get sales report
 		List<SalesReportData> salesReportDatas = reportDto.getSalesReport(salesReportForm);
 		// test data
@@ -71,12 +71,12 @@ public class ReportDtoTest extends AbstractUnitTest {
 	@Test
 	public void testSearchBrandReport() throws ApiException {
 		addOrder();
-		BrandForm brandForm = TestUtil.getBrandFormDto("nestle", "");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("nestle", "");
 		// get brand report
 		List<BrandData> brandDatas = reportDto.searchBrandReport(brandForm);
 		// test
 		assertEquals(2, brandDatas.size());
-		brandForm = TestUtil.getBrandFormDto("nestle", "f");
+		brandForm = TestDataUtil.getBrandFormDto("nestle", "f");
 		brandDatas = reportDto.searchBrandReport(brandForm);
 		assertEquals(1, brandDatas.size());
 	}
@@ -84,14 +84,14 @@ public class ReportDtoTest extends AbstractUnitTest {
 	@Test
 	public void testSearchInventoryReport() throws ApiException {
 		addOrder();
-		BrandForm brandForm = TestUtil.getBrandFormDto("nestle", "");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("nestle", "");
 		// get inventory report
 		List<InventoryReportData> inventoryReportDatas = reportDto.searchInventoryReport(brandForm);
 		// test data
 		assertEquals(2, inventoryReportDatas.size());
 		assertEquals(16, inventoryReportDatas.get(0).quantity);
 		assertEquals(15, inventoryReportDatas.get(1).quantity);
-		brandForm = TestUtil.getBrandFormDto("nestle", "f");
+		brandForm = TestDataUtil.getBrandFormDto("nestle", "f");
 		inventoryReportDatas = reportDto.searchInventoryReport(brandForm);
 		assertEquals(1, inventoryReportDatas.size());
 		assertEquals(15, inventoryReportDatas.get(0).quantity);
@@ -101,13 +101,13 @@ public class ReportDtoTest extends AbstractUnitTest {
 	
 	private List<BillData> addOrder() throws ApiException {
 		ProductData productData1 = getProductData("nestle", "dairy", "munch", 10);
-		InventoryForm inventoryForm1 = TestUtil.getInventoryFormDto(productData1.barcode, 20);
+		InventoryForm inventoryForm1 = TestDataUtil.getInventoryFormDto(productData1.barcode, 20);
 		inventoryDto.addInventory(inventoryForm1);
 		ProductData productData2 = getProductData("nestle", "food", "kitkat", 15);
-		InventoryForm inventoryForm2 = TestUtil.getInventoryFormDto(productData2.barcode, 20);
+		InventoryForm inventoryForm2 = TestDataUtil.getInventoryFormDto(productData2.barcode, 20);
 		inventoryDto.addInventory(inventoryForm2);
 
-		OrderItemForm[] orderItemForms = TestUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode,
+		OrderItemForm[] orderItemForms = TestDataUtil.getOrderItemFormArrayDto(productData1.barcode, productData2.barcode,
 				productData1.name, productData2.name, 4, 5, productData1.mrp, productData2.mrp);
 		return orderDto.createOrder(orderItemForms);
 	}
@@ -116,11 +116,11 @@ public class ReportDtoTest extends AbstractUnitTest {
 
 
 	private ProductData getProductData(String brand, String category, String name, double mrp) throws ApiException {
-		BrandForm brandForm = TestUtil.getBrandFormDto(brand, category);
+		BrandForm brandForm = TestDataUtil.getBrandFormDto(brand, category);
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto(brand, category, name, mrp);
+		ProductForm productForm = TestDataUtil.getProductFormDto(brand, category, name, mrp);
 		productDto.add(productForm);
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "", "", name);
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "", "", name);
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		return productDatas.get(0);
 	}

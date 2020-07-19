@@ -16,7 +16,7 @@ import com.increff.pos.model.ProductForm;
 import com.increff.pos.model.ProductSearchForm;
 import com.increff.pos.service.ApiException;
 import com.increff.pos.spring.AbstractUnitTest;
-import com.increff.pos.util.TestUtil;
+import com.increff.pos.util.TestDataUtil;
 
 public class InventoryDtoTest extends AbstractUnitTest {
 	@Autowired
@@ -32,10 +32,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testAddInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
+		InventoryForm inventoryForm = TestDataUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestDataUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test added data
 		assertEquals(20, inventoryDatas.get(0).quantity);
@@ -45,10 +45,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testSearchInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
+		InventoryForm inventoryForm = TestDataUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestDataUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// test retrieved data
 		assertEquals("munch", inventoryDatas.get(0).name);
@@ -59,10 +59,10 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testGetInventoryData() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
+		InventoryForm inventoryForm = TestDataUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestDataUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
 		// get data
 		InventoryData inventoryData = inventoryDto.getInventoryData(inventoryDatas.get(0).id);
@@ -75,12 +75,12 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testUpdateInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
+		InventoryForm inventoryForm = TestDataUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// search
-		InventorySearchForm inventorySearchForm = TestUtil.getInventorySearchFormDto(productData.barcode, "");
+		InventorySearchForm inventorySearchForm = TestDataUtil.getInventorySearchFormDto(productData.barcode, "");
 		List<InventoryData> inventoryDatas = inventoryDto.searchInventory(inventorySearchForm);
-		inventoryForm = TestUtil.getInventoryFormDto(inventoryDatas.get(0).barcode, 30);
+		inventoryForm = TestDataUtil.getInventoryFormDto(inventoryDatas.get(0).barcode, 30);
 		// update
 		inventoryDto.updateInventory(inventoryDatas.get(0).id, inventoryForm);
 		InventoryData inventoryData = inventoryDto.getInventoryData(inventoryDatas.get(0).id);
@@ -92,7 +92,7 @@ public class InventoryDtoTest extends AbstractUnitTest {
 	public void testGetAllInventory() throws ApiException {
 		// add
 		ProductData productData = getProductData();
-		InventoryForm inventoryForm = TestUtil.getInventoryFormDto(productData.barcode, 20);
+		InventoryForm inventoryForm = TestDataUtil.getInventoryFormDto(productData.barcode, 20);
 		inventoryDto.addInventory(inventoryForm);
 		// get all data
 		List<InventoryData> inventoryDatas = inventoryDto.getAllInventory();
@@ -102,20 +102,20 @@ public class InventoryDtoTest extends AbstractUnitTest {
 
 	@Test(expected = ApiException.class)
 	public void testValidateData() throws ApiException {
-		InventoryForm inventoryForm = TestUtil.getInventoryFormDto("barcode", 10);
+		InventoryForm inventoryForm = TestDataUtil.getInventoryFormDto("barcode", 10);
 		// validate
 		inventoryDto.validateData(inventoryForm);
-		inventoryForm = TestUtil.getInventoryFormDto("barcode", -5);
+		inventoryForm = TestDataUtil.getInventoryFormDto("barcode", -5);
 		// throws exception
 		inventoryDto.validateData(inventoryForm);
 	}
 
 	private ProductData getProductData() throws ApiException {
-		BrandForm brandForm = TestUtil.getBrandFormDto("     nestLE        ", "DairY ");
+		BrandForm brandForm = TestDataUtil.getBrandFormDto("     nestLE        ", "DairY ");
 		brandDto.addBrand(brandForm);
-		ProductForm productForm = TestUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
+		ProductForm productForm = TestDataUtil.getProductFormDto("nestle", "dairy", "munch", 10.50);
 		productDto.add(productForm);
-		ProductSearchForm productSearchForm = TestUtil.getProductSearchFormDto("", "nestle", "", "");
+		ProductSearchForm productSearchForm = TestDataUtil.getProductSearchFormDto("", "nestle", "", "");
 		List<ProductData> productDatas = productDto.searchProduct(productSearchForm);
 		return productDatas.get(0);
 	}
